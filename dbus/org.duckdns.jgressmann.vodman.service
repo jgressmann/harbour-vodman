@@ -1,0 +1,10 @@
+[D-BUS Service]
+Interface=/org/duckdns/jgressmann/vodman
+Name=org.duckdns.jgressmann.vodman
+Exec=/usr/bin/invoker -s --type=qt5 -G /usr/bin/harbour-vodman -prestart
+
+#[D-BUS Service]
+#Interface=/org/nemo/transferengine
+#Name=org.nemo.transferengine
+#Exec=/usr/bin/invoker --type=qt5 --global-syms /usr/bin/nemo-transfer-engine
+#SystemdService=transferengine.service

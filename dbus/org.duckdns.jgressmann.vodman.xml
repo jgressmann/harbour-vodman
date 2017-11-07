@@ -1,0 +1,146 @@
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN"
+ "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+
+
+<node name="/org/duckdns/jgressmann/vodman">
+    <interface name="org.duckdns.jgressmann.vodman">
+
+# Get a list of extractors
+<method name="extractors">
+    <arg name="extractors" type="a(s)" direction="out" />
+    <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QStringList"/>
+</method>
+        <!--
+        # Share API
+        <method name="uploadMediaItem">
+          <arg direction="in" type="s" name="source"/>
+          <arg direction="in" type="s" name="serviceId"/>
+          <arg direction="in" type="s" name="mimeType"/>
+          <arg direction="in" type="b" name="metadataStripped"/>
+          <arg direction="in" type="a{sv}" name="userData" />
+          <arg direction="out" type="i" name="transferId"/>
+          <annotation name="org.qtproject.QtDBus.QtTypeName.In4" value="QVariantMap"/>
+        </method>
+        <method name="uploadMediaItemContent">
+          <arg direction="in" type="a{sv}" name="content" />
+          <arg direction="in" type="s" name="serviceId"/>
+          <arg direction="in" type="a{sv}" name="userData" />
+          <arg direction="out" type="i" name="transferId"/>
+          <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="QVariantMap"/>
+          <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="QVariantMap"/>
+        </method>
+
+
+
+
+
+        # create Sync Entry
+        <method name="createSync">
+            <arg direction="in" type="s" name="displayName"/>
+            <arg direction="in" type="s" name="applicationIcon"/>
+            <arg direction="in" type="s" name="serviceIcon"/>
+            <arg direction="in" type="as" name="callback"/>
+            <arg direction="in" type="s" name="cancelMethod"/>
+            <arg direction="in" type="s" name="restartMethod"/>
+            <arg direction="out" type="i" name="transferId"/>
+        </method>
+
+        # create Download entry
+        <method name="createDownload">
+            <arg direction="in" type="s" name="displayName"/>
+            <arg direction="in" type="s" name="applicationIcon"/>
+            <arg direction="in" type="s" name="serviceIcon"/>
+            <arg direction="in" type="s" name="filePath"/>
+            <arg direction="in" type="s" name="mimeType"/>
+            <arg direction="in" type="x" name="expectedFileSize"/>
+            <arg direction="in" type="as" name="callback"/>
+            <arg direction="in" type="s" name="cancelMethod"/>
+            <arg direction="in" type="s" name="restartMethod"/>
+            <arg direction="out" type="i" name="transferId"/>
+        </method>
+
+        # API for updating either download or sync
+        <method name="updateTransferProgress">
+            <arg direction="in" type="i" name="transferId"/>
+            <arg direction="in" type="d" name="progress"/>
+        </method>
+
+        # Mark specific upload or a sync as started.
+        <method name="startTransfer">
+            <arg direction="in" type="i" name="transferId"/>
+        </method>
+
+        # Restart upload or a sync
+        <method name="restartTransfer">
+            <arg direction="in" type="i" name="transferId"/>
+        </method>
+
+        # Mark a specific upload or a sync transfer as finished
+        # if success == false, then the reason for failure should
+        # be set to human readable message
+        <method name="finishTransfer">
+            <arg direction="in" type="i" name="transferId"/>
+            <arg direction="in" type="i" name="transferStatus"/>
+            <arg direction="in" type="s" name="reason"/>
+        </method>
+
+        # Get a list of transfers
+        <method name="transfers">
+            <arg name="records" type="a(iidss)" direction="out" />
+            <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QList &lt; TransferDBRecord &gt; "/>
+        </method>
+
+        # Get a list of active transfers
+        <method name="activeTransfers">
+            <arg name="records" type="a(iidss)" direction="out" />
+            <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QList &lt; TransferDBRecord &gt; "/>
+        </method>
+
+        # Get a list of transfer methods such as FB, Twitter, BT, NFC, etc
+        <method name="transferMethods">
+            <arg name="methods" type="a(ssssasi)" direction="out" />
+            <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QList &lt; TransferMethodInfo &gt; "/>
+        </method>
+
+        # clear all unfinished transfers
+        <method name="clearTransfers" />
+
+        # cancel a specific transfer
+        <method name="cancelTransfer">
+            <arg name="transferId" type="i" direction="in"/>
+        </method>
+
+        <method name="clearTransfer">
+            <arg name="transferId" type="i" direction="in"/>
+        </method>
+
+        # enable or disable notifications
+        <method name="enableNotifications">
+            <arg name="enable" type="b" direction="in"/>
+        </method>
+
+        # Query if notifications are enabled
+        <method name="notificationsEnabled">
+            <arg name="enabled" type="b" direction="out"/>
+        </method>
+
+        # Signals for indicating changes in transfers
+        <signal name="progressChanged">
+            <arg name="transferId" type="i" direction="out"/>
+            <arg name="progress" type="d" direction="out"/>
+        </signal>
+
+        <signal name="statusChanged">
+            <arg name="transferId" type="i" direction="out"/>
+            <arg name="status" type="i" direction="out"/>
+        </signal>
+
+        <signal name="transfersChanged" />
+
+        <signal name="activeTransfersChanged" />
+
+        <signal name="transferMethodListChanged" />
+
+-->
+   </interface>
+</node>
