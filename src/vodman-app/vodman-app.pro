@@ -12,11 +12,14 @@
 # The name of your application
 TARGET = harbour-vodman
 
-QT += dbus sql
+QT += dbus
 
 CONFIG += sailfishapp
 
 DISTFILES += harbour-vodman.desktop
+DISTFILES += icons/cover.svg
+DISTFILES += icons/icon.svg
+DISTFILES += icons/tape.png
 
 SAILFISHAPP_ICONS = 86x86 108x108 128x128 256x256
 
@@ -53,6 +56,10 @@ INSTALLS += desktop
 qml.path = /usr/share/$${TARGET}/qml
 qml.files = qml/*
 INSTALLS += qml
+
+icons.path = /usr/share/$${TARGET}/icons
+icons.files = icons/cover.svg icons/icon.svg icons/tape.png
+INSTALLS += icons
 
 
 CONFIG += link_pkgconfig

@@ -1,18 +1,16 @@
 #include "VMVodFileDownload.h"
 
-//#include <QDBusMetaType>
+
 #include <QDebug>
 #include <QDebugStateSaver>
 #include <QDataStream>
 
-//namespace {
-//int VMVodFileDownloadRegistered = qDBusRegisterMetaType<VMVodFileDownload>();
-//}
 
 
 bool VMVodFileDownloadRequest::isValid() const {
     return !filePath.isEmpty() && format.isValid() && description.isValid();
 }
+
 
 QDataStream &operator<<(QDataStream &stream, const VMVodFileDownloadRequest &value) {
     stream << value.description;
@@ -31,11 +29,14 @@ QDataStream &operator>>(QDataStream &stream, VMVodFileDownloadRequest &value) {
 VMVodFileDownload::VMVodFileDownload()
     : d(new VMVodFileDownloadData())
 {
-
 }
 
-//CREATE_ENUM_DATATYPE(VMVodFileDownload::Result)
 
+bool VMVodFileDownload::isValid() const {
+    return d->error == VMVodEnums::VM_ErrorNone &&
+            d->format.isValid() &&
+            d->description.isValid();
+}
 
 QDataStream &operator<<(QDataStream &stream, const VMVodFileDownloadData &value) {
     stream << value.format;
@@ -67,40 +68,6 @@ QDataStream &operator>>(QDataStream &stream, VMVodFileDownload &value) {
     return stream >> value.data();
 }
 
-//QDBusArgument& operator<<(QDBusArgument& arg, const VMVodFileDownloadData& value) {
-//    arg.beginStructure();
-//    arg << value._format;
-//    arg << value._message;
-////    arg << value._handle;
-//    arg << value._progress;
-//    arg << value._result;
-//    arg << value._filePath;
-//    arg.endStructure();
-//    return arg;
-//}
-
-
-//const QDBusArgument& operator>>(const QDBusArgument& arg, VMVodFileDownloadData& value) {
-//    arg.beginStructure();
-//    arg >> value._format;
-//    arg >> value._message;
-////    arg >> value._handle;
-//    arg >> value._progress;
-//    arg >> value._result;
-//    arg >> value._filePath;
-//    arg.endStructure();
-//    return arg;
-//}
-
-//QDBusArgument& operator<<(QDBusArgument& arg, const VMVodFileDownload& value) {
-//    arg << value.data();
-//    return arg;
-//}
-
-//const QDBusArgument& operator>>(const QDBusArgument& arg, VMVodFileDownload& value) {
-//    arg >> value.data();
-//    return arg;
-//}
 
 QDebug operator<<(QDebug debug, const VMVodFileDownload& value) {
     const VMVodFileDownloadData& data = value.data();
@@ -108,7 +75,7 @@ QDebug operator<<(QDebug debug, const VMVodFileDownload& value) {
     debug.nospace() << "VMVodFileDownload("
 //                    << "url=" << value.url()
                     << "progress=" << data._progress
-                    << ", state=" << data.error
+                    << ", error=" << data.error
                     << ", message=" << data.errorMessage
                     << ", filePath=" << data._filePath
                     << ", format=" << data.format

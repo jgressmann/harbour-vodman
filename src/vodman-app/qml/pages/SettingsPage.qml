@@ -9,8 +9,8 @@ Page {
     id: root
 
     Component.onCompleted: {
-        console.debug("format=" + defaultFormat.value)
-        console.debug("directory=" + defaultDirectory.value)
+//        console.debug("format=" + defaultFormat.value)
+//        console.debug("directory=" + defaultDirectory.value)
     }
 
     Component.onDestruction: {

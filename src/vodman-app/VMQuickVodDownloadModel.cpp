@@ -88,10 +88,9 @@ VMQuickVodDownloadModel::onVodFileDownloadAdded(qint64 handle, const QByteArray&
 }
 
 void
-VMQuickVodDownloadModel::onVodFileDownloadRemoved(qint64 handle, const QByteArray& download)
+VMQuickVodDownloadModel::onVodFileDownloadRemoved(qint64 handle, const QByteArray& result)
 {
     qDebug() << "enter" << handle;
-    Q_UNUSED(download);
     QMutexLocker g(&m_Lock);
     auto it = m_Downloads.find(handle);
     if (m_Downloads.end() == it) {
@@ -106,6 +105,26 @@ VMQuickVodDownloadModel::onVodFileDownloadRemoved(qint64 handle, const QByteArra
         endRemoveRows();
         qDebug() << "removed row" << row;
     }
+
+    if (m_UserDownloads.removeOne(handle)) {
+        VMVodFileDownload download;
+        {
+            QDataStream s(result);
+            s >> download;
+        }
+
+        qDebug() << "mine removed" << handle << download;
+
+        if (download.isValid()) {
+            emit downloadSucceeded(QVariant::fromValue(download));
+        } else {
+            emit downloadFailed(
+                        download.data().description.webPageUrl(),
+                        download.error(),
+                        download.data()._filePath);
+        }
+    }
+
     qDebug() << "exit" << handle;
 }
 
@@ -162,6 +181,8 @@ VMQuickVodDownloadModel::onVodFileMetaDataDownloadCompleted(qint64 token, const 
     qDebug() << "enter" << token;
     QMutexLocker g(&m_Lock);
     if (token == m_Token) {
+        m_UserDownloads << token;
+        auto url = m_Url;
         m_Token = -1;
         m_Url.clear();
         emit canStartDownloadChanged();
@@ -174,15 +195,18 @@ VMQuickVodDownloadModel::onVodFileMetaDataDownloadCompleted(qint64 token, const 
 
         qDebug() << "mine" << token << download;
 
-        if (!download.isValid()) {
-            emit downloadFailed(m_Url, download.error());
-            return;
-        }
-
-        if (download.error() == VMVodEnums::VM_ErrorNone) {
-            emit metaDataDownloadSucceeded(token, download.vod());
+        if (download.isValid()) {
+            if (download.error() == VMVodEnums::VM_ErrorNone) {
+                emit metaDataDownloadSucceeded(token, download.vod());
+            } else {
+                emit downloadFailed(url, download.error(), QString());
+            }
         } else {
-            emit downloadFailed(m_Url, download.error());
+            if (download.error() != VMVodEnums::VM_ErrorNone) {
+                emit downloadFailed(url, download.error(), QString());
+            } else {
+                emit downloadFailed(url, VMVodEnums::VM_ErrorUnknown, QString());
+            }
         }
     } else {
         // nop
@@ -282,10 +306,9 @@ VMQuickVodDownloadModel::onNewTokenReply(QDBusPendingCallWatcher *self) {
         auto reply = m_Service->startFetchVodMetaData(m_Token, m_Url);
         auto watcher = new QDBusPendingCallWatcher(reply, this);
         connect(watcher, &QDBusPendingCallWatcher::finished, this, &VMQuickVodDownloadModel::onMetaDataDownloadReply);
-//        emit metaDataDownloadSubmitted(url, token);
     } else {
          qDebug() << "invalid new token reply" << reply.error();
-         emit downloadFailed(m_Url, VMVodEnums::VM_ErrorServiceUnavailable);
+         emit downloadFailed(m_Url, VMVodEnums::VM_ErrorServiceUnavailable, QString());
          m_Url.clear();
          emit canStartDownloadChanged();
     }
@@ -301,7 +324,7 @@ VMQuickVodDownloadModel::onMetaDataDownloadReply(QDBusPendingCallWatcher *self) 
     } else {
         qDebug() << "invalid metadata download reply for" << m_Url  << "error" << reply.error();
         m_Token = -1;
-        emit downloadFailed(m_Url, VMVodEnums::VM_ErrorServiceUnavailable);
+        emit downloadFailed(m_Url, VMVodEnums::VM_ErrorServiceUnavailable, QString());
         m_Url.clear();
         emit canStartDownloadChanged();
     }
@@ -317,7 +340,7 @@ VMQuickVodDownloadModel::onStartDownloadVodFileReply(QDBusPendingCallWatcher *se
     } else {
         qDebug() << "invalid reply" << reply.error();
         m_Token = -1;
-        emit downloadFailed(m_Url, VMVodEnums::VM_ErrorServiceUnavailable);
+        emit downloadFailed(m_Url, VMVodEnums::VM_ErrorServiceUnavailable, QString());
         m_Url.clear();
         emit canStartDownloadChanged();
     }
@@ -365,11 +388,6 @@ bool
 VMQuickVodDownloadModel::canStartDownload() const {
     return m_Url.isEmpty();
 }
-
-//int
-//VMQuickVodDownloadModel::downloads() const {
-//    return m_Rows.size();
-//}
 
 
 

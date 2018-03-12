@@ -5,17 +5,48 @@ import ".."
 CoverBackground {
 
 //    Image {
-//        anchors.fill: parent
-//        source: "image://theme/icon-m-device-download"
-//        fillMode: Image.Pad
+////        anchors.fill: parent
+//        source: "/usr/share/harbour-vodman/icons/cover.svg"
+//        fillMode: Image.PreserveAspectFit
+//        y: 0.5 * parent.height
+////        width: parent.width
+////        height: 0.5 * parent.height
+//        sourceSize.width: parent.width
+//        sourceSize.height: 0.5 * parent.height
 //    }
 
-    CoverPlaceholder {
+    Item {
+        width: 2 * parent.width
+        height: 2 * parent.width
+        transform: Rotation { origin.x: parent.width; origin.y: parent.width; angle: 45 }
+
+        Item {
+            anchors.fill: parent
+            transform: Translate { x: -0.5*parent.width; y: 0.67*parent.width }
+
+            Image {
+                anchors.fill: parent
+                source: "/usr/share/harbour-vodman/icons/tape.png"
+                fillMode: Image.PreserveAspectFit
+            }
+        }
+    }
+
+
+
+    Label {
+        x: Theme.paddingMedium
+        y: Theme.paddingLarge
+        height: 0.5 * parent.height - 2*y
+        width: parent.width - 2 * x
         text: "No downloads at present"
         visible: listView.count === 0
-
-//        icon.source: "/usr/share/icons/hicolor/128x128/apps/harbour-vodman.png"
+        wrapMode: Text.WordWrap
+        font.pixelSize: Theme.fontSizeMedium
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignVCenter
     }
+
 
     SilicaListView {
         id: listView
@@ -57,27 +88,16 @@ CoverBackground {
                 }
             }
         }
-
-//        ViewPlaceholder {
-//            enabled: listView.count === 0
-//            text: "No downloads at present"
-//        }
     }
 
     CoverActionList {
         id: coverAction
         enabled: listView.count > 0
 
-//        CoverAction {
-//            iconSource: "image://theme/icon-cover-next"
-//        }
-
         CoverAction {
             iconSource: "image://theme/icon-cover-cancel"
             onTriggered: vodDownloadModel.cancelDownloads(false)
         }
     }
-
-
 }
 

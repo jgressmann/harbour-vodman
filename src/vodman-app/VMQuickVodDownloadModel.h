@@ -14,13 +14,7 @@ class QDBusPendingCallWatcher;
 class VMQuickVodDownloadModel : public QAbstractListModel
 {
     Q_OBJECT
-public:
-
-
-public:
-//    Q_PROPERTY(int requestedDownloads READ requestedDownloads NOTIFY requestedDownloadsChanged)
     Q_PROPERTY(bool canStartDownload READ canStartDownload NOTIFY canStartDownloadChanged)
-//    Q_PROPERTY(int downloads READ downloads NOTIFY downloadsChanged)
 
 public:
     explicit VMQuickVodDownloadModel(QObject *parent = Q_NULLPTR);
@@ -30,23 +24,20 @@ public:
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     QHash<int, QByteArray> roleNames() const;
+public:
     Q_INVOKABLE void startDownloadMetaData(const QString& url);
     Q_INVOKABLE void startDownloadVod(qint64 token, const VMVod& vod, int formatIndex, const QString& filePath);
     Q_INVOKABLE void cancelDownload(int index, bool deleteFile);
     Q_INVOKABLE void cancelDownloads(bool deleteFiles);
-//    int requestedDownloads() const;
     bool canStartDownload() const;
-//    int downloads() const;
 
 
 Q_SIGNALS: // signals
-//    void connectedChanged(bool connected);
     void metaDataDownloadSubmitted(const QString& url, qint64 token);
     void metaDataDownloadSucceeded(qint64 token, VMVod vod);
-    void downloadFailed(QString url, VMVodEnums::Error error);
+    void downloadFailed(QString url, int error, QString filePath);
+    void downloadSucceeded(QVariant download);
     void canStartDownloadChanged();
-//    void requestedDownloadsChanged();
-//    void downloadsChanged();
 
 private slots:
 //    void onFetchVodFileStatusChanged(const QVariantList& handles);
@@ -68,10 +59,9 @@ private:
     org::duckdns::jgressmann::vodman* m_Service;
     QHash<qint64, VMQuickVodDownload*> m_Downloads;
     QList<qint64> m_Rows;
+    QList<qint64> m_UserDownloads;
     QString m_Url;
     qint64 m_Token;
-//    QHash<qint64, QString> m_PendingMetadataDownloads;
-//    QHash<QDBusPendingCallWatcher*, QString> m_UrlsToFetch;
 
 private:
     static const QHash<int, QByteArray> ms_Roles;

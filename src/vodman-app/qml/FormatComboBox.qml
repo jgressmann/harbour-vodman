@@ -34,7 +34,7 @@ ComboBox {
     }
 
     onCurrentIndexChanged: {
-        console.debug("onCurrentIndexChanged " + currentIndex)
+//        console.debug("onCurrentIndexChanged " + currentIndex)
         switch (currentIndex) {
         case 0:
             format = VM.VM_Largest
@@ -61,7 +61,7 @@ ComboBox {
     }
 
     function propagateFormat() {
-        console.debug("propagateFormat " + format)
+//        console.debug("propagateFormat " + format)
         switch (format) {
         case VM.VM_Largest:
             currentIndex = 0

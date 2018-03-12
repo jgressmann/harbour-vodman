@@ -7,9 +7,9 @@ import "pages"
 
 
 ApplicationWindow {
-//    initialPage: Component { DownloadPage { } }
+    initialPage: Component { DownloadPage { } }
 //    initialPage: Component { SettingsPage { } }
-    initialPage: Component { AboutPage { } }
+//    initialPage: Component { AboutPage { } }
     cover: Qt.resolvedUrl("cover/CoverPage.qml")
     allowedOrientations: defaultAllowedOrientations
 
@@ -31,6 +31,12 @@ ApplicationWindow {
             id: defaultDirectory
             key: "/directory"
             defaultValue: StandardPaths.download
+        }
+
+        ConfigurationValue {
+            id: debugApp
+            key: "/debug"
+            defaultValue: false
         }
     }
 }

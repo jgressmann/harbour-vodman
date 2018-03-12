@@ -79,3 +79,4 @@ fi
 /usr/share/dbus-1/services/org.duckdns.jgressmann.vodman.service
 /usr/include/vodman/*
 %{_datadir}/%{name}/qml/*
+%{_datadir}/%{name}/icons/*

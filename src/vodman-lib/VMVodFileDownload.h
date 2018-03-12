@@ -26,7 +26,6 @@ struct VMVodFileDownloadData : public QSharedData
 class VMVodFileDownload
 {
     Q_GADGET
-public:
     Q_PROPERTY(float progress READ progress CONSTANT)
     Q_PROPERTY(VMVodEnums::Error error READ error CONSTANT)
     Q_PROPERTY(QString errorMessage READ errorMessage CONSTANT)
@@ -46,7 +45,7 @@ public:
     inline VMVodFormat format() const { return d->format; }
     inline QString filePath() const { return d->_filePath; }
     inline VMVodDescription description() const { return d->description; }
-    inline bool isValid() const { return d->format.isValid() && d->description.isValid(); }
+    bool isValid() const;
 
 public:
     inline VMVodFileDownloadData& data() { return *d; }
@@ -61,16 +60,11 @@ Q_DECLARE_METATYPE(VMVodFileDownload)
 
 QDataStream &operator<<(QDataStream &stream, const VMVodFileDownloadRequest &value);
 QDataStream &operator>>(QDataStream &stream, VMVodFileDownloadRequest &value);
-
 QDataStream &operator<<(QDataStream &stream, const VMVodFileDownloadData &value);
 QDataStream &operator>>(QDataStream &stream, VMVodFileDownloadData &value);
 QDataStream &operator<<(QDataStream &stream, const VMVodFileDownload &value);
 QDataStream &operator>>(QDataStream &stream, VMVodFileDownload &value);
 
-//QDBusArgument& operator<<(QDBusArgument& arg, const VMVodFileDownloadData& value);
-//const QDBusArgument& operator>>(const QDBusArgument& arg, VMVodFileDownloadData& value);
-//QDBusArgument& operator<<(QDBusArgument& arg, const VMVodFileDownload& value);
-//const QDBusArgument& operator>>(const QDBusArgument& arg, VMVodFileDownload& value);
 
 QDebug operator<<(QDebug debug, const VMVodFileDownload& value);
 

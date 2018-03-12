@@ -1,8 +1,8 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
+import Nemo.Notifications 1.0
 import org.duckdns.jgressmann 1.0
 import ".."
-
 
 
 Page {
@@ -105,14 +105,49 @@ Page {
         vodDownloadModel.startDownloadVod(token, vod, formatIndex, path)
     }
 
-    function downloadFailed(url, error) {
-        console.debug("url=" + url + ", error=" + error)
+    function downloadFailed(url, error, filePath) {
+        console.debug("url=" + url + ", error=" + error, ", path=" + filePath)
+        switch (error) {
+        case VM.VM_ErrorCanceled:
+            break;
+        default:
+            notification.publish()
+            break;
+        }
+    }
+
+    function downloadSucceeded(download) {
+        console.debug("download=" + download)
+
     }
 
     Component.onCompleted: {
         vodDownloadModel.metaDataDownloadSucceeded.connect(metaDataDownloadSucceeded)
         vodDownloadModel.downloadFailed.connect(downloadFailed)
+        vodDownloadModel.downloadSucceeded.connect(downloadSucceeded)
     }
+
+    Notification {
+         id: notification
+         category: "x-nemo.example"
+         summary: "Notification summary"
+         body: "Notification body"
+         onClicked: console.log("Clicked")
+    }
+
+    Notification {
+        id: successNotification
+        category: "x-nemo.example"
+        appName: "Example App"
+        appIcon: "/usr/share/example-app/icon-l-application"
+        summary: "Notification summary"
+        body: "Notification body"
+        previewSummary: "Notification preview summary"
+        previewBody: "Notification preview body"
+        onClicked: console.log("Clicked")
+    }
+
+
 
     RemorsePopup { id: remorse }
 
@@ -122,29 +157,31 @@ Page {
         PullDownMenu {
             MenuItem {
                 text: qsTr("Download small video")
+                visible: debugApp.value
                 enabled: vodDownloadModel.canStartDownload
                 onClicked: vodDownloadModel.startDownloadMetaData("https://www.youtube.com/watch?v=7t-l0q_v4D8")
             }
 
             MenuItem {
                 text: qsTr("Download large video")
+                visible: debugApp.value
                 enabled: vodDownloadModel.canStartDownload
                 onClicked: vodDownloadModel.startDownloadMetaData("https://www.twitch.tv/videos/161472611?t=07h49m09s")
             }
 
             MenuItem {
                 text: qsTr("Download medium video")
+                visible: debugApp.value
                 enabled: vodDownloadModel.canStartDownload
                 onClicked: vodDownloadModel.startDownloadMetaData("https://www.youtube.com/watch?v=KMAqSLWhH5w")
             }
 
-
-
-//            MenuItem {
-//                text: qsTr("reddit")
-//                enabled: vodDownloadModel.canStartDownload
-//                onClicked: vodDownloadModel.startDownloadMetaData("https://www.reddit.com")
-//            }
+            MenuItem {
+                text: qsTr("reddit")
+                visible: debugApp.value
+                enabled: vodDownloadModel.canStartDownload
+                onClicked: vodDownloadModel.startDownloadMetaData("https://www.reddit.com")
+            }
 
 //            MenuItem {
 //                text: qsTr("Reverse progress direction")
@@ -292,6 +329,15 @@ Page {
                                 truncationMode: TruncationMode.Fade
                             }
 
+//                            Label {
+//                                width: parent.width
+//                                text: download.data.description.webPageUrl
+//                                font.pixelSize: Theme.fontSizeTiny
+//                                color: Theme.secondaryColor
+//                                truncationMode: TruncationMode.Fade
+//                                textFormat: TextEdit.RichText
+//                            }
+
                             LinkedLabel {
                                 width: parent.width
                                 plainText: download.data.description.webPageUrl
@@ -337,7 +383,12 @@ Page {
 
             ViewPlaceholder {
                 enabled: listView.count === 0
-                text: "No downloads at present"
+                text: {
+                    if (vodDownloadModel.canStartDownload) {
+                        return "No downloads at present"
+                    }
+                    return "Downloading VOD metadata"
+                }
             }
         }
     }

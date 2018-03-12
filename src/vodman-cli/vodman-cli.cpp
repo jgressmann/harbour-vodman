@@ -2,6 +2,8 @@
 #include <QDBusConnection>
 #include <QDebug>
 #include <QDataStream>
+#include <QCommandLineOption>
+#include <QScopedPointer>
 
 #include "vodman_interface.h"
 #include "VMVodFileDownload.h"
@@ -20,6 +22,11 @@ int
 main(int argc, char** argv) {
     QCoreApplication app(argc, argv);
 
+    QCommandLineOption verboseOption("verbose", "Verbose mode. Prints out more information.");
+    QCommandLineOption outputOption(QStringList() << "o" << "output", "Write generated data into <file>.", "file");
+    QCommandLineOption bestOption("best", "Downloads VOD in highest quality format.");
+    QCommandLineOption worstOption("worst", "Downloads VOD in lowest quality format.");
+
     // works
 //    QUrl url1(QStringLiteral("https://www.youtube.com/watch?v=7t-l0q_v4D8"));
 //    QVariant v;
@@ -28,9 +35,10 @@ main(int argc, char** argv) {
 //    qDebug() << url1 << url2;
 
     QDBusConnection connection = QDBusConnection::sessionBus();
-    auto vodman = new org::duckdns::jgressmann::vodman("org.duckdns.jgressmann.vodman", "/instance", connection);
+    QScopedPointer<org::duckdns::jgressmann::vodman> vodman;
+    vodman.reset(new org::duckdns::jgressmann::vodman("org.duckdns.jgressmann.vodman", "/instance", connection));
 
-    QObject::connect(vodman, &org::duckdns::jgressmann::vodman::vodMetaDataDownloadCompleted, &vodMetaDataDownloadCompleted);
+    QObject::connect(vodman.data(), &org::duckdns::jgressmann::vodman::vodMetaDataDownloadCompleted, &vodMetaDataDownloadCompleted);
 
 
     qDebug() << "Request meta data for" << "https://www.youtube.com/watch?v=7t-l0q_v4D8";
