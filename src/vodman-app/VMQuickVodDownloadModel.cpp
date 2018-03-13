@@ -33,18 +33,18 @@ VMQuickVodDownloadModel::VMQuickVodDownloadModel(QObject *parent)
     , m_Token(-1)
 {
     QDBusConnection connection = QDBusConnection::sessionBus();
-    m_Service = new org::duckdns::jgressmann::vodman("org.duckdns.jgressmann.vodman", "/instance", connection);
+    m_Service = new org::duckdns::jgressmann::vodman::service("org.duckdns.jgressmann.vodman.service", "/instance", connection);
     m_Service->setParent(this);
 
     QObject::connect(
                 m_Service,
-                &org::duckdns::jgressmann::vodman::vodFileDownloadRemoved,
+                &org::duckdns::jgressmann::vodman::service::vodFileDownloadRemoved,
                 this,
                 &VMQuickVodDownloadModel::onVodFileDownloadRemoved);
 
     QObject::connect(
                 m_Service,
-                &org::duckdns::jgressmann::vodman::vodFileDownloadChanged,
+                &org::duckdns::jgressmann::vodman::service::vodFileDownloadChanged,
                 this,
                 &VMQuickVodDownloadModel::onVodFileDownloadChanged);
 
@@ -57,7 +57,7 @@ VMQuickVodDownloadModel::VMQuickVodDownloadModel(QObject *parent)
 
     QObject::connect(
                 m_Service,
-                &org::duckdns::jgressmann::vodman::vodMetaDataDownloadCompleted,
+                &org::duckdns::jgressmann::vodman::service::vodMetaDataDownloadCompleted,
                 this,
                 &VMQuickVodDownloadModel::onVodFileMetaDataDownloadCompleted);
 
@@ -267,6 +267,15 @@ VMQuickVodDownloadModel::startDownloadMetaData(const QString& url)
 }
 
 void
+VMQuickVodDownloadModel::cancelDownloadMetaData()
+{
+    QMutexLocker g(&m_Lock);
+    m_Url.clear();
+    m_Token = -1;
+    emit canStartDownloadChanged();
+}
+
+void
 VMQuickVodDownloadModel::startDownloadVod(
         qint64 token, const VMVod& vod, int formatIndex, const QString& filePath) {
 
@@ -306,6 +315,20 @@ VMQuickVodDownloadModel::onNewTokenReply(QDBusPendingCallWatcher *self) {
         auto reply = m_Service->startFetchVodMetaData(m_Token, m_Url);
         auto watcher = new QDBusPendingCallWatcher(reply, this);
         connect(watcher, &QDBusPendingCallWatcher::finished, this, &VMQuickVodDownloadModel::onMetaDataDownloadReply);
+//        auto token = reply.value();
+//        if (token >= 0) {
+//            m_Token = token;
+//            auto reply = m_Service->startFetchVodMetaData(m_Token, m_Url);
+//            auto watcher = new QDBusPendingCallWatcher(reply, this);
+//            connect(watcher, &QDBusPendingCallWatcher::finished, this, &VMQuickVodDownloadModel::onMetaDataDownloadReply);
+//        } else {
+//            // wtf, service doesn't work right, happens if
+//            // the generated D-Bus adaptor code can't call the slot? in owning class
+//            qDebug() << "invalid token received" << token;
+//            emit downloadFailed(m_Url, VMVodEnums::VM_ErrorServiceUnavailable, QString());
+//            m_Url.clear();
+//            emit canStartDownloadChanged();
+//        }
     } else {
          qDebug() << "invalid new token reply" << reply.error();
          emit downloadFailed(m_Url, VMVodEnums::VM_ErrorServiceUnavailable, QString());

@@ -1,6 +1,7 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 import Nemo.Notifications 1.0
+import Nemo.DBus 2.0
 import org.duckdns.jgressmann 1.0
 import ".."
 
@@ -8,6 +9,7 @@ import ".."
 Page {
     id: root
     property bool _inverse: false
+    property var lastHandler: null
 
     function targetWidth(format) {
         switch (format) {
@@ -108,17 +110,68 @@ Page {
     function downloadFailed(url, error, filePath) {
         console.debug("url=" + url + ", error=" + error, ", path=" + filePath)
         switch (error) {
+        case VM.VM_ErrorNone:
         case VM.VM_ErrorCanceled:
+            return;
+        case VM.VM_ErrorNoYoutubeDl:
+            errorNotification.body = errorNotification.previewBody =
+                    "youtube-dl not working"
+            break;
+        case VM.VM_ErrorServiceUnavailable:
+            errorNotification.body = errorNotification.previewBody =
+                    "Vodman service not available"
+            break;
+        case VM.VM_ErrorCrashed:
+            errorNotification.body = errorNotification.previewBody =
+                    "youtube-dl process crashed"
+            break;
+        case VM.VM_ErrorTimedOut:
+            errorNotification.body = errorNotification.previewBody =
+                    "Download timed out"
+        case VM.VM_ErrorInvalidResponse:
+            errorNotification.body = errorNotification.previewBody =
+                    "Host delivered an invalid response to VOD format request"
+            break;
+        case VM.VM_ErrorUnsupportedUrl:
+            errorNotification.body = errorNotification.previewBody =
+                    "youtube-dl doesn't know how to handle that URL"
+            break;
+        case VM.VM_ErrorNoVideo:
+            errorNotification.body = errorNotification.previewBody =
+                    "No video content for URL"
+            break;
+        case VM.VM_ErrorFormatNotAvailable:
+            errorNotification.body = errorNotification.previewBody =
+                    "The format you selected is not available. Try again or choose another format."
+            break;
+        case VM.VM_ErrorNetworkDown:
+            errorNotification.body = errorNotification.previewBody =
+                    "Network down."
             break;
         default:
-            notification.publish()
+            errorNotification.body = errorNotification.previewBody =
+                    "Yikes! An unknown error has occured :/"
             break;
         }
+
+        errorNotification.publish()
     }
 
     function downloadSucceeded(download) {
         console.debug("download=" + download)
-
+        successNotification.body = download.description.fullTitle
+        successNotification.previewBody = download.description.fullTitle
+        successNotification.remoteActions = [ {
+                                                 "name": "default",
+                                                 "displayName": "Play",
+                                                 "icon": "icon-cover-play",
+                                                 "service": "org.duckdns.jgressmann.vodman.app",
+                                                 "path": "/instance",
+                                                 "iface": "org.duckdns.jgressmann.vodman.app",
+                                                 "method": "play",
+                                                 "arguments": [ download.filePath ]
+                                             } ]
+        successNotification.publish()
     }
 
     Component.onCompleted: {
@@ -127,24 +180,34 @@ Page {
         vodDownloadModel.downloadSucceeded.connect(downloadSucceeded)
     }
 
+    DBusAdaptor {
+        id: dbus
+        bus: DBus.SessionBus
+        service: 'org.duckdns.jgressmann.vodman.app'
+        iface: 'org.duckdns.jgressmann.vodman.app'
+        path: '/instance'
+
+        function play(filePath) {
+            console.debug("play called")
+            console.debug("path=" + filePath)
+            Qt.openUrlExternally("file://" + filePath)
+        }
+    }
+
     Notification {
-         id: notification
-         category: "x-nemo.example"
-         summary: "Notification summary"
-         body: "Notification body"
-         onClicked: console.log("Clicked")
+         id: errorNotification
+         category: "x-nemo.transfer.error"
+         summary: "Download failed"
+         previewSummary: "Download failed"
     }
 
     Notification {
         id: successNotification
-        category: "x-nemo.example"
-        appName: "Example App"
-        appIcon: "/usr/share/example-app/icon-l-application"
-        summary: "Notification summary"
-        body: "Notification body"
-        previewSummary: "Notification preview summary"
-        previewBody: "Notification preview body"
-        onClicked: console.log("Clicked")
+        category: "x-nemo.transfer.complete"
+        appName: "Vodman"
+        appIcon: "/usr/share/icons/hicolor/86x86/apps/harbour-vodman.png"
+        summary: "Download finished"
+        previewSummary: "Download finished"
     }
 
 
@@ -213,6 +276,12 @@ Page {
                           "Purging all downlods",
                           function() { vodDownloadModel.cancelDownloads(true) })
                 }
+            }
+
+            MenuItem {
+                text: qsTr("Cancel")
+                enabled: !vodDownloadModel.canStartDownload
+                onClicked: vodDownloadModel.cancelDownloadMetaData()
             }
 
             MenuItem {
@@ -305,14 +374,27 @@ Page {
                             }
 
                             Label {
+                                function makeSizeString(size) {
+                                    var oneGb = 1000000000
+                                    var oneMb = 1000000
+
+                                    if (size >= 10000000) { // 100MB
+                                        return (size/oneGb).toFixed(1) + " GB"
+                                    }
+
+                                    return (size/1000000).toFixed(0) + " MB"
+                                }
+
                                 width: parent.width
                                 text: {
                                     var str = ""
                                     str += download.data.format.width
                                     str += "x"
                                     str += download.data.format.height
-//                                    str += ", "
-//                                    str += download.data.filePath
+                                    if (download.data.fileSize > 0) {
+                                        str += ", "
+                                        str += makeSizeString(download.data.fileSize)
+                                    }
 
                                     return str
                                 }
@@ -329,15 +411,6 @@ Page {
                                 truncationMode: TruncationMode.Fade
                             }
 
-//                            Label {
-//                                width: parent.width
-//                                text: download.data.description.webPageUrl
-//                                font.pixelSize: Theme.fontSizeTiny
-//                                color: Theme.secondaryColor
-//                                truncationMode: TruncationMode.Fade
-//                                textFormat: TextEdit.RichText
-//                            }
-
                             LinkedLabel {
                                 width: parent.width
                                 plainText: download.data.description.webPageUrl
@@ -346,11 +419,8 @@ Page {
 //                                truncationMode: TruncationMode.Fade
                             }
                         }
-
                     }
                 }
-
-
 
                 Component {
                     id: contextMenu
@@ -388,6 +458,17 @@ Page {
                         return "No downloads at present"
                     }
                     return "Downloading VOD metadata"
+                }
+
+                hintText: {
+                    if (vodDownloadModel.canStartDownload) {
+                        if (Clipboard.hasText) {
+                            return "Pull down to start download using the URL in the clipboard"
+                        }
+
+                        return "Copy an URL to the clipboard then pull down to start the download"
+                    }
+                    return "Pull down to cancel"
                 }
             }
         }

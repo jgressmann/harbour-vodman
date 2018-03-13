@@ -59,7 +59,7 @@ VMYTDL::runInitialCheck()
         _works = true;
         qDebug() << "youtube-dl works, current version:" << _version_str;
     } else {
-        qCritical() << "youtune-dl is non functional:" << process.readAllStandardError();
+        qCritical() << "youtube-dl is non functional:" << process.readAllStandardError();
         _works = false;
     }
 }
@@ -149,14 +149,13 @@ VMYTDL::fetchVod(qint64 token, const VMVodFileDownloadRequest& req, VMVodFileDow
     data._filePath = req.filePath;
     data.format = req.format;
     data.description = req.description;
+    data.timeStarted = data.timeChanged = QDateTime::currentDateTime();
 
     if (!_works) {
         data.errorMessage = "no working youtube-dl @ " +  getYouTubeDLPath();
         data.error = VMVodEnums::VM_ErrorNoYoutubeDl;
         return false;
     }
-
-//    data.error = VMVodEnums::VM_Pending;
 
     QMutexLocker g(&m_Lock);
     QVariantMap result;
@@ -252,6 +251,9 @@ VMYTDL::onMetaDataProcessFinished(int code, QProcess::ExitStatus status)
                 downLoadData.error = VMVodEnums::VM_ErrorUnsupportedUrl;
             } else if (line.indexOf(QStringLiteral("requested format not available"), 0, Qt::CaseInsensitive) >= 0) {
                 downLoadData.error = VMVodEnums::VM_ErrorFormatNotAvailable;
+            } else if (line.indexOf(QStringLiteral("[Errno -2]"), 0, Qt::CaseInsensitive) >= 0) {
+                //ERROR: Unable to download webpage: <urlopen error [Errno -2] Name or service not known> (caused by URLError(gaierror(-2, 'Name or service not known'),))
+                downLoadData.error = VMVodEnums::VM_ErrorNetworkDown;
             } else {
                 downLoadData.error = VMVodEnums::VM_ErrorUnknown;
             }
@@ -381,7 +383,12 @@ VMYTDL::onVodFileProcessFinished(int code, QProcess::ExitStatus status) {
         const auto& line = errorLines[i];
         qDebug() << "stderr" << line;
         if (line.indexOf("ERROR:") == 0) {
-            download.data().error = VMVodEnums::VM_ErrorUnknown;
+            if (line.indexOf(QStringLiteral("[Errno -2]"), 0, Qt::CaseInsensitive) >= 0) {
+                // ERROR: unable to download video data: <urlopen error [Errno -2] Name or service not known>
+                download.data().error = VMVodEnums::VM_ErrorNetworkDown;
+            } else {
+                download.data().error = VMVodEnums::VM_ErrorUnknown;
+            }
             downLoadData.errorMessage = line.toString();
             emit vodFetchCompleted(id, download);
             return;
@@ -505,8 +512,6 @@ VMYTDL::onYoutubeDlVodFileDownloadProcessReadReady() {
     float progress = -1;
 
     QByteArray data = process->readAll();
-//    qDebug() << "read" << data.size() << "bytes";
-//    qDebug() << data;
     int start = 0, end = 0;
     while (end < data.size()) {
         if (data[end] == '\r' || data[end] == '\n') {
@@ -545,8 +550,19 @@ VMYTDL::onYoutubeDlVodFileDownloadProcessReadReady() {
     if (progress >= 0) {
         download.data()._progress = qMin<float>(progress/100, 1);
         qDebug() << "process pid" << process->pid() << "progress" << download.data()._progress;
-        emit vodStatusChanged(id, download);
     }
+
+    // update file size
+    QFileInfo fi(download.data()._filePath);
+    if (fi.exists()) {
+        download.data().fileSize = fi.size();
+    } else {
+        download.data().fileSize = 0;
+    }
+    // update changed
+    download.data().timeChanged = QDateTime::currentDateTime();
+    // go go go
+    emit vodStatusChanged(id, download);
 }
 
 void

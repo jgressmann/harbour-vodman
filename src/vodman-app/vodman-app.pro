@@ -35,7 +35,7 @@ CONFIG += sailfishapp_i18n
 
 
 
-DBUS_INTERFACES += ../../dbus/org.duckdns.jgressmann.vodman.xml
+DBUS_INTERFACES += ../../dbus/org.duckdns.jgressmann.vodman.service.xml
 
 
 

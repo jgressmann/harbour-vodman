@@ -43,6 +43,7 @@ public:
         VM_ErrorUnsupportedUrl,
         VM_ErrorNoVideo,
         VM_ErrorFormatNotAvailable,
+        VM_ErrorNetworkDown,
     };
     Q_ENUMS(Error)
 

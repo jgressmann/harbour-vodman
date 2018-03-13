@@ -6,23 +6,11 @@ SUBDIRS  = src \
 
 #include(3rd-party/ytplayer.pri)
 
-#DISTFILES += qml/harbour-vodman.qml \
-#    qml/cover/CoverPage.qml \
-#    qml/pages/DownloadPage.qml \
-#    qml/pages/SettingsPage.qml \
-#    qml/pages/AboutPage.qml \
-#    qml/pages/SelectFormatDialog.qml \
-#    qml/ProgressOverlay.qml \
-#    qml/FormatComboBox.qml \
-#    rpm/harbour-vodman.spec \
-#    translations/*.ts \
-#    harbour-vodman.desktop \
-#    dbus/org.duckdns.jgressmann.vodman.service \
-#    dbus/org.duckdns.jgressmann.vodman.xml
 
-DISTFILES += rpm/harbour-vodman.spec \
-    dbus/org.duckdns.jgressmann.vodman.service \
-    dbus/org.duckdns.jgressmann.vodman.xml
+
+DISTFILES += rpm/harbour-vodman.spec
+DISTFILES += dbus/org.duckdns.jgressmann.vodman.service.xml
+
 
 
 ytdl.target = youtube-dl

@@ -2,8 +2,8 @@
  "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
 
 
-<node name="/org/duckdns/jgressmann/vodman">
-    <interface name="org.duckdns.jgressmann.vodman">
+<node name="/org/duckdns/jgressmann/vodman/service">
+    <interface name="org.duckdns.jgressmann.vodman.service">
     <method name="newToken">
         <arg direction="out" type="x" name="token"/>
     </method>

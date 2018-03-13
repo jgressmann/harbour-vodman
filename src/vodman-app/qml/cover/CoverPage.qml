@@ -56,13 +56,13 @@ CoverBackground {
         delegate: ListItem {
             id: listItem
             contentHeight: Theme.itemSizeSmall
-            width: parent.width - 2 * Theme.paddingSmall
             x: Theme.paddingSmall
+            width: parent.width - 2 * x
+
 
             ProgressOverlay {
                 anchors.fill: parent
                 progress: download.data.progress
-                inverse: _inverse
 
                 Image {
                     id: thumnail
@@ -70,15 +70,50 @@ CoverBackground {
                     width: parent.height
                     height: parent.height
                     fillMode: Image.PreserveAspectFit
+//                    visible: state === Image.Ready
+                    visible: progress >= 1 // state === Image.Ready doesn't work
+//                    onStateChanged: {
+//                        console.debug("state=" + state)
+//                        switch (state) {
+//                        case Image.Null:
+//                            console.debug("null")
+//                            break
+//                        case Image.Loading:
+//                            console.debug("loading")
+//                            break
+//                        case Image.Error:
+//                            console.debug("error")
+//                            break
+//                        case Image.Ready:
+//                            console.debug("ready")
+//                            break
+//                        }
+//                    }
+
+//                    onProgressChanged: {
+//                        console.debug("progress="+progress)
+//                    }
+
+//                    visible: false
 //                    asynchronous: true
                 }
 
                 Item {
                     height: parent.height
-                    width: parent.width - thumnail.width
-                    x: thumnail.width
+                    width: parent.width
 
                     Label {
+                        anchors.left: parent.left
+                        anchors.right: percentLabel.left
+                        anchors.verticalCenter: parent.verticalCenter
+                        text: download.data.description.fullTitle
+                        font.pixelSize: Theme.fontSizeSmall
+                        truncationMode: TruncationMode.Fade
+                        visible: !thumnail.visible
+                    }
+
+                    Label {
+                        id: percentLabel
                         anchors.right: parent.right
                         anchors.verticalCenter: parent.verticalCenter
                         text: (download.data.progress * 100).toFixed(0) + "%"

@@ -45,7 +45,9 @@ QDataStream &operator<<(QDataStream &stream, const VMVodFileDownloadData &value)
     stream << value.error;
     stream << value._filePath;
     stream << value.description;
-//    stream << value._url;
+    stream << value.fileSize;
+    stream << value.timeStarted;
+    stream << value.timeChanged;
     return stream;
 }
 
@@ -56,7 +58,9 @@ QDataStream &operator>>(QDataStream &stream, VMVodFileDownloadData &value) {
     stream >> value.error;
     stream >> value._filePath;
     stream >> value.description;
-//    stream >> value._url;
+    stream >> value.fileSize;
+    stream >> value.timeStarted;
+    stream >> value.timeChanged;
     return stream;
 }
 
@@ -78,6 +82,9 @@ QDebug operator<<(QDebug debug, const VMVodFileDownload& value) {
                     << ", error=" << data.error
                     << ", message=" << data.errorMessage
                     << ", filePath=" << data._filePath
+                    << ", fileSize=" << data.fileSize
+                    << ", started=" << data.timeStarted
+                    << ", changed=" << data.timeChanged
                     << ", format=" << data.format
                     << ", desc=" << data.description
                     << ")";

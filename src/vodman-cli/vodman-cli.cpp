@@ -5,9 +5,9 @@
 #include <QCommandLineOption>
 #include <QScopedPointer>
 
-#include "vodman_interface.h"
 #include "VMVodFileDownload.h"
 #include "VMVodMetaDataDownload.h"
+#include "service_interface.h" // http://inz.fi/2011/02/18/qmake-and-d-bus/
 
 static void vodMetaDataDownloadCompleted(qint64 handle, const QByteArray &result) {
     QDataStream s(result);
@@ -35,10 +35,10 @@ main(int argc, char** argv) {
 //    qDebug() << url1 << url2;
 
     QDBusConnection connection = QDBusConnection::sessionBus();
-    QScopedPointer<org::duckdns::jgressmann::vodman> vodman;
-    vodman.reset(new org::duckdns::jgressmann::vodman("org.duckdns.jgressmann.vodman", "/instance", connection));
+    QScopedPointer<org::duckdns::jgressmann::vodman::service> vodman;
+    vodman.reset(new org::duckdns::jgressmann::vodman::service("org.duckdns.jgressmann.vodman.service", "/instance", connection));
 
-    QObject::connect(vodman.data(), &org::duckdns::jgressmann::vodman::vodMetaDataDownloadCompleted, &vodMetaDataDownloadCompleted);
+    QObject::connect(vodman.data(), &org::duckdns::jgressmann::vodman::service::vodMetaDataDownloadCompleted, &vodMetaDataDownloadCompleted);
 
 
     qDebug() << "Request meta data for" << "https://www.youtube.com/watch?v=7t-l0q_v4D8";

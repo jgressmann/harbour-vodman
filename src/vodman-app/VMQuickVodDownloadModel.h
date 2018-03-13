@@ -1,6 +1,6 @@
 #pragma once
 
-#include "vodman_interface.h"
+#include "service_interface.h" // http://inz.fi/2011/02/18/qmake-and-d-bus/
 #include "VMVodFileDownload.h"
 #include "VMVodMetaDataDownload.h"
 
@@ -9,7 +9,6 @@
 
 
 class VMQuickVodDownload;
-//class QDBusVariant;
 class QDBusPendingCallWatcher;
 class VMQuickVodDownloadModel : public QAbstractListModel
 {
@@ -26,6 +25,7 @@ public:
     QHash<int, QByteArray> roleNames() const;
 public:
     Q_INVOKABLE void startDownloadMetaData(const QString& url);
+    Q_INVOKABLE void cancelDownloadMetaData();
     Q_INVOKABLE void startDownloadVod(qint64 token, const VMVod& vod, int formatIndex, const QString& filePath);
     Q_INVOKABLE void cancelDownload(int index, bool deleteFile);
     Q_INVOKABLE void cancelDownloads(bool deleteFiles);
@@ -40,7 +40,6 @@ Q_SIGNALS: // signals
     void canStartDownloadChanged();
 
 private slots:
-//    void onFetchVodFileStatusChanged(const QVariantList& handles);
     void onVodFileDownloadAdded(qint64 handle, const QByteArray& download);
     void onVodFileDownloadRemoved(qint64 handle, const QByteArray& download);
     void onVodFileDownloadChanged(qint64 handle, const QByteArray& download);
@@ -56,7 +55,7 @@ private:
 
 private:
     mutable QMutex m_Lock;
-    org::duckdns::jgressmann::vodman* m_Service;
+    org::duckdns::jgressmann::vodman::service* m_Service;
     QHash<qint64, VMQuickVodDownload*> m_Downloads;
     QList<qint64> m_Rows;
     QList<qint64> m_UserDownloads;

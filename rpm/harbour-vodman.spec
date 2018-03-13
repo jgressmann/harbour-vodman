@@ -7,7 +7,8 @@ Name:       harbour-vodman
 Summary:    Video On Demand (VOD) manager for SailfishOS
 Version:    1.0.0
 Release:    1
-Group:      Applications/Multimedia
+#Group:      Applications/Multimedia
+Group:      Qt/Qt
 License:    MIT
 #URL:        http://foo.bar
 Source0:    %{name}-%{version}.tar.bz2
@@ -75,8 +76,7 @@ fi
 %{_datadir}/icons/hicolor/*/apps/%{name}.png
 #%{_oneshotdir}/*
 #%defattr(-,root,root,-)
-#%attr(0644,root,root) /usr/share/dbus-1/services/org.duckdns.jgressmann.vodman.service
-/usr/share/dbus-1/services/org.duckdns.jgressmann.vodman.service
+/usr/share/dbus-1/services/org.duckdns.jgressmann.vodman.service.service
 /usr/include/vodman/*
 %{_datadir}/%{name}/qml/*
 %{_datadir}/%{name}/icons/*

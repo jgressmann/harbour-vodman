@@ -1,35 +1,23 @@
 #include "VMService.h"
 #include "VMVodFileDownload.h"
 #include "VMVodMetaDataDownload.h"
-#include "vodman_adaptor.h"
+#include "service_adaptor.h" // http://inz.fi/2011/02/18/qmake-and-d-bus/
 
 #include <QDBusConnection>
-//#include <QDBusVariant>
 #include <QDebug>
 #include <QDataStream>
 
-
-
-
-VMService::~VMService() {
-
-}
 
 VMService::VMService(QObject *parent) : QObject(parent) {
     QDBusConnection connection = QDBusConnection::sessionBus();
     if (!connection.registerObject("/instance", this)) {
         qFatal("Could not register object '/instance': %s", qPrintable(connection.lastError().message()));
     }
-    if (!connection.registerService("org.duckdns.jgressmann.vodman")) {
+    if (!connection.registerService("org.duckdns.jgressmann.vodman.service")) {
         qFatal("DBUS service already taken. Kill the other instance first. %s", qPrintable(connection.lastError().message()));
     }
 
-//    new CarInterfaceAdaptor(car);
-//    QDBusConnection connection = QDBusConnection::sessionBus();
-//    connection.registerObject("/Car", car);
-//    connection.registerService("org.example.CarExample");
-
-    new VMServiceAdaptor(this);
+    new ServiceAdaptor(this);
 
 
     connect(
@@ -41,7 +29,7 @@ VMService::VMService(QObject *parent) : QObject(parent) {
     connect(&m_YoutubeDownloader, &VMYTDL::vodFetchCompleted, this, &VMService::onFetchVodFileCompleted);
 
 
-    qInfo("Service started at org.duckdns.jgressmann.vodman/instance");
+    qInfo("Service started at org.duckdns.jgressmann.vodman.service/instance");
 }
 
 qint64

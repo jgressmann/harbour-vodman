@@ -4,17 +4,15 @@
 #include <QAtomicInt>
 #include "VMYTDL.h"
 
-class QDBusVariant;
 class VMVodMetaDataDownload;
 class VMVodFileDownload;
 class VMService : public QObject
 {
     Q_OBJECT
 public:
-    ~VMService();
     explicit VMService(QObject *parent = Q_NULLPTR);
 
-public:
+public slots:
     qint64 newToken();
     //int startFetchVodMetaData(const QString& url);
     void startFetchVodMetaData(qlonglong token, const QString& url);

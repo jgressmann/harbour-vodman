@@ -1,7 +1,7 @@
 #pragma once
 
 #include "VMVod.h"
-
+#include <QDateTime>
 
 struct VMVodFileDownloadRequest
 {
@@ -19,6 +19,9 @@ struct VMVodFileDownloadData : public QSharedData
     VMVodFormat format;
     QString errorMessage;
     QString _filePath;
+    quint64 fileSize;
+    QDateTime timeStarted;
+    QDateTime timeChanged;
     float _progress;
     int error;
 };
@@ -32,6 +35,9 @@ class VMVodFileDownload
     Q_PROPERTY(VMVodFormat format READ format CONSTANT)
     Q_PROPERTY(QString filePath READ filePath CONSTANT)
     Q_PROPERTY(VMVodDescription description READ description CONSTANT)
+    Q_PROPERTY(quint64 fileSize READ fileSize CONSTANT)
+    Q_PROPERTY(QDateTime timeStarted READ timeStarted CONSTANT)
+    Q_PROPERTY(QDateTime timeChanged READ timeChanged CONSTANT)
 
 public:
     ~VMVodFileDownload() = default;
@@ -39,13 +45,17 @@ public:
     VMVodFileDownload(const VMVodFileDownload& /*other*/) = default;
     VMVodFileDownload& operator=(const VMVodFileDownload& /*other*/) = default;
 
+    bool isValid() const;
     inline float progress() const { return d->_progress; }
     inline VMVodEnums::Error error() const { return (VMVodEnums::Error)d->error; }
     inline QString errorMessage() const { return d->errorMessage; }
     inline VMVodFormat format() const { return d->format; }
     inline QString filePath() const { return d->_filePath; }
     inline VMVodDescription description() const { return d->description; }
-    bool isValid() const;
+    inline quint64 fileSize() const { return d->fileSize; }
+    inline QDateTime timeStarted() const { return d->timeStarted; }
+    inline QDateTime timeChanged() const { return d->timeChanged; }
+
 
 public:
     inline VMVodFileDownloadData& data() { return *d; }

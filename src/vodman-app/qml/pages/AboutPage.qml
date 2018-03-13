@@ -42,7 +42,7 @@ Page {
 
                         function timerDone() {
                             console.debug("triggered")
-                            if (clicks >= 5) {
+                            if (clicks >= 10) {
                                 debugApp.value = true
                             }
 
@@ -88,12 +88,13 @@ Page {
             }
 
             Label {
-                 width: parent.width
+                x: Theme.horizontalPageMargin
+                 width: parent.width-2*x
                  text:
 "Vodman is a versatile tool for downloading vidoes on demand (VODs) to your device from " +
-"popular sites such as <a href=\"https://www.youtube.com/\">Youtube</a> and <a href=\"https://www.twitch.tv/\">Twitch</a>."
+"popular sites such as <a href=\"https://www.youtube.com/\">Youtube</a> or <a href=\"https://www.twitch.tv/\">Twitch</a>."
                  wrapMode: Text.WordWrap
-                 font.pixelSize: Theme.fontSizeTiny
+                 font.pixelSize: Theme.fontSizeExtraSmall
                  color: Theme.highlightColor
                  textFormat: TextEdit.RichText
 //                 TextField.text:
@@ -104,13 +105,14 @@ Page {
             }
 
             Label {
-                 width: parent.width
+                x: Theme.horizontalPageMargin
+                 width: parent.width-2*x
                  text: "Copyright (c) 2018 by Jean Gressmann.
 
 Vodman is available under the <a href=\"https://opensource.org/licenses/MIT\">MIT</a> license. " +
 "Vodman uses youtube-dl which is in the <a href=\"http://unlicense.org/\">public domain</a>."
                  wrapMode: Text.WordWrap
-                 font.pixelSize: Theme.fontSizeTiny
+                 font.pixelSize: Theme.fontSizeExtraSmall
                  color: Theme.highlightColor
                  textFormat: TextEdit.RichText
             }
