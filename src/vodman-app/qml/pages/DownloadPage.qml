@@ -1,8 +1,33 @@
+/* The MIT License (MIT)
+ *
+ * Copyright (c) 2016 Jean Gressmann <jean@0x42.de>
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 import Nemo.Notifications 1.0
+import Nemo.Configuration 1.0
 import Nemo.DBus 2.0
 import org.duckdns.jgressmann 1.0
+
 import ".."
 
 
@@ -25,7 +50,7 @@ Page {
     }
 
     function metaDataDownloadSucceeded(token, vod) {
-        var formatId = defaultFormat.value
+        var formatId = settingDefaultFormat.value
 //        console.debug("format=" + formatId)
         if (VM.VM_Any === formatId) {
 //            console.debug("open select format dialog")
@@ -36,10 +61,10 @@ Page {
             return
         }
 
-        metaDataDownloadSucceededEx(token, vod, formatId)
+        _metaDataDownloadSucceededEx(token, vod, formatId)
     }
 
-    function metaDataDownloadSucceededEx(token, vod, formatId) {
+    function _metaDataDownloadSucceededEx(token, vod, formatId) {
 //        console.debug("token=" + token + ", vod=" + vod)
         console.debug("formatId=" + formatId)
         console.debug(".description=" + vod.description)
@@ -74,7 +99,7 @@ Page {
             // try to find exact match
             for (var i = 0; i < vod.formats; ++i) {
                 var f = vod.format(i)
-                if (f.format === defaultFormat) {
+                if (f.format === settingDefaultFormat) {
                     formatIndex = i
                     break
                 }
@@ -94,13 +119,18 @@ Page {
             }
         }
 
-        var path = defaultDirectory.value
+        var path = settingDefaultDirectory.value
         if (!path) {
             path = StandardPaths.download
         }
 
         var format = vod.format(formatIndex)
-        path = path + "/" + vod.description.id + "_" + format.id + "." + format.fileExtension
+        var fileName = settingDefaultFileName.value
+        fileName = fileName.replace("{title}", vod.description.title)
+        fileName = fileName.replace("{id}", vod.description.id)
+        fileName = fileName.replace("{formatid}", format.id)
+        path = path + "/" + fileName + "." + format.fileExtension
+        path = vodDownloadModel.sanatizePath(path)
 
         console.debug("format=" + format)
         console.debug("path=" + path)
@@ -209,8 +239,6 @@ Page {
         summary: "Download finished"
         previewSummary: "Download finished"
     }
-
-
 
     RemorsePopup { id: remorse }
 
@@ -336,7 +364,7 @@ Page {
 
                 function cancelDownload(deleteFile) {
                     remorseAction(
-                        "Stop downloading " + download.data.description.fullTitle,
+                        "Stopping " + download.data.description.fullTitle,
                         function() { vodDownloadModel.cancelDownload(index, deleteFile) })
                 }
 
@@ -378,11 +406,15 @@ Page {
                                     var oneGb = 1000000000
                                     var oneMb = 1000000
 
-                                    if (size >= 10000000) { // 100MB
+                                    if (size >= 10*oneGb) { // 10GB
                                         return (size/oneGb).toFixed(1) + " GB"
                                     }
 
-                                    return (size/1000000).toFixed(0) + " MB"
+                                    if (size >= oneGb) { // 1GB
+                                        return (size/oneGb).toFixed(2) + " GB"
+                                    }
+
+                                    return (size/oneMb).toFixed(0) + " MB"
                                 }
 
                                 width: parent.width

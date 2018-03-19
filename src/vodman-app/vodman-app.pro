@@ -12,6 +12,7 @@
 # The name of your application
 TARGET = harbour-vodman
 
+QT -= gui network
 QT += dbus
 
 CONFIG += sailfishapp
@@ -43,19 +44,13 @@ DBUS_INTERFACES += ../../dbus/org.duckdns.jgressmann.vodman.service.xml
 SOURCES += harbour-vodman.cpp
 SOURCES += VMQuickVodDownloadModel.cpp
 SOURCES += VMQuickVodDownload.cpp
+#SOURCES += Installer.cpp
 
 HEADERS += VMQuickVodDownloadModel.h
 HEADERS += VMQuickVodDownload.h
+#HEADERS += Installer.h
 
 
-
-desktop.files = harbour-vodman.desktop
-desktop.path = /usr/share/applications
-INSTALLS += desktop
-
-qml.path = /usr/share/$${TARGET}/qml
-qml.files = qml/*
-INSTALLS += qml
 
 icons.path = /usr/share/$${TARGET}/icons
 icons.files = icons/cover.svg icons/icon.svg icons/tape.png

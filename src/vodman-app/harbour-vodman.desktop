@@ -4,6 +4,7 @@ X-Nemo-Application-Type=silica-qt5
 Icon=harbour-vodman
 Exec=harbour-vodman
 Name=Vodman
+Categories=Video;AudioVideo;
 # translation example:
 # your app name in German locale (de)
 #

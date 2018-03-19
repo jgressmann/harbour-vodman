@@ -1,3 +1,26 @@
+/* The MIT License (MIT)
+ *
+ * Copyright (c) 2016 Jean Gressmann <jean@0x42.de>
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
 #include "VMQuickVodDownloadModel.h"
 #include "VMVodMetaDataDownload.h"
 #include "VMQuickVodDownload.h"
@@ -412,5 +435,44 @@ VMQuickVodDownloadModel::canStartDownload() const {
     return m_Url.isEmpty();
 }
 
+QString
+VMQuickVodDownloadModel::sanatizePath(QString path) {
+    // https://msdn.microsoft.com/en-us/library/aa365247
+    static const QRegExp s_WindowsForbidden("[<>:\"\\|?*]");
+    Q_ASSERT(s_WindowsForbidden.isValid());
 
+    path.replace(s_WindowsForbidden, QString());
+
+    auto index = path.lastIndexOf(QChar('/'));
+    if (index >= 0) {
+        const int MaxLen = 250;
+        if (path.size() - index - 1 > MaxLen) { // need to truncate
+            auto dir = path.left(index + 1);
+            auto file = path.right(path.size() - index - 1);
+            index = file.lastIndexOf(QChar('.'));
+            if (index > 0) { // has extension
+                auto name = file.left(index);
+                auto extension = file.right(file.size()-index);
+                // well formed? (small extension large name
+                if (name.size() > extension.size()) {
+                    name.resize(MaxLen - extension.size());
+                }
+
+                file = name + extension;
+                if (file.size() > MaxLen) { // large extension small name
+                    // ouch
+                    file.resize(MaxLen);
+                }
+            } else {
+                file.resize(MaxLen);
+            }
+
+            path = dir + file;
+        }
+    } else {
+        qWarning("path %s is not absolute\n", qPrintable(path));
+    }
+
+    return path;
+}
 

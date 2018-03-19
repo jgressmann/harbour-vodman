@@ -1,3 +1,26 @@
+/* The MIT License (MIT)
+ *
+ * Copyright (c) 2016 Jean Gressmann <jean@0x42.de>
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
 #include "VMYTDL.h"
 #include "VMVod.h"
 #include "VMVodFileDownload.h"
@@ -19,8 +42,7 @@ namespace {
 
 const QRegExp s_YTDLProgressRegexp("\\[download\\]\\s+(\\d+\\.\\d*)%\\s+");
 const QRegExp s_CurlProgressRegexp("^.*(\\d+\\.\\d*)%$");
-//const QRegExp s_Error("ERROR:.*");
-const QString s_YoutubeDlPath = QString::fromUtf8(DEPLOYMENT_PATH "bin/youtube-dl");
+const QString s_YoutubeDlPath = QStringLiteral(VODMAN_YOUTUBEDL_PATH);
 #define getYouTubeDLPath() s_YoutubeDlPath
 
 } // anon
@@ -57,9 +79,9 @@ VMYTDL::runInitialCheck()
         _version_str = process.readAllStandardOutput();
         _version_str = _version_str.simplified();
         _works = true;
-        qDebug() << "youtube-dl works, current version:" << _version_str;
+        qInfo("youtube-dl works, current version: %s\n", qPrintable(_version_str));
     } else {
-        qCritical() << "youtube-dl is non functional:" << process.readAllStandardError();
+        qCritical("youtube-dl is non functional: %s\n", qPrintable(process.readAllStandardError()));
         _works = false;
     }
 }

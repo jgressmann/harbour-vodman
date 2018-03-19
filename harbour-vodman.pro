@@ -13,11 +13,12 @@ DISTFILES += dbus/org.duckdns.jgressmann.vodman.service.xml
 
 
 
-ytdl.target = youtube-dl
-ytdl.files = $$PWD/build-ytdl/youtube-dl
-ytdl.path = /usr/share/$${TARGET}/bin
-QMAKE_EXTRA_TARGETS += ytdl
-INSTALLS += ytdl
+#ytdl.target = youtube-dl
+#ytdl.files = $$PWD/build-ytdl/youtube-dl
+##ytdl.path = /usr/share/$${TARGET}/bin
+#ytdl.path = /usr/bin
+#QMAKE_EXTRA_TARGETS += ytdl
+#INSTALLS += ytdl
 
 
 #desktop.files = harbour-vodman.desktop

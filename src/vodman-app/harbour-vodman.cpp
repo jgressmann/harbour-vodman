@@ -1,30 +1,54 @@
+/* The MIT License (MIT)
+ *
+ * Copyright (c) 2016 Jean Gressmann <jean@0x42.de>
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
 #include <QDebug>
 #include <QQuickView>
 #include <QGuiApplication>
+#include <QQmlEngine>
+#include <QStandardPaths>
 
 #include <sailfishapp.h>
 
 #include "VMQuickVodDownloadModel.h"
+//#include "Installer.h"
 
-#define NAMESPACE "org.duckdns.jgressmann"
 
 int main(int argc, char *argv[])
 {
     QScopedPointer<QGuiApplication> app(SailfishApp::application(argc, argv));
     app->setApplicationVersion(QStringLiteral("%1.%2.%3").arg(QString::number(VODMAN_VERSION_MAJOR), QString::number(VODMAN_VERSION_MINOR), QString::number(VODMAN_VERSION_PATCH)));
 
-    qDebug() << app->applicationName()
-             << "version" << app->applicationVersion();
+    qDebug("%s version %s\n", qPrintable(app->applicationName()), qPrintable(app->applicationVersion()));
 
+//    qmlRegisterType<Installer>(VODMAN_NAMESPACE, 1, 0, "Installer");
 
-    qmlRegisterType<VMQuickVodDownloadModel>(NAMESPACE, 1, 0, "VodDownloadModel");
-//    qmlRegisterUncreatableType<VMVodFileDownload>(NAMESPACE, 1, 0, "VMVodFileDownload", QStringLiteral("Q_GADGET"));
-//    qmlRegisterUncreatableType<VMVodDescription>(NAMESPACE, 1, 0, "VMVodDescription", QStringLiteral("VMVodDescription"));
-//    qmlRegisterUncreatableType<VMVodFormat>(NAMESPACE, 1, 0, "VMVodFormat", QStringLiteral("VMVodFormat"));
-//    qmlRegisterUncreatableType<VMVod>(NAMESPACE, 1, 0, "VMVod", QStringLiteral("VMVod"));
-    qmlRegisterUncreatableType<VMVodEnums>(NAMESPACE, 1, 0, "VM", QStringLiteral("wrapper around C++ enums"));
+    qmlRegisterType<VMQuickVodDownloadModel>(VODMAN_NAMESPACE, 1, 0, "VodDownloadModel");
+    qmlRegisterUncreatableType<VMVodEnums>(VODMAN_NAMESPACE, 1, 0, "VM", QStringLiteral("wrapper around C++ enums"));
+
 
     QScopedPointer<QQuickView> view(SailfishApp::createView());
+//    auto path = SailfishApp::pathTo(QStringLiteral("lib/qt5/qml"));
+//    view->engine()->addImportPath(path.toString());
     view->setSource(SailfishApp::pathToMainQml());
     view->requestActivate();
     view->show();
