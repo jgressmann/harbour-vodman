@@ -26,10 +26,10 @@
 #include "VMQuickVodDownload.h"
 
 #include <QDBusConnection>
-#include <QDBusVariant>
 #include <QDebug>
 #include <QDataStream>
 #include <QDBusPendingCallWatcher>
+#include <QUrl>
 
 static
 QHash<int, QByteArray>
@@ -436,7 +436,7 @@ VMQuickVodDownloadModel::canStartDownload() const {
 }
 
 QString
-VMQuickVodDownloadModel::sanatizePath(QString path) {
+VMQuickVodDownloadModel::sanatizePath(QString path) const {
     // https://msdn.microsoft.com/en-us/library/aa365247
     static const QRegExp s_WindowsForbidden("[<>:\"\\|?*]");
     Q_ASSERT(s_WindowsForbidden.isValid());
@@ -474,5 +474,11 @@ VMQuickVodDownloadModel::sanatizePath(QString path) {
     }
 
     return path;
+}
+
+bool
+VMQuickVodDownloadModel::isUrl(QString str) const {
+    QUrl url(str);
+    return url.isValid();
 }
 

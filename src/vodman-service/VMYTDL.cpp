@@ -356,6 +356,7 @@ VMYTDL::onMetaDataProcessFinished(int code, QProcess::ExitStatus status)
         vodFormatData._fileExtension = format.value(QStringLiteral("ext")).toString();
         fillFrameRate(vodFormat, format);
         fillFormatId(vodFormat, format);
+//        qDebug() << vodFormatData._width << vodFormatData._height << vodFormatData._format;
     }
 
     if (vodData._formats.isEmpty()) {
@@ -629,20 +630,20 @@ VMYTDL::fillFormatId(VMVodFormat& f, const QJsonObject& json) const {
     Q_UNUSED(json);
     VMVodEnums::Format format = VMVodEnums::VM_Unknown;
 
-    auto width = f.width();
-    if (width <= 160) {
+    auto value = f.height();
+    if (value <= 160) {
         format = VMVodEnums::VM_160p;
-    } else if (width <= 240) {
+    } else if (value <= 240) {
         format = VMVodEnums::VM_240p;
-    } else if (width <= 360) {
+    } else if (value <= 360) {
         format = VMVodEnums::VM_360p;
-    } else if (width <= 480) {
+    } else if (value <= 480) {
         format = VMVodEnums::VM_480p;
-    } else if (width <= 720) {
+    } else if (value <= 720) {
         format = VMVodEnums::VM_720p;
-    } else if (width <= 1080) {
+    } else if (value <= 1080) {
         format = VMVodEnums::VM_1080p;
-    } else if (width <= 1440) {
+    } else if (value <= 1440) {
         format = VMVodEnums::VM_1440p;
     } else {
         format = VMVodEnums::VM_2160p;

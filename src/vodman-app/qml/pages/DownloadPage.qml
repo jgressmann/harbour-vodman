@@ -33,8 +33,8 @@ import ".."
 
 Page {
     id: root
-    property bool _inverse: false
-    property var lastHandler: null
+
+    property bool clipBoardHasUrl: Clipboard.hasText && vodDownloadModel.isUrl(Clipboard.text)
 
     function targetWidth(format) {
         switch (format) {
@@ -50,21 +50,6 @@ Page {
     }
 
     function metaDataDownloadSucceeded(token, vod) {
-        var formatId = settingDefaultFormat.value
-//        console.debug("format=" + formatId)
-        if (VM.VM_Any === formatId) {
-//            console.debug("open select format dialog")
-            var dialog = pageStack.push(Qt.resolvedUrl("SelectFormatDialog.qml"))
-            dialog.accepted.connect(function() {
-                metaDataDownloadSucceededEx(token, vod, dialog.format)
-            })
-            return
-        }
-
-        _metaDataDownloadSucceededEx(token, vod, formatId)
-    }
-
-    function _metaDataDownloadSucceededEx(token, vod, formatId) {
 //        console.debug("token=" + token + ", vod=" + vod)
         console.debug("formatId=" + formatId)
         console.debug(".description=" + vod.description)
@@ -73,9 +58,36 @@ Page {
 //            _vodFormat = vod.format(i)
             var f = vod.format(i)
 //            console.debug(i + " " + f)
-            console.debug(i + " " + f.width + "x" + f.height)
+            console.debug(i + " " + f.width + "x" + f.height + " format " + f.format)
         }
 
+        var formatId = settingDefaultFormat.value
+//        console.debug("format=" + formatId)
+        if (VM.VM_Any === formatId) {
+            var labels = []
+            var values = []
+            for (var i = 0; i < vod.formats; ++i) {
+                var f = vod.format(i)
+                labels.push(f.displayName)
+                values.push(f.id)
+            }
+
+            var dialog = pageStack.push(
+                Qt.resolvedUrl("SelectFormatDialog.qml"), {
+                            "labels" : labels,
+                            "values": values
+                                        })
+            dialog.accepted.connect(function() {
+                _metaDataDownloadSucceededEx(token, vod, dialog.formatIndex)
+
+            })
+            return
+        }
+        var formatIndex = _findBestFormat(vod, formatId)
+        _metaDataDownloadSucceededEx(token, vod, formatIndex)
+    }
+
+    function _findBestFormat(vod, formatId) {
         var formatIndex = -1
         if (VM.VM_Smallest === formatId) {
             var best = vod.format(0)
@@ -99,7 +111,7 @@ Page {
             // try to find exact match
             for (var i = 0; i < vod.formats; ++i) {
                 var f = vod.format(i)
-                if (f.format === settingDefaultFormat) {
+                if (f.format === formatId) {
                     formatIndex = i
                     break
                 }
@@ -119,6 +131,11 @@ Page {
             }
         }
 
+        return formatIndex
+    }
+
+    function _metaDataDownloadSucceededEx(token, vod, formatIndex) {
+        console.debug("formatIndex=" + formatIndex)
         var path = settingDefaultDirectory.value
         if (!path) {
             path = StandardPaths.download
@@ -247,44 +264,32 @@ Page {
 
         PullDownMenu {
             MenuItem {
-                text: qsTr("Download small video")
+                text: "Download small video"
                 visible: debugApp.value
                 enabled: vodDownloadModel.canStartDownload
                 onClicked: vodDownloadModel.startDownloadMetaData("https://www.youtube.com/watch?v=7t-l0q_v4D8")
             }
 
             MenuItem {
-                text: qsTr("Download large video")
+                text: "Download large video"
                 visible: debugApp.value
                 enabled: vodDownloadModel.canStartDownload
                 onClicked: vodDownloadModel.startDownloadMetaData("https://www.twitch.tv/videos/161472611?t=07h49m09s")
             }
 
             MenuItem {
-                text: qsTr("Download medium video")
+                text: "Download medium video"
                 visible: debugApp.value
                 enabled: vodDownloadModel.canStartDownload
                 onClicked: vodDownloadModel.startDownloadMetaData("https://www.youtube.com/watch?v=KMAqSLWhH5w")
             }
 
             MenuItem {
-                text: qsTr("reddit")
+                text: "reddit"
                 visible: debugApp.value
                 enabled: vodDownloadModel.canStartDownload
                 onClicked: vodDownloadModel.startDownloadMetaData("https://www.reddit.com")
             }
-
-//            MenuItem {
-//                text: qsTr("Reverse progress direction")
-//                onClicked: {
-//                    _inverse = !_inverse
-//                }
-//            }
-
-//            MenuItem {
-//                text: qsTr("Pick format dialog")
-//                onClicked: pageStack.push(Qt.resolvedUrl("SelectFormatDialog.qml"))
-//            }
 
             MenuItem {
                 text: "Cancel all downloads"
@@ -314,7 +319,7 @@ Page {
 
             MenuItem {
                 text: qsTr("Download from clipboard")
-                enabled: Clipboard.hasText && vodDownloadModel.canStartDownload
+                enabled: vodDownloadModel.canStartDownload && clipBoardHasUrl
                 onClicked: vodDownloadModel.startDownloadMetaData(Clipboard.text)
             }
         }
@@ -372,7 +377,6 @@ Page {
                 ProgressOverlay {
                     anchors.fill: parent
                     progress: download.data.progress
-                    inverse: _inverse
 
                     Row {
                         spacing: Theme.paddingMedium
@@ -494,7 +498,7 @@ Page {
 
                 hintText: {
                     if (vodDownloadModel.canStartDownload) {
-                        if (Clipboard.hasText) {
+                        if (clipBoardHasUrl) {
                             return "Pull down to start download using the URL in the clipboard"
                         }
 

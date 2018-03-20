@@ -23,14 +23,51 @@
 
 import QtQuick 2.0
 import Sailfish.Silica 1.0
-import org.duckdns.jgressmann 1.0
 
-import ".."
 
 Dialog {
     id: root
-    property alias format: formatComboBox.format
-    canAccept: format !== VM.VM_Any
+
+    property alias formatIndex: comboBox.currentIndex
+    canAccept: formatIndex !== -1
+    property var values: []
+    property var labels: []
+
+    onLabelsChanged: _updateMenu()
+    onValuesChanged: _updateMenu()
+
+    function _updateMenu() {
+        console.debug("currentIndex=" + comboBox.currentIndex)
+        comboBox.currentIndex = -1
+        if (values && labels && values.length === labels.length) {
+            console.debug("make menu")
+            console.debug("labels=" + labels)
+            console.debug("values=" + values)
+            comboBox.menu = _makeMenu()
+        } else {
+            comboBox.menu = null
+        }
+    }
+
+    function _makeMenu() {
+        var str = "
+import QtQuick 2.0
+import Sailfish.Silica 1.0
+
+ContextMenu {
+"
+        for (var i = 0; i < labels.length; ++i) {
+            var label = labels[i]
+            str += "MenuItem {
+text: \"" + label + "\"
+}
+"
+        }
+
+        str += "}\n"
+
+        return Qt.createQmlObject(str, comboBox)
+    }
 
     Column {
         width: parent.width
@@ -45,9 +82,9 @@ Dialog {
             height: parent.height
             interactive: false
 
-            FormatComboBox {
-                id: formatComboBox
-                excludeAskEveryTime: true
+            ComboBox {
+                id: comboBox
+                label: "Format"
             }
         }
     }

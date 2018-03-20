@@ -52,7 +52,8 @@ public:
     Q_INVOKABLE void startDownloadVod(qint64 token, const VMVod& vod, int formatIndex, const QString& filePath);
     Q_INVOKABLE void cancelDownload(int index, bool deleteFile);
     Q_INVOKABLE void cancelDownloads(bool deleteFiles);
-    Q_INVOKABLE QString sanatizePath(QString path);
+    Q_INVOKABLE QString sanatizePath(QString path) const;
+    Q_INVOKABLE bool isUrl(QString str) const;
     bool canStartDownload() const;
 
 
