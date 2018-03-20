@@ -4,8 +4,8 @@
 %{?qtc_builddir:%define _builddir %qtc_builddir}
 
 Name:       harbour-vodman
-Summary:    Video On Demand (VOD) manager for SailfishOS
-Version:    1.0.0
+Summary:    Video On Demand (VOD) download manager for SailfishOS
+Version:    1.0.1
 Release:    1
 Group:      Applications/Multimedia
 #Group:      Qt/Qt
@@ -100,6 +100,7 @@ Requires: libvodman = %{version}
 Summary: vodman service.
 Group: System Environment/Daemon
 Requires: libvodman = %{version}
+Requires:   python3-base
 
 %description -n vodman-service
 %{summary}
@@ -128,15 +129,15 @@ rm -rf %{buildroot}
 %qmake5_install
 
 
-%define vs_pid $(pgrep -f vodman-service)
+%define vs_pid $(ps -C vodman-service -o pid=)
 
 
-#%post -n vodman-service
-#/usr/bin/update-desktop-database -q
-#if [ -n "%{vs_pid}" ]
-#then
-#    kill -s 10 %{vs_pid}
-#fi
+
+%post -n vodman-service
+if [ -n "%{vs_pid}" ]
+then
+    kill -s 10 %{vs_pid}
+fi
 
 
 %post -n libvodman

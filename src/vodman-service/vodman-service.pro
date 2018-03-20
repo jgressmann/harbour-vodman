@@ -16,7 +16,7 @@ copyYoutubeDl.commands = @echo Hallo
 #    cp $$PWD/../../build-ytdl/youtube-dl $$copyYoutubeDl.target
 #QMAKE_EXTRA_TARGETS += copyYoutubeDl
 
-ytdl.extra = cp $$PWD/../../build-ytdl/youtube-dl vodman-youtube-dl
+ytdl.extra = cp $$PWD/../../build-ytdl/youtube-dl $$PWD/vodman-youtube-dl
 ytdl.target = vodman-youtube-dl
 ytdl.files = vodman-youtube-dl
 #ytdl.path = /usr/share/$${TARGET}/bin

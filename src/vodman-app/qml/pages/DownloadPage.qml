@@ -332,7 +332,7 @@ Page {
             }
 
             MenuItem {
-                text: "About Vodman"
+                text: "About " + App.displayName
                 onClicked: pageStack.push(Qt.resolvedUrl("AboutPage.qml"))
             }
         }

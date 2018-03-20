@@ -23,7 +23,7 @@
 
 import QtQuick 2.0
 import Sailfish.Silica 1.0
-
+import org.duckdns.jgressmann 1.0
 
 Page {
     id: root
@@ -39,7 +39,7 @@ Page {
             spacing: Theme.paddingLarge
             x: Theme.paddingMedium
             width: parent.width - 2*x
-            PageHeader { title: "About Vodman" }
+            PageHeader { title: "About " + App.displayName }
 
             Column {
                 spacing: Theme.paddingSmall
@@ -50,6 +50,8 @@ Page {
                     source: "/usr/share/icons/hicolor/128x128/apps/harbour-vodman.png"
                     anchors.horizontalCenter: parent.horizontalCenter
                     fillMode: Image.PreserveAspectFit
+                    width: Theme.iconSizeLarge
+                    height: Theme.iconSizeLarge
 //                    sourceSize.width: 512
 //                    sourceSize.height: 512
 
@@ -64,7 +66,7 @@ Page {
                         }
 
                         function timerDone() {
-                            console.debug("triggered")
+//                            console.debug("triggered")
                             if (clicks >= 10) {
                                 debugApp.value = true
                             }
@@ -81,7 +83,7 @@ Page {
                 }
 
                 Label {
-                    text: "Vodman 1.0.0"
+                    text: App.displayName + " " + App.version
                     anchors.horizontalCenter: parent.horizontalCenter
                     font.pixelSize: Theme.fontSizeLarge
                     color: Theme.highlightColor

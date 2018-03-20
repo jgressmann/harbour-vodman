@@ -44,10 +44,13 @@ DBUS_INTERFACES += ../../dbus/org.duckdns.jgressmann.vodman.service.xml
 SOURCES += harbour-vodman.cpp
 SOURCES += VMQuickVodDownloadModel.cpp
 SOURCES += VMQuickVodDownload.cpp
+SOURCES += VMApp.cpp
 #SOURCES += Installer.cpp
+
 
 HEADERS += VMQuickVodDownloadModel.h
 HEADERS += VMQuickVodDownload.h
+HEADERS += VMApp.h
 #HEADERS += Installer.h
 
 

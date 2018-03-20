@@ -1,4 +1,4 @@
 [D-BUS Service]
 Interface=/org/duckdns/jgressmann/vodman/service
 Name=org.duckdns.jgressmann.vodman.service
-Exec=/usr/bin/invoker -s --type=generic -G /usr/share/harbour-vodman/bin/vodman-service
+Exec=/usr/bin/invoker -s --type=generic -G /usr/bin/vodman-service

@@ -30,8 +30,13 @@
 #include <sailfishapp.h>
 
 #include "VMQuickVodDownloadModel.h"
+#include "VMApp.h"
 //#include "Installer.h"
 
+static QObject *singletonTypeProvider(QQmlEngine *, QJSEngine *)
+{
+    return new VMApp();
+}
 
 int main(int argc, char *argv[])
 {
@@ -44,6 +49,7 @@ int main(int argc, char *argv[])
 
     qmlRegisterType<VMQuickVodDownloadModel>(VODMAN_NAMESPACE, 1, 0, "VodDownloadModel");
     qmlRegisterUncreatableType<VMVodEnums>(VODMAN_NAMESPACE, 1, 0, "VM", QStringLiteral("wrapper around C++ enums"));
+    qmlRegisterSingletonType<VMApp>(VODMAN_NAMESPACE, 1, 0, "App", singletonTypeProvider);
 
 
     QScopedPointer<QQuickView> view(SailfishApp::createView());
