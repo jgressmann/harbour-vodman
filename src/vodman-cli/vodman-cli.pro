@@ -20,5 +20,5 @@ INSTALLS += target
 
 
 include(../../common.pri)
-QMAKE_RPATHDIR += $${DEPLOYMENT_PATH}/lib
+#QMAKE_RPATHDIR += $${DEPLOYMENT_PATH}/lib
 LIBS += -L../vodman-lib -lvodman

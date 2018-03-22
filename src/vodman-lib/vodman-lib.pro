@@ -1,7 +1,7 @@
 TEMPLATE = lib
 TARGET = vodman
 
-QT -= gui
+#QT -= gui
 QT += core dbus
 
 
@@ -10,10 +10,9 @@ CONFIG -= app_bundle
 
 include(../../common.pri)
 
-VERSION = $$VERSION_MAJOR.$$VERSION_MINOR.$$VERSION_PATCH
+
 
 target.path = /usr/lib
-#target.path = $$DEPLOYMENT_PATH/lib
 INSTALLS += target
 
 
@@ -33,5 +32,9 @@ HEADERS += \
 headers.path = /usr/include/vodman
 headers.files = $$HEADERS
 INSTALLS += headers
+
+service.path = /usr/share/dbus-1/interfaces
+service.files = ../../dbus/org.duckdns.jgressmann.vodman.service.xml
+INSTALLS += service
 
 
