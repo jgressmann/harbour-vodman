@@ -5,7 +5,7 @@
 
 Name:       harbour-vodman
 Summary:    Video On Demand (VOD) download manager for SailfishOS
-Version:    1.0.2
+Version:    1.0.3
 Release:    1
 Group:      Applications/Multimedia
 #Group:      Qt/Qt
@@ -92,13 +92,13 @@ Requires: libvodman = %{version}
 %files -n libvodman-devel
 %defattr(-,root,root,-)
 %{_includedir}/vodman/*.h
-/usr/share/dbus-1/interfaces/org.duckdns.jgressmann.vodman.service.xml
+
 
 %package -n vodman-service
 Summary: vodman service.
 Group: System Environment/Daemon
 Requires: libvodman = %{version}
-Requires:   python3-base
+Requires: python3-base
 
 %description -n vodman-service
 %{summary}
@@ -110,6 +110,7 @@ Requires:   python3-base
 #%attr(0755,root,root) %{_bindir}/youtube-dl
 %attr(0755,root,root) %{_bindir}/vodman-youtube-dl
 /usr/share/dbus-1/services/org.duckdns.jgressmann.vodman.service.service
+/usr/share/dbus-1/interfaces/org.duckdns.jgressmann.vodman.service.xml
 
 
 

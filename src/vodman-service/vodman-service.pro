@@ -1,8 +1,9 @@
 TEMPLATE = app
 TARGET = vodman-service
 
+QT -= gui
 QT += dbus
-#QT -= gui
+
 CONFIG += console
 
 include(../../common.pri)
@@ -34,6 +35,10 @@ service.files = $$SERVICE_FILE
 service.path  = /usr/share/dbus-1/services
 # don't install until we according to harbour policy
 INSTALLS += service
+
+interface.path = /usr/share/dbus-1/interfaces
+interface.files = ../../dbus/org.duckdns.jgressmann.vodman.service.xml
+INSTALLS += interface
 
 DISTFILES += $$SERVICE_FILE
 

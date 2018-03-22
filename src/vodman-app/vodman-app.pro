@@ -45,13 +45,13 @@ SOURCES += harbour-vodman.cpp
 SOURCES += VMQuickVodDownloadModel.cpp
 SOURCES += VMQuickVodDownload.cpp
 SOURCES += VMApp.cpp
-#SOURCES += Installer.cpp
+
 
 
 HEADERS += VMQuickVodDownloadModel.h
 HEADERS += VMQuickVodDownload.h
 HEADERS += VMApp.h
-#HEADERS += Installer.h
+
 
 
 
@@ -61,7 +61,7 @@ INSTALLS += icons
 
 
 CONFIG += link_pkgconfig
-#PKGCONFIG += nemotransferengine-qt5 sailfishapp
+#PKGCONFIG += nemotransferengine-qt5
 PKGCONFIG += sailfishapp
 
 

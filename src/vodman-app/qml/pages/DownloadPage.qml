@@ -502,7 +502,7 @@ Page {
                             return "Pull down to start download using the URL in the clipboard"
                         }
 
-                        return "Copy an URL to the clipboard then pull down to start the download"
+                        return "Copy a URL to the clipboard then pull down to start the download"
                     }
                     return "Pull down to cancel"
                 }
