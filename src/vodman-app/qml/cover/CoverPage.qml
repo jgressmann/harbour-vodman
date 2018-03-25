@@ -23,6 +23,7 @@
 
 import QtQuick 2.0
 import Sailfish.Silica 1.0
+import org.duckdns.jgressmann 1.0
 import ".."
 
 CoverBackground {
@@ -137,12 +138,17 @@ CoverBackground {
     }
 
     CoverActionList {
+        property bool clipBoardHasUrl: Clipboard.hasText && vodDownloadModel.isUrl(Clipboard.text)
+        property bool hasDefaultVideoFormat: settingDefaultFormat.value !== VM.VM_Any
+
         id: coverAction
-        enabled: listView.count > 0
+        enabled: hasDefaultVideoFormat &&
+                 vodDownloadModel.canStartDownload &&
+                 clipBoardHasUrl
 
         CoverAction {
-            iconSource: "image://theme/icon-cover-cancel"
-            onTriggered: vodDownloadModel.cancelDownloads(false)
+            iconSource: "image://theme/icon-cover-new"
+            onTriggered: vodDownloadModel.startDownloadMetaData(Clipboard.text)
         }
     }
 }

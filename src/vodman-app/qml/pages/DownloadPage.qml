@@ -285,10 +285,37 @@ Page {
             }
 
             MenuItem {
-                text: "reddit"
+                text: "Download reddit"
                 visible: debugApp.value
                 enabled: vodDownloadModel.canStartDownload
                 onClicked: vodDownloadModel.startDownloadMetaData("https://www.reddit.com")
+            }
+
+            MenuItem {
+                text: "Copy small video url to clipboard"
+                visible: debugApp.value
+//                enabled: vodDownloadModel.canStartDownload
+                onClicked: {
+                    Clipboard.text = "https://www.youtube.com/watch?v=7t-l0q_v4D8"
+                }
+            }
+
+            MenuItem {
+                text: "Copy reddit to clipboard"
+                visible: debugApp.value
+//                enabled: vodDownloadModel.canStartDownload
+                onClicked: {
+                    Clipboard.text = "https://www.reddit.com"
+                }
+            }
+
+            MenuItem {
+                text: "Clear clipboard"
+                visible: debugApp.value
+//                enabled: vodDownloadModel.canStartDownload
+                onClicked: {
+                    Clipboard.text = ""
+                }
             }
 
             MenuItem {
