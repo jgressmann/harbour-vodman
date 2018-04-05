@@ -25,7 +25,6 @@ import QtQuick 2.0
 import Sailfish.Silica 1.0
 import Sailfish.Pickers 1.0
 import org.duckdns.jgressmann 1.0
-
 import ".."
 
 
@@ -45,7 +44,7 @@ Page {
     }
 
     function _propageFileName() {
-        console.debug("_propageFileName")
+//        console.debug("_propageFileName")
         if ("{title}" === settingDefaultFileName.value) {
             fileNameComboBox.currentIndex = 0
         } else if ("{id}" === settingDefaultFileName.value) {
@@ -64,9 +63,9 @@ Page {
         return str
     }
 
-    function _updatesaveDirectoryComboBox() {
-         // binding loop on currentIndex
-        saveDirectoryComboBoxConnections.target = null
+    function _updateSaveDirectoryComboBox() {
+        settingDefaultDirectory.value = saveDirectoryTextField.text
+
         if (settingDefaultDirectory.value === StandardPaths.download) {
             saveDirectoryComboBox.currentIndex = 0
         } else if (settingDefaultDirectory.value === StandardPaths.videos) {
@@ -74,7 +73,26 @@ Page {
         } else {
             saveDirectoryComboBox.currentIndex = 2
         }
+    }
+
+    function _onSaveDirectoryTextFieldTextChanged() {
+        saveDirectoryComboBoxConnections.target = null
+        _updateSaveDirectoryComboBox()
         saveDirectoryComboBoxConnections.target = saveDirectoryComboBox
+    }
+
+    function _updateSaveDirectoryTextField() {
+        switch (saveDirectoryComboBox.currentIndex) {
+        case 0:
+            settingDefaultDirectory.value = saveDirectoryTextField.text = StandardPaths.download
+            break
+        case 1:
+            settingDefaultDirectory.value = saveDirectoryTextField.text = StandardPaths.videos
+            break
+        default:
+            pageStack.push(filePickerPage)
+            break
+        }
     }
 
     function _updateFileNameComboBox() {
@@ -90,22 +108,22 @@ Page {
         fileNameConnections.target = fileNameComboBox
     }
 
+
+
     Connections {
         id: saveDirectoryComboBoxConnections
         target: saveDirectoryComboBox
         onCurrentIndexChanged: {
-            switch (saveDirectoryComboBox.currentIndex) {
-            case 0:
-                settingDefaultDirectory.value = StandardPaths.download
-                break
-            case 1:
-                settingDefaultDirectory.value = StandardPaths.videos
-                break
-            default:
-                pageStack.push(filePickerPage)
-                break
-            }
+            saveDirectoryTextFieldConnections.target = null
+            _updateSaveDirectoryTextField()
+            saveDirectoryTextFieldConnections.target = saveDirectoryTextField
         }
+    }
+
+    Connections {
+        id: saveDirectoryTextFieldConnections
+        target: saveDirectoryTextField
+        onTextChanged: _onSaveDirectoryTextFieldTextChanged()
     }
 
     VisualItemModel {
@@ -128,7 +146,7 @@ Page {
             Component.onCompleted: currentIndex = settingBearerMode.value
 
             onCurrentIndexChanged: {
-                console.debug("bearer mode onCurrentIndexChanged " + currentIndex)
+//                console.debug("bearer mode onCurrentIndexChanged " + currentIndex)
                 settingBearerMode.value = currentIndex
             }
         }
@@ -174,20 +192,21 @@ Page {
                     MenuItem { text: "Videos" }
                     MenuItem { text: "Custom" }
                 }
-
-                Component.onCompleted: _updatesaveDirectoryComboBox()
             }
 
             TextField {
-                id: directoryTextField
+                id: saveDirectoryTextField
                 width: parent.width
                 text: settingDefaultDirectory.value
-                onTextChanged: _updatesaveDirectoryComboBox()
                 label: "VODs are saved here"
                 placeholderText: "Default directory to save VODs"
                 EnterKey.iconSource: "image://theme/icon-m-enter-close"
                 EnterKey.onClicked: focus = false
-//                readOnly: true
+
+                Component.onCompleted: {
+                    // combobox initially has index 0 which may be wrong
+                    _onSaveDirectoryTextFieldTextChanged()
+                }
             }
 
             Button {
@@ -202,7 +221,7 @@ Page {
                     //nameFilters: [ '*.pdf', '*.doc' ]
                     nameFilters: []
                     onSelectedContentPropertiesChanged: {
-                        settingDefaultDirectory.value = _getDirectory(selectedContentProperties.filePath)
+                        settingDefaultDirectory.value = saveDirectoryTextField.text = _getDirectory(selectedContentProperties.filePath)
                     }
                 }
             }
@@ -227,10 +246,8 @@ Page {
                     MenuItem { text: "Custom" }
                 }
 
-//                Component.onCompleted: _updateFileNameComboBox()
-
                 onCurrentIndexChanged: {
-                    console.debug("onCurrentIndexChanged " + currentIndex)
+//                    console.debug("onCurrentIndexChanged " + currentIndex)
                     switch (currentIndex) {
                     case 0:
                         settingDefaultFileName.value = "{title}"
