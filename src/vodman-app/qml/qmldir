@@ -1,0 +1,2 @@
+module org.duckdns.jgressmann
+singleton Global 1.0 Global.qml
