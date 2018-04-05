@@ -21,6 +21,18 @@ DISTFILES += harbour-vodman.desktop
 DISTFILES += icons/cover.svg
 DISTFILES += icons/icon.svg
 DISTFILES += icons/tape.png
+DISTFILES += qml/harbour-vodman.qml \
+    qml/cover/CoverPage.qml \
+    qml/pages/DownloadPage.qml \
+    qml/pages/SelectFormatDialog.qml \
+    qml/pages/SettingsPage.qml \
+    qml/pages/AboutPage.qml \
+    qml/FormatComboBox.qml \
+    qml/ProgressOverlay.qml \
+    qml/Global.qml \
+    qml/qmldir \
+
+
 
 SAILFISHAPP_ICONS = 86x86 108x108 128x128 256x256
 

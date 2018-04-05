@@ -5,7 +5,7 @@
 
 Name:       harbour-vodman
 Summary:    Video On Demand (VOD) download manager for SailfishOS
-Version:    1.0.4
+Version:    1.0.5
 Release:    1
 Group:      Applications/Multimedia
 #Group:      Qt/Qt
@@ -21,7 +21,7 @@ BuildRequires:  pkgconfig(Qt5Qml)
 BuildRequires:  pkgconfig(Qt5Quick)
 #BuildRequires:  pkgconfig(Qt5Sql)
 BuildRequires:  pkgconfig(sailfishapp) >= 0.0.10
-#BuildRequires:  desktop-file-utils
+BuildRequires:  desktop-file-utils
 #BuildRequires:  zip
 #BuildRequires:  python3-base
 
@@ -63,6 +63,7 @@ Requires:   vodman-service = %{version}
 #%{_datadir}/%{name}/include/*
 %{_datadir}/%{name}/qml/*
 %{_datadir}/%{name}/icons/*
+%{_datadir}/%{name}/COPYING*
 #%{_libdir}/qt5/qml/org/duckdns/jgressmann/qmldir
 #%{_datadir}/%{name}/lib/qt5/qml/org/duckdns/jgressmann/vodman/qmldir
 
@@ -85,6 +86,7 @@ Provides: libvodman = %{version}
 Summary: Development headers for vodman library.
 Group: Development/Libraries
 Requires: libvodman = %{version}
+Requires: vodman-service = %{version}
 
 %description -n libvodman-devel
 %{summary}

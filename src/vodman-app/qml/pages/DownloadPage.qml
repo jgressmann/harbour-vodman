@@ -61,8 +61,31 @@ Page {
             console.debug(i + " " + f.width + "x" + f.height + " format " + f.format)
         }
 
-        var formatId = settingDefaultFormat.value
-//        console.debug("format=" + formatId)
+        var formatId
+        switch (settingBearerMode.value) {
+        case Global.bearerModeBroadband:
+            console.debug("force broadband format selection")
+            formatId = settingBroadbandDefaultFormat.value
+            break
+        case Global.bearerModeMobile:
+            console.debug("force mobile format selection")
+            formatId = settingMobileDefaultFormat.value
+            break
+        default:
+            if (vodDownloadModel.isOnBroadband) {
+                console.debug("use broadband format selection")
+                formatId = settingBroadbandDefaultFormat.value
+            } else if (vodDownloadModel.isOnMobile) {
+                console.debug("use mobile format selection")
+                formatId = settingMobileDefaultFormat.value
+            } else {
+                console.debug("unknown bearer using mobile default format")
+                formatId = settingMobileDefaultFormat.value
+            }
+            break
+        }
+
+        console.debug("format=" + formatId)
         if (VM.VM_Any === formatId) {
             var labels = []
             var values = []

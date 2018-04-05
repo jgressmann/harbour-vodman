@@ -7,11 +7,14 @@ SUBDIRS  = src \
 #include(3rd-party/ytplayer.pri)
 
 
-
+DISTFILES += COPYING
+DISTFILES += COPYING.youtube-dl
 DISTFILES += rpm/harbour-vodman.spec
 DISTFILES += dbus/org.duckdns.jgressmann.vodman.service.xml
 
-
+copying.files = COPYING*
+copying.path = /usr/share/$${TARGET}
+INSTALLS += copying
 
 #ytdl.target = youtube-dl
 #ytdl.files = $$PWD/build-ytdl/youtube-dl

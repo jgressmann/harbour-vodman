@@ -32,12 +32,12 @@ ComboBox {
     property int format: VM.VM_Any
     property bool excludeAskEveryTime: false
     currentIndex: -1
-
     label: "Format"
+
     menu: ContextMenu {
         id: menu
-        MenuItem { text: "largest / best quality" }
-        MenuItem { text: "smallest / worst quality" }
+        MenuItem { text: "best quality (largest)" }
+        MenuItem { text: "worst quality (smallest)" }
         MenuItem { text: "1080" }
         MenuItem { text: "720" }
         MenuItem { text: "360" }

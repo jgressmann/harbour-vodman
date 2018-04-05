@@ -139,7 +139,17 @@ CoverBackground {
 
     CoverActionList {
         property bool clipBoardHasUrl: Clipboard.hasText && vodDownloadModel.isUrl(Clipboard.text)
-        property bool hasDefaultVideoFormat: settingDefaultFormat.value !== VM.VM_Any
+        property bool hasDefaultVideoFormat: {
+            if (vodDownloadModel.isOnBroadband && settingBroadbandDefaultFormat.value !== VM.VM_Any) {
+                return true
+            }
+
+            if (vodDownloadModel.isOnMobile && settingMobileDefaultFormat.value !== VM.VM_Any) {
+                return true
+            }
+
+            return false
+        }
 
         id: coverAction
         enabled: hasDefaultVideoFormat &&

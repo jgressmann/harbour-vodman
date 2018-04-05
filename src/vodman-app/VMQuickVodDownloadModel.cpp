@@ -30,6 +30,7 @@
 #include <QDataStream>
 #include <QDBusPendingCallWatcher>
 #include <QUrl>
+#include <QNetworkConfiguration>
 
 static
 QHash<int, QByteArray>
@@ -59,33 +60,29 @@ VMQuickVodDownloadModel::VMQuickVodDownloadModel(QObject *parent)
     m_Service = new org::duckdns::jgressmann::vodman::service("org.duckdns.jgressmann.vodman.service", "/instance", connection);
     m_Service->setParent(this);
 
-    QObject::connect(
+    connect(
                 m_Service,
                 &org::duckdns::jgressmann::vodman::service::vodFileDownloadRemoved,
                 this,
                 &VMQuickVodDownloadModel::onVodFileDownloadRemoved);
 
-    QObject::connect(
+    connect(
                 m_Service,
                 &org::duckdns::jgressmann::vodman::service::vodFileDownloadChanged,
                 this,
                 &VMQuickVodDownloadModel::onVodFileDownloadChanged);
 
-//    QObject::connect(
-//                m_Service,
-//                &org::duckdns::jgressmann::vodman::vodFileDownloadAdded,
-//                this,
-//                &VMQuickVodDownloadModel::onVodFileDownloadAdded);
 
 
-    QObject::connect(
+
+    connect(
                 m_Service,
                 &org::duckdns::jgressmann::vodman::service::vodMetaDataDownloadCompleted,
                 this,
                 &VMQuickVodDownloadModel::onVodFileMetaDataDownloadCompleted);
 
 
-
+    connect(&m_NetworkConfigurationManager, &QNetworkConfigurationManager::onlineStateChanged, this, &VMQuickVodDownloadModel::onOnlineChanged);
 }
 
 void
@@ -482,3 +479,53 @@ VMQuickVodDownloadModel::isUrl(QString str) const {
     return url.isValid();
 }
 
+bool
+VMQuickVodDownloadModel::isOnline() const {
+    return m_NetworkConfigurationManager.isOnline();
+}
+
+bool
+VMQuickVodDownloadModel::isOnBroadband() const {
+    auto configs = m_NetworkConfigurationManager.allConfigurations(QNetworkConfiguration::Active);
+    foreach (const auto& config, configs) {
+        if (config.isValid()) {
+            switch (config.bearerTypeFamily()) {
+            case QNetworkConfiguration::BearerEthernet:
+            case QNetworkConfiguration::BearerWLAN:
+                return true;
+            default:
+                break;
+            }
+        }
+    }
+
+    return false;
+}
+
+bool
+VMQuickVodDownloadModel::isOnMobile() const {
+    auto configs = m_NetworkConfigurationManager.allConfigurations(QNetworkConfiguration::Active);
+    foreach (const auto& config, configs) {
+        if (config.isValid()) {
+            switch (config.bearerTypeFamily()) {
+            case QNetworkConfiguration::Bearer2G:
+            case QNetworkConfiguration::Bearer3G:
+            case QNetworkConfiguration::Bearer4G:
+                return true;
+            default:
+                break;
+            }
+        }
+    }
+
+    return false;
+}
+
+void
+VMQuickVodDownloadModel::onOnlineChanged(bool online) {
+    Q_UNUSED(online);
+    emit isOnlineChanged();
+    emit isOnMobileChanged();
+    emit isOnBroadbandChanged();
+    emit canStartDownloadChanged();
+}

@@ -187,7 +187,6 @@ class VMVod
 {
     Q_GADGET
     Q_PROPERTY(VMVodDescription description READ description CONSTANT)
-//    Q_PROPERTY(QList<VMVodFormat> formats READ formats CONSTANT)
     Q_PROPERTY(int formats READ formats CONSTANT)
 
 public:
@@ -198,10 +197,8 @@ public:
 
 public:
     inline VMVodDescription description() const { return d->description; }
-//    inline QList<VMVodFormat> formats() const { return d->_formats; }
     inline const QList<VMVodFormat>& _formats() const { return d->_formats; }
     inline int formats() const { return d->_formats.size(); }
-    //Q_INVOKABLE VMVodFormat format(int index) const;
     Q_INVOKABLE QVariant format(int index) const;
     bool isValid() const;
 

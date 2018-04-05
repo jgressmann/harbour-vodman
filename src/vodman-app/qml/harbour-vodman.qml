@@ -25,15 +25,14 @@ import QtQuick 2.0
 import Sailfish.Silica 1.0
 import Nemo.Configuration 1.0
 import org.duckdns.jgressmann 1.0
+import "."
 
 
-import "pages"
 
 
 ApplicationWindow {
     id: root
-    initialPage: Component { DownloadPage { } }
-//    initialPage: Component { SettingsPage { } }
+    initialPage: Qt.resolvedUrl("pages/DownloadPage.qml")
     cover: Qt.resolvedUrl("cover/CoverPage.qml")
 
     allowedOrientations: defaultAllowedOrientations
@@ -44,31 +43,42 @@ ApplicationWindow {
 
     ConfigurationGroup {
         id: settings
-        path: "default"
 
         ConfigurationValue {
-            id: settingDefaultFormat
-            defaultValue: VM.VM_Any
-            key: "/format"
+            id: settingBroadbandDefaultFormat
+            defaultValue: VM.VM_Largest
+            key: "/default/format/broadband"
+        }
+
+        ConfigurationValue {
+            id: settingMobileDefaultFormat
+            defaultValue: VM.VM_Smallest
+            key: "/default/format/mobile"
+        }
+
+        ConfigurationValue {
+            id: settingBearerMode
+            defaultValue: Global.bearerModeAutoDetect
+            key: "/bearer/mode"
         }
 
         ConfigurationValue {
             id: settingDefaultDirectory
-            key: "/directory"
+            key: "/default/directory"
             defaultValue: StandardPaths.videos
         }
 
         ConfigurationValue {
             id: settingDefaultFileName
-            key: "/fileName"
+            key: "/default/fileName"
             defaultValue: "{title}"
         }
-    }
 
-    ConfigurationValue {
-        id: debugApp
-        key: "/debug"
-        defaultValue: false
+        ConfigurationValue {
+            id: debugApp
+            key: "/debug"
+            defaultValue: false
+        }
     }
 }
 

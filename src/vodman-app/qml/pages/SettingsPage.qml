@@ -33,9 +33,10 @@ Page {
     id: root
 
     Component.onCompleted: {
-        console.debug("format=" + settingDefaultFormat.value)
-        console.debug("directory=" + settingDefaultDirectory.value)
-        console.debug("fileName=" + settingDefaultFileName.value)
+//        console.debug("broadband format=" + settingBroadbandDefaultFormat.value)
+//        console.debug("mobile format=" + settingMobileDefaultFormat.value)
+//        console.debug("directory=" + settingDefaultDirectory.value)
+//        console.debug("fileName=" + settingDefaultFileName.value)
         _propageFileName()
     }
 
@@ -107,34 +108,52 @@ Page {
         }
     }
 
-//    Connections {
-//        id: fileNameConnections
-//        target: fileNameComboBox
-//        onCurrentIndexChanged: {
-//            switch (fileNameComboBox.currentIndex) {
-//            case 0:
-//                settingDefaultFileName.value = "{title}"
-//                break
-//            case 1:
-//                settingDefaultFileName.value = "{id}"
-//                break
-//            }
-//        }
-//    }
-
     VisualItemModel {
         id: model
+
+        SectionHeader {
+            text: "Network"
+        }
+
+        ComboBox {
+            id: bearerModeComboBox
+            width: parent.width
+            label: "Network connection type"
+            menu: ContextMenu {
+                MenuItem { text: "Autodetect" }
+                MenuItem { text: "Broadband" }
+                MenuItem { text: "Mobile" }
+            }
+
+            Component.onCompleted: currentIndex = settingBearerMode.value
+
+            onCurrentIndexChanged: {
+                console.debug("bearer mode onCurrentIndexChanged " + currentIndex)
+                settingBearerMode.value = currentIndex
+            }
+        }
 
         SectionHeader {
             text: "Format"
         }
 
         FormatComboBox {
+            label: "Broadband"
             excludeAskEveryTime: false
-            format: settingDefaultFormat.value
+            format: settingBroadbandDefaultFormat.value
             onFormatChanged: {
 //                console.debug("save")
-                settingDefaultFormat.value = format
+                settingBroadbandDefaultFormat.value = format
+            }
+        }
+
+        FormatComboBox {
+            label: "Mobile"
+            excludeAskEveryTime: false
+            format: settingMobileDefaultFormat.value
+            onFormatChanged: {
+//                console.debug("save")
+                settingMobileDefaultFormat.value = format
             }
         }
 

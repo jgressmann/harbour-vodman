@@ -29,6 +29,7 @@
 
 #include <QAbstractListModel>
 #include <QMutex>
+#include <QNetworkConfigurationManager>
 
 
 class VMQuickVodDownload;
@@ -37,6 +38,9 @@ class VMQuickVodDownloadModel : public QAbstractListModel
 {
     Q_OBJECT
     Q_PROPERTY(bool canStartDownload READ canStartDownload NOTIFY canStartDownloadChanged)
+    Q_PROPERTY(bool isOnline READ isOnline NOTIFY isOnlineChanged)
+    Q_PROPERTY(bool isOnBroadband READ isOnBroadband NOTIFY isOnBroadbandChanged)
+    Q_PROPERTY(bool isOnMobile READ isOnMobile NOTIFY isOnMobileChanged)
 
 public:
     explicit VMQuickVodDownloadModel(QObject *parent = Q_NULLPTR);
@@ -55,7 +59,9 @@ public:
     Q_INVOKABLE QString sanatizePath(QString path) const;
     Q_INVOKABLE bool isUrl(QString str) const;
     bool canStartDownload() const;
-
+    bool isOnline() const;
+    bool isOnBroadband() const;
+    bool isOnMobile() const;
 
 Q_SIGNALS: // signals
     void metaDataDownloadSubmitted(const QString& url, qint64 token);
@@ -63,6 +69,9 @@ Q_SIGNALS: // signals
     void downloadFailed(QString url, int error, QString filePath);
     void downloadSucceeded(QVariant download);
     void canStartDownloadChanged();
+    void isOnlineChanged();
+    void isOnBroadbandChanged();
+    void isOnMobileChanged();
 
 private slots:
     void onVodFileDownloadAdded(qint64 handle, const QByteArray& download);
@@ -72,6 +81,7 @@ private slots:
     void onStartDownloadVodFileReply(QDBusPendingCallWatcher *self);
     void onNewTokenReply(QDBusPendingCallWatcher *self);
     void onMetaDataDownloadReply(QDBusPendingCallWatcher *self);
+    void onOnlineChanged(bool online);
 
 
 private:
@@ -80,6 +90,7 @@ private:
 
 private:
     mutable QMutex m_Lock;
+    QNetworkConfigurationManager m_NetworkConfigurationManager;
     org::duckdns::jgressmann::vodman::service* m_Service;
     QHash<qint64, VMQuickVodDownload*> m_Downloads;
     QList<qint64> m_Rows;
