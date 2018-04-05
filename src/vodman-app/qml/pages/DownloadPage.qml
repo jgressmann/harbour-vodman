@@ -400,7 +400,11 @@ Page {
                 function cancelDownload(deleteFile) {
                     remorseAction(
                         "Stopping " + download.data.description.fullTitle,
-                        function() { vodDownloadModel.cancelDownload(index, deleteFile) })
+                        function() {
+                            if (typeof(index) === "number") { // list item could have been removed
+                                vodDownloadModel.cancelDownload(index, deleteFile)
+                            }
+                        })
                 }
 
 
