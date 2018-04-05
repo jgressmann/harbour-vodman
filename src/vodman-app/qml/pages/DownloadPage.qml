@@ -91,6 +91,7 @@ Page {
         var formatIndex = -1
         if (VM.VM_Smallest === formatId) {
             var best = vod.format(0)
+            formatIndex = 0
             for (var i = 1; i < vod.formats; ++i) {
                 var f = vod.format(i)
                 if (f.height < best.height) {
@@ -100,6 +101,7 @@ Page {
             }
         } else if (VM.VM_Largest === formatId) {
             var best = vod.format(0)
+            formatIndex = 0
             for (var i = 1; i < vod.formats; ++i) {
                 var f = vod.format(i)
                 if (f.height > best.height) {
@@ -120,6 +122,7 @@ Page {
             if (formatIndex === -1) {
                 var target = targetWidth(formatId)
                 var bestdelta = Math.abs(vod.format(0).height - target)
+                formatIndex = 0
                 for (var i = 1; i < vod.formats; ++i) {
                     var f = vod.format(i)
                     var delta = Math.abs(f.width - target)
