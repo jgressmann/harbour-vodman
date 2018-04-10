@@ -119,27 +119,32 @@ VMYTDL::startFetchVodMetaData(qint64 token, const QString& _url) {
 
     qDebug() << "Trying to obtain video urls for: " << url;
 
-    auto vodPTr = m_MetaDataCache[download.data()._url];
-    if (vodPTr) {
-        qDebug() << "Response for" << download.data()._url << "available in cache, using it";
-        data._vod = *vodPTr;
-        data.error = VMVodEnums::VM_ErrorNone;
-        emit fetchVodMetaDataCompleted(token, download);
-        return true;
+    auto cacheEntryPtr = m_MetaDataCache[download.data()._url];
+    if (cacheEntryPtr) {
+        auto now = QDateTime::currentDateTime();
+        if (now <= cacheEntryPtr->fetchTime.addMSecs(3600)) { // one hour timeout, typically vod file urls go stale
+            qDebug() << "Response for" << download.data()._url << "available in cache, using it";
+            data._vod = cacheEntryPtr->vod;
+            data.error = VMVodEnums::VM_ErrorNone;
+            emit fetchVodMetaDataCompleted(token, download);
+            return true;
+        }
+
+        m_MetaDataCache.remove(download.data()._url);
     }
 
 //    data.error = VMVodEnums::VM_Pending;
 
     QVariantMap result;
-    result["type"] = QStringLiteral("metadata");
-    result["download"] = QVariant::fromValue(download);
-    result["token"] = token;
+    result[QStringLiteral("type")] = QStringLiteral("metadata");
+    result[QStringLiteral("download")] = QVariant::fromValue(download);
+    result[QStringLiteral("token")] = token;
 
     QStringList arguments;
-    arguments << "--dump-json"
-              << "--youtube-skip-dash-manifest"
-              << "--no-cache-dir"
-              << "--no-call-home"
+    arguments << QStringLiteral("--dump-json")
+              << QStringLiteral("--youtube-skip-dash-manifest")
+              << QStringLiteral("--no-cache-dir")
+              << QStringLiteral("--no-call-home")
               << url.toString();
 
     qDebug() << "YouTubeDL subprocess:" << getYouTubeDLPath() << arguments;
@@ -369,7 +374,10 @@ VMYTDL::onMetaDataProcessFinished(int code, QProcess::ExitStatus status)
 
     {
         QMutexLocker g(&m_Lock);
-        m_MetaDataCache.insert(downLoadData._url, new VMVod(downLoadData._vod));
+        auto cacheEntry = new CacheEntry;
+        cacheEntry->fetchTime = QDateTime::currentDateTime();
+        cacheEntry->vod = downLoadData._vod;
+        m_MetaDataCache.insert(downLoadData._url, cacheEntry);
     }
 
     qDebug() << "emit fetchVodMetaDataCompleted("<< id << ", " << download << ")";

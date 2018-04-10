@@ -27,6 +27,7 @@
 #include <QProcess>
 #include <QVariantMap>
 #include <QMutex>
+#include <QDateTime>
 
 #include "VMVod.h"
 
@@ -48,7 +49,6 @@ public:
 
     bool startFetchVodMetaData(qint64 token, const QString& url);
     bool fetchVod(qint64 token, const VMVodFileDownloadRequest& request, VMVodFileDownload* result = Q_NULLPTR);
-    //int fetchVod(const VMVodFormat& format, const QString& filePath, VMVodFileDownload* result = Q_NULLPTR);
     void cancelFetchVod(qint64 token, bool deleteFile);
     QVariantList inProgressVodFetches();
     int fetchVodYoutubeDl(const VMVodFormat& format, const QString& filePath, VMVodFileDownload* _download);
@@ -73,8 +73,15 @@ private:
     void fillFormatId(VMVodFormat& format, const QJsonObject& json) const;
 
 private:
+    struct CacheEntry
+    {
+        VMVod vod;
+        QDateTime fetchTime;
+    };
+
+private:
     QMutex m_Lock;
-    QCache<QString, VMVod> m_MetaDataCache;
+    QCache<QString, CacheEntry> m_MetaDataCache;
     QHash<QProcess*, QVariantMap> m_ProcessMap;
     QHash<qint64, QProcess*> m_VodDownloads;
 
