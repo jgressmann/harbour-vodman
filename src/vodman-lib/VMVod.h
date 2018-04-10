@@ -188,7 +188,6 @@ class VMVod
     Q_GADGET
     Q_PROPERTY(VMVodDescription description READ description CONSTANT)
     Q_PROPERTY(int formats READ formats CONSTANT)
-
 public:
     ~VMVod() = default;
     VMVod();
