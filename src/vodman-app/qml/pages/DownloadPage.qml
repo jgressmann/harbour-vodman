@@ -51,7 +51,6 @@ Page {
 
     function metaDataDownloadSucceeded(token, vod) {
 //        console.debug("token=" + token + ", vod=" + vod)
-        console.debug("formatId=" + formatId)
         console.debug(".description=" + vod.description)
         console.debug("#formats=" + vod.formats)
         for (var i = 0; i < vod.formats; ++i) {
