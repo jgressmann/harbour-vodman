@@ -298,6 +298,15 @@ Page {
 
         PullDownMenu {
             MenuItem {
+                text: "About " + App.displayName
+                onClicked: pageStack.push(Qt.resolvedUrl("AboutPage.qml"))
+            }
+
+            MenuItem {
+                text: "Settings"
+                onClicked: pageStack.push(Qt.resolvedUrl("SettingsPage.qml"))
+            }
+            MenuItem {
                 text: "Download small video"
                 visible: debugApp.value
                 enabled: vodDownloadModel.canStartDownload
@@ -388,19 +397,6 @@ Page {
                 text: qsTr("Download from clipboard")
                 enabled: canStartDownloadOfClipboardUrl
                 onClicked: vodDownloadModel.startDownloadMetaData(Clipboard.text)
-            }
-        }
-
-
-        PushUpMenu {
-            MenuItem {
-                text: "Settings"
-                onClicked: pageStack.push(Qt.resolvedUrl("SettingsPage.qml"))
-            }
-
-            MenuItem {
-                text: "About " + App.displayName
-                onClicked: pageStack.push(Qt.resolvedUrl("AboutPage.qml"))
             }
         }
 
