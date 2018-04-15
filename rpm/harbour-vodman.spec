@@ -13,24 +13,16 @@ License:    MIT
 #URL:        http://foo.bar
 Source0:    %{name}-%{version}.tar.bz2
 
-#BuildRequires:  pkgconfig(nemotransferengine-qt5)
 BuildRequires:  pkgconfig(Qt5DBus)
-#BuildRequires:  pkgconfig(Qt5Concurrent)
 BuildRequires:  pkgconfig(Qt5Core)
 BuildRequires:  pkgconfig(Qt5Qml)
 BuildRequires:  pkgconfig(Qt5Quick)
-#BuildRequires:  pkgconfig(Qt5Sql)
 BuildRequires:  pkgconfig(sailfishapp) >= 0.0.10
 BuildRequires:  desktop-file-utils
-#BuildRequires:  zip
-#BuildRequires:  python3-base
 
-#Requires:   libnemotransferengine-qt5
-#Requires:   nemo-transferengine-qt5
+
 #Requires:   python3-base
 Requires:   sailfishsilica-qt5 >= 0.10.9
-#Requires:   qt5-qtdeclarative-import-settings # for settings
-#Requires:   qt5-qtdeclarative-import-folderlistmodel # folder picker
 Requires:   libvodman = %{version}
 Requires:   vodman-service = %{version}
 
@@ -40,32 +32,12 @@ Requires:   vodman-service = %{version}
 
 %files
 %defattr(-,root,root,-)
-#%attr(0755,root,root) /usr/lib/nemo-transferengine/plugins/libyoutube-dl.so
 %attr(0755,root,root) %{_bindir}/%{name}
-#%attr(0755,root,root) %{_datadir}/%{name}/bin/youtube-dl
-#%attr(0755,root,root) %{_datadir}/%{name}/bin/vodman-cli
-#%attr(0755,root,root) %{_datadir}/%{name}/bin/vodman-service
-#%attr(0755,root,root) %{_datadir}/%{name}/lib/libvodman.so
-#%attr(0755,root,root) %{_datadir}/%{name}/lib/vodman*
-#%attr(0755,root,root) %{_datadir}/%{name}/lib/qt5/qml/org/duckdns/jgressmann/vodman/*.so
-#%attr(0755,root,root) %{_libdir}/qt5/qml/org/duckdns/jgressmann/vodman/*.so
-#%defattr(-,root,root,-)
 %{_datadir}/applications/%{name}.desktop
-#%{_datadir}/applications/open-url.desktop
-#%{_datadir}/%{name}/*
-#%{_datadir}/translations/sailfish-browser_eng_en.qm
-#%{_datadir}/dbus-1/services/*.service
 %{_datadir}/icons/hicolor/*/apps/%{name}.png
-#%{_oneshotdir}/*
-#%defattr(-,root,root,-)
-#/usr/share/dbus-1/services/org.duckdns.jgressmann.vodman.service.service
-#/usr/include/vodman/*
-#%{_datadir}/%{name}/include/*
 %{_datadir}/%{name}/qml/*
 %{_datadir}/%{name}/icons/*
 %{_datadir}/%{name}/COPYING*
-#%{_libdir}/qt5/qml/org/duckdns/jgressmann/qmldir
-#%{_datadir}/%{name}/lib/qt5/qml/org/duckdns/jgressmann/vodman/qmldir
 
 
 %package -n libvodman
@@ -78,7 +50,6 @@ Provides: libvodman = %{version}
 
 %files -n libvodman
 %defattr(-,root,root,-)
-#%{_libdir}/*.so
 %{_libdir}/*
 
 
@@ -109,7 +80,6 @@ Requires: python3-base
 %defattr(-,root,root,-)
 %attr(0755,root,root) %{_bindir}/vodman-service
 %attr(0755,root,root) %{_bindir}/vodman-cli
-#%attr(0755,root,root) %{_bindir}/youtube-dl
 %attr(0755,root,root) %{_bindir}/vodman-youtube-dl
 /usr/share/dbus-1/services/org.duckdns.jgressmann.vodman.service.service
 /usr/share/dbus-1/interfaces/org.duckdns.jgressmann.vodman.service.xml
