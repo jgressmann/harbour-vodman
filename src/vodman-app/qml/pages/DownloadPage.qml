@@ -32,7 +32,7 @@ import ".."
 
 
 Page {
-    id: root
+    id: page
 
     property bool clipBoardHasUrl: Clipboard.hasText && vodDownloadModel.isUrl(Clipboard.text)
 
@@ -260,8 +260,7 @@ Page {
         path: '/instance'
 
         function play(filePath) {
-            console.debug("play called")
-            console.debug("path=" + filePath)
+            console.debug("play path=" + filePath)
             Qt.openUrlExternally("file://" + filePath)
         }
     }
@@ -438,14 +437,56 @@ Page {
                         spacing: Theme.paddingMedium
                         height: parent.height
 
+
+//                        Thumbnail {
+//                            id: thumbnail
+//                            source: download.data.description.thumbnailUrl
+//                            width: parent.height
+//                            height: parent.height
+//                            sourceSize.width: width
+//                            sourceSize.height: height
+//                            fillMode: Image.PreserveAspectFit
+//                            priority: {
+//                                    if (page.status === PageStatus.Activating ||
+//                                        page.status === PageStatus.Active) {
+//                                            return Thumbnail.HighPriority
+//                                    }
+
+//                                    return Thumbnail.LowPriority
+//                            }
+
+
+////                            visible: status === Thumbnail.Ready
+
+//                            onStatusChanged: {
+//                                console.debug("thumbnail status=" + status)
+//                            }
+//                        }
+
                         Image {
-                            id: thumnail
+                            id: thumbnail
                             source: download.data.description.thumbnailUrl
                             width: parent.height
                             height: parent.height
+                            sourceSize.width: width
+                            sourceSize.height: height
                             fillMode: Image.PreserveAspectFit
+                            cache: false
                             // prevents the image from loading on device
                             //asynchronous: true
+                            visible: status === Image.Ready
+                        }
+
+                        Item {
+                            visible: !thumbnail.visible
+                            width: parent.height
+                            height: parent.height
+
+                            BusyIndicator {
+                                size: BusyIndicatorSize.Medium
+                                anchors.centerIn: parent
+                                running: parent.visible
+                            }
                         }
 
                         Column {
