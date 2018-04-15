@@ -27,6 +27,8 @@ import org.duckdns.jgressmann 1.0
 import ".."
 
 CoverBackground {
+    id: cover
+
     Item {
         width: 2 * parent.width
         height: 2 * parent.width
@@ -43,8 +45,6 @@ CoverBackground {
             }
         }
     }
-
-
 
     Label {
         x: Theme.paddingMedium
@@ -77,38 +77,40 @@ CoverBackground {
                 progress: download.data.progress
 
                 Image {
-                    id: thumnail
+                    id: thumbnail
                     source: download.data.description.thumbnailUrl
                     width: parent.height
                     height: parent.height
                     fillMode: Image.PreserveAspectFit
-//                    visible: state === Image.Ready
-                    visible: progress >= 1 // state === Image.Ready doesn't work
-//                    onStateChanged: {
-//                        console.debug("state=" + state)
-//                        switch (state) {
-//                        case Image.Null:
-//                            console.debug("null")
-//                            break
-//                        case Image.Loading:
-//                            console.debug("loading")
-//                            break
-//                        case Image.Error:
-//                            console.debug("error")
-//                            break
-//                        case Image.Ready:
-//                            console.debug("ready")
-//                            break
-//                        }
-//                    }
-
-//                    onProgressChanged: {
-//                        console.debug("progress="+progress)
-//                    }
-
-//                    visible: false
-//                    asynchronous: true
+                    visible: status === Image.Ready
+                    cache: false
                 }
+
+//                Thumbnail {
+//                    id: thumbnail
+//                    source: download.data.description.thumbnailUrl
+//                    width: parent.height
+//                    height: parent.height
+//                    sourceSize.width: width
+//                    sourceSize.height: height
+//                    fillMode: Image.PreserveAspectFit
+//                    priority: {
+//                            if (cover.status === Cover.Activating ||
+//                                cover.status === Cover.Active) {
+//                                    return Thumbnail.HighPriority
+//                            }
+
+//                            return Thumbnail.LowPriority
+//                    }
+
+//                    // prevents the image from loading on device
+//                    //asynchronous: true
+//                    visible: status === Thumbnail.Ready
+
+//                    onStatusChanged: {
+//                        console.debug("thumbnail status=" + status)
+//                    }
+//                }
 
                 Item {
                     height: parent.height
@@ -121,7 +123,7 @@ CoverBackground {
                         text: download.data.description.fullTitle
                         font.pixelSize: Theme.fontSizeSmall
                         truncationMode: TruncationMode.Fade
-                        visible: !thumnail.visible
+                        visible: !thumbnail.visible
                     }
 
                     Label {
