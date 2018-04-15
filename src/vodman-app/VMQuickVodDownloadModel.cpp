@@ -126,7 +126,8 @@ VMQuickVodDownloadModel::onVodFileDownloadRemoved(qint64 handle, const QByteArra
         qDebug() << "removed row" << row;
     }
 
-    if (m_UserDownloads.removeOne(handle)) {
+    if (m_UserDownloads.remove(handle)) {
+        emit userDownloadsChanged();
         VMVodFileDownload download;
         {
             QDataStream s(result);
@@ -183,11 +184,12 @@ VMQuickVodDownloadModel::onVodFileMetaDataDownloadCompleted(qint64 token, const 
     qDebug() << "enter" << token;
     QMutexLocker g(&m_Lock);
     if (token == m_Token) {
-        m_UserDownloads << token;
+        m_UserDownloads.insert(token, m_Url);
         auto url = m_Url;
         m_Token = -1;
         m_Url.clear();
         emit canStartDownloadChanged();
+        emit userDownloadsChanged();
 
         VMVodMetaDataDownload download;
         {
@@ -261,6 +263,19 @@ VMQuickVodDownloadModel::startDownloadMetaData(const QString& url)
         return;
     }
 
+    if (isDownloading(url)) {
+        // this check is to prevent the user from accidently
+        // adding the same url twice
+        qDebug() << "already downloading" << url;
+        return;
+    }
+
+    for (const auto& urlOfDownload : m_UserDownloads) {
+        if (url == urlOfDownload) {
+
+        }
+    }
+
     m_Url = url;
     auto reply = m_Service->newToken();
     auto watcher = new QDBusPendingCallWatcher(reply, this);
@@ -317,20 +332,6 @@ VMQuickVodDownloadModel::onNewTokenReply(QDBusPendingCallWatcher *self) {
         auto reply = m_Service->startFetchVodMetaData(m_Token, m_Url);
         auto watcher = new QDBusPendingCallWatcher(reply, this);
         connect(watcher, &QDBusPendingCallWatcher::finished, this, &VMQuickVodDownloadModel::onMetaDataDownloadReply);
-//        auto token = reply.value();
-//        if (token >= 0) {
-//            m_Token = token;
-//            auto reply = m_Service->startFetchVodMetaData(m_Token, m_Url);
-//            auto watcher = new QDBusPendingCallWatcher(reply, this);
-//            connect(watcher, &QDBusPendingCallWatcher::finished, this, &VMQuickVodDownloadModel::onMetaDataDownloadReply);
-//        } else {
-//            // wtf, service doesn't work right, happens if
-//            // the generated D-Bus adaptor code can't call the slot? in owning class
-//            qDebug() << "invalid token received" << token;
-//            emit downloadFailed(m_Url, VMVodEnums::VM_ErrorServiceUnavailable, QString());
-//            m_Url.clear();
-//            emit canStartDownloadChanged();
-//        }
     } else {
          qDebug() << "invalid new token reply" << reply.error();
          emit downloadFailed(m_Url, VMVodEnums::VM_ErrorServiceUnavailable, QString());
@@ -510,4 +511,17 @@ VMQuickVodDownloadModel::onOnlineChanged(bool online) {
     emit isOnMobileChanged();
     emit isOnBroadbandChanged();
     emit canStartDownloadChanged();
+}
+
+
+bool
+VMQuickVodDownloadModel::isDownloading(QString url) const {
+    QMutexLocker g(&m_Lock);
+    for (const auto& urlOfDownload : m_UserDownloads) {
+        if (url == urlOfDownload) {
+            return true;
+        }
+    }
+
+    return false;
 }

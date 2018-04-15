@@ -58,6 +58,7 @@ public:
     Q_INVOKABLE void cancelDownloads(bool deleteFiles);
     Q_INVOKABLE QString sanatizePath(QString path) const;
     Q_INVOKABLE bool isUrl(QString str) const;
+    Q_INVOKABLE bool isDownloading(QString str) const;
     bool canStartDownload() const;
     bool isOnline() const;
     bool isOnBroadband() const;
@@ -72,6 +73,7 @@ Q_SIGNALS: // signals
     void isOnlineChanged();
     void isOnBroadbandChanged();
     void isOnMobileChanged();
+    void userDownloadsChanged();
 
 private slots:
     void onVodFileDownloadAdded(qint64 handle, const QByteArray& download);
@@ -94,7 +96,7 @@ private:
     org::duckdns::jgressmann::vodman::service* m_Service;
     QHash<qint64, VMQuickVodDownload*> m_Downloads;
     QList<qint64> m_Rows;
-    QList<qint64> m_UserDownloads;
+    QHash<qint64, QString> m_UserDownloads;
     QString m_Url;
     qint64 m_Token;
 

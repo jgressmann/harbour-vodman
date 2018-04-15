@@ -140,7 +140,6 @@ CoverBackground {
     }
 
     CoverActionList {
-        property bool clipBoardHasUrl: Clipboard.hasText && vodDownloadModel.isUrl(Clipboard.text)
         property bool hasDefaultVideoFormat: {
             if (vodDownloadModel.isOnBroadband && settingBroadbandDefaultFormat.value !== VM.VM_Any) {
                 return true
@@ -155,8 +154,7 @@ CoverBackground {
 
         id: coverAction
         enabled: hasDefaultVideoFormat &&
-                 vodDownloadModel.canStartDownload &&
-                 clipBoardHasUrl
+                 canStartDownloadOfClipboardUrl
 
         CoverAction {
             iconSource: "image://theme/icon-cover-new"

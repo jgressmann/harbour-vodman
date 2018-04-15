@@ -34,8 +34,6 @@ import ".."
 Page {
     id: page
 
-    property bool clipBoardHasUrl: Clipboard.hasText && vodDownloadModel.isUrl(Clipboard.text)
-
     function targetWidth(format) {
         switch (format) {
         case VM.VM_240p:
@@ -324,6 +322,14 @@ Page {
             }
 
             MenuItem {
+                text: "Copy medium video url to clipboard"
+                visible: debugApp.value
+                onClicked: {
+                    Clipboard.text = "https://www.youtube.com/watch?v=KMAqSLWhH5w"
+                }
+            }
+
+            MenuItem {
                 text: "Copy small video url to clipboard"
                 visible: debugApp.value
 //                enabled: vodDownloadModel.canStartDownload
@@ -335,7 +341,6 @@ Page {
             MenuItem {
                 text: "Copy reddit to clipboard"
                 visible: debugApp.value
-//                enabled: vodDownloadModel.canStartDownload
                 onClicked: {
                     Clipboard.text = "https://www.reddit.com"
                 }
@@ -344,7 +349,6 @@ Page {
             MenuItem {
                 text: "Clear clipboard"
                 visible: debugApp.value
-//                enabled: vodDownloadModel.canStartDownload
                 onClicked: {
                     Clipboard.text = ""
                 }
@@ -355,7 +359,7 @@ Page {
                 visible: listView.count > 0
                 onClicked: {
                       remorse.execute(
-                          "Stopping all downlods",
+                          "Stopping all downloads",
                           function() { vodDownloadModel.cancelDownloads(false) })
                 }
             }
@@ -365,7 +369,7 @@ Page {
                 visible: listView.count > 0
                 onClicked: {
                       remorse.execute(
-                          "Purging all downlods",
+                          "Purging all downloads",
                           function() { vodDownloadModel.cancelDownloads(true) })
                 }
             }
@@ -378,7 +382,7 @@ Page {
 
             MenuItem {
                 text: qsTr("Download from clipboard")
-                enabled: vodDownloadModel.canStartDownload && clipBoardHasUrl
+                enabled: canStartDownloadOfClipboardUrl
                 onClicked: vodDownloadModel.startDownloadMetaData(Clipboard.text)
             }
         }
@@ -444,7 +448,7 @@ Page {
                         spacing: Theme.paddingMedium
                         height: parent.height
 
-
+// aparently Thumbnail only works for local files
 //                        Thumbnail {
 //                            id: thumbnail
 //                            source: download.data.description.thumbnailUrl
