@@ -134,8 +134,6 @@ VMYTDL::startFetchVodMetaData(qint64 token, const QString& _url) {
         m_MetaDataCache.remove(download.data()._url);
     }
 
-//    data.error = VMVodEnums::VM_Pending;
-
     QVariantMap result;
     result[s_Type] = s_MetaData;
     result[s_Download] = QVariant::fromValue(download);

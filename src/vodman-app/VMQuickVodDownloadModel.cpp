@@ -175,24 +175,6 @@ VMQuickVodDownloadModel::onVodFileDownloadChanged(qint64 handle, const QByteArra
     auto row = getHandleRow(handle);
     emit dataChanged(index(row), index(row));
     qDebug() << "exit" << handle;
-    return;
-
-//    QVector<int> roles;
-//    roles.reserve(ms_Roles.size() + 1);
-//    roles << Qt::DisplayRole;
-//    const auto beg = ms_Roles.keyBegin();
-//    const auto end = ms_Roles.keyEnd();
-//    for (auto it = beg; it != end; ++it) {
-//        roles << *it;
-//    }
-
-//    auto row = getHandleRow(handle);
-//    //emit dataChanged(createIndex(row, 0), createIndex(row, 0), roles);
-//    //emit dataChanged(index(row), index(row));
-//    //emit dataChanged(index(row), index(row), roles);
-//    emit beginResetModel();
-//    emit endResetModel();
-//    qDebug() << "exit" << handle;
 }
 
 void
