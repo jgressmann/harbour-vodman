@@ -280,6 +280,9 @@ VMYTDL::onMetaDataProcessFinished(int code, QProcess::ExitStatus status)
             } else if (line.indexOf(QStringLiteral("[Errno -2]"), 0, Qt::CaseInsensitive) >= 0) {
                 //ERROR: Unable to download webpage: <urlopen error [Errno -2] Name or service not known> (caused by URLError(gaierror(-2, 'Name or service not known'),))
                 downLoadData.error = VMVodEnums::VM_ErrorNetworkDown;
+            } else if (line.indexOf(QStringLiteral("is not a valid URL"), 0, Qt::CaseInsensitive) >= 0) {
+                //ERROR: '' is not a valid URL. Set --default-search \"ytsearch\" (or run  youtube-dl \"ytsearch:\" ) to search YouTube
+                downLoadData.error = VMVodEnums::VM_ErrorInvalidUrl;
             } else {
                 downLoadData.error = VMVodEnums::VM_ErrorUnknown;
             }
@@ -402,6 +405,9 @@ VMYTDL::onVodFileProcessFinished(int code, QProcess::ExitStatus status) {
             if (line.indexOf(QStringLiteral("[Errno -2]"), 0, Qt::CaseInsensitive) >= 0) {
                 // ERROR: unable to download video data: <urlopen error [Errno -2] Name or service not known>
                 download.data().error = VMVodEnums::VM_ErrorNetworkDown;
+            } else if (line.indexOf(QStringLiteral("[Errno 28]"), 0, Qt::CaseInsensitive) >= 0) {
+                // ERROR: unable to write data: [Errno 28] No space left on device
+                download.data().error = VMVodEnums::VM_ErrorNoSpaceLeftOnDevice;
             } else {
                 download.data().error = VMVodEnums::VM_ErrorUnknown;
             }

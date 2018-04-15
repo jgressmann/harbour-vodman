@@ -220,6 +220,14 @@ Page {
             errorNotification.body = errorNotification.previewBody =
                     "Network down."
             break;
+        case VM.VM_ErrorInvalidUrl:
+            errorNotification.body = errorNotification.previewBody =
+                    "Invalid URL."
+            break;
+        case VM.VM_ErrorNoSpaceLeftOnDevice:
+            errorNotification.body = errorNotification.previewBody =
+                    "No space left on device."
+            break;
         default:
             errorNotification.body = errorNotification.previewBody =
                     "Yikes! An unknown error has occured :/"
@@ -427,7 +435,6 @@ Page {
                             }
                         })
                 }
-
 
                 ProgressOverlay {
                     anchors.fill: parent

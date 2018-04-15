@@ -67,6 +67,8 @@ public:
         VM_ErrorNoVideo,
         VM_ErrorFormatNotAvailable,
         VM_ErrorNetworkDown,
+        VM_ErrorInvalidUrl,
+        VM_ErrorNoSpaceLeftOnDevice,
     };
     Q_ENUMS(Error)
 
