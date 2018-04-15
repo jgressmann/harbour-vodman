@@ -69,6 +69,7 @@ public:
         VM_ErrorNetworkDown,
         VM_ErrorInvalidUrl,
         VM_ErrorNoSpaceLeftOnDevice,
+        VM_ErrorAlreadyDownloading,
     };
     Q_ENUMS(Error)
 

@@ -186,50 +186,54 @@ Page {
         case VM.VM_ErrorNoYoutubeDl:
             errorNotification.body = errorNotification.previewBody =
                     "youtube-dl not working"
-            break;
+            break
         case VM.VM_ErrorServiceUnavailable:
             errorNotification.body = errorNotification.previewBody =
                     "Vodman service not available"
-            break;
+            break
         case VM.VM_ErrorCrashed:
             errorNotification.body = errorNotification.previewBody =
                     "youtube-dl process crashed"
-            break;
+            break
         case VM.VM_ErrorTimedOut:
             errorNotification.body = errorNotification.previewBody =
                     "Download timed out"
         case VM.VM_ErrorInvalidResponse:
             errorNotification.body = errorNotification.previewBody =
                     "Host delivered an invalid response to VOD format request"
-            break;
+            break
         case VM.VM_ErrorUnsupportedUrl:
             errorNotification.body = errorNotification.previewBody =
                     "youtube-dl doesn't know how to handle that URL"
-            break;
+            break
         case VM.VM_ErrorNoVideo:
             errorNotification.body = errorNotification.previewBody =
                     "No video content for URL"
-            break;
+            break
         case VM.VM_ErrorFormatNotAvailable:
             errorNotification.body = errorNotification.previewBody =
                     "The format you selected is not available. Try again or choose another format."
-            break;
+            break
         case VM.VM_ErrorNetworkDown:
             errorNotification.body = errorNotification.previewBody =
                     "Network down."
-            break;
+            break
         case VM.VM_ErrorInvalidUrl:
             errorNotification.body = errorNotification.previewBody =
                     "Invalid URL."
-            break;
+            break
         case VM.VM_ErrorNoSpaceLeftOnDevice:
             errorNotification.body = errorNotification.previewBody =
                     "No space left on device."
-            break;
+            break
+        case VM.VM_ErrorAlreadyDownloading:
+            errorNotification.body = errorNotification.previewBody =
+                    "Already downloading " + filePath
+            break
         default:
             errorNotification.body = errorNotification.previewBody =
                     "Yikes! An unknown error has occured :/"
-            break;
+            break
         }
 
         errorNotification.publish()

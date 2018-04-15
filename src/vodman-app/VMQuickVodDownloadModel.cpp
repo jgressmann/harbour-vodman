@@ -126,12 +126,15 @@ VMQuickVodDownloadModel::onVodFileDownloadRemoved(qint64 handle, const QByteArra
         qDebug() << "removed row" << row;
     }
 
-    if (m_UserDownloads.remove(handle)) {
-        emit userDownloadsChanged();
+    if (m_UserDownloads.removeOne(handle)) {
         VMVodFileDownload download;
         {
             QDataStream s(result);
             s >> download;
+        }
+
+        if (m_UserDownloadsFilePaths.removeOne(download.filePath())) {
+            qDebug() << "file path" << download.filePath() << "removed from user downloads";
         }
 
         qDebug() << "mine removed" << handle << download;
@@ -184,12 +187,11 @@ VMQuickVodDownloadModel::onVodFileMetaDataDownloadCompleted(qint64 token, const 
     qDebug() << "enter" << token;
     QMutexLocker g(&m_Lock);
     if (token == m_Token) {
-        m_UserDownloads.insert(token, m_Url);
+        m_UserDownloads << token;
         auto url = m_Url;
         m_Token = -1;
         m_Url.clear();
         emit canStartDownloadChanged();
-        emit userDownloadsChanged();
 
         VMVodMetaDataDownload download;
         {
@@ -263,19 +265,6 @@ VMQuickVodDownloadModel::startDownloadMetaData(const QString& url)
         return;
     }
 
-    if (isDownloading(url)) {
-        // this check is to prevent the user from accidently
-        // adding the same url twice
-        qDebug() << "already downloading" << url;
-        return;
-    }
-
-    for (const auto& urlOfDownload : m_UserDownloads) {
-        if (url == urlOfDownload) {
-
-        }
-    }
-
     m_Url = url;
     auto reply = m_Service->newToken();
     auto watcher = new QDBusPendingCallWatcher(reply, this);
@@ -297,6 +286,10 @@ VMQuickVodDownloadModel::startDownloadVod(
         qint64 token, const VMVod& vod, int formatIndex, const QString& filePath) {
 
     QMutexLocker g(&m_Lock);
+    if (!canStartDownload()) {
+        return;
+    }
+
     qDebug() << "token" << token << "vod" << vod << "index" << formatIndex << "path" << filePath;
 
     if (!vod.isValid() || formatIndex < 0 || formatIndex >= vod.formats() ||
@@ -305,6 +298,12 @@ VMQuickVodDownloadModel::startDownloadVod(
         return;
     }
 
+    if (m_UserDownloadsFilePaths.indexOf(filePath) >= 0) {
+        emit downloadFailed(vod.description().webPageUrl(), VMVodEnums::VM_ErrorAlreadyDownloading, filePath);
+        return;
+    }
+
+    m_FilePath = filePath;
 
     VMVodFileDownloadRequest req;
     req.description = vod.data().description;
@@ -363,11 +362,14 @@ VMQuickVodDownloadModel::onStartDownloadVodFileReply(QDBusPendingCallWatcher *se
     QDBusPendingReply<> reply = *self;
     if (reply.isValid()) {
         // nothing to do
+        m_UserDownloadsFilePaths << m_FilePath;
+        m_FilePath.clear();
     } else {
         qDebug() << "invalid reply" << reply.error();
         m_Token = -1;
         emit downloadFailed(m_Url, VMVodEnums::VM_ErrorServiceUnavailable, QString());
         m_Url.clear();
+        m_FilePath.clear();
         emit canStartDownloadChanged();
     }
 }
@@ -412,7 +414,7 @@ VMQuickVodDownloadModel::roleNames() const {
 
 bool
 VMQuickVodDownloadModel::canStartDownload() const {
-    return m_Url.isEmpty();
+    return m_Url.isEmpty() && m_FilePath.isEmpty();
 }
 
 QString
@@ -511,17 +513,4 @@ VMQuickVodDownloadModel::onOnlineChanged(bool online) {
     emit isOnMobileChanged();
     emit isOnBroadbandChanged();
     emit canStartDownloadChanged();
-}
-
-
-bool
-VMQuickVodDownloadModel::isDownloading(QString url) const {
-    QMutexLocker g(&m_Lock);
-    for (const auto& urlOfDownload : m_UserDownloads) {
-        if (url == urlOfDownload) {
-            return true;
-        }
-    }
-
-    return false;
 }

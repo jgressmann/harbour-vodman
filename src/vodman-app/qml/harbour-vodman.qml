@@ -38,7 +38,7 @@ ApplicationWindow {
     allowedOrientations: defaultAllowedOrientations
 
     readonly property bool clipBoardHasUrl: Clipboard.hasText && !!Clipboard.text && vodDownloadModel.isUrl(Clipboard.text)
-    readonly property bool canStartDownloadOfClipboardUrl: vodDownloadModel.canStartDownload && !_downloadingClipboardUrl && clipBoardHasUrl
+    readonly property bool canStartDownloadOfClipboardUrl: vodDownloadModel.canStartDownload && clipBoardHasUrl
     property bool _downloadingClipboardUrl: false
 
     VodDownloadModel {
@@ -83,34 +83,6 @@ ApplicationWindow {
             key: "/debug"
             defaultValue: false
         }
-    }
-
-    Component.onCompleted: {
-        vodDownloadModel.userDownloadsChanged.connect(_update)
-        _update()
-    }
-
-    Connections {
-        target: Clipboard
-        onTextChanged: _update()
-    }
-
-    function _update() {
-        if (clipBoardHasUrl) {
-            _downloadingClipboardUrl = vodDownloadModel.isDownloading(Clipboard.text)
-        } else {
-            _downloadingClipboardUrl = false
-        }
-
-        console.debug("_downloadingClipboardUrl=" + _downloadingClipboardUrl)
-    }
-
-    onCanStartDownloadOfClipboardUrlChanged: {
-        console.debug("can start download of URL in clipboard: " + canStartDownloadOfClipboardUrl)
-    }
-
-    onClipBoardHasUrlChanged: {
-        console.debug("clipboard has URL: " + clipBoardHasUrl)
     }
 }
 
