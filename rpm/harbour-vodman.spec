@@ -5,10 +5,9 @@
 
 Name:       harbour-vodman
 Summary:    Video On Demand (VOD) download manager for SailfishOS
-Version:    1.0.6
+Version:    1.0.7
 Release:    1
 Group:      Applications/Multimedia
-#Group:      Qt/Qt
 License:    MIT
 #URL:        http://foo.bar
 Source0:    %{name}-%{version}.tar.bz2
