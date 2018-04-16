@@ -37,9 +37,8 @@ ApplicationWindow {
 
     allowedOrientations: defaultAllowedOrientations
 
-    readonly property bool clipBoardHasUrl: Clipboard.hasText && !!Clipboard.text && vodDownloadModel.isUrl(Clipboard.text)
+    readonly property bool clipBoardHasUrl: Clipboard.hasText && vodDownloadModel.isUrl(Clipboard.text)
     readonly property bool canStartDownloadOfClipboardUrl: vodDownloadModel.canStartDownload && clipBoardHasUrl
-    property bool _downloadingClipboardUrl: false
 
     VodDownloadModel {
         id: vodDownloadModel
@@ -84,5 +83,16 @@ ApplicationWindow {
             defaultValue: false
         }
     }
+
+//    Connections {
+//        target: Clipboard
+//        onHasTextChanged: {
+//            console.debug("has text: " + Clipboard.hasText)
+//        }
+
+//        onTextChanged: {
+//            console.debug("text: " + Clipboard.text)
+//        }
+//    }
 }
 

@@ -265,6 +265,11 @@ VMQuickVodDownloadModel::startDownloadMetaData(const QString& url)
         return;
     }
 
+    if (url.isEmpty()) {
+        qDebug() << "empty url";
+        return;
+    }
+
     m_Url = url;
     auto reply = m_Service->newToken();
     auto watcher = new QDBusPendingCallWatcher(reply, this);

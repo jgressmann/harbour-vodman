@@ -140,7 +140,7 @@ CoverBackground {
     }
 
     CoverActionList {
-        property bool hasDefaultVideoFormat: {
+        readonly property bool hasDefaultVideoFormat: {
             if (vodDownloadModel.isOnBroadband && settingBroadbandDefaultFormat.value !== VM.VM_Any) {
                 return true
             }
@@ -153,12 +153,19 @@ CoverBackground {
         }
 
         id: coverAction
-        enabled: hasDefaultVideoFormat &&
-                 canStartDownloadOfClipboardUrl
+        // It looks like copying stuff to the clipboard doesn't update the
+        // any Clipboard bound properties for the cover page. It works on for
+        // the download page though.
+        enabled: hasDefaultVideoFormat
 
         CoverAction {
             iconSource: "image://theme/icon-cover-new"
-            onTriggered: vodDownloadModel.startDownloadMetaData(Clipboard.text)
+            onTriggered: {
+                if (Clipboard.hasText) {
+                    console.debug("url: " + Clipboard.text)
+                    vodDownloadModel.startDownloadMetaData(Clipboard.text)
+                }
+            }
         }
     }
 }
