@@ -141,6 +141,20 @@ Vodman is available under the <a href=\"https://opensource.org/licenses/MIT\">MI
                  color: Theme.highlightColor
                  textFormat: TextEdit.RichText
             }
+
+            SectionHeader {
+                text: "Sources"
+            }
+
+            Label {
+                x: Theme.horizontalPageMargin
+                 width: parent.width-2*x
+                 text: "The sources are hosted on <a href=\"https://github.com/jgressmann/harbour-vodman\">GitHub</a>."
+                 wrapMode: Text.WordWrap
+                 font.pixelSize: Theme.fontSizeExtraSmall
+                 color: Theme.highlightColor
+                 textFormat: TextEdit.RichText
+            }
         }
     }
 }

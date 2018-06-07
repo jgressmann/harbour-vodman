@@ -9,7 +9,7 @@ Version:    1.0.7
 Release:    1
 Group:      Applications/Multimedia
 License:    MIT
-#URL:        http://foo.bar
+URL:        https://openrepos.net/content/jgressmann/vodman
 Source0:    %{name}-%{version}.tar.bz2
 
 BuildRequires:  pkgconfig(Qt5DBus)
