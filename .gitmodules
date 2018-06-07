@@ -1,9 +1,0 @@
-[submodule "3rd-party/youtube-dl"]
-	path = 3rd-party/youtube-dl
-	url = https://github.com/rg3/youtube-dl.git
-[submodule "ytplayer"]
-	path = ytplayer
-	url = https://github.com/tworaz/sailfish-ytplayer.git
-[submodule "3rd-party/ytplayer"]
-	path = 3rd-party/ytplayer
-	url = https://github.com/tworaz/sailfish-ytplayer.git
