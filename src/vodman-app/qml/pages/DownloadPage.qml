@@ -285,7 +285,7 @@ Page {
     Notification {
         id: successNotification
         category: "x-nemo.transfer.complete"
-        appName: "Vodman"
+        appName: App.displayName
         appIcon: "/usr/share/icons/hicolor/86x86/apps/harbour-vodman.png"
         summary: "Download finished"
         previewSummary: "Download finished"

@@ -26,20 +26,19 @@ import Sailfish.Silica 1.0
 
 
 Item {
-    id: root
-
     property alias overlayOpacity: overlay.opacity
     property real progress: 0.314
     property alias color: overlay.color
     property bool inverse: false
     readonly property real _progress: Math.max(0, Math.min(progress, 1))
+    property bool show: true
 
 
     Rectangle {
         id: overlay
         height: parent.height
         color: Theme.highlightColor
-        opacity: Theme.highlightBackgroundOpacity
+        opacity: show ? Theme.highlightBackgroundOpacity : 0
         x: {
             if (Qt.LeftToRight === Qt.application.layoutDirection) {
                 if (inverse) {
