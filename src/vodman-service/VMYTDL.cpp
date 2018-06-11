@@ -443,7 +443,7 @@ VMYTDL::onProcessError(QProcess::ProcessError error) {
 
     if (result[s_Type] == s_MetaData) {
         auto download = qvariant_cast<VMVodMetaDataDownload>(result[s_Download]);
-        if (!download.error() == VMVodEnums::VM_ErrorCanceled) {
+        if (download.error() != VMVodEnums::VM_ErrorCanceled) {
             switch (error) {
             case QProcess::Crashed:
                 download.data().error = VMVodEnums::VM_ErrorCrashed;
@@ -462,7 +462,7 @@ VMYTDL::onProcessError(QProcess::ProcessError error) {
         emit fetchVodMetaDataCompleted(id, download);
     } else {
         auto download = qvariant_cast<VMVodFileDownload>(result[s_Download]);
-        if (!download.error() == VMVodEnums::VM_ErrorCanceled) {
+        if (download.error() != VMVodEnums::VM_ErrorCanceled) {
             switch (error) {
             case QProcess::Crashed:
                 download.data().error = VMVodEnums::VM_ErrorCrashed;
