@@ -10,7 +10,7 @@ include(../../common.pri)
 
 
 
-ytdl.extra = cp $$PWD/../../build-ytdl/youtube-dl $$PWD/vodman-youtube-dl
+#ytdl.extra = cp $$PWD/../../build-ytdl/youtube-dl $$PWD/vodman-youtube-dl
 ytdl.target = vodman-youtube-dl
 ytdl.files = vodman-youtube-dl
 ytdl.path = /usr/bin
