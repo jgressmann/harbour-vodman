@@ -114,15 +114,17 @@ Page {
 
             Label {
                 x: Theme.horizontalPageMargin
-                 width: parent.width-2*x
-                 text:
+                width: parent.width-2*x
+                text:
 "Vodman is a versatile tool for downloading vidoes on demand (VODs) to your device from " +
 "popular sites such as <a href=\"https://www.youtube.com/\">Youtube</a> or <a href=\"https://www.twitch.tv/\">Twitch</a>."
-                 wrapMode: Text.WordWrap
-                 font.pixelSize: Theme.fontSizeExtraSmall
-                 color: Theme.highlightColor
-                 textFormat: TextEdit.RichText
-//                 TextField.text:
+                wrapMode: Text.WordWrap
+                font.pixelSize: Theme.fontSizeExtraSmall
+                color: Theme.highlightColor
+                textFormat: TextEdit.RichText
+                onLinkActivated: function (link) {
+                    Qt.openUrlExternally(link)
+                }
             }
 
             SectionHeader {
@@ -131,15 +133,18 @@ Page {
 
             Label {
                 x: Theme.horizontalPageMargin
-                 width: parent.width-2*x
-                 text: "Copyright (c) 2018 by Jean Gressmann.
+                width: parent.width-2*x
+                text: "Copyright (c) 2018 by Jean Gressmann.
 
 Vodman is available under the <a href=\"https://opensource.org/licenses/MIT\">MIT</a> license. " +
 "Vodman uses youtube-dl which is in the <a href=\"http://unlicense.org/\">public domain</a>."
-                 wrapMode: Text.WordWrap
-                 font.pixelSize: Theme.fontSizeExtraSmall
-                 color: Theme.highlightColor
-                 textFormat: TextEdit.RichText
+                wrapMode: Text.WordWrap
+                font.pixelSize: Theme.fontSizeExtraSmall
+                color: Theme.highlightColor
+                textFormat: TextEdit.RichText
+                onLinkActivated: function (link) {
+                    Qt.openUrlExternally(link)
+                }
             }
 
             SectionHeader {
@@ -149,11 +154,14 @@ Vodman is available under the <a href=\"https://opensource.org/licenses/MIT\">MI
             Label {
                 x: Theme.horizontalPageMargin
                  width: parent.width-2*x
-                 text: "The sources are hosted on <a href=\"https://github.com/jgressmann/harbour-vodman\">GitHub</a>."
+                 text: "The sources are available on <a href=\"https://github.com/jgressmann/harbour-vodman\">GitHub</a>."
                  wrapMode: Text.WordWrap
                  font.pixelSize: Theme.fontSizeExtraSmall
                  color: Theme.highlightColor
                  textFormat: TextEdit.RichText
+                 onLinkActivated: function (link) {
+                     Qt.openUrlExternally(link)
+                 }
             }
         }
     }
