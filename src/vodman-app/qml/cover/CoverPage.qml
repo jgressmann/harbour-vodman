@@ -68,71 +68,77 @@ CoverBackground {
         delegate: ListItem {
             id: listItem
             contentHeight: Theme.itemSizeSmall
-            x: Theme.paddingSmall
-            width: parent.width - 2 * x
+            width: parent.width
 
 
             ProgressOverlay {
                 anchors.fill: parent
                 progress: download.data.progress
 
-                Image {
-                    id: thumbnail
-                    source: download.data.description.thumbnailUrl
-                    width: parent.height
-                    height: parent.height
-                    fillMode: Image.PreserveAspectFit
-                    visible: status === Image.Ready
-                    cache: false
-                }
-
-//                Thumbnail {
-//                    id: thumbnail
-//                    source: download.data.description.thumbnailUrl
-//                    width: parent.height
-//                    height: parent.height
-//                    sourceSize.width: width
-//                    sourceSize.height: height
-//                    fillMode: Image.PreserveAspectFit
-//                    priority: {
-//                            if (cover.status === Cover.Activating ||
-//                                cover.status === Cover.Active) {
-//                                    return Thumbnail.HighPriority
-//                            }
-
-//                            return Thumbnail.LowPriority
-//                    }
-
-//                    // prevents the image from loading on device
-//                    //asynchronous: true
-//                    visible: status === Thumbnail.Ready
-
-//                    onStatusChanged: {
-//                        console.debug("thumbnail status=" + status)
-//                    }
-//                }
-
                 Item {
+                    x: Theme.paddingSmall
+                    width: parent.width - 2 * x
                     height: parent.height
-                    width: parent.width
 
-                    Label {
-                        anchors.left: parent.left
-                        anchors.right: percentLabel.left
-                        anchors.verticalCenter: parent.verticalCenter
-                        text: download.data.description.fullTitle
-                        font.pixelSize: Theme.fontSizeSmall
-                        truncationMode: TruncationMode.Fade
-                        visible: !thumbnail.visible
+
+                    Image {
+                        id: thumbnail
+                        source: download.data.description.thumbnailUrl
+                        width: parent.height
+                        height: parent.height
+                        fillMode: Image.PreserveAspectFit
+                        visible: status === Image.Ready
+                        cache: false
                     }
 
-                    Label {
-                        id: percentLabel
-                        anchors.right: parent.right
-                        anchors.verticalCenter: parent.verticalCenter
-                        text: (download.data.progress * 100).toFixed(0) + "%"
-                        font.pixelSize: Theme.fontSizeSmall
-                        truncationMode: TruncationMode.Fade
+    //                Thumbnail {
+    //                    id: thumbnail
+    //                    source: download.data.description.thumbnailUrl
+    //                    width: parent.height
+    //                    height: parent.height
+    //                    sourceSize.width: width
+    //                    sourceSize.height: height
+    //                    fillMode: Image.PreserveAspectFit
+    //                    priority: {
+    //                            if (cover.status === Cover.Activating ||
+    //                                cover.status === Cover.Active) {
+    //                                    return Thumbnail.HighPriority
+    //                            }
+
+    //                            return Thumbnail.LowPriority
+    //                    }
+
+    //                    // prevents the image from loading on device
+    //                    //asynchronous: true
+    //                    visible: status === Thumbnail.Ready
+
+    //                    onStatusChanged: {
+    //                        console.debug("thumbnail status=" + status)
+    //                    }
+    //                }
+
+                    Item {
+                        height: parent.height
+                        width: parent.width
+
+                        Label {
+                            anchors.left: parent.left
+                            anchors.right: percentLabel.left
+                            anchors.verticalCenter: parent.verticalCenter
+                            text: download.data.description.fullTitle
+                            font.pixelSize: Theme.fontSizeSmall
+                            truncationMode: TruncationMode.Fade
+                            visible: !thumbnail.visible
+                        }
+
+                        Label {
+                            id: percentLabel
+                            anchors.right: parent.right
+                            anchors.verticalCenter: parent.verticalCenter
+                            text: (download.data.progress * 100).toFixed(0) + "%"
+                            font.pixelSize: Theme.fontSizeSmall
+                            truncationMode: TruncationMode.Fade
+                        }
                     }
                 }
             }

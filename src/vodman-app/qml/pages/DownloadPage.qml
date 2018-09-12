@@ -426,8 +426,7 @@ Page {
                 id: listItem
                 menu: contextMenu
                 contentHeight: Theme.itemSizeHuge
-                width: parent.width - 2 * x
-                x: Theme.paddingMedium
+                width: ListView.view.width
                 ListView.onRemove: animateRemoval(listItem)
 
                 function cancelDownload(deleteFile) {
@@ -444,35 +443,10 @@ Page {
                     anchors.fill: parent
                     progress: download.data.progress
 
-                    Row {
-                        spacing: Theme.paddingMedium
+                    Item {
                         height: parent.height
-
-// aparently Thumbnail only works for local files
-//                        Thumbnail {
-//                            id: thumbnail
-//                            source: download.data.description.thumbnailUrl
-//                            width: parent.height
-//                            height: parent.height
-//                            sourceSize.width: width
-//                            sourceSize.height: height
-//                            fillMode: Image.PreserveAspectFit
-//                            priority: {
-//                                    if (page.status === PageStatus.Activating ||
-//                                        page.status === PageStatus.Active) {
-//                                            return Thumbnail.HighPriority
-//                                    }
-
-//                                    return Thumbnail.LowPriority
-//                            }
-
-
-////                            visible: status === Thumbnail.Ready
-
-//                            onStatusChanged: {
-//                                console.debug("thumbnail status=" + status)
-//                            }
-//                        }
+                        width: parent.width - 2 * x
+                        x: Theme.paddingMedium
 
                         Image {
                             id: thumbnail
@@ -500,9 +474,46 @@ Page {
                             }
                         }
 
+                        Item { // spacer
+                            id: spacer
+                            x: parent.height
+                            width: Theme.paddingMedium
+                            height: parent.height
+                        }
+
+
+
+    // aparently Thumbnail only works for local files
+    //                        Thumbnail {
+    //                            id: thumbnail
+    //                            source: download.data.description.thumbnailUrl
+    //                            width: parent.height
+    //                            height: parent.height
+    //                            sourceSize.width: width
+    //                            sourceSize.height: height
+    //                            fillMode: Image.PreserveAspectFit
+    //                            priority: {
+    //                                    if (page.status === PageStatus.Activating ||
+    //                                        page.status === PageStatus.Active) {
+    //                                            return Thumbnail.HighPriority
+    //                                    }
+
+    //                                    return Thumbnail.LowPriority
+    //                            }
+
+
+    ////                            visible: status === Thumbnail.Ready
+
+    //                            onStatusChanged: {
+    //                                console.debug("thumbnail status=" + status)
+    //                            }
+    //                        }
+
+
+
                         Column {
-                            //y: height - parent.height * 0.5
-                            width: listItem.width - x
+                            anchors.left: spacer.right
+                            anchors.right: parent.right
                             anchors.verticalCenter: parent.verticalCenter
 
                             Label {
