@@ -91,7 +91,7 @@ Page {
                 }
 
                 Label {
-                    text: "youtube-dl 2018.09.10"
+                    text: "youtube-dl 2018.11.07"
                     anchors.horizontalCenter: parent.horizontalCenter
                     font.pixelSize: Theme.fontSizeMedium
                     color: Theme.highlightColor
