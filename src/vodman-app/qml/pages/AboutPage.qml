@@ -116,7 +116,7 @@ Page {
                 x: Theme.horizontalPageMargin
                 width: parent.width-2*x
                 text:
-"Vodman is a versatile tool for downloading vidoes on demand (VODs) to your device from " +
+"Vodman is a versatile tool for downloading videos on demand (VODs) to your device from " +
 "popular sites such as <a href=\"https://www.youtube.com/\">Youtube</a> or <a href=\"https://www.twitch.tv/\">Twitch</a>."
                 wrapMode: Text.WordWrap
                 font.pixelSize: Theme.fontSizeExtraSmall
