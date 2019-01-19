@@ -1,6 +1,6 @@
 /* The MIT License (MIT)
  *
- * Copyright (c) 2018 Jean Gressmann <jean@0x42.de>
+ * Copyright (c) 2018, 2019 Jean Gressmann <jean@0x42.de>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -130,17 +130,17 @@ Page {
         id: model
 
         SectionHeader {
-            text: "Network"
+            text: qsTr("Network")
         }
 
         ComboBox {
             id: bearerModeComboBox
             width: parent.width
-            label: "Network connection type"
+            label: qsTr("Network connection type")
             menu: ContextMenu {
-                MenuItem { text: "Autodetect" }
-                MenuItem { text: "Broadband" }
-                MenuItem { text: "Mobile" }
+                MenuItem { text: qsTr("Autodetect") }
+                MenuItem { text: qsTr("Broadband") }
+                MenuItem { text: qsTr("Mobile") }
             }
 
             Component.onCompleted: currentIndex = settingBearerMode.value
@@ -152,11 +152,11 @@ Page {
         }
 
         SectionHeader {
-            text: "Format"
+            text: qsTr("Format")
         }
 
         FormatComboBox {
-            label: "Broadband"
+            label: qsTr("Broadband")
             excludeAskEveryTime: false
             format: settingBroadbandDefaultFormat.value
             onFormatChanged: {
@@ -166,7 +166,7 @@ Page {
         }
 
         FormatComboBox {
-            label: "Mobile"
+            label: qsTr("Mobile")
             excludeAskEveryTime: false
             format: settingMobileDefaultFormat.value
             onFormatChanged: {
@@ -176,7 +176,7 @@ Page {
         }
 
         SectionHeader {
-            text: "Location"
+            text: qsTr("Location")
         }
 
         Column {
@@ -186,11 +186,11 @@ Page {
             ComboBox {
                 id: saveDirectoryComboBox
                 width: parent.width
-                label: "Directory"
+                label: qsTr("Directory")
                 menu: ContextMenu {
-                    MenuItem { text: "Downloads" }
-                    MenuItem { text: "Videos" }
-                    MenuItem { text: "Custom" }
+                    MenuItem { text: qsTr("Downloads") }
+                    MenuItem { text: qsTr("Videos") }
+                    MenuItem { text: qsTr("Custom") }
                 }
             }
 
@@ -198,8 +198,8 @@ Page {
                 id: saveDirectoryTextField
                 width: parent.width
                 text: settingDefaultDirectory.value
-                label: "VODs are saved here"
-                placeholderText: "Default directory to save VODs"
+                label: qsTr("VODs are saved here", "label")
+                placeholderText: qsTr("Default directory to save VODs", "placeholder")
                 EnterKey.iconSource: "image://theme/icon-m-enter-close"
                 EnterKey.onClicked: focus = false
 
@@ -211,7 +211,7 @@ Page {
 
             Button {
                 anchors.horizontalCenter: parent.horizontalCenter
-                text: "Pick directory"
+                text: qsTr("Pick directory")
                 onClicked: pageStack.push(filePickerPage)
             }
 
@@ -241,9 +241,9 @@ Page {
                 width: parent.width
                 label: "File name"
                 menu: ContextMenu {
-                    MenuItem { text: "Title" }
-                    MenuItem { text: "Video id" }
-                    MenuItem { text: "Custom" }
+                    MenuItem { text: qsTr("Title") }
+                    MenuItem { text: qsTr("Video id") }
+                    MenuItem { text: qsTr("Custom") }
                 }
 
                 onCurrentIndexChanged: {
@@ -267,8 +267,8 @@ Page {
                     settingDefaultFileName.value = text
                     _propageFileName()
                 }
-                label: "File name template for VODs"
-                placeholderText: "File name template for VODs"
+                label: qsTr("File name template for VODs", "label")
+                placeholderText: qsTr("File name template for VODs", "placeholder")
                 EnterKey.iconSource: "image://theme/icon-m-enter-close"
                 EnterKey.onClicked: focus = false
 //                readOnly: true
@@ -278,7 +278,7 @@ Page {
                 x: Theme.horizontalPageMargin
                 width: parent.width-2*x
 //                width: parent.width
-                text: "Tags {title} {id} {formatid} will be substituded from the VOD's meta data."
+                text: qsTr("Tags {title} {id} {formatid} will be substituded from the VOD's meta data.")
                 wrapMode: Text.Wrap
                 font.pixelSize: Theme.fontSizeTiny
                 color: Theme.highlightColor
@@ -297,7 +297,7 @@ Page {
             anchors.fill: parent
             model: model
             header: PageHeader {
-                title: "Settings"
+                title: qsTr("Settings")
             }
         }
 

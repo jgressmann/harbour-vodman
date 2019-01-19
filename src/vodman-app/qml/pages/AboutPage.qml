@@ -39,7 +39,7 @@ Page {
             spacing: Theme.paddingLarge
             x: Theme.paddingMedium
             width: parent.width - 2*x
-            PageHeader { title: "About " + App.displayName }
+            PageHeader { title: qsTr("About %1").arg(App.displayName) }
 
             Column {
                 spacing: Theme.paddingSmall
@@ -102,22 +102,20 @@ Page {
                     text: "Disable debugging"
                     anchors.horizontalCenter: parent.horizontalCenter
                     visible: debugApp.value
-                    onClicked: {
-                        debugApp.value = false
-                    }
+                    onClicked: debugApp.value = false
                  }
             }
 
             SectionHeader {
-                text: "Description"
+                text: qsTr("Description")
             }
 
             Label {
                 x: Theme.horizontalPageMargin
                 width: parent.width-2*x
                 text:
-"Vodman is a versatile tool for downloading videos on demand (VODs) to your device from " +
-"popular sites such as <a href=\"https://www.youtube.com/\">Youtube</a> or <a href=\"https://www.twitch.tv/\">Twitch</a>."
+qsTr("%1 is a versatile tool for downloading videos on demand (VODs) to your device from " +
+"popular sites such as <a href=\"https://www.youtube.com/\">Youtube</a> or <a href=\"https://www.twitch.tv/\">Twitch</a>.").arg(App.displayName)
                 wrapMode: Text.WordWrap
                 font.pixelSize: Theme.fontSizeExtraSmall
                 color: Theme.highlightColor
@@ -128,16 +126,16 @@ Page {
             }
 
             SectionHeader {
-                text: "Licensing"
+                text: qsTr("Licensing")
             }
 
             Label {
                 x: Theme.horizontalPageMargin
                 width: parent.width-2*x
-                text: "Copyright (c) 2018, 2019 Jean Gressmann.
+                text: qsTr("Copyright (c) 2018, 2019 Jean Gressmann.
 
-Vodman is available under the <a href=\"https://opensource.org/licenses/MIT\">MIT</a> license. " +
-"Vodman uses youtube-dl which is in the <a href=\"http://unlicense.org/\">public domain</a>."
+%1 is available under the <a href=\"https://opensource.org/licenses/MIT\">MIT</a> license. " +
+"%1 uses youtube-dl which is in the <a href=\"http://unlicense.org/\">public domain</a>.").arg(App.displayName)
                 wrapMode: Text.WordWrap
                 font.pixelSize: Theme.fontSizeExtraSmall
                 color: Theme.highlightColor
@@ -148,7 +146,7 @@ Vodman is available under the <a href=\"https://opensource.org/licenses/MIT\">MI
             }
 
             SectionHeader {
-                text: "Sources"
+                text: qsTr("Sources")
             }
 
             Label {

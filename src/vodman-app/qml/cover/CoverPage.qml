@@ -51,7 +51,7 @@ CoverBackground {
         y: Theme.paddingLarge
         height: 0.5 * parent.height - 2*y
         width: parent.width - 2 * x
-        text: "No downloads at present"
+        text: qsTr("No downloads at present")
         visible: listView.count === 0
         wrapMode: Text.WordWrap
         font.pixelSize: Theme.fontSizeMedium

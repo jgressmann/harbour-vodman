@@ -1,5 +1,3 @@
-
-
 # NOTICE:
 #
 # Application name defined in TARGET has a corresponding QML filename.
@@ -19,9 +17,7 @@ QT -= gui network
 CONFIG += sailfishapp
 
 DISTFILES += harbour-vodman.desktop
-DISTFILES += icons/cover.svg
-DISTFILES += icons/icon.svg
-DISTFILES += icons/tape.png
+DISTFILES += icons/cover.svg icons/icon.svg icons/tape.png
 DISTFILES += qml/harbour-vodman.qml \
     qml/cover/CoverPage.qml \
     qml/pages/DownloadPage.qml \
@@ -32,6 +28,7 @@ DISTFILES += qml/harbour-vodman.qml \
     qml/ProgressOverlay.qml \
     qml/Global.qml \
     qml/qmldir \
+    translations/*.ts \
 
 
 
@@ -45,7 +42,7 @@ CONFIG += sailfishapp_i18n
 # planning to localize your app, remember to comment out the
 # following TRANSLATIONS line. And also do not forget to
 # modify the localized app name in the the .desktop file.
-#TRANSLATIONS += ../../translations/harbour-vodman-de.ts
+TRANSLATIONS += translations/harbour-vodman-de.ts
 
 
 
@@ -74,8 +71,6 @@ PKGCONFIG += sailfishapp
 
 include(../common.pri)
 include(../vodman-lib/vodman-lib.pri)
-
-#INCLUDEPATH += ../vodman-lib
 
 
 

@@ -1,6 +1,6 @@
 /* The MIT License (MIT)
  *
- * Copyright (c) 2018 Jean Gressmann <jean@0x42.de>
+ * Copyright (c) 2018, 2019 Jean Gressmann <jean@0x42.de>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -37,12 +37,12 @@ Dialog {
     onValuesChanged: _updateMenu()
 
     function _updateMenu() {
-        console.debug("currentIndex=" + comboBox.currentIndex)
+//        console.debug("currentIndex=" + comboBox.currentIndex)
         comboBox.currentIndex = -1
         if (values && labels && values.length === labels.length) {
-            console.debug("make menu")
-            console.debug("labels=" + labels)
-            console.debug("values=" + values)
+//            console.debug("make menu")
+//            console.debug("labels=" + labels)
+//            console.debug("values=" + values)
             comboBox.menu = _makeMenu()
         } else {
             comboBox.menu = null
@@ -73,7 +73,7 @@ text: \"" + label + "\"
         width: parent.width
 
         DialogHeader {
-            title: "Select a format"
+            title: qsTr("Select a format")
         }
 
         Flickable {
@@ -84,7 +84,7 @@ text: \"" + label + "\"
 
             ComboBox {
                 id: comboBox
-                label: "Format"
+                label: qsTr("Format")
             }
         }
     }

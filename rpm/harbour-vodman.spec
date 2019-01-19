@@ -34,9 +34,8 @@ Requires:   sailfishsilica-qt5 >= 0.10.9
 %{_datadir}/%{name}/qml/*
 %{_datadir}/%{name}/icons/*
 %{_datadir}/%{name}/COPYING*
+%{_datadir}/%{name}/translations/*
 
-#%define __provides_exclude_from ^%{_datadir}/.*$
-#%define __requires_exclude ^libvodman.*$
 
 %prep
 %setup -q -n %{name}-%{version}

@@ -1,6 +1,6 @@
 /* The MIT License (MIT)
  *
- * Copyright (c) 2018 Jean Gressmann <jean@0x42.de>
+ * Copyright (c) 2018, 2019 Jean Gressmann <jean@0x42.de>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,19 +32,19 @@ ComboBox {
     property int format: VM.VM_Any
     property bool excludeAskEveryTime: false
     currentIndex: -1
-    label: "Format"
+    label: qsTr("Format")
 
     menu: ContextMenu {
         id: menu
-        MenuItem { text: "best quality (largest)" }
-        MenuItem { text: "worst quality (smallest)" }
+        MenuItem { text: qsTr("best quality (largest)") }
+        MenuItem { text: qsTr("worst quality (smallest)") }
         MenuItem { text: "1080" }
         MenuItem { text: "720" }
         MenuItem { text: "360" }
         MenuItem { text: "240" }
         MenuItem {
             id: askEveryTime
-            text: "ask every time"
+            text: qsTr("ask every time")
         }
     }
 
