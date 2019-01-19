@@ -1,6 +1,6 @@
 /* The MIT License (MIT)
  *
- * Copyright (c) 2018 Jean Gressmann <jean@0x42.de>
+ * Copyright (c) 2018, 2019 Jean Gressmann <jean@0x42.de>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,17 +23,16 @@
 
 #pragma once
 
-#include "service_interface.h" // http://inz.fi/2011/02/18/qmake-and-d-bus/
+
 #include "VMVodFileDownload.h"
 #include "VMVodMetaDataDownload.h"
+#include "VMService.h"
 
 #include <QAbstractListModel>
-#include <QMutex>
 #include <QNetworkConfigurationManager>
 
 
 class VMQuickVodDownload;
-class QDBusPendingCallWatcher;
 class VMQuickVodDownloadModel : public QAbstractListModel
 {
     Q_OBJECT
@@ -78,20 +77,15 @@ private slots:
     void onVodFileDownloadRemoved(qint64 handle, const QByteArray& download);
     void onVodFileDownloadChanged(qint64 handle, const QByteArray& download);
     void onVodFileMetaDataDownloadCompleted(qint64 handle, const QByteArray& download);
-    void onStartDownloadVodFileReply(QDBusPendingCallWatcher *self);
-    void onNewTokenReply(QDBusPendingCallWatcher *self);
-    void onMetaDataDownloadReply(QDBusPendingCallWatcher *self);
     void onOnlineChanged(bool online);
-
 
 private:
     int getHandleRow(qint64 handle) const;
     void vodFileDownloadAdded(qint64 handle, const VMVodFileDownload& download);
 
 private:
-    mutable QMutex m_Lock;
+    VMService m_Service;
     QNetworkConfigurationManager m_NetworkConfigurationManager;
-    org::duckdns::jgressmann::vodman::service* m_Service;
     QHash<qint64, VMQuickVodDownload*> m_Downloads;
     QList<qint64> m_Rows;
     QList<qint64> m_UserDownloads;

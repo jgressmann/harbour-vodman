@@ -1,6 +1,6 @@
 /* The MIT License (MIT)
  *
- * Copyright (c) 2018 Jean Gressmann <jean@0x42.de>
+ * Copyright (c) 2018, 2019 Jean Gressmann <jean@0x42.de>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,24 +24,13 @@
 #include "VMService.h"
 #include "VMVodFileDownload.h"
 #include "VMVodMetaDataDownload.h"
-#include "service_adaptor.h" // http://inz.fi/2011/02/18/qmake-and-d-bus/
 
-#include <QDBusConnection>
+
 #include <QDebug>
 #include <QDataStream>
 
 
 VMService::VMService(QObject *parent) : QObject(parent) {
-    QDBusConnection connection = QDBusConnection::sessionBus();
-    if (!connection.registerObject("/instance", this)) {
-        qFatal("Could not register object '/instance': %s", qPrintable(connection.lastError().message()));
-    }
-    if (!connection.registerService("org.duckdns.jgressmann.vodman.service")) {
-        qFatal("DBUS service already taken. Kill the other instance first. %s", qPrintable(connection.lastError().message()));
-    }
-
-    new ServiceAdaptor(this);
-
 
     connect(    &m_YoutubeDownloader,
                 &VMYTDL::fetchVodMetaDataCompleted,
@@ -49,9 +38,6 @@ VMService::VMService(QObject *parent) : QObject(parent) {
                 &VMService::onFetchVodMetaDataCompleted);
     connect(&m_YoutubeDownloader, &VMYTDL::vodStatusChanged, this, &VMService::onFetchVodFileStatusChanged);
     connect(&m_YoutubeDownloader, &VMYTDL::vodFetchCompleted, this, &VMService::onFetchVodFileCompleted);
-
-
-    qInfo("Service started at org.duckdns.jgressmann.vodman.service/instance");
 }
 
 qint64

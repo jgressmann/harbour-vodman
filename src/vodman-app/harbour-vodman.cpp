@@ -1,6 +1,6 @@
 /* The MIT License (MIT)
  *
- * Copyright (c) 2018 Jean Gressmann <jean@0x42.de>
+ * Copyright (c) 2018, 2019 Jean Gressmann <jean@0x42.de>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,7 +31,7 @@
 
 #include "VMQuickVodDownloadModel.h"
 #include "VMApp.h"
-//#include "Installer.h"
+#include "VMYTDL.h"
 
 static QObject *singletonTypeProvider(QQmlEngine *, QJSEngine *)
 {
@@ -43,9 +43,9 @@ int main(int argc, char *argv[])
     QScopedPointer<QGuiApplication> app(SailfishApp::application(argc, argv));
     app->setApplicationVersion(QStringLiteral("%1.%2.%3").arg(QString::number(VODMAN_VERSION_MAJOR), QString::number(VODMAN_VERSION_MINOR), QString::number(VODMAN_VERSION_PATCH)));
 
-    qDebug("%s version %s\n", qPrintable(app->applicationName()), qPrintable(app->applicationVersion()));
+    qInfo("%s version %s\n", qPrintable(app->applicationName()), qPrintable(app->applicationVersion()));
 
-//    qmlRegisterType<Installer>(VODMAN_NAMESPACE, 1, 0, "Installer");
+    VMYTDL::initialize();
 
     qmlRegisterType<VMQuickVodDownloadModel>(VODMAN_NAMESPACE, 1, 0, "VodDownloadModel");
     qmlRegisterUncreatableType<VMVodEnums>(VODMAN_NAMESPACE, 1, 0, "VM", QStringLiteral("wrapper around C++ enums"));
@@ -53,10 +53,10 @@ int main(int argc, char *argv[])
 
 
     QScopedPointer<QQuickView> view(SailfishApp::createView());
-//    auto path = SailfishApp::pathTo(QStringLiteral("lib/qt5/qml"));
-//    view->engine()->addImportPath(path.toString());
     view->setSource(SailfishApp::pathToMainQml());
     view->requestActivate();
     view->show();
-    return app->exec();
+    auto exitCode = app->exec();
+    VMYTDL::finalize();
+    return exitCode;
 }

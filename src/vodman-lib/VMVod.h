@@ -57,7 +57,6 @@ public:
     {
         VM_ErrorUnknown = -1,
         VM_ErrorNone = 0,
-        VM_ErrorServiceUnavailable,
         VM_ErrorNoYoutubeDl,
         VM_ErrorCanceled,
         VM_ErrorCrashed,

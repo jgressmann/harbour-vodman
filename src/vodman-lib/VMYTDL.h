@@ -1,6 +1,6 @@
 /* The MIT License (MIT)
  *
- * Copyright (c) 2018 Jean Gressmann <jean@0x42.de>
+ * Copyright (c) 2018, 2019 Jean Gressmann <jean@0x42.de>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,12 +26,14 @@
 #include <QCache>
 #include <QProcess>
 #include <QVariantMap>
-#include <QMutex>
 #include <QDateTime>
+#include <QScopedPointer>
 
 #include "VMVod.h"
 
+
 class QJsonObject;
+class QTemporaryFile;
 class VMVodFormat;
 class VMVodFileDownload;
 class VMVodFileDownloadRequest;
@@ -43,9 +45,10 @@ public:
     ~VMYTDL();
     VMYTDL(QObject* parent = Q_NULLPTR);
 
-    static void runInitialCheck();
-    static bool available() { return _works; }
-    static QString version() { return _version_str; }
+    static void initialize();
+    static void finalize();
+    static bool available() { return !ms_YoutubeDl_Version.isEmpty(); }
+    static QString version() { return ms_YoutubeDl_Version; }
 
     bool startFetchVodMetaData(qint64 token, const QString& url);
     bool fetchVod(qint64 token, const VMVodFileDownloadRequest& request, VMVodFileDownload* result = Q_NULLPTR);
@@ -80,14 +83,13 @@ private:
     };
 
 private:
-    QMutex m_Lock;
     QCache<QString, CacheEntry> m_MetaDataCache;
     QHash<QProcess*, QVariantMap> m_ProcessMap;
     QHash<qint64, QProcess*> m_VodDownloads;
 
 private: // statics
-    static QString _version_str;
-    static bool _works;
+    static QString ms_YoutubeDl_Version;
+    static QString ms_YoutubeDl_Path;
 };
 
 

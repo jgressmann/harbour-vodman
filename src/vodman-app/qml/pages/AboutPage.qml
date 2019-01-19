@@ -1,6 +1,6 @@
 /* The MIT License (MIT)
  *
- * Copyright (c) 2018 Jean Gressmann <jean@0x42.de>
+ * Copyright (c) 2018, 2019 Jean Gressmann <jean@0x42.de>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -91,7 +91,7 @@ Page {
                 }
 
                 Label {
-                    text: "youtube-dl 2018.11.07"
+                    text: "youtube-dl 2019.01.17"
                     anchors.horizontalCenter: parent.horizontalCenter
                     font.pixelSize: Theme.fontSizeMedium
                     color: Theme.highlightColor
@@ -134,7 +134,7 @@ Page {
             Label {
                 x: Theme.horizontalPageMargin
                 width: parent.width-2*x
-                text: "Copyright (c) 2018 by Jean Gressmann.
+                text: "Copyright (c) 2018, 2019 Jean Gressmann.
 
 Vodman is available under the <a href=\"https://opensource.org/licenses/MIT\">MIT</a> license. " +
 "Vodman uses youtube-dl which is in the <a href=\"http://unlicense.org/\">public domain</a>."

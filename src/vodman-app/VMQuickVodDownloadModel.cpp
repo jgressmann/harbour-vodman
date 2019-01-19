@@ -1,6 +1,6 @@
 /* The MIT License (MIT)
  *
- * Copyright (c) 2018 Jean Gressmann <jean@0x42.de>
+ * Copyright (c) 2018, 2019 Jean Gressmann <jean@0x42.de>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,10 +25,8 @@
 #include "VMVodMetaDataDownload.h"
 #include "VMQuickVodDownload.h"
 
-#include <QDBusConnection>
 #include <QDebug>
 #include <QDataStream>
-#include <QDBusPendingCallWatcher>
 #include <QUrl>
 #include <QNetworkConfiguration>
 
@@ -53,31 +51,23 @@ VMQuickVodDownloadModel::~VMQuickVodDownloadModel()
 
 VMQuickVodDownloadModel::VMQuickVodDownloadModel(QObject *parent)
     : QAbstractListModel(parent)
-    , m_Lock(QMutex::Recursive)
     , m_Token(-1)
 {
-    QDBusConnection connection = QDBusConnection::sessionBus();
-    m_Service = new org::duckdns::jgressmann::vodman::service("org.duckdns.jgressmann.vodman.service", "/instance", connection);
-    m_Service->setParent(this);
-
     connect(
-                m_Service,
-                &org::duckdns::jgressmann::vodman::service::vodFileDownloadRemoved,
+                &m_Service,
+                &VMService::vodFileDownloadRemoved,
                 this,
                 &VMQuickVodDownloadModel::onVodFileDownloadRemoved);
 
     connect(
-                m_Service,
-                &org::duckdns::jgressmann::vodman::service::vodFileDownloadChanged,
+                &m_Service,
+                &VMService::vodFileDownloadChanged,
                 this,
                 &VMQuickVodDownloadModel::onVodFileDownloadChanged);
 
-
-
-
     connect(
-                m_Service,
-                &org::duckdns::jgressmann::vodman::service::vodMetaDataDownloadCompleted,
+                &m_Service,
+                &VMService::vodMetaDataDownloadCompleted,
                 this,
                 &VMQuickVodDownloadModel::onVodFileMetaDataDownloadCompleted);
 
@@ -96,7 +86,7 @@ VMQuickVodDownloadModel::onVodFileDownloadAdded(qint64 handle, const QByteArray&
     }
 
     if (download.isValid()) {
-        QMutexLocker g(&m_Lock);
+
         if (m_Downloads.count(handle)) {
             qWarning() << "token" << handle << "already added to downloads";
         } else {
@@ -111,7 +101,6 @@ void
 VMQuickVodDownloadModel::onVodFileDownloadRemoved(qint64 handle, const QByteArray& result)
 {
     qDebug() << "enter" << handle;
-    QMutexLocker g(&m_Lock);
     auto it = m_Downloads.find(handle);
     if (m_Downloads.end() == it) {
         qDebug() << "received download removed event for handle" << handle
@@ -167,7 +156,6 @@ VMQuickVodDownloadModel::onVodFileDownloadChanged(qint64 handle, const QByteArra
         return;
     }
 
-    QMutexLocker g(&m_Lock);
     auto it = m_Downloads.find(handle);
     if (m_Downloads.end() == it) {
         vodFileDownloadAdded(handle, download);
@@ -185,7 +173,6 @@ void
 VMQuickVodDownloadModel::onVodFileMetaDataDownloadCompleted(qint64 token, const QByteArray& result)
 {
     qDebug() << "enter" << token;
-    QMutexLocker g(&m_Lock);
     if (token == m_Token) {
         m_UserDownloads << token;
         auto url = m_Url;
@@ -233,7 +220,6 @@ VMQuickVodDownloadModel::data(const QModelIndex &index, int role) const
     if (role > Qt::UserRole) {
         int column = role - Qt::UserRole - 1;
 
-        QMutexLocker g(&m_Lock);
         if (index.isValid() &&
                 index.row() < m_Rows.size()) {
             auto handle = m_Rows[index.row()];
@@ -252,7 +238,6 @@ int
 VMQuickVodDownloadModel::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
-    QMutexLocker g(&m_Lock);
     return m_Rows.size();
 }
 
@@ -260,7 +245,6 @@ VMQuickVodDownloadModel::rowCount(const QModelIndex &parent) const
 void
 VMQuickVodDownloadModel::startDownloadMetaData(const QString& url)
 {
-    QMutexLocker g(&m_Lock);
     if (!canStartDownload()) {
         return;
     }
@@ -271,16 +255,14 @@ VMQuickVodDownloadModel::startDownloadMetaData(const QString& url)
     }
 
     m_Url = url;
-    auto reply = m_Service->newToken();
-    auto watcher = new QDBusPendingCallWatcher(reply, this);
-    connect(watcher, &QDBusPendingCallWatcher::finished, this, &VMQuickVodDownloadModel::onNewTokenReply);
+    m_Token = m_Service.newToken();
+    m_Service.startFetchVodMetaData(m_Token, m_Url);
     emit canStartDownloadChanged();
 }
 
 void
 VMQuickVodDownloadModel::cancelDownloadMetaData()
 {
-    QMutexLocker g(&m_Lock);
     m_Url.clear();
     m_Token = -1;
     emit canStartDownloadChanged();
@@ -290,7 +272,6 @@ void
 VMQuickVodDownloadModel::startDownloadVod(
         qint64 token, const VMVod& vod, int formatIndex, const QString& filePath) {
 
-    QMutexLocker g(&m_Lock);
     if (!canStartDownload()) {
         return;
     }
@@ -320,85 +301,32 @@ VMQuickVodDownloadModel::startDownloadVod(
         s << req;
     }
 
-    auto pendingReply = m_Service->startFetchVodFile(token, b);
-    auto watcher = new QDBusPendingCallWatcher(pendingReply, this);
-    connect(watcher, &QDBusPendingCallWatcher::finished, this, &VMQuickVodDownloadModel::onStartDownloadVodFileReply);
-}
 
-
-void
-VMQuickVodDownloadModel::onNewTokenReply(QDBusPendingCallWatcher *self) {
-    QMutexLocker g(&m_Lock);
-    self->deleteLater();
-    QDBusPendingReply<qint64> reply = *self;
-    if (reply.isValid()) {
-        m_Token = reply.value();
-        auto reply = m_Service->startFetchVodMetaData(m_Token, m_Url);
-        auto watcher = new QDBusPendingCallWatcher(reply, this);
-        connect(watcher, &QDBusPendingCallWatcher::finished, this, &VMQuickVodDownloadModel::onMetaDataDownloadReply);
-    } else {
-         qDebug() << "invalid new token reply" << reply.error();
-         emit downloadFailed(m_Url, VMVodEnums::VM_ErrorServiceUnavailable, QString());
-         m_Url.clear();
-         emit canStartDownloadChanged();
-    }
-}
-
-void
-VMQuickVodDownloadModel::onMetaDataDownloadReply(QDBusPendingCallWatcher *self) {
-    QMutexLocker g(&m_Lock);
-    self->deleteLater();
-    QDBusPendingReply<> reply = *self;
-    if (reply.isValid()) {
-        // nothing to do
-    } else {
-        qDebug() << "invalid metadata download reply for" << m_Url  << "error" << reply.error();
-        m_Token = -1;
-        emit downloadFailed(m_Url, VMVodEnums::VM_ErrorServiceUnavailable, QString());
-        m_Url.clear();
-        emit canStartDownloadChanged();
-    }
-}
-
-void
-VMQuickVodDownloadModel::onStartDownloadVodFileReply(QDBusPendingCallWatcher *self) {
-    QMutexLocker g(&m_Lock);
-    self->deleteLater();
-    QDBusPendingReply<> reply = *self;
-    if (reply.isValid()) {
-        // nothing to do
-        m_UserDownloadsFilePaths << m_FilePath;
-        m_FilePath.clear();
-    } else {
-        qDebug() << "invalid reply" << reply.error();
-        m_Token = -1;
-        emit downloadFailed(m_Url, VMVodEnums::VM_ErrorServiceUnavailable, QString());
-        m_Url.clear();
-        m_FilePath.clear();
-        emit canStartDownloadChanged();
-    }
+    m_UserDownloadsFilePaths << m_FilePath;
+    m_FilePath.clear();
+    m_Service.startFetchVodFile(token, b);
 }
 
 void
 VMQuickVodDownloadModel::cancelDownload(int index, bool deleteFile)
 {
     qDebug() << "index" << index << "delete?" << deleteFile;
-    QMutexLocker g(&m_Lock);
+
     if (index < m_Rows.size()) {
         auto handle = m_Rows[index];
         qDebug() << "handle" << handle << "delete?" << deleteFile;
-        m_Service->cancelFetchVodFile(handle, deleteFile);
+        m_Service.cancelFetchVodFile(handle, deleteFile);
     }
 }
 
 void
 VMQuickVodDownloadModel::cancelDownloads(bool deleteFiles) {
     qDebug() << "delete?" << deleteFiles;
-    QMutexLocker g(&m_Lock);
+
     for (auto i = 0; i < m_Rows.size(); ++i) {
         auto handle = m_Rows[i];
         qDebug() << "cancel" << handle;
-        m_Service->cancelFetchVodFile(handle, deleteFiles);
+        m_Service.cancelFetchVodFile(handle, deleteFiles);
     }
 }
 

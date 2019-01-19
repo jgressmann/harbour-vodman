@@ -4,15 +4,14 @@
 %{?qtc_builddir:%define _builddir %qtc_builddir}
 
 Name:       harbour-vodman
-Summary:    Video On Demand (VOD) download manager for SailfishOS
-Version:    1.0.10
+Summary:    Video On Demand (VOD) download tool for SailfishOS
+Version:    1.1.0
 Release:    1
 Group:      Applications/Multimedia
 License:    MIT
 URL:        https://openrepos.net/content/jgressmann/vodman
 Source0:    %{name}-%{version}.tar.bz2
 
-BuildRequires:  pkgconfig(Qt5DBus)
 BuildRequires:  pkgconfig(Qt5Core)
 BuildRequires:  pkgconfig(Qt5Qml)
 BuildRequires:  pkgconfig(Qt5Quick)
@@ -22,8 +21,6 @@ BuildRequires:  desktop-file-utils
 
 #Requires:   python3-base
 Requires:   sailfishsilica-qt5 >= 0.10.9
-Requires:   libvodman = %{version}
-Requires:   vodman-service = %{version}
 
 %description
 %{summary}
@@ -37,53 +34,6 @@ Requires:   vodman-service = %{version}
 %{_datadir}/%{name}/qml/*
 %{_datadir}/%{name}/icons/*
 %{_datadir}/%{name}/COPYING*
-
-
-%package -n libvodman
-Summary: vodman library.
-Group: Development/Libraries
-Provides: libvodman = %{version}
-
-%description -n libvodman
-%{summary}
-
-%files -n libvodman
-%defattr(-,root,root,-)
-%{_libdir}/*
-
-
-%package -n libvodman-devel
-Summary: Development headers for vodman library.
-Group: Development/Libraries
-Requires: libvodman = %{version}
-Requires: vodman-service = %{version}
-
-%description -n libvodman-devel
-%{summary}
-
-%files -n libvodman-devel
-%defattr(-,root,root,-)
-%{_includedir}/vodman/*.h
-
-
-%package -n vodman-service
-Summary: vodman service.
-Group: System Environment/Daemon
-Requires: libvodman = %{version}
-Requires: python3-base
-
-%description -n vodman-service
-%{summary}
-
-%files -n vodman-service
-%defattr(-,root,root,-)
-%attr(0755,root,root) %{_bindir}/vodman-service
-%attr(0755,root,root) %{_bindir}/vodman-cli
-%attr(0755,root,root) %{_bindir}/vodman-youtube-dl
-/usr/share/dbus-1/services/org.duckdns.jgressmann.vodman.service.service
-/usr/share/dbus-1/interfaces/org.duckdns.jgressmann.vodman.service.xml
-
-
 
 #%define __provides_exclude_from ^%{_datadir}/.*$
 #%define __requires_exclude ^libvodman.*$
@@ -99,20 +49,3 @@ Requires: python3-base
 rm -rf %{buildroot}
 %qmake5_install
 
-
-%define vs_pid $(ps -C vodman-service -o pid=)
-
-
-
-%post -n vodman-service
-if [ -n "%{vs_pid}" ]
-then
-    kill -s 10 %{vs_pid}
-fi
-
-
-%post -n libvodman
-/sbin/ldconfig
-
-%postun -n libvodman
-/sbin/ldconfig

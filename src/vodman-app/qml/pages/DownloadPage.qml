@@ -187,10 +187,6 @@ Page {
             errorNotification.body = errorNotification.previewBody =
                     "youtube-dl not working"
             break
-        case VM.VM_ErrorServiceUnavailable:
-            errorNotification.body = errorNotification.previewBody =
-                    "Vodman service not available"
-            break
         case VM.VM_ErrorCrashed:
             errorNotification.body = errorNotification.previewBody =
                     "youtube-dl process crashed"

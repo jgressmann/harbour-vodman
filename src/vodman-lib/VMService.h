@@ -1,6 +1,6 @@
 /* The MIT License (MIT)
  *
- * Copyright (c) 2018 Jean Gressmann <jean@0x42.de>
+ * Copyright (c) 2018, 2019 Jean Gressmann <jean@0x42.de>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -37,22 +37,16 @@ public:
 
 public slots:
     qint64 newToken();
-    //int startFetchVodMetaData(const QString& url);
     void startFetchVodMetaData(qlonglong token, const QString& url);
     void startFetchVodFile(qlonglong token, const QByteArray& vmVodFileDownloadRequest);
-    //int startFetchVodFile(const QByteArray& vmVodFormat, const QString& filePath);
-//    int startFetchVodFile(const QString& url, const QString& formatId, const QString& filePath);
     void cancelFetchVodFile(qlonglong handle, bool deleteFile);
     QVariantList inProgressVodFileFetches();
 
 signals:
     void vodMetaDataDownloadCompleted(qint64 handle, const QByteArray &result);
-//    void fetchVodFileCompleted(int, QVariantMap result);
-//    void fetchVodFileStatusChanged(int, QVariantMap result);
     void vodFileDownloadAdded(qlonglong handle, const QByteArray &result);
     void vodFileDownloadChanged(qlonglong handle, const QByteArray &result);
     void vodFileDownloadRemoved(qlonglong handle, const QByteArray &result);
-    void foo(const QByteArray &result);
 
 private slots:
     void onFetchVodMetaDataCompleted(qint64, const VMVodMetaDataDownload &result);

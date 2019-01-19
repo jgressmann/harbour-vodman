@@ -1,3 +1,5 @@
+
+
 # NOTICE:
 #
 # Application name defined in TARGET has a corresponding QML filename.
@@ -13,7 +15,6 @@
 TARGET = harbour-vodman
 
 QT -= gui network
-QT += dbus
 
 CONFIG += sailfishapp
 
@@ -34,7 +35,7 @@ DISTFILES += qml/harbour-vodman.qml \
 
 
 
-SAILFISHAPP_ICONS = 86x86 108x108 128x128 256x256
+SAILFISHAPP_ICONS = 86x86 108x108 128x128 172x172 256x256
 
 # to disable building translations every time, comment out the
 # following CONFIG line
@@ -45,11 +46,6 @@ CONFIG += sailfishapp_i18n
 # following TRANSLATIONS line. And also do not forget to
 # modify the localized app name in the the .desktop file.
 #TRANSLATIONS += ../../translations/harbour-vodman-de.ts
-
-
-
-DBUS_INTERFACES += ../../dbus/org.duckdns.jgressmann.vodman.service.xml
-
 
 
 
@@ -73,9 +69,13 @@ INSTALLS += icons
 
 
 CONFIG += link_pkgconfig
-#PKGCONFIG += nemotransferengine-qt5
 PKGCONFIG += sailfishapp
 
 
-include(../../common.pri)
-LIBS += -L../vodman-lib -lvodman
+include(../common.pri)
+include(../vodman-lib/vodman-lib.pri)
+
+#INCLUDEPATH += ../vodman-lib
+
+
+
