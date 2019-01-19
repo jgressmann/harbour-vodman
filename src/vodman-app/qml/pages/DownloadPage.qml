@@ -198,6 +198,7 @@ Page {
         case VM.VM_ErrorTimedOut:
             errorNotification.body = errorNotification.previewBody =
                     "Download timed out"
+            break
         case VM.VM_ErrorInvalidResponse:
             errorNotification.body = errorNotification.previewBody =
                     "Host delivered an invalid response to VOD format request"
