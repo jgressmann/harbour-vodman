@@ -32,19 +32,19 @@ ComboBox {
     property int format: VM.VM_Any
     property bool excludeAskEveryTime: false
     currentIndex: -1
-    label: qsTr("Format")
+    label: qsTrId("format-label")
 
     menu: ContextMenu {
         id: menu
-        MenuItem { text: qsTr("best quality (largest)") }
-        MenuItem { text: qsTr("worst quality (smallest)") }
+        MenuItem { text: qsTrId("format-best") } // best quality (largest)
+        MenuItem { text: qsTrId("format-worst") }
         MenuItem { text: "1080" }
         MenuItem { text: "720" }
         MenuItem { text: "360" }
         MenuItem { text: "240" }
         MenuItem {
             id: askEveryTime
-            text: qsTr("ask every time")
+            text: qsTrId("format-combobox-ask")
         }
     }
 

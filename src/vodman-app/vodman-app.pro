@@ -12,7 +12,7 @@
 # The name of your application
 TARGET = harbour-vodman
 
-QT -= gui network
+#QT -= gui network
 
 CONFIG += sailfishapp
 
@@ -28,7 +28,8 @@ DISTFILES += qml/harbour-vodman.qml \
     qml/ProgressOverlay.qml \
     qml/Global.qml \
     qml/qmldir \
-    translations/*.ts \
+    translations/harbour-vodman.ts \
+    translations/harbour-vodman-de.ts \
 
 
 
@@ -43,6 +44,7 @@ CONFIG += sailfishapp_i18n
 # following TRANSLATIONS line. And also do not forget to
 # modify the localized app name in the the .desktop file.
 TRANSLATIONS += translations/harbour-vodman-de.ts
+#TRANSLATIONS += translations/harbour-vodman.ts
 
 
 
@@ -65,8 +67,8 @@ icons.files = icons/cover.svg icons/icon.svg icons/tape.png
 INSTALLS += icons
 
 
-CONFIG += link_pkgconfig
-PKGCONFIG += sailfishapp
+#CONFIG += link_pkgconfig
+#PKGCONFIG += sailfishapp
 
 
 include(../common.pri)

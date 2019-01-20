@@ -39,14 +39,15 @@ Page {
             spacing: Theme.paddingLarge
             x: Theme.paddingMedium
             width: parent.width - 2*x
-            PageHeader { title: qsTr("About %1").arg(App.displayName) }
+            //: About Vodman
+            //%1 app display name
+            PageHeader { title: qsTrId("about-page-header").arg(App.displayName) }
 
             Column {
                 spacing: Theme.paddingSmall
                 width: parent.width
 
                 Image {
-                    //source: "/usr/share/harbour-vodman/icons/icon.svg"
                     source: "/usr/share/icons/hicolor/128x128/apps/harbour-vodman.png"
                     anchors.horizontalCenter: parent.horizontalCenter
                     fillMode: Image.PreserveAspectFit
@@ -83,7 +84,9 @@ Page {
                 }
 
                 Label {
-                    text: App.displayName + " " + App.version
+                    //% app display name
+                    //% app version string
+                    text: qsTrId("about-version-text").arg(App.displayName).arg(App.version)
                     anchors.horizontalCenter: parent.horizontalCenter
                     font.pixelSize: Theme.fontSizeLarge
                     color: Theme.highlightColor
@@ -107,15 +110,14 @@ Page {
             }
 
             SectionHeader {
-                text: qsTr("Description")
+                text: qsTrId("about-description-header")
             }
 
             Label {
                 x: Theme.horizontalPageMargin
                 width: parent.width-2*x
-                text:
-qsTr("%1 is a versatile tool for downloading videos on demand (VODs) to your device from " +
-"popular sites such as <a href=\"https://www.youtube.com/\">Youtube</a> or <a href=\"https://www.twitch.tv/\">Twitch</a>.").arg(App.displayName)
+                //% app display name
+                text: qsTrId("about-description-text").arg(App.displayName)
                 wrapMode: Text.WordWrap
                 font.pixelSize: Theme.fontSizeExtraSmall
                 color: Theme.highlightColor
@@ -126,16 +128,14 @@ qsTr("%1 is a versatile tool for downloading videos on demand (VODs) to your dev
             }
 
             SectionHeader {
-                text: qsTr("Licensing")
+                text: qsTrId("about-licensing-header")
             }
 
             Label {
                 x: Theme.horizontalPageMargin
                 width: parent.width-2*x
-                text: qsTr("Copyright (c) 2018, 2019 Jean Gressmann.
-
-%1 is available under the <a href=\"https://opensource.org/licenses/MIT\">MIT</a> license. " +
-"%1 uses youtube-dl which is in the <a href=\"http://unlicense.org/\">public domain</a>.").arg(App.displayName)
+                //% app display name
+                text: qsTrId("about-licensing-text").arg(App.displayName)
                 wrapMode: Text.WordWrap
                 font.pixelSize: Theme.fontSizeExtraSmall
                 color: Theme.highlightColor
@@ -146,13 +146,13 @@ qsTr("%1 is a versatile tool for downloading videos on demand (VODs) to your dev
             }
 
             SectionHeader {
-                text: qsTr("Sources")
+                text: qsTrId("about-sources-header")
             }
 
             Label {
                 x: Theme.horizontalPageMargin
                  width: parent.width-2*x
-                 text: "The sources are available on <a href=\"https://github.com/jgressmann/harbour-vodman\">GitHub</a>."
+                 text: qsTrId("about-sources-text")
                  wrapMode: Text.WordWrap
                  font.pixelSize: Theme.fontSizeExtraSmall
                  color: Theme.highlightColor

@@ -73,7 +73,7 @@ text: \"" + label + "\"
         width: parent.width
 
         DialogHeader {
-            title: qsTr("Select a format")
+            title: qsTrId("select-format-dialog-title") // Select a format
         }
 
         Flickable {
@@ -84,7 +84,7 @@ text: \"" + label + "\"
 
             ComboBox {
                 id: comboBox
-                label: qsTr("Format")
+                label: qsTrId("format-label")
             }
         }
     }

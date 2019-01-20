@@ -130,17 +130,17 @@ Page {
         id: model
 
         SectionHeader {
-            text: qsTr("Network")
+            text: qsTrId("settings-network-header") // Network
         }
 
         ComboBox {
             id: bearerModeComboBox
             width: parent.width
-            label: qsTr("Network connection type")
+            label: qsTrId("settings-network-connection-type") // Network connection type
             menu: ContextMenu {
-                MenuItem { text: qsTr("Autodetect") }
-                MenuItem { text: qsTr("Broadband") }
-                MenuItem { text: qsTr("Mobile") }
+                MenuItem { text: qsTrId("settings-network-connection-autodetect") }
+                MenuItem { text: qsTrId("settings-network-connection-broadband") }
+                MenuItem { text: qsTrId("settings-network-connection-mobile") }
             }
 
             Component.onCompleted: currentIndex = settingBearerMode.value
@@ -152,11 +152,11 @@ Page {
         }
 
         SectionHeader {
-            text: qsTr("Format")
+            text: qsTrId("format-label")
         }
 
         FormatComboBox {
-            label: qsTr("Broadband")
+            label: qsTrId("settings-network-broadband-label")
             excludeAskEveryTime: false
             format: settingBroadbandDefaultFormat.value
             onFormatChanged: {
@@ -166,7 +166,7 @@ Page {
         }
 
         FormatComboBox {
-            label: qsTr("Mobile")
+            label: qsTrId("settings-network-mobile-label")
             excludeAskEveryTime: false
             format: settingMobileDefaultFormat.value
             onFormatChanged: {
@@ -176,7 +176,8 @@ Page {
         }
 
         SectionHeader {
-            text: qsTr("Location")
+            text: //qsTr("Location")
+                  qsTrId("settings-save-location-header")
         }
 
         Column {
@@ -186,11 +187,12 @@ Page {
             ComboBox {
                 id: saveDirectoryComboBox
                 width: parent.width
-                label: qsTr("Directory")
+                label: //qsTr("Directory")
+                       qsTrId("settings-save-location-directory-label")
                 menu: ContextMenu {
-                    MenuItem { text: qsTr("Downloads") }
-                    MenuItem { text: qsTr("Videos") }
-                    MenuItem { text: qsTr("Custom") }
+                    MenuItem { text: qsTrId("settings-save-location-directory-downloads") }
+                    MenuItem { text: qsTrId("settings-save-location-directory-videos") }
+                    MenuItem { text: qsTrId("settings-save-location-directory-custom") }
                 }
             }
 
@@ -198,8 +200,10 @@ Page {
                 id: saveDirectoryTextField
                 width: parent.width
                 text: settingDefaultDirectory.value
-                label: qsTr("VODs are saved here", "label")
-                placeholderText: qsTr("Default directory to save VODs", "placeholder")
+                label: //qsTr("VODs are saved here", "label")
+                       qsTrId("settings-save-location-directory-field-label")
+                placeholderText: //qsTr("Default directory to save VODs", "placeholder")
+                                 qsTrId("settings-save-location-directory-field-placeholder")
                 EnterKey.iconSource: "image://theme/icon-m-enter-close"
                 EnterKey.onClicked: focus = false
 
@@ -211,7 +215,8 @@ Page {
 
             Button {
                 anchors.horizontalCenter: parent.horizontalCenter
-                text: qsTr("Pick directory")
+                text: //qsTr("Pick directory")
+                      qsTrId("settings-save-location-pick-directory")
                 onClicked: pageStack.push(filePickerPage)
             }
 
@@ -239,11 +244,12 @@ Page {
             ComboBox {
                 id: fileNameComboBox
                 width: parent.width
-                label: "File name"
+                label: //"File name"
+                       qsTrId("settings-save-location-file-name-combobox-label")
                 menu: ContextMenu {
-                    MenuItem { text: qsTr("Title") }
-                    MenuItem { text: qsTr("Video id") }
-                    MenuItem { text: qsTr("Custom") }
+                    MenuItem { text: qsTrId("settings-save-location-file-name-combobox-item-title") }
+                    MenuItem { text: qsTrId("settings-save-location-file-name-combobox-item-video-id") }
+                    MenuItem { text: qsTrId("settings-save-location-file-name-combobox-item-custom") }
                 }
 
                 onCurrentIndexChanged: {
@@ -267,8 +273,10 @@ Page {
                     settingDefaultFileName.value = text
                     _propageFileName()
                 }
-                label: qsTr("File name template for VODs", "label")
-                placeholderText: qsTr("File name template for VODs", "placeholder")
+                label: //qsTr("File name template for VODs", "label")
+                       qsTrId("settings-save-location-file-name-textfield-label")
+                placeholderText: //qsTr("File name template for VODs", "placeholder")
+                                 qsTrId("settings-save-location-file-name-textfield-placeholder")
                 EnterKey.iconSource: "image://theme/icon-m-enter-close"
                 EnterKey.onClicked: focus = false
 //                readOnly: true
@@ -278,7 +286,8 @@ Page {
                 x: Theme.horizontalPageMargin
                 width: parent.width-2*x
 //                width: parent.width
-                text: qsTr("Tags {title} {id} {formatid} will be substituded from the VOD's meta data.")
+                text: //qsTr("Tags {title} {id} {formatid} will be substituded from the VOD's meta data.")
+                      qsTrId("settings-save-location-file-name-description")
                 wrapMode: Text.Wrap
                 font.pixelSize: Theme.fontSizeTiny
                 color: Theme.highlightColor
@@ -297,7 +306,7 @@ Page {
             anchors.fill: parent
             model: model
             header: PageHeader {
-                title: qsTr("Settings")
+                title: qsTrId("settings-page-header")
             }
         }
 
