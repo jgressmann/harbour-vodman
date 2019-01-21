@@ -13,12 +13,12 @@
     <message id="format-best">
         <location filename="../qml/FormatComboBox.qml" line="41"/>
         <source>best quality (largest)</source>
-        <translation>Beste (größte Datei)</translation>
+        <translation>Bestes (größte Datei)</translation>
     </message>
     <message id="format-worst">
         <location filename="../qml/FormatComboBox.qml" line="45"/>
         <source>worst quality (smallest)</source>
-        <translation>Schlechteste (kleinste DAtei)</translation>
+        <translation>Schlechtestes (kleinste Datei)</translation>
     </message>
     <message id="format-combobox-ask">
         <location filename="../qml/FormatComboBox.qml" line="54"/>
@@ -62,7 +62,7 @@
         <translation>Copyright (c) 2018, 2019 Jean Gressmann.
 
 %1 ist unter der &lt;a href=&quot;https://opensource.org/licenses/MIT&quot;&gt;MIT&lt;/a&gt; Lizenz verfügbar.
-%1 verwendet youtube-dl das sich in der &lt;a href=&quot;http://unlicense.org/&quot;&gt;Public Domain&lt;/a&gt; befindet.</translation>
+%1 verwendet youtube-dl, das sich in der &lt;a href=&quot;http://unlicense.org/&quot;&gt;Public Domain&lt;/a&gt; befindet.</translation>
     </message>
     <message id="about-sources-header">
         <location filename="../qml/pages/AboutPage.qml" line="152"/>
@@ -72,7 +72,7 @@
     <message id="about-sources-text">
         <location filename="../qml/pages/AboutPage.qml" line="159"/>
         <source>Sources are on Github</source>
-        <translation></translation>
+        <translation>Die Quellen sind auf &lt;a href=&quot;https://github.com/jgressmann/harbour-vodman&quot;&gt;GitHub&lt;/a&gt; verfügbar.</translation>
     </message>
     <message id="error-youtube-dl-not-working">
         <location filename="../qml/pages/DownloadPage.qml" line="190"/>
@@ -97,7 +97,7 @@
     <message id="error-unsupported-url">
         <location filename="../qml/pages/DownloadPage.qml" line="210"/>
         <source>youtube-dl doesn&apos;t know how to handle that URL</source>
-        <translation>Dieser URL Typ wird von youtube-dl nicht unterstützt</translation>
+        <translation>Diese URL wird von youtube-dl nicht unterstützt.</translation>
     </message>
     <message id="error-no-video">
         <location filename="../qml/pages/DownloadPage.qml" line="215"/>
@@ -107,7 +107,7 @@
     <message id="error-format-not-available">
         <location filename="../qml/pages/DownloadPage.qml" line="220"/>
         <source>The format you selected is not available. Try again or choose another format.</source>
-        <translation>Das gewählte Format ist nicht verfügbar. Versuchen Sie es erneut oder wählen Sie ein anderes Format aus.</translation>
+        <translation>Das gewählte Format ist nicht verfügbar. Versuch es erneut oder wähle ein anderes Format aus.</translation>
     </message>
     <message id="error-network-down">
         <location filename="../qml/pages/DownloadPage.qml" line="225"/>
@@ -231,22 +231,22 @@
     <message id="download-placeholder-hint-pull-down-to-start-download-from-clipboard">
         <location filename="../qml/pages/DownloadPage.qml" line="654"/>
         <source>Pull down to start download using the URL in the clipboard</source>
-        <translation>Nach unten wischen um die URL in der Zwischenablage herunterzuladen</translation>
+        <translation>Zieh nach unten, um die URL in der Zwischenablage herunterzuladen.</translation>
     </message>
     <message id="download-placeholder-hint-copy-url-to-clipboard">
         <location filename="../qml/pages/DownloadPage.qml" line="658"/>
         <source>Copy a URL to the clipboard then pull down to start the download</source>
-        <translation>Kopieren Sie eine Video URL in die Zwischenablage und wischen Sie dann nach unten um den Download zu beginnen</translation>
+        <translation>Kopiere eine Video URL in die Zwischenablage und zieh dann nach unten um den Download zu starten.</translation>
     </message>
     <message id="download-placeholder-hint-pull-down-to-cancel">
         <location filename="../qml/pages/DownloadPage.qml" line="661"/>
         <source>Pull down to cancel</source>
-        <translation>Nach unten wischen zum Abbrechen</translation>
+        <translation>Zieh nach unten zum Abbrechen</translation>
     </message>
     <message id="select-format-dialog-title">
         <location filename="../qml/pages/SelectFormatDialog.qml" line="77"/>
         <source>Select a format</source>
-        <translation>Wählen Sie ein Format</translation>
+        <translation>Wähle ein Format</translation>
     </message>
     <message id="settings-network-header">
         <location filename="../qml/pages/SettingsPage.qml" line="134"/>
@@ -256,7 +256,7 @@
     <message id="settings-network-connection-type">
         <location filename="../qml/pages/SettingsPage.qml" line="141"/>
         <source>Network connection type</source>
-        <translation>Verbinungstyp</translation>
+        <translation>Verbindungstyp</translation>
     </message>
     <message id="settings-network-connection-autodetect">
         <location filename="../qml/pages/SettingsPage.qml" line="145"/>
@@ -306,7 +306,7 @@
     <message id="settings-save-location-directory-custom">
         <location filename="../qml/pages/SettingsPage.qml" line="217"/>
         <source>Custom</source>
-        <translation>Eigene</translation>
+        <translation>Eigene Angabe</translation>
     </message>
     <message id="settings-save-location-directory-field-label">
         <location filename="../qml/pages/SettingsPage.qml" line="227"/>
@@ -321,7 +321,7 @@
     <message id="settings-save-location-pick-directory">
         <location filename="../qml/pages/SettingsPage.qml" line="242"/>
         <source>Pick a directory</source>
-        <translation>Wählen Sie ein Verzeichnis aus</translation>
+        <translation>Wähle ein Verzeichnis aus</translation>
     </message>
     <message id="settings-save-location-file-name-combobox-label">
         <location filename="../qml/pages/SettingsPage.qml" line="271"/>
@@ -341,17 +341,17 @@
     <message id="settings-save-location-file-name-combobox-item-custom">
         <location filename="../qml/pages/SettingsPage.qml" line="283"/>
         <source>Custom</source>
-        <translation>Eigene</translation>
+        <translation>Eigene Angabe</translation>
     </message>
     <message id="settings-save-location-file-name-textfield-label">
         <location filename="../qml/pages/SettingsPage.qml" line="309"/>
         <source>File name template for VODs</source>
-        <translation>Schema für Video Dateinamens</translation>
+        <translation>Schema für Video Dateinamen</translation>
     </message>
     <message id="settings-save-location-file-name-textfield-placeholder">
         <location filename="../qml/pages/SettingsPage.qml" line="311"/>
         <source>File name template for VODs</source>
-        <translation>Schema</translation>
+        <translation>Dateiname</translation>
     </message>
     <message id="settings-save-location-file-name-description">
         <location filename="../qml/pages/SettingsPage.qml" line="321"/>
