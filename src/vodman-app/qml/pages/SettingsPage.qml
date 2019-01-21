@@ -130,17 +130,28 @@ Page {
         id: model
 
         SectionHeader {
-            text: qsTrId("settings-network-header") // Network
+            //% "Network"
+            text: qsTrId("settings-network-header")
         }
 
         ComboBox {
             id: bearerModeComboBox
             width: parent.width
-            label: qsTrId("settings-network-connection-type") // Network connection type
+            //% "Network connection type"
+            label: qsTrId("settings-network-connection-type")
             menu: ContextMenu {
-                MenuItem { text: qsTrId("settings-network-connection-autodetect") }
-                MenuItem { text: qsTrId("settings-network-connection-broadband") }
-                MenuItem { text: qsTrId("settings-network-connection-mobile") }
+                MenuItem {
+                    //% "Autodetect"
+                    text: qsTrId("settings-network-connection-autodetect")
+                }
+                MenuItem {
+                    //% "Broadband"
+                    text: qsTrId("settings-network-connection-broadband")
+                }
+                MenuItem {
+                    //% "Mobile"
+                    text: qsTrId("settings-network-connection-mobile")
+                }
             }
 
             Component.onCompleted: currentIndex = settingBearerMode.value
@@ -152,10 +163,12 @@ Page {
         }
 
         SectionHeader {
+            //% "Format"
             text: qsTrId("format-label")
         }
 
         FormatComboBox {
+            //% "Broadband"
             label: qsTrId("settings-network-broadband-label")
             excludeAskEveryTime: false
             format: settingBroadbandDefaultFormat.value
@@ -166,6 +179,7 @@ Page {
         }
 
         FormatComboBox {
+            //% "Mobile"
             label: qsTrId("settings-network-mobile-label")
             excludeAskEveryTime: false
             format: settingMobileDefaultFormat.value
@@ -176,8 +190,8 @@ Page {
         }
 
         SectionHeader {
-            text: //qsTr("Location")
-                  qsTrId("settings-save-location-header")
+            //% "Location"
+            text: qsTrId("settings-save-location-header")
         }
 
         Column {
@@ -187,12 +201,21 @@ Page {
             ComboBox {
                 id: saveDirectoryComboBox
                 width: parent.width
-                label: //qsTr("Directory")
-                       qsTrId("settings-save-location-directory-label")
+                //% "Directory"
+                label: qsTrId("settings-save-location-directory-label")
                 menu: ContextMenu {
-                    MenuItem { text: qsTrId("settings-save-location-directory-downloads") }
-                    MenuItem { text: qsTrId("settings-save-location-directory-videos") }
-                    MenuItem { text: qsTrId("settings-save-location-directory-custom") }
+                    MenuItem {
+                        //% "Downloads"
+                        text: qsTrId("settings-save-location-directory-downloads")
+                    }
+                    MenuItem {
+                        //% "Videos"
+                        text: qsTrId("settings-save-location-directory-videos")
+                    }
+                    MenuItem {
+                        //% "Custom"
+                        text: qsTrId("settings-save-location-directory-custom")
+                    }
                 }
             }
 
@@ -200,10 +223,10 @@ Page {
                 id: saveDirectoryTextField
                 width: parent.width
                 text: settingDefaultDirectory.value
-                label: //qsTr("VODs are saved here", "label")
-                       qsTrId("settings-save-location-directory-field-label")
-                placeholderText: //qsTr("Default directory to save VODs", "placeholder")
-                                 qsTrId("settings-save-location-directory-field-placeholder")
+                //% "VODs are saved here"
+                label: qsTrId("settings-save-location-directory-field-label")
+                //% "Default directory to save VODs"
+                placeholderText: qsTrId("settings-save-location-directory-field-placeholder")
                 EnterKey.iconSource: "image://theme/icon-m-enter-close"
                 EnterKey.onClicked: focus = false
 
@@ -215,8 +238,8 @@ Page {
 
             Button {
                 anchors.horizontalCenter: parent.horizontalCenter
-                text: //qsTr("Pick directory")
-                      qsTrId("settings-save-location-pick-directory")
+                //% "Pick a directory"
+                text: qsTrId("settings-save-location-pick-directory")
                 onClicked: pageStack.push(filePickerPage)
             }
 
@@ -244,12 +267,21 @@ Page {
             ComboBox {
                 id: fileNameComboBox
                 width: parent.width
-                label: //"File name"
-                       qsTrId("settings-save-location-file-name-combobox-label")
+                //% "File name"
+                label: qsTrId("settings-save-location-file-name-combobox-label")
                 menu: ContextMenu {
-                    MenuItem { text: qsTrId("settings-save-location-file-name-combobox-item-title") }
-                    MenuItem { text: qsTrId("settings-save-location-file-name-combobox-item-video-id") }
-                    MenuItem { text: qsTrId("settings-save-location-file-name-combobox-item-custom") }
+                    MenuItem {
+                        //% "Title"
+                        text: qsTrId("settings-save-location-file-name-combobox-item-title")
+                    }
+                    MenuItem {
+                        //% "Video id"
+                        text: qsTrId("settings-save-location-file-name-combobox-item-video-id")
+                    }
+                    MenuItem {
+                        //% "Custom"
+                        text: qsTrId("settings-save-location-file-name-combobox-item-custom")
+                    }
                 }
 
                 onCurrentIndexChanged: {
@@ -273,21 +305,20 @@ Page {
                     settingDefaultFileName.value = text
                     _propageFileName()
                 }
-                label: //qsTr("File name template for VODs", "label")
-                       qsTrId("settings-save-location-file-name-textfield-label")
-                placeholderText: //qsTr("File name template for VODs", "placeholder")
-                                 qsTrId("settings-save-location-file-name-textfield-placeholder")
+                //% "File name template for VODs"
+                label: qsTrId("settings-save-location-file-name-textfield-label")
+                //% "File name template for VODs"
+                placeholderText: qsTrId("settings-save-location-file-name-textfield-placeholder")
                 EnterKey.iconSource: "image://theme/icon-m-enter-close"
                 EnterKey.onClicked: focus = false
-//                readOnly: true
             }
 
             Label {
                 x: Theme.horizontalPageMargin
                 width: parent.width-2*x
 //                width: parent.width
-                text: //qsTr("Tags {title} {id} {formatid} will be substituded from the VOD's meta data.")
-                      qsTrId("settings-save-location-file-name-description")
+                //% "Tags {title} {id} {formatid} will be substituded from the VOD's meta data."
+                text: qsTrId("settings-save-location-file-name-description")
                 wrapMode: Text.Wrap
                 font.pixelSize: Theme.fontSizeTiny
                 color: Theme.highlightColor
@@ -306,6 +337,7 @@ Page {
             anchors.fill: parent
             model: model
             header: PageHeader {
+                //% "Settings"
                 title: qsTrId("settings-page-header")
             }
         }

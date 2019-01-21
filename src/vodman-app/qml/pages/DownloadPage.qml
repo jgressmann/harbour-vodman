@@ -184,63 +184,64 @@ Page {
         case VM.VM_ErrorCanceled:
             return;
         case VM.VM_ErrorNoYoutubeDl:
+
             errorNotification.body = errorNotification.previewBody =
-                    //qsTr("youtube-dl not working")
+                    //% "youtube-dl not working"
                     qsTrId("error-youtube-dl-not-working")
             break
         case VM.VM_ErrorCrashed:
             errorNotification.body = errorNotification.previewBody =
-                    //qsTr("youtube-dl process crashed")
+                    //% "youtube-dl process crashed"
                     qsTrId("error-youtube-dl-process-crashed")
             break
         case VM.VM_ErrorTimedOut:
             errorNotification.body = errorNotification.previewBody =
-                    //qsTr("Download timed out")
+                    //% "Download timed out"
                     qsTrId("error-download-timed-out")
             break
         case VM.VM_ErrorInvalidResponse:
             errorNotification.body = errorNotification.previewBody =
-                    //qsTr("Host delivered an invalid response to VOD format request")
+                    //% "Host delivered an invalid response to VOD format request"
                     qsTrId("error-invalid-response")
             break
         case VM.VM_ErrorUnsupportedUrl:
             errorNotification.body = errorNotification.previewBody =
-                    //qsTr("youtube-dl doesn't know how to handle that URL")
+                    //% "youtube-dl doesn't know how to handle that URL"
                     qsTrId("error-unsupported-url")
             break
         case VM.VM_ErrorNoVideo:
             errorNotification.body = errorNotification.previewBody =
-                    //qsTr("No video content for URL")
+                    //% "No video content for URL"
                     qsTrId("error-no-video")
             break
         case VM.VM_ErrorFormatNotAvailable:
             errorNotification.body = errorNotification.previewBody =
-                    //qsTr("The format you selected is not available. Try again or choose another format.")
+                    //% "The format you selected is not available. Try again or choose another format."
                     qsTrId("error-format-not-available")
             break
         case VM.VM_ErrorNetworkDown:
             errorNotification.body = errorNotification.previewBody =
-                    //qsTr("Network down.")
+                    //% "Network down."
                     qsTrId("error-network-down")
             break
         case VM.VM_ErrorInvalidUrl:
             errorNotification.body = errorNotification.previewBody =
-                    //qsTr("Invalid URL.")
+                    //% "Invalid URL."
                     qsTrId("error-invalid-url")
             break
         case VM.VM_ErrorNoSpaceLeftOnDevice:
             errorNotification.body = errorNotification.previewBody =
-                    //qsTr("No space left on device.")
+                    //% "No space left on device."
                     qsTrId("error-no-space")
             break
         case VM.VM_ErrorAlreadyDownloading:
             errorNotification.body = errorNotification.previewBody =
-                    //qsTr("Already downloading %1").arg(filePath)
-                    qsTrId("error-already-downloading")
+                    //% "Already downloading %1"
+                    qsTrId("error-already-downloading").arg(filePath)
             break
         default:
             errorNotification.body = errorNotification.previewBody =
-                    //qsTr("Yikes! An unknown error has occured :/")
+                    //% "Yikes! An unknown error has occured :/"
                     qsTrId("error-unknown")
             break
         }
@@ -254,7 +255,7 @@ Page {
         successNotification.previewBody = download.description.fullTitle
         successNotification.remoteActions = [ {
                                                  "name": "default",
-                                                 "displayName": qsTrId("play"),
+                                                 "displayName": qsTrId("play"), //% "Play"
                                                  "icon": "icon-cover-play",
                                                  "service": "org.duckdns.jgressmann.vodman.app",
                                                  "path": "/instance",
@@ -287,8 +288,9 @@ Page {
     Notification {
          id: errorNotification
          category: "x-nemo.transfer.error"
+         //% "Download failed"
          summary: qsTrId("nofification-download-failed-summary")
-         // qsTr("Download failed", "summary")
+         //% "Download failed"
          previewSummary: qsTrId("nofification-download-failed-summary")
     }
 
@@ -297,7 +299,9 @@ Page {
         category: "x-nemo.transfer.complete"
         appName: App.displayName
         appIcon: "/usr/share/icons/hicolor/86x86/apps/harbour-vodman.png"
-        summary: qsTrId("nofification-download-finished-summary") //qsTr("Download finished", "summary")
+        //% "Download finished"
+        summary: qsTrId("nofification-download-finished-summary")
+        //% "Download finished"
         previewSummary: qsTrId("nofification-download-finished-summary")
     }
 
@@ -308,11 +312,13 @@ Page {
 
         PullDownMenu {
             MenuItem {
+                //% "About Vodman"
                 text: qsTrId("menu-item-about-vodman").arg(App.displayName)
                 onClicked: pageStack.push(Qt.resolvedUrl("AboutPage.qml"))
             }
 
             MenuItem {
+                //% "Settings"
                 text: qsTrId("menu-item-settings")
                 onClicked: pageStack.push(Qt.resolvedUrl("SettingsPage.qml"))
             }
@@ -370,6 +376,7 @@ Page {
             }
 
             MenuItem {
+                //% "Clear clipboard"
                 text: qsTrId("menu-item-clear-clipboard")
                 visible: debugApp.value
                 onClicked: {
@@ -378,38 +385,39 @@ Page {
             }
 
             MenuItem {
-                text: //qsTr("Cancel all downloads")
-                      qsTrId("menu-item-cancel-all-downloads")
+                //% "Cancel all downloads"
+                text: qsTrId("menu-item-cancel-all-downloads")
                 visible: listView.count > 0
                 onClicked: {
                       remorse.execute(
+                          //% "Stopping all downloads"
                           qsTrId("remorse-cancel-all-downloads"),
-                          //qsTr("Stopping all downloads"),
                           function() { vodDownloadModel.cancelDownloads(false) })
                 }
             }
 
             MenuItem {
-                text: //qsTr("Cancel all downloads and delete files")
-                      qsTrId("menu-item-cancel-all-downloads-delete")
+                //% "Cancel all downloads and delete files"
+                text: qsTrId("menu-item-cancel-all-downloads-delete")
                 visible: listView.count > 0
                 onClicked: {
                       remorse.execute(
-                          //qsTr("Purging all downloads"),
+                          //% "Purging all downloads"
                           qsTrId("remorse-cancel-all-downloads-delete"),
                           function() { vodDownloadModel.cancelDownloads(true) })
                 }
             }
 
             MenuItem {
+                //% "Cancel"
                 text: qsTrId("cancel")
                 enabled: !vodDownloadModel.canStartDownload
                 onClicked: vodDownloadModel.cancelDownloadMetaData()
             }
 
             MenuItem {
-                text: //qsTr("Download from clipboard")
-                      qsTrId("menu-item-download-from-clipboard")
+                //% "Download from clipboard"
+                text: qsTrId("menu-item-download-from-clipboard")
                 enabled: canStartDownloadOfClipboardUrl
                 onClicked: vodDownloadModel.startDownloadMetaData(Clipboard.text)
             }
@@ -427,6 +435,7 @@ Page {
             anchors.fill: parent
             model: vodDownloadModel
             header: PageHeader {
+                //% "Downloads"
                 title: qsTrId("download-page-header")
 
                 BusyIndicator {
@@ -446,7 +455,7 @@ Page {
 
                 function cancelDownload(deleteFile) {
                     remorseAction(
-                        //qsTr("Stopping %1", "vod fulltitle").arg(download.data.description.fullTitle),
+                        //% "Stopping %1"
                         qsTrId("download-item-remorse-cancel").arg(download.data.description.fullTitle),
                         function() {
                             if (typeof(index) === "number") { // list item could have been removed
@@ -597,26 +606,26 @@ Page {
                     id: contextMenu
                     ContextMenu {
                         MenuItem {
-                            text: //qsTr("Cancel and delete file")
-                                  qsTrId("download-item-cancel-and-delete")
+                            //% "Cancel and delete file"
+                            text: qsTrId("download-item-cancel-and-delete")
                             onClicked: cancelDownload(true)
                         }
 
                         MenuItem {
-                            text: //qsTr("Cancel")
-                                  qsTrId("cancel")
+                            //% "Cancel"
+                            text: qsTrId("cancel")
                             onClicked: cancelDownload(false)
                         }
 
                         MenuItem {
-                            text: //qsTr("Play")
-                                  qsTrId("play")
+                            //% "Play"
+                            text: qsTrId("play")
                             onClicked: Qt.openUrlExternally("file://" + download.data.filePath)
                         }
 
                         MenuItem {
-                            text: //qsTr("Open webpage")
-                                qsTrId("download-item-open-webpage")
+                            //% "Open webpage"
+                            text: qsTrId("download-item-open-webpage")
                             onClicked: {
                                 console.debug("opening: " + download.data.description.webPageUrl)
                                 Qt.openUrlExternally(download.data.description.webPageUrl)
@@ -630,25 +639,26 @@ Page {
                 enabled: listView.count === 0
                 text: {
                     if (vodDownloadModel.canStartDownload) {
-                        return //qsTr("No downloads at present")
-                            qsTrId("download-placeholder-text-no-downloads")
+                        //% "No downloads at present"
+                        return qsTrId("download-placeholder-text-no-downloads")
                     }
-                    return //qsTr("Downloading VOD metadata")
-                        qsTrId("download-placeholder-text-metadata-download")
+
+                    //% "Downloading VOD metadata"
+                    return qsTrId("download-placeholder-text-metadata-download")
                 }
 
                 hintText: {
                     if (vodDownloadModel.canStartDownload) {
                         if (clipBoardHasUrl) {
-                            return //qsTr("Pull down to start download using the URL in the clipboard")
-                            qsTrId("download-placeholder-hint-pull-down-to-start-download-from-clipboard")
+                            //% "Pull down to start download using the URL in the clipboard"
+                            return qsTrId("download-placeholder-hint-pull-down-to-start-download-from-clipboard")
                         }
 
-                        return //qsTr("Copy a URL to the clipboard then pull down to start the download")
-                            qsTrId("download-placeholder-hint-copy-url-to-clipboard")
+                        //% "Copy a URL to the clipboard then pull down to start the download"
+                        return qsTrId("download-placeholder-hint-copy-url-to-clipboard")
                     }
-                    return //qsTr("Pull down to cancel")
-                    qsTrId("download-placeholder-hint-pull-down-to-cancel")
+                    //% "Pull down to cancel"
+                    return qsTrId("download-placeholder-hint-pull-down-to-cancel")
                 }
             }
         }

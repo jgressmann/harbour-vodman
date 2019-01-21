@@ -32,16 +32,21 @@ Page {
     SilicaFlickable {
         anchors.fill: parent
         contentWidth: parent.width
+        contentHeight: column.height
 
         VerticalScrollDecorator {}
 
         Column {
+            id: column
             spacing: Theme.paddingLarge
             x: Theme.paddingMedium
             width: parent.width - 2*x
             //: About Vodman
             //%1 app display name
-            PageHeader { title: qsTrId("about-page-header").arg(App.displayName) }
+            PageHeader {
+                //% "About Vodman"
+                title: qsTrId("about-page-header").arg(App.displayName)
+            }
 
             Column {
                 spacing: Theme.paddingSmall
@@ -84,8 +89,7 @@ Page {
                 }
 
                 Label {
-                    //% app display name
-                    //% app version string
+                    //% "Vodman 1.X.Y"
                     text: qsTrId("about-version-text").arg(App.displayName).arg(App.version)
                     anchors.horizontalCenter: parent.horizontalCenter
                     font.pixelSize: Theme.fontSizeLarge
@@ -110,56 +114,54 @@ Page {
             }
 
             SectionHeader {
+                //% "Description"
                 text: qsTrId("about-description-header")
             }
 
             Label {
                 x: Theme.horizontalPageMargin
                 width: parent.width-2*x
-                //% app display name
+                //% "%1 is a versatile tool..."
                 text: qsTrId("about-description-text").arg(App.displayName)
                 wrapMode: Text.WordWrap
                 font.pixelSize: Theme.fontSizeExtraSmall
                 color: Theme.highlightColor
                 textFormat: TextEdit.RichText
-                onLinkActivated: function (link) {
-                    Qt.openUrlExternally(link)
-                }
+                onLinkActivated: Qt.openUrlExternally(link)
             }
 
             SectionHeader {
+                //% "Licensing"
                 text: qsTrId("about-licensing-header")
             }
 
             Label {
                 x: Theme.horizontalPageMargin
                 width: parent.width-2*x
-                //% app display name
+                //% "Copyright (c) 2018, 2019 Jean Gressmann."
                 text: qsTrId("about-licensing-text").arg(App.displayName)
                 wrapMode: Text.WordWrap
                 font.pixelSize: Theme.fontSizeExtraSmall
                 color: Theme.highlightColor
                 textFormat: TextEdit.RichText
-                onLinkActivated: function (link) {
-                    Qt.openUrlExternally(link)
-                }
+                onLinkActivated: Qt.openUrlExternally(link)
             }
 
             SectionHeader {
+                //% "Sources"
                 text: qsTrId("about-sources-header")
             }
 
             Label {
                 x: Theme.horizontalPageMargin
                  width: parent.width-2*x
+                 //% "Sources are on Github"
                  text: qsTrId("about-sources-text")
                  wrapMode: Text.WordWrap
                  font.pixelSize: Theme.fontSizeExtraSmall
                  color: Theme.highlightColor
                  textFormat: TextEdit.RichText
-                 onLinkActivated: function (link) {
-                     Qt.openUrlExternally(link)
-                 }
+                 onLinkActivated: Qt.openUrlExternally(link)
             }
         }
     }

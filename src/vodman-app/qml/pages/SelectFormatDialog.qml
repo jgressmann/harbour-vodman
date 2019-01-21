@@ -73,6 +73,7 @@ text: \"" + label + "\"
         width: parent.width
 
         DialogHeader {
+            //% "Select a format"
             title: qsTrId("select-format-dialog-title") // Select a format
         }
 
@@ -84,6 +85,7 @@ text: \"" + label + "\"
 
             ComboBox {
                 id: comboBox
+                //% "Format"
                 label: qsTrId("format-label")
             }
         }

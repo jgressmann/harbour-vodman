@@ -36,14 +36,21 @@ ComboBox {
 
     menu: ContextMenu {
         id: menu
-        MenuItem { text: qsTrId("format-best") } // best quality (largest)
-        MenuItem { text: qsTrId("format-worst") }
+        MenuItem {
+            //% "best quality (largest)"
+            text: qsTrId("format-best")
+        }
+        MenuItem {
+            //% "worst quality (smallest)"
+            text: qsTrId("format-worst")
+        }
         MenuItem { text: "1080" }
         MenuItem { text: "720" }
         MenuItem { text: "360" }
         MenuItem { text: "240" }
         MenuItem {
             id: askEveryTime
+            //% "ask every time"
             text: qsTrId("format-combobox-ask")
         }
     }
