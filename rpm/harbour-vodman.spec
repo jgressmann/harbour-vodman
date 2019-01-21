@@ -13,13 +13,13 @@ URL:        https://openrepos.net/content/jgressmann/vodman
 Source0:    %{name}-%{version}.tar.bz2
 
 BuildRequires:  pkgconfig(Qt5Core)
+BuildRequires:  pkgconfig(Qt5DBus)
 BuildRequires:  pkgconfig(Qt5Qml)
 BuildRequires:  pkgconfig(Qt5Quick)
 BuildRequires:  pkgconfig(sailfishapp) >= 0.0.10
 BuildRequires:  desktop-file-utils
 
 
-#Requires:   python3-base
 Requires:   sailfishsilica-qt5 >= 0.10.9
 
 %description
@@ -36,6 +36,7 @@ Requires:   sailfishsilica-qt5 >= 0.10.9
 %{_datadir}/%{name}/COPYING*
 %{_datadir}/%{name}/translations/*
 
+%define __provides_exclude_from ^%{_datadir}/.*$
 
 %prep
 %setup -q -n %{name}-%{version}

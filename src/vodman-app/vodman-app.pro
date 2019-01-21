@@ -12,13 +12,14 @@
 # The name of your application
 TARGET = harbour-vodman
 
-QT -= gui network
-#QT += dbus
+#QT *= dbus
+#QT -= gui network
+
+
 
 CONFIG += sailfishapp
 
-DISTFILES += harbour-vodman.desktop \
-    translations/harbour-vodman_copy.ts
+DISTFILES += harbour-vodman.desktop
 DISTFILES += icons/cover.svg icons/icon.svg icons/tape.png
 DISTFILES += qml/harbour-vodman.qml \
     qml/cover/CoverPage.qml \
