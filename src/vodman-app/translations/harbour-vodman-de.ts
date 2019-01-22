@@ -218,28 +218,33 @@
         <source>Open webpage</source>
         <translation>Webseite öffnen</translation>
     </message>
-    <message id="download-placeholder-text-no-downloads">
+    <message id="download-placeholder-text-waiting-for-download-to-start">
         <location filename="../qml/pages/DownloadPage.qml" line="643"/>
+        <source>Download will start momentarily</source>
+        <translation>Der Download started in einigen Sekunden</translation>
+    </message>
+    <message id="download-placeholder-text-no-downloads">
+        <location filename="../qml/pages/DownloadPage.qml" line="648"/>
         <source>No downloads at present</source>
         <translation>Keine Downloads aktiv</translation>
     </message>
     <message id="download-placeholder-text-metadata-download">
-        <location filename="../qml/pages/DownloadPage.qml" line="647"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="652"/>
         <source>Downloading VOD metadata</source>
         <translation>Lade VOD Metadaten herunter</translation>
     </message>
     <message id="download-placeholder-hint-pull-down-to-start-download-from-clipboard">
-        <location filename="../qml/pages/DownloadPage.qml" line="654"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="663"/>
         <source>Pull down to start download using the URL in the clipboard</source>
         <translation>Zieh nach unten, um die URL in der Zwischenablage herunterzuladen.</translation>
     </message>
     <message id="download-placeholder-hint-copy-url-to-clipboard">
-        <location filename="../qml/pages/DownloadPage.qml" line="658"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="667"/>
         <source>Copy a URL to the clipboard then pull down to start the download</source>
         <translation>Kopiere eine Video URL in die Zwischenablage und zieh dann nach unten um den Download zu starten.</translation>
     </message>
     <message id="download-placeholder-hint-pull-down-to-cancel">
-        <location filename="../qml/pages/DownloadPage.qml" line="661"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="671"/>
         <source>Pull down to cancel</source>
         <translation>Zieh nach unten zum Abbrechen</translation>
     </message>

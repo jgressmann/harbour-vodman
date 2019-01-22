@@ -411,7 +411,7 @@ Page {
             MenuItem {
                 //% "Cancel"
                 text: qsTrId("cancel")
-                enabled: !vodDownloadModel.canStartDownload
+                visible: !vodDownloadModel.canStartDownload
                 onClicked: vodDownloadModel.cancelDownloadMetaData()
             }
 
@@ -638,6 +638,11 @@ Page {
             ViewPlaceholder {
                 enabled: listView.count === 0
                 text: {
+                    if (vodDownloadModel.downloadsPending) {
+                        //% "Download will start momentarily"
+                        return qsTrId("download-placeholder-text-waiting-for-download-to-start")
+                    }
+
                     if (vodDownloadModel.canStartDownload) {
                         //% "No downloads at present"
                         return qsTrId("download-placeholder-text-no-downloads")
@@ -648,7 +653,11 @@ Page {
                 }
 
                 hintText: {
-                    if (vodDownloadModel.canStartDownload) {
+                    if (vodDownloadModel.downloadsPending) {
+                        return ""
+                    }
+
+                    if (!vodDownloadModel.downloadsPending && vodDownloadModel.canStartDownload) {
                         if (clipBoardHasUrl) {
                             //% "Pull down to start download using the URL in the clipboard"
                             return qsTrId("download-placeholder-hint-pull-down-to-start-download-from-clipboard")
@@ -657,6 +666,7 @@ Page {
                         //% "Copy a URL to the clipboard then pull down to start the download"
                         return qsTrId("download-placeholder-hint-copy-url-to-clipboard")
                     }
+
                     //% "Pull down to cancel"
                     return qsTrId("download-placeholder-hint-pull-down-to-cancel")
                 }

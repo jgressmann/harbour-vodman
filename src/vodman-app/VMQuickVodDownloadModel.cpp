@@ -123,6 +123,7 @@ VMQuickVodDownloadModel::onVodFileDownloadRemoved(qint64 handle, const QByteArra
         }
 
         if (m_UserDownloadsFilePaths.removeOne(download.filePath())) {
+            emit downloadsPendingChanged();
             qDebug() << "file path" << download.filePath() << "removed from user downloads";
         }
 
@@ -303,6 +304,7 @@ VMQuickVodDownloadModel::startDownloadVod(
 
 
     m_UserDownloadsFilePaths << m_FilePath;
+    emit downloadsPendingChanged();
     m_FilePath.clear();
     m_Service.startFetchVodFile(token, b);
 }
@@ -429,6 +431,7 @@ VMQuickVodDownloadModel::isOnMobile() const {
             case QNetworkConfiguration::Bearer2G:
             case QNetworkConfiguration::Bearer3G:
             case QNetworkConfiguration::Bearer4G:
+            case QNetworkConfiguration::BearerLTE:
                 return true;
             default:
                 break;
@@ -447,3 +450,10 @@ VMQuickVodDownloadModel::onOnlineChanged(bool online) {
     emit isOnBroadbandChanged();
     emit canStartDownloadChanged();
 }
+
+bool
+VMQuickVodDownloadModel::downloadsPending() const
+{
+    return !m_UserDownloadsFilePaths.isEmpty();
+}
+

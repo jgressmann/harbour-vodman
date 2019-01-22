@@ -40,6 +40,7 @@ class VMQuickVodDownloadModel : public QAbstractListModel
     Q_PROPERTY(bool isOnline READ isOnline NOTIFY isOnlineChanged)
     Q_PROPERTY(bool isOnBroadband READ isOnBroadband NOTIFY isOnBroadbandChanged)
     Q_PROPERTY(bool isOnMobile READ isOnMobile NOTIFY isOnMobileChanged)
+    Q_PROPERTY(bool downloadsPending READ downloadsPending NOTIFY downloadsPendingChanged)
 
 public:
     explicit VMQuickVodDownloadModel(QObject *parent = Q_NULLPTR);
@@ -61,6 +62,7 @@ public:
     bool isOnline() const;
     bool isOnBroadband() const;
     bool isOnMobile() const;
+    bool downloadsPending() const;
 
 Q_SIGNALS: // signals
     void metaDataDownloadSubmitted(const QString& url, qint64 token);
@@ -71,6 +73,7 @@ Q_SIGNALS: // signals
     void isOnlineChanged();
     void isOnBroadbandChanged();
     void isOnMobileChanged();
+    void downloadsPendingChanged();
 
 private slots:
     void onVodFileDownloadAdded(qint64 handle, const QByteArray& download);
