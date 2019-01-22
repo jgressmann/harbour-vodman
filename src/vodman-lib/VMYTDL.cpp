@@ -73,8 +73,15 @@ VMYTDL::initialize()
         QScopedPointer<QTemporaryFile> ptr(QTemporaryFile::createNativeFile(resourceFilePath));
         if (ptr) {
             ms_YoutubeDl_Path = ptr->fileName();
-            ptr->setAutoRemove(false);
-            ptr->setPermissions(QFile::ReadOwner | QFile::WriteOwner | QFile::ExeOwner | QFile::ReadGroup | QFile::ReadOther);
+            qInfo("Saved youtube-dl to %s\n", qPrintable(ms_YoutubeDl_Path));
+            if (ptr->setPermissions(QFile::ReadOwner | QFile::WriteOwner | QFile::ExeOwner | QFile::ReadGroup | QFile::ExeGroup | QFile::ReadOther | QFile::ExeOther)) {
+                qInfo("Changed permissions to 0755\n");
+                ptr->setAutoRemove(false);
+            } else {
+                qInfo("Failed to change permissions to 0755: %s (%d)\n", qPrintable(ptr->errorString()), static_cast<int>(ptr->error()));
+                ms_YoutubeDl_Path.clear();
+                ms_YoutubeDl_Version.clear();
+            }
         } else {
             qCritical("Failed to create temporary file for youtube-dl binary from %s\n", qPrintable(resourceFilePath));
             ms_YoutubeDl_Path.clear();
@@ -82,24 +89,29 @@ VMYTDL::initialize()
         }
     }
 
-    QStringList arguments;
-    arguments << QStringLiteral("--version");
+    if (!ms_YoutubeDl_Path.isEmpty()) {
+        QStringList arguments;
+        arguments << QStringLiteral("--version");
 
-    qDebug() << "Attempting to start" << ms_YoutubeDl_Path;
+        qDebug() << "Attempting to start" << ms_YoutubeDl_Path;
 
-    QProcess process;
-    process.start(ms_YoutubeDl_Path, arguments, QIODevice::ReadOnly);
-    process.waitForFinished();
+        QProcess process;
+        process.start(ms_YoutubeDl_Path, arguments, QIODevice::ReadOnly);
+        process.waitForFinished();
 
-    if (process.exitStatus() == QProcess::NormalExit &&
-        process.exitCode() == 0) {
-        ms_YoutubeDl_Version = process.readAllStandardOutput();
-        ms_YoutubeDl_Version = ms_YoutubeDl_Version.simplified();
-        qInfo("youtube-dl works, current version: %s\n", qPrintable(ms_YoutubeDl_Version));
-    } else {
-        qCritical("youtube-dl is non functional: %s\n", qPrintable(process.readAllStandardError()));
-        ms_YoutubeDl_Path.clear();
-        ms_YoutubeDl_Version.clear();
+        if (process.exitStatus() == QProcess::NormalExit &&
+            process.exitCode() == 0) {
+            ms_YoutubeDl_Version = process.readAllStandardOutput();
+            ms_YoutubeDl_Version = ms_YoutubeDl_Version.simplified();
+            qInfo("youtube-dl version %s\n", qPrintable(ms_YoutubeDl_Version));
+        } else {
+            qCritical(
+                        "Failed to get youtube-dl version (exitStatus=%d, exitCode=%d):\nstdout: %s\nstderr:%s",
+                        static_cast<int>(process.exitStatus()), static_cast<int>(process.exitCode()),
+                        qPrintable(process.readAllStandardOutput()), qPrintable(process.readAllStandardError()));
+            ms_YoutubeDl_Path.clear();
+            ms_YoutubeDl_Version.clear();
+        }
     }
 }
 
