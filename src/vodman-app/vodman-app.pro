@@ -12,7 +12,7 @@
 # The name of your application
 TARGET = harbour-vodman
 
-#QT *= dbus
+QT *= dbus
 #QT -= gui network
 
 
