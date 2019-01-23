@@ -98,7 +98,7 @@ Page {
                 }
 
                 Label {
-                    text: "youtube-dl 2019.01.17"
+                    text: "youtube-dl " + App.ytdlVersion
                     anchors.horizontalCenter: parent.horizontalCenter
                     font.pixelSize: Theme.fontSizeMedium
                     color: Theme.highlightColor

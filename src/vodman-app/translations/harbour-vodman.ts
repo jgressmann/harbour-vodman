@@ -33,7 +33,8 @@
     </message>
     <message id="about-version-text">
         <location filename="../qml/pages/AboutPage.qml" line="93"/>
-        <source>Vodman 1.X.Y</source>
+        <source>V%1 %2</source>
+        <oldsource>Vodman 1.X.Y</oldsource>
         <translation>%1 %2</translation>
     </message>
     <message id="about-description-header">
@@ -54,7 +55,8 @@
     </message>
     <message id="about-licensing-text">
         <location filename="../qml/pages/AboutPage.qml" line="142"/>
-        <source>Copyright (c) 2018, 2019 Jean Gressmann.</source>
+        <source>Copyright (c) 2018, 2019 Jean Gressmann...</source>
+        <oldsource>Copyright (c) 2018, 2019 Jean Gressmann.</oldsource>
         <translation>Copyright (c) 2018, 2019 Jean Gressmann.&lt;br/&gt;
 &lt;br/&gt;
 %1 is available under the &lt;a href=&quot;https://opensource.org/licenses/MIT&quot;&gt;MIT&lt;/a&gt; license.&lt;br/&gt;
