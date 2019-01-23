@@ -89,7 +89,7 @@ Page {
                 }
 
                 Label {
-                    //% "Vodman 1.X.Y"
+                    //% "V%1 %2"
                     text: qsTrId("about-version-text").arg(App.displayName).arg(App.version)
                     anchors.horizontalCenter: parent.horizontalCenter
                     font.pixelSize: Theme.fontSizeLarge
@@ -138,7 +138,7 @@ Page {
             Label {
                 x: Theme.horizontalPageMargin
                 width: parent.width-2*x
-                //% "Copyright (c) 2018, 2019 Jean Gressmann."
+                //% "Copyright (c) 2018, 2019 Jean Gressmann..."
                 text: qsTrId("about-licensing-text").arg(App.displayName)
                 wrapMode: Text.WordWrap
                 font.pixelSize: Theme.fontSizeExtraSmall
