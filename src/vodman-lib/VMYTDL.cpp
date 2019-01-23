@@ -67,6 +67,9 @@ VMYTDL::VMYTDL(QObject* parent)
 void
 VMYTDL::initialize()
 {
+    ms_YoutubeDl_Path.clear();
+    ms_YoutubeDl_Version.clear();
+
     const QString resourceFilePath = QStringLiteral(":/youtube-dl");
     // QTemporaryFile keeps file open which won't work for /usr/bin/env / bash
     {
@@ -79,19 +82,17 @@ VMYTDL::initialize()
                 ptr->setAutoRemove(false);
             } else {
                 qInfo("Failed to change permissions to 0755: %s (%d)\n", qPrintable(ptr->errorString()), static_cast<int>(ptr->error()));
-                ms_YoutubeDl_Path.clear();
                 ms_YoutubeDl_Version.clear();
             }
         } else {
             qCritical("Failed to create temporary file for youtube-dl binary from %s\n", qPrintable(resourceFilePath));
-            ms_YoutubeDl_Path.clear();
             ms_YoutubeDl_Version.clear();
         }
     }
 
     if (!ms_YoutubeDl_Path.isEmpty()) {
         QStringList arguments;
-        arguments << QStringLiteral("--version");
+        arguments << QStringLiteral("--no-call-home") << QStringLiteral("--version");
 
         qDebug() << "Attempting to start" << ms_YoutubeDl_Path;
 
@@ -109,7 +110,6 @@ VMYTDL::initialize()
                         "Failed to get youtube-dl version (exitStatus=%d, exitCode=%d):\nstdout: %s\nstderr:%s",
                         static_cast<int>(process.exitStatus()), static_cast<int>(process.exitCode()),
                         qPrintable(process.readAllStandardOutput()), qPrintable(process.readAllStandardError()));
-            ms_YoutubeDl_Path.clear();
             ms_YoutubeDl_Version.clear();
         }
     }
