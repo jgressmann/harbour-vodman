@@ -70,49 +70,81 @@ VMYTDL::initialize()
     ms_YoutubeDl_Path.clear();
     ms_YoutubeDl_Version.clear();
 
-    const QString resourceFilePath = QStringLiteral(":/youtube-dl");
-    // QTemporaryFile keeps file open which won't work for /usr/bin/env / bash
-    {
-        QScopedPointer<QTemporaryFile> ptr(QTemporaryFile::createNativeFile(resourceFilePath));
-        if (ptr) {
-            ms_YoutubeDl_Path = ptr->fileName();
-            qInfo("Saved youtube-dl to %s\n", qPrintable(ms_YoutubeDl_Path));
-            if (ptr->setPermissions(QFile::ReadOwner | QFile::WriteOwner | QFile::ExeOwner | QFile::ReadGroup | QFile::ExeGroup | QFile::ReadOther | QFile::ExeOther)) {
-                qInfo("Changed permissions to 0755\n");
-                ptr->setAutoRemove(false);
+    int python = -1;
+    QFileInfo fi(QStringLiteral("/usr/bin/python"));
+    if (fi.exists()) {
+        python = 0;
+        qInfo("%s exists\n", qPrintable(fi.filePath()));
+    } else {
+        fi.setFile(QStringLiteral("/usr/bin/python3"));
+        if (fi.exists()) {
+            python = 3;
+            qInfo("%s exists\n", qPrintable(fi.filePath()));
+        } else {
+            qCritical("Failed to stat python or python3\n");
+        }
+    }
+
+    if (-1 != python) {
+        const QString resourceFilePath = QStringLiteral(":/youtube-dl");
+        QFile resourceFile(resourceFilePath);
+        if (resourceFile.open(QIODevice::ReadOnly)) {
+            auto ytdl = resourceFile.readAll();
+            resourceFile.close();
+
+            if (3 == python) { // update binary to start python3
+                ytdl.insert(0x15, '3');
+            }
+
+            QTemporaryFile tempFile;
+            if (tempFile.open()) {
+                auto w = tempFile.write(ytdl);
+                if (w == ytdl.size() && tempFile.flush()) {
+                    tempFile.close();
+                    qInfo("Saved youtube-dl to %s\n", qPrintable(tempFile.fileName()));
+                    if (tempFile.setPermissions(QFile::ReadOwner | QFile::WriteOwner | QFile::ExeOwner | QFile::ReadGroup | QFile::ExeGroup | QFile::ReadOther | QFile::ExeOther)) {
+                        qInfo("Changed permissions to 0755\n");
+                        tempFile.setAutoRemove(false);
+                        ms_YoutubeDl_Path = tempFile.fileName();
+                    } else {
+                        qCritical("Failed to change permissions to 0755: %s (%d)\n", qPrintable(tempFile.errorString()), static_cast<int>(tempFile.error()));
+                    }
+                } else {
+                    qCritical("Failed to save youtube-dl to %s: %s (%d)\n", qPrintable(tempFile.fileName()), qPrintable(tempFile.errorString()), static_cast<int>(tempFile.error()));
+                }
             } else {
-                qInfo("Failed to change permissions to 0755: %s (%d)\n", qPrintable(ptr->errorString()), static_cast<int>(ptr->error()));
-                ms_YoutubeDl_Version.clear();
+                qCritical("Failed to create temporary file for youtube-dl binary from %s\n", qPrintable(resourceFilePath));
             }
         } else {
-            qCritical("Failed to create temporary file for youtube-dl binary from %s\n", qPrintable(resourceFilePath));
-            ms_YoutubeDl_Version.clear();
+            qCritical("Failed to load youtube-dl from resources %s: %s (%d)\n", qPrintable(resourceFilePath), qPrintable(resourceFile.errorString()), static_cast<int>(resourceFile.error()));
+        }
+
+        if (!ms_YoutubeDl_Path.isEmpty()) {
+            QStringList arguments;
+            arguments << QStringLiteral("--no-call-home") << QStringLiteral("--version");
+
+            qDebug() << "Attempting to start" << ms_YoutubeDl_Path;
+
+            QProcess process;
+            process.start(ms_YoutubeDl_Path, arguments, QIODevice::ReadOnly);
+            process.waitForFinished();
+
+            if (process.exitStatus() == QProcess::NormalExit &&
+                process.exitCode() == 0) {
+                ms_YoutubeDl_Version = process.readAllStandardOutput();
+                ms_YoutubeDl_Version = ms_YoutubeDl_Version.simplified();
+                qInfo("youtube-dl version %s\n", qPrintable(ms_YoutubeDl_Version));
+            } else {
+                qCritical(
+                            "Failed to get youtube-dl version (exitStatus=%d, exitCode=%d):\nstdout: %s\nstderr:%s",
+                            static_cast<int>(process.exitStatus()), static_cast<int>(process.exitCode()),
+                            qPrintable(process.readAllStandardOutput()), qPrintable(process.readAllStandardError()));
+                ms_YoutubeDl_Version.clear();
+            }
         }
     }
 
-    if (!ms_YoutubeDl_Path.isEmpty()) {
-        QStringList arguments;
-        arguments << QStringLiteral("--no-call-home") << QStringLiteral("--version");
 
-        qDebug() << "Attempting to start" << ms_YoutubeDl_Path;
-
-        QProcess process;
-        process.start(ms_YoutubeDl_Path, arguments, QIODevice::ReadOnly);
-        process.waitForFinished();
-
-        if (process.exitStatus() == QProcess::NormalExit &&
-            process.exitCode() == 0) {
-            ms_YoutubeDl_Version = process.readAllStandardOutput();
-            ms_YoutubeDl_Version = ms_YoutubeDl_Version.simplified();
-            qInfo("youtube-dl version %s\n", qPrintable(ms_YoutubeDl_Version));
-        } else {
-            qCritical(
-                        "Failed to get youtube-dl version (exitStatus=%d, exitCode=%d):\nstdout: %s\nstderr:%s",
-                        static_cast<int>(process.exitStatus()), static_cast<int>(process.exitCode()),
-                        qPrintable(process.readAllStandardOutput()), qPrintable(process.readAllStandardError()));
-            ms_YoutubeDl_Version.clear();
-        }
-    }
 }
 
 void
