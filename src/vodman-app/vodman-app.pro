@@ -15,7 +15,7 @@ TARGET = harbour-vodman
 QT *= dbus
 #QT -= gui network
 
-
+!CONFIG(debug, debug|release):DEFINES += QT_NO_DEBUG_OUTPUT
 
 CONFIG += sailfishapp
 
