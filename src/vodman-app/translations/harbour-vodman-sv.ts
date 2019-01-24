@@ -46,7 +46,7 @@
         <location filename="../qml/pages/AboutPage.qml" line="125"/>
         <source>%1 is a versatile tool...</source>
         <oldsource>%1 is a versatile tool for downloading videos on demand (VODs) to your device from popular sites such as &lt;a href=\&quot;https://www.youtube.com/\&quot;&gt;Youtube&lt;/a&gt; or &lt;a href=\&quot;https://www.twitch.tv/\&quot;&gt;Twitch&lt;/a&gt;.</oldsource>
-        <translation>%1 är ett mångsidigt verktyg för att ladda ner vide på begäran (VOD) till din enhet, från populära sajter som &lt;a href=&quot;https://www.youtube.com/&quot;&gt;Youtube&lt;/a&gt; eller &lt;a href=&quot;https://www.twitch.tv/&quot;&gt;Twitch&lt;/a&gt;.</translation>
+        <translation>%1 är ett mångsidigt verktyg för att ladda ner video på begäran (VOD) till din enhet, från populära sajter som &lt;a href=&quot;https://www.youtube.com/&quot;&gt;Youtube&lt;/a&gt; eller &lt;a href=&quot;https://www.twitch.tv/&quot;&gt;Twitch&lt;/a&gt;.</translation>
     </message>
     <message id="about-licensing-header">
         <location filename="../qml/pages/AboutPage.qml" line="135"/>
