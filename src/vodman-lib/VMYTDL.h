@@ -74,6 +74,7 @@ private:
     void normalizeUrl(QUrl& url) const;
     void fillFrameRate(VMVodFormat& format, const QJsonObject& json) const;
     void fillFormatId(VMVodFormat& format, const QJsonObject& json) const;
+    static bool findExecutable(const QString& name, const QString& path = QString());
 
 private:
     struct CacheEntry

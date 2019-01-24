@@ -64,6 +64,45 @@ VMYTDL::VMYTDL(QObject* parent)
 {
 }
 
+bool
+VMYTDL::findExecutable(const QString& name, const QString& path)
+{
+     QFileInfo fi(path);
+     if (fi.exists() && fi.isFile()) {
+         qInfo("File %s exists\n", qPrintable(fi.filePath()));
+         return true;
+     }
+
+     qInfo("File %s doesn't exist\n", qPrintable(fi.filePath()));
+
+     QStringList arguments;
+     arguments << QStringLiteral("-c") << QStringLiteral("which %1").arg(name);
+
+     QProcess process;
+     process.start(QStringLiteral("/bin/sh"), arguments, QIODevice::ReadOnly);
+     process.waitForFinished();
+     if (process.exitStatus() == QProcess::NormalExit &&
+         process.exitCode() == 0) {
+         auto result = process.readAllStandardOutput();
+         result = result.simplified();
+         if (result.isEmpty()) {
+            qInfo("Could not find '%s' using 'which'\n", qPrintable(name));
+         } else {
+            qInfo("Found '%s' as %s\n", qPrintable(name), qPrintable(result));
+         }
+
+         return !result.isEmpty();
+     } else {
+         qDebug(
+                     "Failed to start /bin/sh -c \"which %s\" exitStatus=%d, exitCode=%d):\nstdout: %s\nstderr:%s\n",
+                     qPrintable(name),
+                     static_cast<int>(process.exitStatus()), static_cast<int>(process.exitCode()),
+                     qPrintable(process.readAllStandardOutput()), qPrintable(process.readAllStandardError()));
+     }
+
+     return false;
+}
+
 void
 VMYTDL::initialize()
 {
@@ -71,18 +110,12 @@ VMYTDL::initialize()
     ms_YoutubeDl_Version.clear();
 
     int python = -1;
-    QFileInfo fi(QStringLiteral("/usr/bin/python"));
-    if (fi.exists()) {
+    if (findExecutable(QStringLiteral("python3"), QStringLiteral("/usr/bin/python3"))) {
+        python = 3;
+    } else if (findExecutable(QStringLiteral("python"), QStringLiteral("/usr/bin/python"))) {
         python = 0;
-        qInfo("%s exists\n", qPrintable(fi.filePath()));
     } else {
-        fi.setFile(QStringLiteral("/usr/bin/python3"));
-        if (fi.exists()) {
-            python = 3;
-            qInfo("%s exists\n", qPrintable(fi.filePath()));
-        } else {
-            qCritical("Failed to stat python or python3\n");
-        }
+        qCritical("Failed to find python or python3\n");
     }
 
     if (-1 != python) {
@@ -136,15 +169,13 @@ VMYTDL::initialize()
                 qInfo("youtube-dl version %s\n", qPrintable(ms_YoutubeDl_Version));
             } else {
                 qCritical(
-                            "Failed to get youtube-dl version (exitStatus=%d, exitCode=%d):\nstdout: %s\nstderr:%s",
+                            "Failed to get youtube-dl version (exitStatus=%d, exitCode=%d):\nstdout: %s\nstderr:%s\n",
                             static_cast<int>(process.exitStatus()), static_cast<int>(process.exitCode()),
                             qPrintable(process.readAllStandardOutput()), qPrintable(process.readAllStandardError()));
                 ms_YoutubeDl_Version.clear();
             }
         }
     }
-
-
 }
 
 void
