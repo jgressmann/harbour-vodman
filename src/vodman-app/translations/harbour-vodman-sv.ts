@@ -33,8 +33,9 @@
     </message>
     <message id="about-version-text">
         <location filename="../qml/pages/AboutPage.qml" line="93"/>
-        <source>Vodman 1.X.Y</source>
-        <translation>Vodman 1.X.Y</translation>
+        <source>V%1 %2</source>
+        <oldsource>Vodman 1.X.Y</oldsource>
+        <translation>%1 %2</translation>
     </message>
     <message id="about-description-header">
         <location filename="../qml/pages/AboutPage.qml" line="118"/>
@@ -45,7 +46,7 @@
         <location filename="../qml/pages/AboutPage.qml" line="125"/>
         <source>%1 is a versatile tool...</source>
         <oldsource>%1 is a versatile tool for downloading videos on demand (VODs) to your device from popular sites such as &lt;a href=\&quot;https://www.youtube.com/\&quot;&gt;Youtube&lt;/a&gt; or &lt;a href=\&quot;https://www.twitch.tv/\&quot;&gt;Twitch&lt;/a&gt;.</oldsource>
-        <translation>%1 är ett mångsidigt verktyg...</translation>
+        <translation>%1 är ett mångsidigt verktyg för att ladda ner vide på begäran (VOD) till din enhet, från populära sajter som &lt;a href=&quot;https://www.youtube.com/&quot;&gt;Youtube&lt;/a&gt; eller &lt;a href=&quot;https://www.twitch.tv/&quot;&gt;Twitch&lt;/a&gt;.</translation>
     </message>
     <message id="about-licensing-header">
         <location filename="../qml/pages/AboutPage.qml" line="135"/>
@@ -54,8 +55,12 @@
     </message>
     <message id="about-licensing-text">
         <location filename="../qml/pages/AboutPage.qml" line="142"/>
-        <source>Copyright (c) 2018, 2019 Jean Gressmann.</source>
-        <translation>Copyright (c) 2018, 2019 Jean Gressmann.</translation>
+        <source>Copyright (c) 2018, 2019 Jean Gressmann...</source>
+        <oldsource>Copyright (c) 2018, 2019 Jean Gressmann.</oldsource>
+        <translation>Copyright (c) 2018, 2019 Jean Gressmann.&lt;br/&gt;
+&lt;br/&gt;
+%1 finns tillgänglig under &lt;a href=&quot;https://opensource.org/licenses/MIT&quot;&gt;MIT&lt;/a&gt;-licensen.&lt;br/&gt;
+%1 använder youtube-dl som finns i &lt;a href=&quot;http://unlicense.org/&quot;&gt;&quot;public domain&quot;&lt;/a&gt;.</translation>
     </message>
     <message id="about-sources-header">
         <location filename="../qml/pages/AboutPage.qml" line="152"/>
@@ -65,7 +70,7 @@
     <message id="about-sources-text">
         <location filename="../qml/pages/AboutPage.qml" line="159"/>
         <source>Sources are on Github</source>
-        <translation>Källkod finns på GitHub</translation>
+        <translation>Källkoder finns tillgängliga på &lt;a href=&quot;https://github.com/jgressmann/harbour-vodman&quot;&gt;GitHub&lt;/a&gt;.</translation>
     </message>
     <message id="error-youtube-dl-not-working">
         <location filename="../qml/pages/DownloadPage.qml" line="190"/>
@@ -211,28 +216,33 @@
         <source>Open webpage</source>
         <translation>Öppna webbsidan</translation>
     </message>
-    <message id="download-placeholder-text-no-downloads">
+    <message id="download-placeholder-text-waiting-for-download-to-start">
         <location filename="../qml/pages/DownloadPage.qml" line="643"/>
+        <source>Download will start momentarily</source>
+        <translation>Nerladdningen börjar omedelbart</translation>
+    </message>
+    <message id="download-placeholder-text-no-downloads">
+        <location filename="../qml/pages/DownloadPage.qml" line="648"/>
         <source>No downloads at present</source>
         <translation>Inga nerladdningar just nu</translation>
     </message>
     <message id="download-placeholder-text-metadata-download">
-        <location filename="../qml/pages/DownloadPage.qml" line="647"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="652"/>
         <source>Downloading VOD metadata</source>
         <translation>Laddar ner VOD metadata</translation>
     </message>
     <message id="download-placeholder-hint-pull-down-to-start-download-from-clipboard">
-        <location filename="../qml/pages/DownloadPage.qml" line="654"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="663"/>
         <source>Pull down to start download using the URL in the clipboard</source>
         <translation>Dra neråt för att starta nerladdning från URL i urklipp</translation>
     </message>
     <message id="download-placeholder-hint-copy-url-to-clipboard">
-        <location filename="../qml/pages/DownloadPage.qml" line="658"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="667"/>
         <source>Copy a URL to the clipboard then pull down to start the download</source>
         <translation>Kopiera URL till urklipp och dra sedan neråt för att starta nerladdningen</translation>
     </message>
     <message id="download-placeholder-hint-pull-down-to-cancel">
-        <location filename="../qml/pages/DownloadPage.qml" line="661"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="671"/>
         <source>Pull down to cancel</source>
         <translation>Dra neråt för att avbryta</translation>
     </message>
