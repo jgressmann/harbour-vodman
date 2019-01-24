@@ -13,7 +13,6 @@ URL:        https://openrepos.net/content/jgressmann/vodman
 Source0:    %{name}-%{version}.tar.bz2
 
 BuildRequires:  pkgconfig(Qt5Core)
-BuildRequires:  pkgconfig(Qt5DBus)
 BuildRequires:  pkgconfig(Qt5Qml)
 BuildRequires:  pkgconfig(Qt5Quick)
 BuildRequires:  pkgconfig(sailfishapp) >= 0.0.10
@@ -21,6 +20,12 @@ BuildRequires:  desktop-file-utils
 
 
 Requires:   sailfishsilica-qt5 >= 0.10.9
+# This line pulls in dependency on python3
+Requires:   pyotherside-qml-plugin-python3-qt5
+# QML Nemo plugins used
+Requires:   nemo-qml-plugin-notifications-qt5
+Requires:   nemo-qml-plugin-dbus-qt5
+Requires:   nemo-qml-plugin-configuration-qt5
 
 %description
 %{summary}
