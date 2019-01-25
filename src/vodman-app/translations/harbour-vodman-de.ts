@@ -26,35 +26,34 @@
         <translation>Immer nachfragen</translation>
     </message>
     <message id="about-page-header">
-        <location filename="../qml/pages/AboutPage.qml" line="48"/>
+        <location filename="../qml/pages/AboutPage.qml" line="45"/>
         <source>About Vodman</source>
-        <extracomment>About Vodman</extracomment>
         <translation>Über %1</translation>
     </message>
     <message id="about-version-text">
-        <location filename="../qml/pages/AboutPage.qml" line="93"/>
+        <location filename="../qml/pages/AboutPage.qml" line="98"/>
         <source>V%1 %2</source>
         <oldsource>Vodman 1.X.Y</oldsource>
         <translation>%1 %2</translation>
     </message>
     <message id="about-description-header">
-        <location filename="../qml/pages/AboutPage.qml" line="118"/>
+        <location filename="../qml/pages/AboutPage.qml" line="121"/>
         <source>Description</source>
         <translation>Beschreibung</translation>
     </message>
     <message id="about-description-text">
-        <location filename="../qml/pages/AboutPage.qml" line="125"/>
+        <location filename="../qml/pages/AboutPage.qml" line="127"/>
         <source>%1 is a versatile tool...</source>
         <oldsource>%1 is a versatile tool for downloading videos on demand (VODs) to your device from popular sites such as &lt;a href=\&quot;https://www.youtube.com/\&quot;&gt;Youtube&lt;/a&gt; or &lt;a href=\&quot;https://www.twitch.tv/\&quot;&gt;Twitch&lt;/a&gt;.</oldsource>
         <translation>%1 ist eine Anwendung zum Herunterladen von Video On Demand (VOD) Inhalten von populären Webseiten wie &lt;a href=&quot;https://www.youtube.com/&quot;&gt;Youtube&lt;/a&gt; und &lt;a href=&quot;https://www.twitch.tv/&quot;&gt;Twitch&lt;/a&gt;.</translation>
     </message>
     <message id="about-licensing-header">
-        <location filename="../qml/pages/AboutPage.qml" line="135"/>
+        <location filename="../qml/pages/AboutPage.qml" line="137"/>
         <source>Licensing</source>
         <translation>Lizenz</translation>
     </message>
     <message id="about-licensing-text">
-        <location filename="../qml/pages/AboutPage.qml" line="142"/>
+        <location filename="../qml/pages/AboutPage.qml" line="143"/>
         <source>Copyright (c) 2018, 2019 Jean Gressmann...</source>
         <oldsource>Copyright (c) 2018, 2019 Jean Gressmann.</oldsource>
         <translation>Copyright (c) 2018, 2019 Jean Gressmann.
@@ -63,7 +62,7 @@
 %1 verwendet youtube-dl, das sich in der &lt;a href=&quot;http://unlicense.org/&quot;&gt;Public Domain&lt;/a&gt; befindet.</translation>
     </message>
     <message id="about-sources-header">
-        <location filename="../qml/pages/AboutPage.qml" line="152"/>
+        <location filename="../qml/pages/AboutPage.qml" line="153"/>
         <source>Sources</source>
         <translation>Quellen</translation>
     </message>
@@ -71,6 +70,42 @@
         <location filename="../qml/pages/AboutPage.qml" line="159"/>
         <source>Sources are on Github</source>
         <translation>Die Quellen sind auf &lt;a href=&quot;https://github.com/jgressmann/harbour-vodman&quot;&gt;GitHub&lt;/a&gt; verfügbar.</translation>
+    </message>
+    <message id="about-translations-header">
+        <location filename="../qml/pages/AboutPage.qml" line="169"/>
+        <source>Translations</source>
+        <translation>Übersetzungen</translation>
+    </message>
+    <message id="about-translations-english-label">
+        <location filename="../qml/pages/AboutPage.qml" line="178"/>
+        <source>names of translators</source>
+        <translation>Jean Gressmann</translation>
+    </message>
+    <message id="about-translations-english-value">
+        <location filename="../qml/pages/AboutPage.qml" line="180"/>
+        <source>English</source>
+        <translation>englisch</translation>
+    </message>
+    <message id="about-translations-german-label">
+        <location filename="../qml/pages/AboutPage.qml" line="185"/>
+        <source>names of translators</source>
+        <translation>Jean Gressmann</translation>
+    </message>
+    <message id="about-translations-german-value">
+        <location filename="../qml/pages/AboutPage.qml" line="187"/>
+        <source>German</source>
+        <oldsource>English</oldsource>
+        <translation type="unfinished">deutsch</translation>
+    </message>
+    <message id="about-translations-swedish-label">
+        <location filename="../qml/pages/AboutPage.qml" line="192"/>
+        <source>names of translators</source>
+        <translation>Åke Engelbrektson</translation>
+    </message>
+    <message id="about-translations-swedish-value">
+        <location filename="../qml/pages/AboutPage.qml" line="194"/>
+        <source>Swedish</source>
+        <translation>schwedisch</translation>
     </message>
     <message id="error-youtube-dl-not-working">
         <location filename="../qml/pages/DownloadPage.qml" line="190"/>
