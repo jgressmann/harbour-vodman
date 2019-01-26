@@ -28,7 +28,7 @@
     <message id="about-page-header">
         <location filename="../qml/pages/AboutPage.qml" line="45"/>
         <source>About Vodman</source>
-        <translation>Om Vodman</translation>
+        <translation>Om %1</translation>
     </message>
     <message id="about-version-text">
         <location filename="../qml/pages/AboutPage.qml" line="98"/>
@@ -74,38 +74,38 @@
     <message id="about-translations-header">
         <location filename="../qml/pages/AboutPage.qml" line="169"/>
         <source>Translations</source>
-        <translation type="unfinished"></translation>
+        <translation>Översättningar</translation>
     </message>
     <message id="about-translations-english-label">
         <location filename="../qml/pages/AboutPage.qml" line="178"/>
         <source>names of translators</source>
-        <translation type="unfinished"></translation>
+        <translation>Jean Gressmann</translation>
     </message>
     <message id="about-translations-english-value">
         <location filename="../qml/pages/AboutPage.qml" line="180"/>
         <source>English</source>
-        <translation type="unfinished"></translation>
+        <translation>Engelska</translation>
     </message>
     <message id="about-translations-german-label">
         <location filename="../qml/pages/AboutPage.qml" line="185"/>
         <source>names of translators</source>
-        <translation type="unfinished"></translation>
+        <translation>Jean Gressmann</translation>
     </message>
     <message id="about-translations-german-value">
         <location filename="../qml/pages/AboutPage.qml" line="187"/>
         <source>German</source>
         <oldsource>English</oldsource>
-        <translation type="unfinished"></translation>
+        <translation>Tyska</translation>
     </message>
     <message id="about-translations-swedish-label">
         <location filename="../qml/pages/AboutPage.qml" line="192"/>
         <source>names of translators</source>
-        <translation type="unfinished"></translation>
+        <translation>Åke Engelbrektson</translation>
     </message>
     <message id="about-translations-swedish-value">
         <location filename="../qml/pages/AboutPage.qml" line="194"/>
         <source>Swedish</source>
-        <translation type="unfinished"></translation>
+        <translation>Svenska</translation>
     </message>
     <message id="error-youtube-dl-not-working">
         <location filename="../qml/pages/DownloadPage.qml" line="190"/>
