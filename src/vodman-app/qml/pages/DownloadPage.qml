@@ -225,9 +225,10 @@ Page {
                     qsTrId("error-network-down")
             break
         case VM.VM_ErrorInvalidUrl:
-            errorNotification.body = errorNotification.previewBody =
-                    //% "Invalid URL."
-                    qsTrId("error-invalid-url")
+            //% "Invalid URL"
+            errorNotification.previewBody = qsTrId("error-invalid-url-preview-body")
+            //% "Invalid URL '%1'"
+            errorNotification.body = qsTrId("error-invalid-url-body").arg(url)
             break
         case VM.VM_ErrorNoSpaceLeftOnDevice:
             errorNotification.body = errorNotification.previewBody =
@@ -278,10 +279,31 @@ Page {
         service: 'org.duckdns.jgressmann.vodman.app'
         iface: 'org.duckdns.jgressmann.vodman.app'
         path: '/instance'
+        xml:
+"<interface name=\"org.duckdns.jgressmann.vodman.app\">\n" +
+"   <method name=\"download\">\n" +
+"       <arg name=\"url\" type=\"s\" direction=\"in\"/>\n" +
+"   </method>\n" +
+"</interface>\n"
 
         function play(filePath) {
             console.debug("play path=" + filePath)
             Qt.openUrlExternally("file://" + filePath)
+        }
+
+        function download(url) {
+            console.debug("download url=" + url)
+            if (vodDownloadModel.canStartDownload) {
+                vodDownloadModel.startDownloadMetaData(url)
+                //% "Started download of '%1'"
+                startedNotification.summary = qsTrId("nofification-download-started-summary").arg(url)
+                startedNotification.publish()
+            } else {
+                errorNotification.body = errorNotification.previewBody =
+                        //% "%1 is busy. Try again later."
+                        qsTrId("notification-busy").arg(App.displayName)
+                errorNotification.publish()
+            }
         }
     }
 
@@ -303,6 +325,16 @@ Page {
         summary: qsTrId("nofification-download-finished-summary")
         //% "Download finished"
         previewSummary: qsTrId("nofification-download-finished-summary")
+    }
+
+    Notification {
+        id: startedNotification
+        //category: "x-nemo.transfer.complete"
+        appName: App.displayName
+        appIcon: "/usr/share/icons/hicolor/86x86/apps/harbour-vodman.png"
+        icon: appIcon
+        //% "Download started"
+        previewSummary: qsTrId("nofification-download-started-preview-summary")
     }
 
     RemorsePopup { id: remorse }
