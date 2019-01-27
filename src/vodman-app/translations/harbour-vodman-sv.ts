@@ -189,12 +189,12 @@
     <message id="error-invalid-url-preview-body">
         <location filename="../qml/pages/DownloadPage.qml" line="229"/>
         <source>Invalid URL</source>
-        <translation type="unfinished">Invalid URL</translation>
+        <translation>Ogiltig URL</translation>
     </message>
     <message id="error-invalid-url-body">
         <location filename="../qml/pages/DownloadPage.qml" line="231"/>
         <source>Invalid URL &apos;%1&apos;</source>
-        <translation type="unfinished">Invalid URL &apos;%1&apos;</translation>
+        <translation>Ogiltig URL &apos;%1&apos;</translation>
     </message>
     <message id="notification-busy">
         <location filename="../qml/pages/DownloadPage.qml" line="304"/>
