@@ -94,7 +94,7 @@ Page {
                     }
 
                     Label {
-                        //% "V%1 %2"
+                        //% "%1 %2"
                         text: qsTrId("about-version-text").arg(App.displayName).arg(App.version)
                         anchors.horizontalCenter: parent.horizontalCenter
                         font.pixelSize: Theme.fontSizeLarge
