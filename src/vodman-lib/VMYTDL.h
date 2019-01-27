@@ -28,22 +28,28 @@
 #include <QVariantMap>
 #include <QDateTime>
 #include <QScopedPointer>
+#include <functional>
 
 #include "VMVod.h"
 
 
 class QJsonObject;
 class QTemporaryFile;
+class VMVodData;
 class VMVodFormat;
 class VMVodFileDownload;
 class VMVodFileDownloadRequest;
 class VMVodMetaDataDownload;
+
 class VMYTDL : public QObject
 {
     Q_OBJECT
 public:
+    using Normalizer = std::function<void(QString&)>;
+
+public:
     ~VMYTDL();
-    VMYTDL(QObject* parent = Q_NULLPTR);
+    VMYTDL(QObject* parent = nullptr);
 
     static void initialize();
     static void finalize();
@@ -55,6 +61,7 @@ public:
     void cancelFetchVod(qint64 token, bool deleteFile);
     QVariantList inProgressVodFetches();
     int fetchVodYoutubeDl(const VMVodFormat& format, const QString& filePath, VMVodFileDownload* _download);
+    Normalizer setUrlNormalizer(Normalizer&& n);
 
 signals:
     void fetchVodMetaDataCompleted(qint64 id, const VMVodMetaDataDownload& download);
@@ -71,7 +78,6 @@ private:
     Q_DISABLE_COPY(VMYTDL)
     QVariantMap parseResponse(QJsonDocument);
     void cleanupProcess(QProcess* process);
-    void normalizeUrl(QUrl& url) const;
     void fillFrameRate(VMVodFormat& format, const QJsonObject& json) const;
     void fillFormatId(VMVodFormat& format, const QJsonObject& json) const;
     static bool findExecutable(const QString& name, const QString& path = QString());
@@ -87,6 +93,7 @@ private:
     QCache<QString, CacheEntry> m_MetaDataCache;
     QHash<QProcess*, QVariantMap> m_ProcessMap;
     QHash<qint64, QProcess*> m_VodDownloads;
+    Normalizer m_Normalizer;
 
 private: // statics
     static QString ms_YoutubeDl_Version;

@@ -169,7 +169,7 @@
     </message>
     <message id="play">
         <location filename="../qml/pages/DownloadPage.qml" line="258"/>
-        <location filename="../qml/pages/DownloadPage.qml" line="622"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="635"/>
         <source>Play</source>
         <translation>Abspielen</translation>
     </message>
@@ -196,88 +196,88 @@
         <translation>Einstellungen</translation>
     </message>
     <message id="menu-item-clear-clipboard">
-        <location filename="../qml/pages/DownloadPage.qml" line="380"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="393"/>
         <source>Clear clipboard</source>
         <translation>Zwischenablage löschen</translation>
     </message>
     <message id="menu-item-cancel-all-downloads">
-        <location filename="../qml/pages/DownloadPage.qml" line="389"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="402"/>
         <source>Cancel all downloads</source>
         <translation>Alle Downloads abbrechen</translation>
     </message>
     <message id="remorse-cancel-all-downloads">
-        <location filename="../qml/pages/DownloadPage.qml" line="394"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="407"/>
         <source>Stopping all downloads</source>
         <translation>Beende alle Downloads</translation>
     </message>
     <message id="menu-item-cancel-all-downloads-delete">
-        <location filename="../qml/pages/DownloadPage.qml" line="401"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="414"/>
         <source>Cancel all downloads and delete files</source>
         <translation>Alle Downloads abbrechen und Dateien löschen</translation>
     </message>
     <message id="remorse-cancel-all-downloads-delete">
-        <location filename="../qml/pages/DownloadPage.qml" line="406"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="419"/>
         <source>Purging all downloads</source>
         <translation>Beende alle Downloads</translation>
     </message>
     <message id="cancel">
-        <location filename="../qml/pages/DownloadPage.qml" line="413"/>
-        <location filename="../qml/pages/DownloadPage.qml" line="616"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="426"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="629"/>
         <source>Cancel</source>
         <translation>Abbrechen</translation>
     </message>
     <message id="menu-item-download-from-clipboard">
-        <location filename="../qml/pages/DownloadPage.qml" line="420"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="433"/>
         <source>Download from clipboard</source>
         <translation>URL in Zwischenablage herunterladen</translation>
     </message>
     <message id="download-page-header">
-        <location filename="../qml/pages/DownloadPage.qml" line="439"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="452"/>
         <source>Downloads</source>
         <translation>Downloads</translation>
     </message>
     <message id="download-item-remorse-cancel">
-        <location filename="../qml/pages/DownloadPage.qml" line="459"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="472"/>
         <source>Stopping %1</source>
         <translation>Beende %1</translation>
     </message>
     <message id="download-item-cancel-and-delete">
-        <location filename="../qml/pages/DownloadPage.qml" line="610"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="623"/>
         <source>Cancel and delete file</source>
         <translation>Abbrechen und Datei löschen</translation>
     </message>
     <message id="download-item-open-webpage">
-        <location filename="../qml/pages/DownloadPage.qml" line="628"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="641"/>
         <source>Open webpage</source>
         <translation>Webseite öffnen</translation>
     </message>
     <message id="download-placeholder-text-waiting-for-download-to-start">
-        <location filename="../qml/pages/DownloadPage.qml" line="643"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="656"/>
         <source>Download will start momentarily</source>
         <translation>Der Download started in einigen Sekunden</translation>
     </message>
     <message id="download-placeholder-text-no-downloads">
-        <location filename="../qml/pages/DownloadPage.qml" line="648"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="661"/>
         <source>No downloads at present</source>
         <translation>Keine Downloads aktiv</translation>
     </message>
     <message id="download-placeholder-text-metadata-download">
-        <location filename="../qml/pages/DownloadPage.qml" line="652"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="665"/>
         <source>Downloading VOD metadata</source>
         <translation>Lade VOD Metadaten herunter</translation>
     </message>
     <message id="download-placeholder-hint-pull-down-to-start-download-from-clipboard">
-        <location filename="../qml/pages/DownloadPage.qml" line="663"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="676"/>
         <source>Pull down to start download using the URL in the clipboard</source>
         <translation>Zieh nach unten, um die URL in der Zwischenablage herunterzuladen.</translation>
     </message>
     <message id="download-placeholder-hint-copy-url-to-clipboard">
-        <location filename="../qml/pages/DownloadPage.qml" line="667"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="680"/>
         <source>Copy a URL to the clipboard then pull down to start the download</source>
         <translation>Kopiere eine Video URL in die Zwischenablage und zieh dann nach unten um den Download zu starten.</translation>
     </message>
     <message id="download-placeholder-hint-pull-down-to-cancel">
-        <location filename="../qml/pages/DownloadPage.qml" line="671"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="684"/>
         <source>Pull down to cancel</source>
         <translation>Zieh nach unten zum Abbrechen</translation>
     </message>

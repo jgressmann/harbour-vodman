@@ -351,6 +351,20 @@ Page {
             }
 
             MenuItem {
+                text: "Download mp4"
+                visible: debugApp.value
+                enabled: vodDownloadModel.canStartDownload
+                onClicked: vodDownloadModel.startDownloadMetaData("http://techslides.com/demos/samples/sample.mp4")
+            }
+
+            MenuItem {
+                text: "Download png"
+                visible: debugApp.value
+                enabled: vodDownloadModel.canStartDownload
+                onClicked: vodDownloadModel.startDownloadMetaData("https://openrepos.net/sites/default/files/openrepos_beta.png")
+            }
+
+            MenuItem {
                 text: "Copy medium video url to clipboard"
                 visible: debugApp.value
                 onClicked: {
@@ -361,7 +375,6 @@ Page {
             MenuItem {
                 text: "Copy small video url to clipboard"
                 visible: debugApp.value
-//                enabled: vodDownloadModel.canStartDownload
                 onClicked: {
                     Clipboard.text = "https://www.youtube.com/watch?v=7t-l0q_v4D8"
                 }
