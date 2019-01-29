@@ -281,13 +281,18 @@ Page {
         path: '/instance'
         xml:
 "<interface name=\"org.duckdns.jgressmann.vodman.app\">\n" +
+"   <property name=\"canStartDownload\" type=\"boolean\" access=\"readonly\"/>\n" +
 "   <method name=\"download\">\n" +
+"       <arg name=\"url\" type=\"s\" direction=\"in\"/>\n" +
+"   </method>\n" +
+"   <method name=\"downloadEx\">\n" +
 "       <arg name=\"url\" type=\"s\" direction=\"in\"/>\n" +
 "       <arg name=\"notify\" type=\"b\" direction=\"in\"/>\n" +
 "       <arg name=\"success\" type=\"b\" direction=\"out\"/>\n" +
 "   </method>\n" +
 "</interface>\n"
 
+        readonly property bool canStartDownload: vodDownloadModel.canStartDownload
         function play(filePath) {
             console.debug("play path=" + filePath)
             Qt.openUrlExternally("file://" + filePath)
