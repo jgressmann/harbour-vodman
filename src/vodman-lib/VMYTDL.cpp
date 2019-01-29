@@ -42,12 +42,17 @@
 namespace {
 
 const QRegExp s_YTDLProgressRegexp("\\[download\\]\\s+(\\d+\\.\\d*)%\\s+");
+// 160p30
+const QRegExp s_FramerateRegexp("\\d+p(\\d+)");
 //const QRegExp s_CurlProgressRegexp("^.*(\\d+\\.\\d*)%$");
 
 const QString s_Token = QStringLiteral("token");
 const QString s_Type = QStringLiteral("type");
 const QString s_MetaData = QStringLiteral("metadata");
 const QString s_Download = QStringLiteral("download");
+const QString s_NoCallHome = QStringLiteral("--no-call-home");
+
+void Nop(QString&) {}
 
 } // anon
 
@@ -61,6 +66,7 @@ VMYTDL::~VMYTDL() {
 
 VMYTDL::VMYTDL(QObject* parent)
     : QObject(parent)
+    , m_Normalizer(&Nop)
 {
 }
 
@@ -94,10 +100,10 @@ VMYTDL::findExecutable(const QString& name, const QString& path)
          return !result.isEmpty();
      } else {
          qDebug(
-                     "Failed to start /bin/sh -c \"which %s\" exitStatus=%d, exitCode=%d):\nstdout: %s\nstderr:%s\n",
-                     qPrintable(name),
-                     static_cast<int>(process.exitStatus()), static_cast<int>(process.exitCode()),
-                     qPrintable(process.readAllStandardOutput()), qPrintable(process.readAllStandardError()));
+             "Failed to start /bin/sh -c \"which %s\" exitStatus=%d, exitCode=%d)\nstdout: %s\nstderr:%s\n",
+             qPrintable(name),
+             static_cast<int>(process.exitStatus()), static_cast<int>(process.exitCode()),
+             qPrintable(process.readAllStandardOutput()), qPrintable(process.readAllStandardError()));
      }
 
      return false;
@@ -154,7 +160,7 @@ VMYTDL::initialize()
 
         if (!ms_YoutubeDl_Path.isEmpty()) {
             QStringList arguments;
-            arguments << QStringLiteral("--no-call-home") << QStringLiteral("--version");
+            arguments << s_NoCallHome << QStringLiteral("--version");
 
             qDebug() << "Attempting to start" << ms_YoutubeDl_Path;
 
@@ -169,9 +175,9 @@ VMYTDL::initialize()
                 qInfo("youtube-dl version %s\n", qPrintable(ms_YoutubeDl_Version));
             } else {
                 qCritical(
-                            "Failed to get youtube-dl version (exitStatus=%d, exitCode=%d):\nstdout: %s\nstderr:%s\n",
-                            static_cast<int>(process.exitStatus()), static_cast<int>(process.exitCode()),
-                            qPrintable(process.readAllStandardOutput()), qPrintable(process.readAllStandardError()));
+                    "Failed to get youtube-dl version (exitStatus=%d, exitCode=%d):\nstdout: %s\nstderr:%s\n",
+                    static_cast<int>(process.exitStatus()), static_cast<int>(process.exitCode()),
+                    qPrintable(process.readAllStandardOutput()), qPrintable(process.readAllStandardError()));
                 ms_YoutubeDl_Version.clear();
             }
         }
@@ -186,36 +192,22 @@ VMYTDL::finalize()
     }
 }
 
-void
-VMYTDL::normalizeUrl(QUrl& url) const {
-    if (url.hasQuery()) {
-        qDebug() << "in"  << url;
-        QUrlQuery q(url.query());
-        q.removeAllQueryItems(QStringLiteral("t"));
-        url.setQuery(q);
-        qDebug() << "out"  << url;
-    }
-}
-
 bool
 VMYTDL::startFetchVodMetaData(qint64 token, const QString& _url) {
 
     VMVodMetaDataDownload download;
     VMVodMetaDataDownloadData& data = download.data();
 
-    QUrl url(_url);
-    normalizeUrl(url);
+    QString url(_url);
+    m_Normalizer(url);
 
-    data._url = url.toString();
+    data._url = url;
     if (!available()) {
         data.errorMessage = QStringLiteral("no working youtube-dl @ ") + ms_YoutubeDl_Path;
         data.error = VMVodEnums::VM_ErrorNoYoutubeDl;
         qDebug() << data.errorMessage;
         return false;
     }
-
-
-
 
     qDebug() << "Trying to obtain video urls for: " << url;
 
@@ -242,8 +234,8 @@ VMYTDL::startFetchVodMetaData(qint64 token, const QString& _url) {
     arguments << QStringLiteral("--dump-json")
               << QStringLiteral("--youtube-skip-dash-manifest")
               << QStringLiteral("--no-cache-dir")
-              << QStringLiteral("--no-call-home")
-              << url.toString();
+              << s_NoCallHome
+              << url;
 
     qDebug() << "youtube-dl subprocess:" << ms_YoutubeDl_Path << arguments;
 
@@ -298,7 +290,7 @@ VMYTDL::fetchVod(qint64 token, const VMVodFileDownloadRequest& req, VMVodFileDow
               << QStringLiteral("--newline")
               << QStringLiteral("--no-part")
               << QStringLiteral("--no-cache-dir")
-              << QStringLiteral("--no-call-home")
+              << s_NoCallHome
               << QStringLiteral("-f") << req.format.id()
               << QStringLiteral("-o") << req.filePath
               << req.format.vodUrl();
@@ -426,37 +418,65 @@ VMYTDL::onMetaDataProcessFinished(int code, QProcess::ExitStatus status)
     descData._thumbnail = root.value(QStringLiteral("thumbnail")).toString();
 
     QJsonArray formats = root.value(QStringLiteral("formats")).toArray();
+    int lastResortIndex = -1;
     for (int i = 0; i < formats.size(); ++i) {
         QJsonObject format = formats[i].toObject();
         QString vcodec = format.value(QStringLiteral("vcodec")).toString();
         QString acodec = format.value(QStringLiteral("acodec")).toString();
-        if (vcodec.isEmpty() || QStringLiteral("none") == vcodec ||  // no video
-            acodec.isEmpty() || QStringLiteral("none") == acodec) { // no audio
-            continue;
-        }
 
-          //"format_id": "160p30",
-        vodData._formats.append(VMVodFormat());
-        VMVodFormat& vodFormat = vodData._formats.last();
-        VMVodFormatData& vodFormatData = vodFormat.data();
-        vodFormatData._vodUrl = descData._webPageUrl;
-        vodFormatData._width = format.value(QStringLiteral("width")).toInt();
-        vodFormatData._height = format.value(QStringLiteral("height")).toInt();
-        vodFormatData._id = format.value(QStringLiteral("format_id")).toString();
-        vodFormatData._fileUrl = format.value(QStringLiteral("url")).toString();
-        vodFormatData._displayName = format.value(QStringLiteral("format")).toString();
-        vodFormatData._fileExtension = format.value(QStringLiteral("ext")).toString();
-        fillFrameRate(vodFormat, format);
-        fillFormatId(vodFormat, format);
-//        qDebug() << vodFormatData._width << vodFormatData._height << vodFormatData._format;
+        auto hasVideo = !vcodec.isEmpty() && QStringLiteral("none") != vcodec;
+        auto hasAudio = !acodec.isEmpty() && QStringLiteral("none") != acodec;
+
+        if (hasVideo) {
+            if (lastResortIndex == -1) {
+                lastResortIndex = i;
+            }
+
+            if (hasAudio) {
+                //"format_id": "160p30",
+                vodData._formats.append(VMVodFormat());
+                VMVodFormat& vodFormat = vodData._formats.last();
+                VMVodFormatData& vodFormatData = vodFormat.data();
+                vodFormatData._vodUrl = descData._webPageUrl;
+                vodFormatData._width = format.value(QStringLiteral("width")).toInt();
+                vodFormatData._height = format.value(QStringLiteral("height")).toInt();
+                vodFormatData._id = format.value(QStringLiteral("format_id")).toString();
+                vodFormatData._fileUrl = format.value(QStringLiteral("url")).toString();
+                vodFormatData._displayName = format.value(QStringLiteral("format")).toString();
+                vodFormatData._fileExtension = format.value(QStringLiteral("ext")).toString();
+                fillFrameRate(vodFormat, format);
+                fillFormatId(vodFormat, format);
+                //        qDebug() << vodFormatData._width << vodFormatData._height << vodFormatData._format;
+            }
+        }
     }
 
     if (vodData._formats.isEmpty()) {
-        QString message = QStringLiteral("No format has video");
-        qCritical() << message;
-        downLoadData.error = VMVodEnums::VM_ErrorNoVideo;
-        downLoadData.errorMessage = message;
-        emit fetchVodMetaDataCompleted(id, download);
+        if (formats.isEmpty()) {
+            QString message = QStringLiteral("No format has video");
+            qCritical() << message;
+            downLoadData.error = VMVodEnums::VM_ErrorNoVideo;
+            downLoadData.errorMessage = message;
+            emit fetchVodMetaDataCompleted(id, download);
+        } else {
+            if (lastResortIndex == -1) {
+                lastResortIndex = 0;
+            }
+
+            QJsonObject format = formats[lastResortIndex].toObject();
+            vodData._formats.append(VMVodFormat());
+            VMVodFormat& vodFormat = vodData._formats.last();
+            VMVodFormatData& vodFormatData = vodFormat.data();
+            vodFormatData._vodUrl = descData._webPageUrl;
+            vodFormatData._width = format.value(QStringLiteral("width")).toInt();
+            vodFormatData._height = format.value(QStringLiteral("height")).toInt();
+            vodFormatData._id = format.value(QStringLiteral("format_id")).toString();
+            vodFormatData._fileUrl = format.value(QStringLiteral("url")).toString();
+            vodFormatData._displayName = format.value(QStringLiteral("format")).toString();
+            vodFormatData._fileExtension = format.value(QStringLiteral("ext")).toString();
+            fillFrameRate(vodFormat, format);
+            fillFormatId(vodFormat, format);
+        }
     }
 
     {
@@ -677,11 +697,9 @@ VMYTDL::fillFrameRate(VMVodFormat& format, const QJsonObject& json) const {
     int frameRate = -1;
     auto jsonFps = json.value(QStringLiteral("fps")).toString();
     if (jsonFps.isEmpty()) {
-        // 160p30
-        auto id = format.id();
-        auto index = id.indexOf(QChar('p'));
-        if (index > 0) {
-            frameRate = id.rightRef(id.size()-index-1).toInt();
+        if (s_YTDLProgressRegexp.indexIn(format.id()) != -1) {
+            auto cap = s_YTDLProgressRegexp.cap(1);
+            frameRate = cap.toInt();
         }
     } else {
         frameRate = jsonFps.toInt();
@@ -691,28 +709,39 @@ VMYTDL::fillFrameRate(VMVodFormat& format, const QJsonObject& json) const {
 }
 
 void
-VMYTDL::fillFormatId(VMVodFormat& f, const QJsonObject& json) const {
+VMYTDL::fillFormatId(VMVodFormat& f, const QJsonObject& json) const
+{
     Q_UNUSED(json);
     VMVodEnums::Format format = VMVodEnums::VM_Unknown;
 
     auto value = f.height();
-    if (value <= 160) {
-        format = VMVodEnums::VM_160p;
-    } else if (value <= 240) {
-        format = VMVodEnums::VM_240p;
-    } else if (value <= 360) {
-        format = VMVodEnums::VM_360p;
-    } else if (value <= 480) {
-        format = VMVodEnums::VM_480p;
-    } else if (value <= 720) {
-        format = VMVodEnums::VM_720p;
-    } else if (value <= 1080) {
-        format = VMVodEnums::VM_1080p;
-    } else if (value <= 1440) {
-        format = VMVodEnums::VM_1440p;
-    } else {
-        format = VMVodEnums::VM_2160p;
+    if (value > 0) {
+        if (value <= 160) {
+            format = VMVodEnums::VM_160p;
+        } else if (value <= 240) {
+            format = VMVodEnums::VM_240p;
+        } else if (value <= 360) {
+            format = VMVodEnums::VM_360p;
+        } else if (value <= 480) {
+            format = VMVodEnums::VM_480p;
+        } else if (value <= 720) {
+            format = VMVodEnums::VM_720p;
+        } else if (value <= 1080) {
+            format = VMVodEnums::VM_1080p;
+        } else if (value <= 1440) {
+            format = VMVodEnums::VM_1440p;
+        } else {
+            format = VMVodEnums::VM_2160p;
+        }
     }
 
     f.data()._format = format;
+}
+
+VMYTDL::Normalizer
+VMYTDL::setUrlNormalizer(Normalizer&& n)
+{
+    auto result = std::move(m_Normalizer);
+    m_Normalizer = std::move(n);
+    return result;
 }
