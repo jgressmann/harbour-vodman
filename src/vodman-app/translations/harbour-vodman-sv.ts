@@ -183,8 +183,7 @@
     <message id="nofification-download-started-summary">
         <location filename="../qml/pages/DownloadPage.qml" line="306"/>
         <source>Started download of &apos;%1&apos;</source>
-        <oldsource>Download started</oldsource>
-        <translation type="unfinished">Started download of &apos;%1&apos;</translation>
+        <translation>Nerladdning av &apos;%1&apos; påbörjad</translation>
     </message>
     <message id="error-invalid-url-preview-body">
         <location filename="../qml/pages/DownloadPage.qml" line="229"/>
@@ -200,12 +199,12 @@
         <location filename="../qml/pages/DownloadPage.qml" line="316"/>
         <source>%1 is busy. Try again later.</source>
         <oldsource>Vodman is busy. Try again later.</oldsource>
-        <translation type="unfinished">%1 is busy. Try again later.</translation>
+        <translation>%1 iär upptagen. Försök igen, senare.</translation>
     </message>
     <message id="nofification-download-started-preview-summary">
         <location filename="../qml/pages/DownloadPage.qml" line="351"/>
         <source>Download started</source>
-        <translation type="unfinished">Download started</translation>
+        <translation>Nerladdning påbörjad</translation>
     </message>
     <message id="menu-item-about-vodman">
         <location filename="../qml/pages/DownloadPage.qml" line="362"/>
