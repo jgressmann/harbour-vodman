@@ -283,6 +283,8 @@ Page {
 "<interface name=\"org.duckdns.jgressmann.vodman.app\">\n" +
 "   <method name=\"download\">\n" +
 "       <arg name=\"url\" type=\"s\" direction=\"in\"/>\n" +
+"       <arg name=\"notify\" type=\"b\" direction=\"in\"/>\n" +
+"       <arg name=\"success\" type=\"b\" direction=\"out\"/>\n" +
 "   </method>\n" +
 "</interface>\n"
 
@@ -292,18 +294,30 @@ Page {
         }
 
         function download(url) {
-            console.debug("download url=" + url)
+            downloadEx(url, true)
+        }
+
+        function downloadEx(url, notify) {
+            console.debug("download url=" + url + ", notify=" + notify)
             if (vodDownloadModel.canStartDownload) {
                 vodDownloadModel.startDownloadMetaData(url)
-                //% "Started download of '%1'"
-                startedNotification.summary = qsTrId("nofification-download-started-summary").arg(url)
-                startedNotification.publish()
-            } else {
+                if (notify) {
+                    //% "Started download of '%1'"
+                    startedNotification.summary = qsTrId("nofification-download-started-summary").arg(url)
+                    startedNotification.publish()
+                }
+
+                return true
+            }
+
+            if (notify) {
                 errorNotification.body = errorNotification.previewBody =
                         //% "%1 is busy. Try again later."
                         qsTrId("notification-busy").arg(App.displayName)
                 errorNotification.publish()
             }
+
+            return false
         }
     }
 
