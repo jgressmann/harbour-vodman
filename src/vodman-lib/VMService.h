@@ -25,15 +25,22 @@
 
 #include <QObject>
 #include <QAtomicInt>
-#include "VMYTDL.h"
+#include <QVariant>
 
 class VMVodMetaDataDownload;
 class VMVodFileDownload;
+class VMYTDL;
 class VMService : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(VMYTDL* ytdl READ ytdl WRITE setYtdl NOTIFY ytdlChanged)
+
 public:
     explicit VMService(QObject *parent = Q_NULLPTR);
+
+public:
+    VMYTDL* ytdl() const;
+    void setYtdl(VMYTDL* value);
 
 public slots:
     qint64 newToken();
@@ -47,6 +54,7 @@ signals:
     void vodFileDownloadAdded(qlonglong handle, const QByteArray &result);
     void vodFileDownloadChanged(qlonglong handle, const QByteArray &result);
     void vodFileDownloadRemoved(qlonglong handle, const QByteArray &result);
+    void ytdlChanged();
 
 private slots:
     void onFetchVodMetaDataCompleted(qint64, const VMVodMetaDataDownload &result);
@@ -55,6 +63,7 @@ private slots:
 
 private:
     QAtomicInteger<qint64> m_TokenGenerator;
-    VMYTDL m_YoutubeDownloader;
+    VMYTDL* m_YoutubeDownloader;
 };
+
 

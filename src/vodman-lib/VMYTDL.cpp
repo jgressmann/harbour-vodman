@@ -37,7 +37,6 @@
 #include <QUrlQuery>
 #include <QFile>
 #include <QFileInfo>
-#include <QTemporaryFile>
 
 namespace {
 
@@ -56,9 +55,6 @@ void Nop(QString&) {}
 
 } // anon
 
-QString VMYTDL::ms_YoutubeDl_Path;
-QString VMYTDL::ms_YoutubeDl_Version;
-
 
 VMYTDL::~VMYTDL() {
 
@@ -70,126 +66,25 @@ VMYTDL::VMYTDL(QObject* parent)
 {
 }
 
+QString
+VMYTDL::ytdlPath() const
+{
+    return m_YoutubeDl_Path;
+}
+
+void
+VMYTDL::setYtdlPath(const QString& path)
+{
+    if (m_YoutubeDl_Path != path) {
+        m_YoutubeDl_Path = path;
+        emit ytdlPathChanged();
+    }
+}
+
 bool
-VMYTDL::findExecutable(const QString& name, const QString& path)
+VMYTDL::available() const
 {
-     QFileInfo fi(path);
-     if (fi.exists() && fi.isFile()) {
-         qInfo("File %s exists\n", qPrintable(fi.filePath()));
-         return true;
-     }
-
-     qInfo("File %s doesn't exist\n", qPrintable(fi.filePath()));
-
-     QStringList arguments;
-     arguments << QStringLiteral("-c") << QStringLiteral("which %1").arg(name);
-
-     QProcess process;
-     process.start(QStringLiteral("/bin/sh"), arguments, QIODevice::ReadOnly);
-     process.waitForFinished();
-     if (process.exitStatus() == QProcess::NormalExit &&
-         process.exitCode() == 0) {
-         auto result = process.readAllStandardOutput();
-         result = result.simplified();
-         if (result.isEmpty()) {
-            qInfo("Could not find '%s' using 'which'\n", qPrintable(name));
-         } else {
-            qInfo("Found '%s' as %s\n", qPrintable(name), qPrintable(result));
-         }
-
-         return !result.isEmpty();
-     } else {
-         qDebug(
-             "Failed to start /bin/sh -c \"which %s\" exitStatus=%d, exitCode=%d)\nstdout: %s\nstderr:%s\n",
-             qPrintable(name),
-             static_cast<int>(process.exitStatus()), static_cast<int>(process.exitCode()),
-             qPrintable(process.readAllStandardOutput()), qPrintable(process.readAllStandardError()));
-     }
-
-     return false;
-}
-
-void
-VMYTDL::initialize()
-{
-    ms_YoutubeDl_Path.clear();
-    ms_YoutubeDl_Version.clear();
-
-    int python = -1;
-    if (findExecutable(QStringLiteral("python3"), QStringLiteral("/usr/bin/python3"))) {
-        python = 3;
-    } else if (findExecutable(QStringLiteral("python"), QStringLiteral("/usr/bin/python"))) {
-        python = 0;
-    } else {
-        qCritical("Failed to find python or python3\n");
-    }
-
-    if (-1 != python) {
-        const QString resourceFilePath = QStringLiteral(":/youtube-dl");
-        QFile resourceFile(resourceFilePath);
-        if (resourceFile.open(QIODevice::ReadOnly)) {
-            auto ytdl = resourceFile.readAll();
-            resourceFile.close();
-
-            if (3 == python) { // update binary to start python3
-                ytdl.insert(0x15, '3');
-            }
-
-            QTemporaryFile tempFile;
-            if (tempFile.open()) {
-                auto w = tempFile.write(ytdl);
-                if (w == ytdl.size() && tempFile.flush()) {
-                    tempFile.close();
-                    qInfo("Saved youtube-dl to %s\n", qPrintable(tempFile.fileName()));
-                    if (tempFile.setPermissions(QFile::ReadOwner | QFile::WriteOwner | QFile::ExeOwner | QFile::ReadGroup | QFile::ExeGroup | QFile::ReadOther | QFile::ExeOther)) {
-                        qInfo("Changed permissions to 0755\n");
-                        tempFile.setAutoRemove(false);
-                        ms_YoutubeDl_Path = tempFile.fileName();
-                    } else {
-                        qCritical("Failed to change permissions to 0755: %s (%d)\n", qPrintable(tempFile.errorString()), static_cast<int>(tempFile.error()));
-                    }
-                } else {
-                    qCritical("Failed to save youtube-dl to %s: %s (%d)\n", qPrintable(tempFile.fileName()), qPrintable(tempFile.errorString()), static_cast<int>(tempFile.error()));
-                }
-            } else {
-                qCritical("Failed to create temporary file for youtube-dl binary from %s\n", qPrintable(resourceFilePath));
-            }
-        } else {
-            qCritical("Failed to load youtube-dl from resources %s: %s (%d)\n", qPrintable(resourceFilePath), qPrintable(resourceFile.errorString()), static_cast<int>(resourceFile.error()));
-        }
-
-        if (!ms_YoutubeDl_Path.isEmpty()) {
-            QStringList arguments;
-            arguments << s_NoCallHome << QStringLiteral("--version");
-
-            qDebug() << "Attempting to start" << ms_YoutubeDl_Path;
-
-            QProcess process;
-            process.start(ms_YoutubeDl_Path, arguments, QIODevice::ReadOnly);
-            process.waitForFinished();
-
-            if (process.exitStatus() == QProcess::NormalExit &&
-                process.exitCode() == 0) {
-                ms_YoutubeDl_Version = process.readAllStandardOutput();
-                ms_YoutubeDl_Version = ms_YoutubeDl_Version.simplified();
-                qInfo("youtube-dl version %s\n", qPrintable(ms_YoutubeDl_Version));
-            } else {
-                qCritical(
-                    "Failed to get youtube-dl version (exitStatus=%d, exitCode=%d):\nstdout: %s\nstderr:%s\n",
-                    static_cast<int>(process.exitStatus()), static_cast<int>(process.exitCode()),
-                    qPrintable(process.readAllStandardOutput()), qPrintable(process.readAllStandardError()));
-                ms_YoutubeDl_Version.clear();
-            }
-        }
-    }
-}
-
-void
-VMYTDL::finalize()
-{
-    if (!ms_YoutubeDl_Path.isEmpty()) {
-        QFile::remove(ms_YoutubeDl_Path);
-    }
+    return !m_YoutubeDl_Path.isEmpty();
 }
 
 bool
@@ -203,7 +98,7 @@ VMYTDL::startFetchVodMetaData(qint64 token, const QString& _url) {
 
     data._url = url;
     if (!available()) {
-        data.errorMessage = QStringLiteral("no working youtube-dl @ ") + ms_YoutubeDl_Path;
+        data.errorMessage = QStringLiteral("no working youtube-dl @ ") + m_YoutubeDl_Path;
         data.error = VMVodEnums::VM_ErrorNoYoutubeDl;
         qDebug() << data.errorMessage;
         return false;
@@ -237,7 +132,7 @@ VMYTDL::startFetchVodMetaData(qint64 token, const QString& _url) {
               << s_NoCallHome
               << url;
 
-    qDebug() << "youtube-dl subprocess:" << ms_YoutubeDl_Path << arguments;
+    qDebug() << "youtube-dl subprocess:" << m_YoutubeDl_Path << arguments;
 
     QProcess* process = new QProcess(this);
 
@@ -248,7 +143,7 @@ VMYTDL::startFetchVodMetaData(qint64 token, const QString& _url) {
 
     m_ProcessMap.insert(process, result);
 
-    process->start(ms_YoutubeDl_Path, arguments, QIODevice::ReadOnly);
+    process->start(m_YoutubeDl_Path, arguments, QIODevice::ReadOnly);
     return true;
 }
 
@@ -269,7 +164,7 @@ VMYTDL::fetchVod(qint64 token, const VMVodFileDownloadRequest& req, VMVodFileDow
     data.timeStarted = data.timeChanged = QDateTime::currentDateTime();
 
     if (!available()) {
-        data.errorMessage = QStringLiteral("no working youtube-dl @ ") + ms_YoutubeDl_Path;
+        data.errorMessage = QStringLiteral("no working youtube-dl @ ") + m_YoutubeDl_Path;
         data.error = VMVodEnums::VM_ErrorNoYoutubeDl;
         return false;
     }
@@ -295,7 +190,7 @@ VMYTDL::fetchVod(qint64 token, const VMVodFileDownloadRequest& req, VMVodFileDow
               << QStringLiteral("-o") << req.filePath
               << req.format.vodUrl();
 
-    qDebug() << "youtube-dl subprocess:" << ms_YoutubeDl_Path << arguments;
+    qDebug() << "youtube-dl subprocess:" << m_YoutubeDl_Path << arguments;
 
     QProcess* process = new QProcess(this);
     connect(process, SIGNAL(finished(int, QProcess::ExitStatus)),
@@ -309,7 +204,7 @@ VMYTDL::fetchVod(qint64 token, const VMVodFileDownloadRequest& req, VMVodFileDow
     m_ProcessMap.insert(process, result);
     m_VodDownloads.insert(token, process);
 
-    process->start(ms_YoutubeDl_Path, arguments, QIODevice::ReadOnly);
+    process->start(m_YoutubeDl_Path, arguments, QIODevice::ReadOnly);
     return true;
 }
 
@@ -566,7 +461,7 @@ VMYTDL::onProcessError(QProcess::ProcessError error) {
             switch (error) {
             case QProcess::Crashed:
                 download.data().error = VMVodEnums::VM_ErrorCrashed;
-                download.data().errorMessage = QStringLiteral("process path=%1 pid=%2 crashed").arg(ms_YoutubeDl_Path, process->pid());
+                download.data().errorMessage = QStringLiteral("process path=%1 pid=%2 crashed").arg(m_YoutubeDl_Path, process->pid());
                 break;
             case QProcess::Timedout:
                 download.data().error = VMVodEnums::VM_ErrorTimedOut;
@@ -585,7 +480,7 @@ VMYTDL::onProcessError(QProcess::ProcessError error) {
             switch (error) {
             case QProcess::Crashed:
                 download.data().error = VMVodEnums::VM_ErrorCrashed;
-                download.data().errorMessage = QStringLiteral("process path=%1 pid=%2 crashed").arg(ms_YoutubeDl_Path, process->pid());
+                download.data().errorMessage = QStringLiteral("process path=%1 pid=%2 crashed").arg(m_YoutubeDl_Path, process->pid());
                 break;
             case QProcess::Timedout:
                 download.data().error = VMVodEnums::VM_ErrorTimedOut;

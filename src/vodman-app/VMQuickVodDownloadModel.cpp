@@ -53,6 +53,16 @@ VMQuickVodDownloadModel::VMQuickVodDownloadModel(QObject *parent)
     : QAbstractListModel(parent)
     , m_Token(-1)
 {
+    m_Service.setYtdl(&m_Ytdl);
+
+    connect(
+                &m_Ytdl,
+                &VMYTDL::ytdlPathChanged,
+                this,
+                &VMQuickVodDownloadModel::onYtdlPathChanged);
+
+
+
     connect(
                 &m_Service,
                 &VMService::vodFileDownloadRemoved,
@@ -457,3 +467,20 @@ VMQuickVodDownloadModel::downloadsPending() const
     return !m_UserDownloadsFilePaths.isEmpty();
 }
 
+QString
+VMQuickVodDownloadModel::ytdlPath() const
+{
+    return m_Ytdl.ytdlPath();
+}
+
+void
+VMQuickVodDownloadModel::setYtdlPath(const QString& path)
+{
+    m_Ytdl.setYtdlPath(path);
+}
+
+void
+VMQuickVodDownloadModel::onYtdlPathChanged()
+{
+    emit ytdlPathChanged();
+}

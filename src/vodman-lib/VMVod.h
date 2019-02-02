@@ -69,6 +69,8 @@ public:
         VM_ErrorInvalidUrl,
         VM_ErrorNoSpaceLeftOnDevice,
         VM_ErrorAlreadyDownloading,
+        VM_ErrorUnsupportedConfigurationFormat,
+        VM_ErrorParseError,
     };
     Q_ENUMS(Error)
 

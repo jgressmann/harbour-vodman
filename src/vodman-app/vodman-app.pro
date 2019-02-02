@@ -1,21 +1,13 @@
-# NOTICE:
-#
-# Application name defined in TARGET has a corresponding QML filename.
-# If name defined in TARGET is changed, the following needs to be done
-# to match new name:
-#   - corresponding QML filename must be changed
-#   - desktop icon filename must be changed
-#   - desktop filename must be changed
-#   - icon definition filename in desktop file must be changed
-#   - translation filenames have to be changed
+include(../common.pri)
+include(../vodman-lib/vodman.pri)
 
 # The name of your application
 TARGET = harbour-vodman
 
-#QT *= dbus
-#QT -= gui network
 
 !CONFIG(debug, debug|release):DEFINES += QT_NO_DEBUG_OUTPUT
+
+DEFINES += VODMAN_APP_NAME=\"\\\"\"harbour-vodman\"\\\"\"
 
 CONFIG += sailfishapp
 
@@ -35,7 +27,6 @@ DISTFILES += qml/harbour-vodman.qml \
     translations/harbour-vodman-de.ts \
     translations/harbour-vodman-sv.ts \
 
-#qml/SailfishOSStyledLinkLabel.qml \
 
 SAILFISHAPP_ICONS = 86x86 108x108 128x128 172x172 256x256
 
@@ -76,8 +67,8 @@ INSTALLS += icons
 
 
 
-include(../common.pri)
-include(../vodman-lib/vodman-lib.pri)
-
-
+#include(../vodman-lib/vodman-lib.pri)
+#INCLUDEPATH += ../vodman-lib
+#LIBS += -L../vodman-lib -lvodman-lib
+#${TARGET}.depends += ../vodman-lib/vodman.qrc ../vodman-lib/libvodman.a
 

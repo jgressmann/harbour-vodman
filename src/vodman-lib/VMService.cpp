@@ -24,20 +24,41 @@
 #include "VMService.h"
 #include "VMVodFileDownload.h"
 #include "VMVodMetaDataDownload.h"
+#include "VMYTDL.h"
 
 
 #include <QDebug>
 #include <QDataStream>
 
 
-VMService::VMService(QObject *parent) : QObject(parent) {
+VMService::VMService(QObject *parent)
+    : QObject(parent)
+    , m_YoutubeDownloader(nullptr)
+{ }
 
-    connect(    &m_YoutubeDownloader,
-                &VMYTDL::fetchVodMetaDataCompleted,
-                this,
-                &VMService::onFetchVodMetaDataCompleted);
-    connect(&m_YoutubeDownloader, &VMYTDL::vodStatusChanged, this, &VMService::onFetchVodFileStatusChanged);
-    connect(&m_YoutubeDownloader, &VMYTDL::vodFetchCompleted, this, &VMService::onFetchVodFileCompleted);
+VMYTDL*
+VMService::ytdl() const { return m_YoutubeDownloader; }
+
+void
+VMService::setYtdl(VMYTDL* value)
+{
+    if (value != m_YoutubeDownloader) {
+        if (m_YoutubeDownloader) {
+            disconnect(m_YoutubeDownloader, &VMYTDL::fetchVodMetaDataCompleted, this, &VMService::onFetchVodMetaDataCompleted);
+            disconnect(m_YoutubeDownloader, &VMYTDL::vodStatusChanged, this, &VMService::onFetchVodFileStatusChanged);
+            disconnect(m_YoutubeDownloader, &VMYTDL::vodFetchCompleted, this, &VMService::onFetchVodFileCompleted);
+        }
+
+        m_YoutubeDownloader = value;
+
+        if (m_YoutubeDownloader) {
+            connect(m_YoutubeDownloader, &VMYTDL::fetchVodMetaDataCompleted, this, &VMService::onFetchVodMetaDataCompleted);
+            connect(m_YoutubeDownloader, &VMYTDL::vodStatusChanged, this, &VMService::onFetchVodFileStatusChanged);
+            connect(m_YoutubeDownloader, &VMYTDL::vodFetchCompleted, this, &VMService::onFetchVodFileCompleted);
+        }
+
+        emit ytdlChanged();
+    }
 }
 
 qint64
@@ -47,18 +68,23 @@ VMService::newToken() {
 
 void
 VMService::startFetchVodMetaData(qint64 token, const QString& url) {
-    m_YoutubeDownloader.startFetchVodMetaData(token, url);
+    if (!m_YoutubeDownloader) {
+        qWarning("ytdl property not set\n");
+        return;
+    }
+
+    m_YoutubeDownloader->startFetchVodMetaData(token, url);
 }
 
 //int
 //VMService::startFetchVodMetaData(const QString& url) {
-//    return m_YoutubeDownloader.startFetchVodMetaData(url);
+//    return m_YoutubeDownloader->startFetchVodMetaData(url);
 //}
 
 //int
 //VMService::startFetchVodFile(QString url, QString format, QString filePath) {
 //    QVariantMap result;
-//    auto id = m_YoutubeDownloader.fetchVod(url, format, filePath, &result);
+//    auto id = m_YoutubeDownloader->fetchVod(url, format, filePath, &result);
 //    if (id >= 0) {
 //        emit vodFileDownloadAdded(id, result);
 //    }
@@ -66,7 +92,12 @@ VMService::startFetchVodMetaData(qint64 token, const QString& url) {
 //}
 
 void
-VMService::startFetchVodFile(qint64 token, const QByteArray& arr) {
+VMService::startFetchVodFile(qint64 token, const QByteArray& arr)
+{
+    if (!m_YoutubeDownloader) {
+        qWarning("ytdl property not set\n");
+        return;
+    }
 
     VMVodFileDownloadRequest request;
     {
@@ -76,7 +107,7 @@ VMService::startFetchVodFile(qint64 token, const QByteArray& arr) {
 
     if (request.isValid()) {
         VMVodFileDownload download;
-        auto added = m_YoutubeDownloader.fetchVod(token, request, &download);
+        auto added = m_YoutubeDownloader->fetchVod(token, request, &download);
         QByteArray b;
         {
             QDataStream s(&b, QIODevice::WriteOnly);
@@ -102,7 +133,7 @@ VMService::startFetchVodFile(qint64 token, const QByteArray& arr) {
 //    int id = -1;
 //    if (format.isValid()) {
 //        VMVodFileDownload download;
-//        id = m_YoutubeDownloader.fetchVod(format, filePath, &download);
+//        id = m_YoutubeDownloader->fetchVod(format, filePath, &download);
 //        if (id >= 0) {
 //            QByteArray b;
 //            {
@@ -120,7 +151,7 @@ VMService::startFetchVodFile(qint64 token, const QByteArray& arr) {
 //VMService::startFetchVodFile(const QString& url, const QString& formatId, const QString& filePath)
 //{
 //    VMVodFileDownload download;
-//    auto id = m_YoutubeDownloader.fetchVod(url, formatId, filePath, &download);
+//    auto id = m_YoutubeDownloader->fetchVod(url, formatId, filePath, &download);
 //    if (id >= 0) {
 //        QByteArray b;
 //        {
@@ -138,7 +169,7 @@ VMService::startFetchVodFile(qint64 token, const QByteArray& arr) {
 //    VMVodFormat format = qvariant_cast<VMVodFormat>(vmVodFormat);
 //    if (format.isValid()) {
 //        QVariantMap result;
-//        auto id = m_YoutubeDownloader.fetchVod(format, filePath, &result);
+//        auto id = m_YoutubeDownloader->fetchVod(format, filePath, &result);
 //        if (id >= 0) {
 //            emit vodFileDownloadAdded(id, result);
 //        }
@@ -149,13 +180,24 @@ VMService::startFetchVodFile(qint64 token, const QByteArray& arr) {
 //}
 
 void
-VMService::cancelFetchVodFile(qint64 handle, bool deleteFile) {
-    m_YoutubeDownloader.cancelFetchVod(handle, deleteFile);
+VMService::cancelFetchVodFile(qint64 handle, bool deleteFile)
+{
+    if (!m_YoutubeDownloader) {
+        qWarning("ytdl property not set\n");
+        return;
+    }
+
+    m_YoutubeDownloader->cancelFetchVod(handle, deleteFile);
 }
 
 QVariantList
 VMService::inProgressVodFileFetches() {
-    return m_YoutubeDownloader.inProgressVodFetches();
+    if (!m_YoutubeDownloader) {
+        qWarning("ytdl property not set\n");
+        return QVariantList();
+    }
+
+    return m_YoutubeDownloader->inProgressVodFetches();
 }
 
 void

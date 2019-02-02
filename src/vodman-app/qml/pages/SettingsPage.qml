@@ -262,7 +262,7 @@ Page {
 
         Column {
             width: parent.width
-            spacing: Theme.paddingSmall
+            spacing: Theme.paddingMedium
 
             ComboBox {
                 id: fileNameComboBox
@@ -322,6 +322,55 @@ Page {
                 wrapMode: Text.Wrap
                 font.pixelSize: Theme.fontSizeTiny
                 color: Theme.highlightColor
+            }
+        }
+
+        SectionHeader {
+            text: "youtube-dl"
+        }
+
+        Column {
+            x: Theme.horizontalPageMargin
+            width: parent.width-2*x
+            spacing: Theme.paddingMedium
+
+            Item {
+                height: Theme.paddingSmall
+                width: parent.width
+            }
+
+            Label {
+                width: parent.width
+                color: Theme.highlightColor
+                text: {
+                    switch (YTDLDownloader.status) {
+                    case YTDLDownloader.StatusDownloading:
+                        //% "youtube-dl is being downloaded"
+                        return qsTrId("settings-ytdl-downloading")
+                    case YTDLDownloader.StatusError:
+                    case YTDLDownloader.StatusUnavailable:
+                        //% "youtube-dl is not available"
+                        return qsTrId("settings-ytdl-unavailable")
+                    default:
+                        //% "youtube-dl version %1"
+                        return qsTrId("settings-ytdl-version").arg(YTDLDownloader.ytdlVersion)
+                    }
+                }
+            }
+
+            Button {
+                anchors.horizontalCenter: parent.horizontalCenter
+                enabled: YTDLDownloader.isOnline &&
+                         YTDLDownloader.status !== YTDLDownloader.StatusDownloading &&
+                         !vodDownloadModel.downloadsPending
+                //% "Update youtube-dl"
+                text: qsTrId("settings-ytdl-update")
+                onClicked: YTDLDownloader.download()
+            }
+
+            Item {
+                height: Theme.paddingSmall
+                width: parent.width
             }
         }
     }

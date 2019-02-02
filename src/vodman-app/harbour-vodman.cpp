@@ -25,17 +25,21 @@
 #include <QQuickView>
 #include <QGuiApplication>
 #include <QQmlEngine>
-#include <QStandardPaths>
 
 #include <sailfishapp.h>
 
 #include "VMQuickVodDownloadModel.h"
 #include "VMApp.h"
-#include "VMYTDL.h"
+#include "VMQuickYTDLDownloader.h"
 
-static QObject *singletonTypeProvider(QQmlEngine *, QJSEngine *)
+static QObject *vmAppProvider(QQmlEngine *, QJSEngine *)
 {
     return new VMApp();
+}
+
+static QObject *vmQuickYTDLDownloader(QQmlEngine *, QJSEngine *)
+{
+    return new VMQuickYTDLDownloader();
 }
 
 int main(int argc, char *argv[])
@@ -45,18 +49,15 @@ int main(int argc, char *argv[])
 
     qInfo("%s version %s\n", qPrintable(app->applicationName()), qPrintable(app->applicationVersion()));
 
-    VMYTDL::initialize();
-
     qmlRegisterType<VMQuickVodDownloadModel>(VODMAN_NAMESPACE, 1, 0, "VodDownloadModel");
     qmlRegisterUncreatableType<VMVodEnums>(VODMAN_NAMESPACE, 1, 0, "VM", QStringLiteral("wrapper around C++ enums"));
-    qmlRegisterSingletonType<VMApp>(VODMAN_NAMESPACE, 1, 0, "App", singletonTypeProvider);
+    qmlRegisterSingletonType<VMApp>(VODMAN_NAMESPACE, 1, 0, "App", vmAppProvider);
+    qmlRegisterSingletonType<VMQuickYTDLDownloader>(VODMAN_NAMESPACE, 1, 0, "YTDLDownloader", vmQuickYTDLDownloader);
 
 
     QScopedPointer<QQuickView> view(SailfishApp::createView());
     view->setSource(SailfishApp::pathToMainQml());
     view->requestActivate();
     view->show();
-    auto exitCode = app->exec();
-    VMYTDL::finalize();
-    return exitCode;
+    return app->exec();
 }

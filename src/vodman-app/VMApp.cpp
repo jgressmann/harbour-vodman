@@ -34,12 +34,3 @@ QString
 VMApp::displayName() const {
     return QStringLiteral("Vodman");
 }
-
-QString
-VMApp::ytdlVersion() const {
-    auto str = VMYTDL::version();
-    if (str.isEmpty()) {
-        return QStringLiteral("<unknown>");
-    }
-    return str;
-}
