@@ -24,6 +24,7 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 import org.duckdns.jgressmann 1.0
+import ".."
 
 Page {
     id: root
@@ -51,8 +52,6 @@ Page {
                 x: Theme.horizontalPageMargin
                 width: parent.width - 2*x
 
-
-
                 Column {
                     spacing: Theme.paddingSmall
                     width: parent.width
@@ -63,8 +62,6 @@ Page {
                         fillMode: Image.PreserveAspectFit
                         width: Theme.iconSizeLarge
                         height: Theme.iconSizeLarge
-    //                    sourceSize.width: 512
-    //                    sourceSize.height: 512
 
                         MouseArea {
                             id: debugEnabler
@@ -121,15 +118,12 @@ Page {
                     text: qsTrId("about-description-header")
                 }
 
-                Label {
+                LinkedLabel {
                     width: parent.width
                     //% "%1 is a versatile tool..."
                     text: qsTrId("about-description-text").arg(App.displayName)
                     wrapMode: Text.WordWrap
                     font.pixelSize: Theme.fontSizeSmall
-                    color: Theme.highlightColor
-                    textFormat: TextEdit.RichText
-                    onLinkActivated: Qt.openUrlExternally(link)
                 }
 
                 SectionHeader {
@@ -137,15 +131,12 @@ Page {
                     text: qsTrId("about-licensing-header")
                 }
 
-                Label {
+                LinkedLabel {
                     width: parent.width
                     //% "Copyright (c) 2018, 2019 Jean Gressmann..."
                     text: qsTrId("about-licensing-text").arg(App.displayName)
                     wrapMode: Text.WordWrap
                     font.pixelSize: Theme.fontSizeSmall
-                    color: Theme.highlightColor
-                    textFormat: TextEdit.RichText
-                    onLinkActivated: Qt.openUrlExternally(link)
                 }
 
                 SectionHeader {
@@ -153,15 +144,12 @@ Page {
                     text: qsTrId("about-sources-header")
                 }
 
-                Label {
+                LinkedLabel {
                     width: parent.width
                     //% "Sources are on Github"
                     text: qsTrId("about-sources-text")
                     wrapMode: Text.WordWrap
                     font.pixelSize: Theme.fontSizeSmall
-                    color: Theme.highlightColor
-                    textFormat: TextEdit.RichText
-                    onLinkActivated: Qt.openUrlExternally(link)
                 }
 
                 SectionHeader {

@@ -26,34 +26,34 @@
         <translation>fråga varje gång</translation>
     </message>
     <message id="about-page-header">
-        <location filename="../qml/pages/AboutPage.qml" line="45"/>
+        <location filename="../qml/pages/AboutPage.qml" line="46"/>
         <source>About Vodman</source>
         <translation>Om %1</translation>
     </message>
     <message id="about-version-text">
-        <location filename="../qml/pages/AboutPage.qml" line="98"/>
+        <location filename="../qml/pages/AboutPage.qml" line="95"/>
         <source>%1 %2</source>
         <oldsource>V%1 %2</oldsource>
         <translation>%1 %2</translation>
     </message>
     <message id="about-description-header">
-        <location filename="../qml/pages/AboutPage.qml" line="121"/>
+        <location filename="../qml/pages/AboutPage.qml" line="118"/>
         <source>Description</source>
         <translation>Beskrivning</translation>
     </message>
     <message id="about-description-text">
-        <location filename="../qml/pages/AboutPage.qml" line="127"/>
+        <location filename="../qml/pages/AboutPage.qml" line="124"/>
         <source>%1 is a versatile tool...</source>
         <oldsource>%1 is a versatile tool for downloading videos on demand (VODs) to your device from popular sites such as &lt;a href=\&quot;https://www.youtube.com/\&quot;&gt;Youtube&lt;/a&gt; or &lt;a href=\&quot;https://www.twitch.tv/\&quot;&gt;Twitch&lt;/a&gt;.</oldsource>
         <translation>%1 är ett mångsidigt verktyg för att ladda ner video på begäran (VOD) till din enhet, från populära sajter som &lt;a href=&quot;https://www.youtube.com/&quot;&gt;Youtube&lt;/a&gt; eller &lt;a href=&quot;https://www.twitch.tv/&quot;&gt;Twitch&lt;/a&gt;.</translation>
     </message>
     <message id="about-licensing-header">
-        <location filename="../qml/pages/AboutPage.qml" line="137"/>
+        <location filename="../qml/pages/AboutPage.qml" line="131"/>
         <source>Licensing</source>
         <translation>Licensiering</translation>
     </message>
     <message id="about-licensing-text">
-        <location filename="../qml/pages/AboutPage.qml" line="143"/>
+        <location filename="../qml/pages/AboutPage.qml" line="137"/>
         <source>Copyright (c) 2018, 2019 Jean Gressmann...</source>
         <oldsource>Copyright (c) 2018, 2019 Jean Gressmann.</oldsource>
         <translation>Copyright (c) 2018, 2019 Jean Gressmann.&lt;br/&gt;
@@ -62,48 +62,48 @@
 %1 använder youtube-dl som finns i &lt;a href=&quot;http://unlicense.org/&quot;&gt;&quot;public domain&quot;&lt;/a&gt;.</translation>
     </message>
     <message id="about-sources-header">
-        <location filename="../qml/pages/AboutPage.qml" line="153"/>
+        <location filename="../qml/pages/AboutPage.qml" line="144"/>
         <source>Sources</source>
         <translation>Källkod</translation>
     </message>
     <message id="about-sources-text">
-        <location filename="../qml/pages/AboutPage.qml" line="159"/>
+        <location filename="../qml/pages/AboutPage.qml" line="150"/>
         <source>Sources are on Github</source>
         <translation>Källkoder finns tillgängliga på &lt;a href=&quot;https://github.com/jgressmann/harbour-vodman&quot;&gt;GitHub&lt;/a&gt;.</translation>
     </message>
     <message id="about-translations-header">
-        <location filename="../qml/pages/AboutPage.qml" line="169"/>
+        <location filename="../qml/pages/AboutPage.qml" line="157"/>
         <source>Translations</source>
         <translation>Översättningar</translation>
     </message>
     <message id="about-translations-english-label">
-        <location filename="../qml/pages/AboutPage.qml" line="178"/>
+        <location filename="../qml/pages/AboutPage.qml" line="166"/>
         <source>names of translators</source>
         <translation>Jean Gressmann</translation>
     </message>
     <message id="about-translations-english-value">
-        <location filename="../qml/pages/AboutPage.qml" line="180"/>
+        <location filename="../qml/pages/AboutPage.qml" line="168"/>
         <source>English</source>
         <translation>Engelska</translation>
     </message>
     <message id="about-translations-german-label">
-        <location filename="../qml/pages/AboutPage.qml" line="185"/>
+        <location filename="../qml/pages/AboutPage.qml" line="173"/>
         <source>names of translators</source>
         <translation>Jean Gressmann</translation>
     </message>
     <message id="about-translations-german-value">
-        <location filename="../qml/pages/AboutPage.qml" line="187"/>
+        <location filename="../qml/pages/AboutPage.qml" line="175"/>
         <source>German</source>
         <oldsource>English</oldsource>
         <translation>Tyska</translation>
     </message>
     <message id="about-translations-swedish-label">
-        <location filename="../qml/pages/AboutPage.qml" line="192"/>
+        <location filename="../qml/pages/AboutPage.qml" line="180"/>
         <source>names of translators</source>
         <translation>Åke Engelbrektson</translation>
     </message>
     <message id="about-translations-swedish-value">
-        <location filename="../qml/pages/AboutPage.qml" line="194"/>
+        <location filename="../qml/pages/AboutPage.qml" line="182"/>
         <source>Swedish</source>
         <translation>Svenska</translation>
     </message>
