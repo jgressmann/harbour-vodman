@@ -22,8 +22,6 @@ OTHER_FILES += $$PWD/config.json
 
 
 vodmanfiles.commands += $(COPY_DIR) $$shell_path($$PWD/qml) $$shell_path($$_PRO_FILE_PWD_);
-vodmanfiles.commands += $(COPY) $$shell_path($$PWD/vodman.qrc) $$shell_path($$_PRO_FILE_PWD_);
-
 
 PRE_TARGETDEPS += vodmanfiles
 QMAKE_EXTRA_TARGETS += vodmanfiles
