@@ -527,7 +527,8 @@
     </message>
     <message id="ytdl-error-offline">
         <location filename="../qml/pages/YTDLPage.qml" line="164"/>
-        <source>The device is offline</source>
+        <source>Your device is offline</source>
+        <oldsource>The device is offline</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message id="ytdl-unvailable-hint">

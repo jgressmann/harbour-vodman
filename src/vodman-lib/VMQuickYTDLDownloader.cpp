@@ -163,10 +163,6 @@ QString VMQuickYTDLDownloader::modeDir(Mode value) const
 
 void VMQuickYTDLDownloader::findBinary()
 {
-    // always set so that listeners see change
-    setStatus(StatusUnavailable);
-    setError(ErrorNone);
-
     auto mode = modeName(m_mode);
     auto baseDirectory = baseDir();
     m_ytdlPath = modeDir(m_mode) + QStringLiteral("/youtube-dl");
@@ -185,9 +181,11 @@ void VMQuickYTDLDownloader::findBinary()
                 QString url;
                 if (parseConfigFile(m_configFilePath, mode, &configFileVersion, &url, &m_ytdlVersion)) {
                     qInfo("youtube-dl version %s, mode %s\n", qPrintable(m_ytdlVersion), qPrintable(mode));
+                    setError(ErrorNone);
                     setStatus(StatusReady);
                     emit ytdlVersionChanged();
                 } else {
+                    setStatus(StatusUnavailable);
                     if (configFileVersion == -1) {
                         setError(ErrorUnsupportedConfigurationFileFormat);
                     } else {
@@ -196,9 +194,13 @@ void VMQuickYTDLDownloader::findBinary()
                     }
                 }
             } else {
+                setError(ErrorNone);
+                setStatus(StatusUnavailable);
                 qInfo("youtube-dl binary %s doesn't exist.\n", qPrintable(m_ytdlPath));
             }
         } else {
+            setError(ErrorNone);
+            setStatus(StatusUnavailable);
             qInfo("Configuration file %s doesn't exist.\n", qPrintable(m_configFilePath));
         }
     } else {
