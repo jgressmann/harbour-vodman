@@ -676,8 +676,7 @@ Page {
                                 width: parent.width
                                 plainText: download.data.description.webPageUrl
                                 font.pixelSize: Theme.fontSizeTiny
-                                color: Theme.secondaryColor
-//                                truncationMode: TruncationMode.Fade
+                                shortenUrl: true
                             }
                         }
                     }
