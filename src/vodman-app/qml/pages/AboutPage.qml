@@ -154,26 +154,26 @@ Page {
             Column {
                 x: Theme.horizontalPageMargin
                 width: parent.width - 2*x
-                spacing: Theme.paddingMedium
+                spacing: Theme.paddingSmall
 
                 DetailItem {
-                    //% "names of translators"
-                    label: qsTrId("about-translations-english-label")
                     //% "English"
+                    label: qsTrId("about-translations-english-label")
+                    //% "names of translators"
                     value: qsTrId("about-translations-english-value")
                 }
 
                 DetailItem {
-                    //% "names of translators"
-                    label: qsTrId("about-translations-german-label")
                     //% "German"
+                    label: qsTrId("about-translations-german-label")
+                    //% "names of translators"
                     value: qsTrId("about-translations-german-value")
                 }
 
                 DetailItem {
-                    //% "names of translators"
-                    label: qsTrId("about-translations-swedish-label")
                     //% "Swedish"
+                    label: qsTrId("about-translations-swedish-label")
+                    //% "names of translators"
                     value: qsTrId("about-translations-swedish-value")
                 }
             }

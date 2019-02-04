@@ -78,34 +78,39 @@
     </message>
     <message id="about-translations-english-label">
         <location filename="../qml/pages/AboutPage.qml" line="161"/>
-        <source>names of translators</source>
-        <translation>Jean Gressmann</translation>
+        <source>English</source>
+        <oldsource>names of translators</oldsource>
+        <translation>Engelska</translation>
     </message>
     <message id="about-translations-english-value">
         <location filename="../qml/pages/AboutPage.qml" line="163"/>
-        <source>English</source>
-        <translation>Engelska</translation>
+        <source>names of translators</source>
+        <oldsource>English</oldsource>
+        <translation>Jean Gressmann</translation>
     </message>
     <message id="about-translations-german-label">
         <location filename="../qml/pages/AboutPage.qml" line="168"/>
-        <source>names of translators</source>
-        <translation>Jean Gressmann</translation>
+        <source>German</source>
+        <oldsource>names of translators</oldsource>
+        <translation>Tyska</translation>
     </message>
     <message id="about-translations-german-value">
         <location filename="../qml/pages/AboutPage.qml" line="170"/>
-        <source>German</source>
-        <oldsource>English</oldsource>
-        <translation>Tyska</translation>
+        <source>names of translators</source>
+        <oldsource>German</oldsource>
+        <translation>Jean Gressmann</translation>
     </message>
     <message id="about-translations-swedish-label">
         <location filename="../qml/pages/AboutPage.qml" line="175"/>
-        <source>names of translators</source>
-        <translation>Åke Engelbrektson</translation>
+        <source>Swedish</source>
+        <oldsource>names of translators</oldsource>
+        <translation>Svenska</translation>
     </message>
     <message id="about-translations-swedish-value">
         <location filename="../qml/pages/AboutPage.qml" line="177"/>
-        <source>Swedish</source>
-        <translation>Svenska</translation>
+        <source>names of translators</source>
+        <oldsource>Swedish</oldsource>
+        <translation>Åke Engelbrektson</translation>
     </message>
     <message id="error-youtube-dl-not-working">
         <location filename="../qml/pages/DownloadPage.qml" line="198"/>
@@ -164,7 +169,7 @@
     </message>
     <message id="play">
         <location filename="../qml/pages/DownloadPage.qml" line="268"/>
-        <location filename="../qml/pages/DownloadPage.qml" line="703"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="702"/>
         <source>Play</source>
         <translation>Spela</translation>
     </message>
@@ -243,7 +248,7 @@
     </message>
     <message id="cancel">
         <location filename="../qml/pages/DownloadPage.qml" line="494"/>
-        <location filename="../qml/pages/DownloadPage.qml" line="697"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="696"/>
         <source>Cancel</source>
         <translation>Avbryt</translation>
     </message>
@@ -263,42 +268,42 @@
         <translation>Stoppar %1</translation>
     </message>
     <message id="download-item-cancel-and-delete">
-        <location filename="../qml/pages/DownloadPage.qml" line="691"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="690"/>
         <source>Cancel and delete file</source>
         <translation>Avbryt och ta bort filen</translation>
     </message>
     <message id="download-item-open-webpage">
-        <location filename="../qml/pages/DownloadPage.qml" line="709"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="708"/>
         <source>Open webpage</source>
         <translation>Öppna webbsidan</translation>
     </message>
     <message id="download-placeholder-text-waiting-for-download-to-start">
-        <location filename="../qml/pages/DownloadPage.qml" line="724"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="723"/>
         <source>Download will start momentarily</source>
         <translation>Nerladdningen börjar omedelbart</translation>
     </message>
     <message id="download-placeholder-text-no-downloads">
-        <location filename="../qml/pages/DownloadPage.qml" line="729"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="728"/>
         <source>No downloads at present</source>
         <translation>Inga nerladdningar just nu</translation>
     </message>
     <message id="download-placeholder-text-metadata-download">
-        <location filename="../qml/pages/DownloadPage.qml" line="733"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="732"/>
         <source>Downloading VOD metadata</source>
         <translation>Laddar ner VOD metadata</translation>
     </message>
     <message id="download-placeholder-hint-pull-down-to-start-download-from-clipboard">
-        <location filename="../qml/pages/DownloadPage.qml" line="744"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="743"/>
         <source>Pull down to start download using the URL in the clipboard</source>
         <translation>Dra neråt för att starta nerladdning från URL i urklipp</translation>
     </message>
     <message id="download-placeholder-hint-copy-url-to-clipboard">
-        <location filename="../qml/pages/DownloadPage.qml" line="748"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="747"/>
         <source>Copy a URL to the clipboard then pull down to start the download</source>
         <translation>Kopiera URL till urklipp och dra sedan neråt för att starta nerladdningen</translation>
     </message>
     <message id="download-placeholder-hint-pull-down-to-cancel">
-        <location filename="../qml/pages/DownloadPage.qml" line="752"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="751"/>
         <source>Pull down to cancel</source>
         <translation>Dra neråt för att avbryta</translation>
     </message>
