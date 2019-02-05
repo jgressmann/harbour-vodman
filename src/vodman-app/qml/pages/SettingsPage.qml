@@ -330,8 +330,7 @@ Page {
         }
 
         Column {
-            x: Theme.horizontalPageMargin
-            width: parent.width-2*x
+            width: parent.width
             spacing: Theme.paddingMedium
 
             Item {
@@ -340,7 +339,9 @@ Page {
             }
 
             Label {
-                width: parent.width
+                x: Theme.horizontalPageMargin
+                width: parent.width-2*x
+
                 color: Theme.highlightColor
                 text: {
                     switch (YTDLDownloader.status) {
@@ -358,19 +359,22 @@ Page {
                 }
             }
 
-            Button {
-                anchors.horizontalCenter: parent.horizontalCenter
-                enabled: YTDLDownloader.isOnline &&
-                         YTDLDownloader.status !== YTDLDownloader.StatusDownloading &&
-                         !vodDownloadModel.downloadsPending
-                //% "Update youtube-dl"
-                text: qsTrId("settings-ytdl-update")
-                onClicked: YTDLDownloader.download()
-            }
-
-            Item {
-                height: Theme.paddingSmall
+            ButtonLayout {
                 width: parent.width
+                Button {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    enabled: YTDLDownloader.isOnline &&
+                             YTDLDownloader.status !== YTDLDownloader.StatusDownloading &&
+                             !vodDownloadModel.downloadsPending
+                    //% "Update youtube-dl"
+                    text: qsTrId("settings-ytdl-update")
+                    onClicked: YTDLDownloader.download()
+                }
+
+                Item {
+                    height: Theme.paddingSmall
+                    width: parent.width
+                }
             }
         }
     }
