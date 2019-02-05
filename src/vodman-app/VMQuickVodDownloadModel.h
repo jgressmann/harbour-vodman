@@ -26,7 +26,6 @@
 
 #include "VMVodFileDownload.h"
 #include "VMVodMetaDataDownload.h"
-#include "VMService.h"
 #include "VMYTDL.h"
 
 #include <QAbstractListModel>
@@ -34,6 +33,8 @@
 
 
 class VMQuickVodDownload;
+class VMVodFileDownload;
+class VMVodMetaDataDownload;
 class VMQuickVodDownloadModel : public QAbstractListModel
 {
     Q_OBJECT
@@ -43,7 +44,6 @@ class VMQuickVodDownloadModel : public QAbstractListModel
     Q_PROPERTY(bool isOnMobile READ isOnMobile NOTIFY isOnMobileChanged)
     Q_PROPERTY(bool downloadsPending READ downloadsPending NOTIFY downloadsPendingChanged)
     Q_PROPERTY(QString ytdlPath READ ytdlPath WRITE setYtdlPath NOTIFY ytdlPathChanged)
-
 
 public:
     explicit VMQuickVodDownloadModel(QObject *parent = Q_NULLPTR);
@@ -83,10 +83,9 @@ Q_SIGNALS: // signals
     void ytdlPathChanged();
 
 private slots:
-    void onVodFileDownloadAdded(qint64 handle, const QByteArray& download);
-    void onVodFileDownloadRemoved(qint64 handle, const QByteArray& download);
-    void onVodFileDownloadChanged(qint64 handle, const QByteArray& download);
-    void onVodFileMetaDataDownloadCompleted(qint64 handle, const QByteArray& download);
+    void onVodFileDownloadCompleted(qint64 handle, const VMVodFileDownload& download);
+    void onVodFileDownloadChanged(qint64 handle, const VMVodFileDownload& download);
+    void onVodFileMetaDataDownloadCompleted(qint64 handle, const VMVodMetaDataDownload& download);
     void onOnlineChanged(bool online);
     void onYtdlPathChanged();
 
@@ -96,7 +95,6 @@ private:
 
 private:
     VMYTDL m_Ytdl;
-    VMService m_Service;
     QNetworkConfigurationManager m_NetworkConfigurationManager;
     QHash<qint64, VMQuickVodDownload*> m_Downloads;
     QList<qint64> m_Rows;
@@ -105,6 +103,7 @@ private:
     QString m_Url;
     QString m_FilePath;
     qint64 m_Token;
+    qint64 m_TokenGenerator;
 
 private:
     static const QHash<int, QByteArray> ms_Roles;

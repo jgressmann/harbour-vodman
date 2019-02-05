@@ -26,7 +26,6 @@
 #include "VMQuickVodDownload.h"
 
 #include <QDebug>
-#include <QDataStream>
 #include <QUrl>
 #include <QNetworkConfiguration>
 
@@ -51,64 +50,20 @@ VMQuickVodDownloadModel::~VMQuickVodDownloadModel()
 
 VMQuickVodDownloadModel::VMQuickVodDownloadModel(QObject *parent)
     : QAbstractListModel(parent)
+    , m_Ytdl(this)
     , m_Token(-1)
+    , m_TokenGenerator(0)
 {
-    m_Service.setYtdl(&m_Ytdl);
-
-    connect(
-                &m_Ytdl,
-                &VMYTDL::ytdlPathChanged,
-                this,
-                &VMQuickVodDownloadModel::onYtdlPathChanged);
-
-
-
-    connect(
-                &m_Service,
-                &VMService::vodFileDownloadRemoved,
-                this,
-                &VMQuickVodDownloadModel::onVodFileDownloadRemoved);
-
-    connect(
-                &m_Service,
-                &VMService::vodFileDownloadChanged,
-                this,
-                &VMQuickVodDownloadModel::onVodFileDownloadChanged);
-
-    connect(
-                &m_Service,
-                &VMService::vodMetaDataDownloadCompleted,
-                this,
-                &VMQuickVodDownloadModel::onVodFileMetaDataDownloadCompleted);
-
+    connect(&m_Ytdl, &VMYTDL::ytdlPathChanged, this, &VMQuickVodDownloadModel::onYtdlPathChanged);
+    connect(&m_Ytdl, &VMYTDL::vodFileDownloadCompleted, this, &VMQuickVodDownloadModel::onVodFileDownloadCompleted);
+    connect(&m_Ytdl, &VMYTDL::vodFileDownloadChanged, this, &VMQuickVodDownloadModel::onVodFileDownloadChanged);
+    connect(&m_Ytdl, &VMYTDL::vodMetaDataDownloadCompleted, this, &VMQuickVodDownloadModel::onVodFileMetaDataDownloadCompleted);
 
     connect(&m_NetworkConfigurationManager, &QNetworkConfigurationManager::onlineStateChanged, this, &VMQuickVodDownloadModel::onOnlineChanged);
 }
 
 void
-VMQuickVodDownloadModel::onVodFileDownloadAdded(qint64 handle, const QByteArray& result)
-{
-    qDebug() << "enter" << handle;
-    VMVodFileDownload download;
-    {
-        QDataStream s(result);
-        s >> download;
-    }
-
-    if (download.isValid()) {
-
-        if (m_Downloads.count(handle)) {
-            qWarning() << "token" << handle << "already added to downloads";
-        } else {
-            vodFileDownloadAdded(handle, download);
-        }
-    }
-
-    qDebug() << "exit" << handle;
-}
-
-void
-VMQuickVodDownloadModel::onVodFileDownloadRemoved(qint64 handle, const QByteArray& result)
+VMQuickVodDownloadModel::onVodFileDownloadCompleted(qint64 handle, const VMVodFileDownload& download)
 {
     qDebug() << "enter" << handle;
     auto it = m_Downloads.find(handle);
@@ -126,12 +81,6 @@ VMQuickVodDownloadModel::onVodFileDownloadRemoved(qint64 handle, const QByteArra
     }
 
     if (m_UserDownloads.removeOne(handle)) {
-        VMVodFileDownload download;
-        {
-            QDataStream s(result);
-            s >> download;
-        }
-
         if (m_UserDownloadsFilePaths.removeOne(download.filePath())) {
             emit downloadsPendingChanged();
             qDebug() << "file path" << download.filePath() << "removed from user downloads";
@@ -153,14 +102,9 @@ VMQuickVodDownloadModel::onVodFileDownloadRemoved(qint64 handle, const QByteArra
 }
 
 void
-VMQuickVodDownloadModel::onVodFileDownloadChanged(qint64 handle, const QByteArray& result)
+VMQuickVodDownloadModel::onVodFileDownloadChanged(qint64 handle, const VMVodFileDownload& download)
 {
     qDebug() << "enter" << handle;
-    VMVodFileDownload download;
-    {
-        QDataStream s(result);
-        s >> download;
-    }
 
     if (!download.isValid()) {
         qDebug() << "exit" << handle << download;
@@ -181,7 +125,7 @@ VMQuickVodDownloadModel::onVodFileDownloadChanged(qint64 handle, const QByteArra
 }
 
 void
-VMQuickVodDownloadModel::onVodFileMetaDataDownloadCompleted(qint64 token, const QByteArray& result)
+VMQuickVodDownloadModel::onVodFileMetaDataDownloadCompleted(qint64 token, const VMVodMetaDataDownload& download)
 {
     qDebug() << "enter" << token;
     if (token == m_Token) {
@@ -190,12 +134,6 @@ VMQuickVodDownloadModel::onVodFileMetaDataDownloadCompleted(qint64 token, const 
         m_Token = -1;
         m_Url.clear();
         emit canStartDownloadChanged();
-
-        VMVodMetaDataDownload download;
-        {
-            QDataStream s(result);
-            s >> download;
-        }
 
         qDebug() << "mine" << token << download;
 
@@ -266,8 +204,8 @@ VMQuickVodDownloadModel::startDownloadMetaData(const QString& url)
     }
 
     m_Url = url;
-    m_Token = m_Service.newToken();
-    m_Service.startFetchVodMetaData(m_Token, m_Url);
+    m_Token = m_TokenGenerator++;
+    m_Ytdl.startFetchVodMetaData(m_Token, m_Url);
     emit canStartDownloadChanged();
 }
 
@@ -306,17 +244,11 @@ VMQuickVodDownloadModel::startDownloadVod(
     req.description = vod.data().description;
     req.filePath = filePath;
     req.format = vod.data()._formats[formatIndex];
-    QByteArray b;
-    {
-        QDataStream s(&b, QIODevice::WriteOnly);
-        s << req;
-    }
-
 
     m_UserDownloadsFilePaths << m_FilePath;
     emit downloadsPendingChanged();
     m_FilePath.clear();
-    m_Service.startFetchVodFile(token, b);
+    m_Ytdl.startFetchVodFile(token, req);
 }
 
 void
@@ -327,7 +259,7 @@ VMQuickVodDownloadModel::cancelDownload(int index, bool deleteFile)
     if (index < m_Rows.size()) {
         auto handle = m_Rows[index];
         qDebug() << "handle" << handle << "delete?" << deleteFile;
-        m_Service.cancelFetchVodFile(handle, deleteFile);
+        m_Ytdl.cancelFetchVodFile(handle, deleteFile);
     }
 }
 
@@ -338,7 +270,7 @@ VMQuickVodDownloadModel::cancelDownloads(bool deleteFiles) {
     for (auto i = 0; i < m_Rows.size(); ++i) {
         auto handle = m_Rows[i];
         qDebug() << "cancel" << handle;
-        m_Service.cancelFetchVodFile(handle, deleteFiles);
+        m_Ytdl.cancelFetchVodFile(handle, deleteFiles);
     }
 }
 

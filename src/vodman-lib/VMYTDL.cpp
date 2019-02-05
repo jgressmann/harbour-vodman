@@ -55,9 +55,13 @@ void Nop(QString&) {}
 
 } // anon
 
-
-VMYTDL::~VMYTDL() {
-
+VMYTDL::~VMYTDL()
+{
+    disconnect();
+    foreach (QProcess* p, m_ProcessMap.keys()) {
+        p->kill();
+        delete p;
+    }
 }
 
 VMYTDL::VMYTDL(QObject* parent)
@@ -113,7 +117,7 @@ VMYTDL::startFetchVodMetaData(qint64 token, const QString& _url) {
             qDebug() << "Response for" << download.data()._url << "available in cache, using it";
             data._vod = cacheEntryPtr->vod;
             data.error = VMVodEnums::VM_ErrorNone;
-            emit fetchVodMetaDataCompleted(token, download);
+            emit vodMetaDataDownloadCompleted(token, download);
             return true;
         }
 
@@ -149,7 +153,7 @@ VMYTDL::startFetchVodMetaData(qint64 token, const QString& _url) {
 
 
 bool
-VMYTDL::fetchVod(qint64 token, const VMVodFileDownloadRequest& req, VMVodFileDownload* _download)
+VMYTDL::startFetchVodFile(qint64 token, const VMVodFileDownloadRequest& req, VMVodFileDownload* _download)
 {
     VMVodFileDownload download;
 
@@ -209,7 +213,7 @@ VMYTDL::fetchVod(qint64 token, const VMVodFileDownloadRequest& req, VMVodFileDow
 }
 
 void
-VMYTDL::cancelFetchVod(qint64 token, bool deleteFile) {
+VMYTDL::cancelFetchVodFile(qint64 token, bool deleteFile) {
     qDebug() << "token" << token << "delete?" << deleteFile;
 
     QProcess* process = m_VodDownloads.value(token);
@@ -240,12 +244,8 @@ VMYTDL::onMetaDataProcessFinished(int code, QProcess::ExitStatus status)
              << "finished, status:" << status
              << ", exit code:" << code;
 
-    QVariantMap result;
-    {
-
-        result = m_ProcessMap.value(process);
-        m_ProcessMap.remove(process);
-    }
+    auto result = m_ProcessMap.value(process);
+    m_ProcessMap.remove(process);
 
     const qint64 id = qvariant_cast<qint64>(result[s_Token]);
     VMVodMetaDataDownload download = qvariant_cast<VMVodMetaDataDownload>(result[s_Download]);
@@ -272,7 +272,7 @@ VMYTDL::onMetaDataProcessFinished(int code, QProcess::ExitStatus status)
             } else {
                 downLoadData.error = VMVodEnums::VM_ErrorUnknown;
             }
-            emit fetchVodMetaDataCompleted(id, download);
+            emit vodMetaDataDownloadCompleted(id, download);
             return;
         }
     }
@@ -284,7 +284,7 @@ VMYTDL::onMetaDataProcessFinished(int code, QProcess::ExitStatus status)
         downLoadData.error = VMVodEnums::VM_ErrorInvalidResponse;
         downLoadData.errorMessage = QStringLiteral("JSON parse error: %1").arg(error.errorString());
         qCritical() << "JSON parse error:" << error.errorString();
-        emit fetchVodMetaDataCompleted(id, download);
+        emit vodMetaDataDownloadCompleted(id, download);
         return;
     }
 
@@ -301,7 +301,7 @@ VMYTDL::onMetaDataProcessFinished(int code, QProcess::ExitStatus status)
         qCritical() << message;
         downLoadData.error = VMVodEnums::VM_ErrorInvalidResponse;
         downLoadData.errorMessage = message;
-        emit fetchVodMetaDataCompleted(id, download);
+        emit vodMetaDataDownloadCompleted(id, download);
         return;
     }
 
@@ -352,7 +352,7 @@ VMYTDL::onMetaDataProcessFinished(int code, QProcess::ExitStatus status)
             qCritical() << message;
             downLoadData.error = VMVodEnums::VM_ErrorNoVideo;
             downLoadData.errorMessage = message;
-            emit fetchVodMetaDataCompleted(id, download);
+            emit vodMetaDataDownloadCompleted(id, download);
         } else {
             if (lastResortIndex == -1) {
                 lastResortIndex = 0;
@@ -374,20 +374,18 @@ VMYTDL::onMetaDataProcessFinished(int code, QProcess::ExitStatus status)
         }
     }
 
-    {
-
-        auto cacheEntry = new CacheEntry;
-        cacheEntry->fetchTime = QDateTime::currentDateTime();
-        cacheEntry->vod = downLoadData._vod;
-        m_MetaDataCache.insert(downLoadData._url, cacheEntry);
-    }
+    auto cacheEntry = new CacheEntry;
+    cacheEntry->fetchTime = QDateTime::currentDateTime();
+    cacheEntry->vod = downLoadData._vod;
+    m_MetaDataCache.insert(downLoadData._url, cacheEntry);
 
     qDebug() << "emit fetchVodMetaDataCompleted("<< id << ", " << download << ")";
-    emit fetchVodMetaDataCompleted(id, download);
+    emit vodMetaDataDownloadCompleted(id, download);
 }
 
 void
-VMYTDL::onVodFileProcessFinished(int code, QProcess::ExitStatus status) {
+VMYTDL::onVodFileProcessFinished(int code, QProcess::ExitStatus status)
+{
     QProcess* process = qobject_cast<QProcess*>(QObject::sender());
     Q_ASSERT(process);
 
@@ -397,15 +395,9 @@ VMYTDL::onVodFileProcessFinished(int code, QProcess::ExitStatus status) {
              << "finished, status:" << status
              << ", exit code:" << code;
 
-    QVariantMap result;
-    qint64 id;
-
-    {
-        result = m_ProcessMap.value(process);
-        m_ProcessMap.remove(process);
-        id = qvariant_cast<qint64>(result[s_Token]);
-        m_VodDownloads.remove(id);
-    }
+    auto result = m_ProcessMap.value(process);
+    m_ProcessMap.remove(process);
+    const auto id = qvariant_cast<qint64>(result[s_Token]);
 
     VMVodFileDownload download = qvariant_cast<VMVodFileDownload>(result[s_Download]);
     VMVodFileDownloadData& downLoadData = download.data();
@@ -426,7 +418,7 @@ VMYTDL::onVodFileProcessFinished(int code, QProcess::ExitStatus status) {
                 download.data().error = VMVodEnums::VM_ErrorUnknown;
             }
             downLoadData.errorMessage = line.toString();
-            emit vodFetchCompleted(id, download);
+            emit vodFileDownloadCompleted(id, download);
             return;
         }
     }
@@ -434,13 +426,12 @@ VMYTDL::onVodFileProcessFinished(int code, QProcess::ExitStatus status) {
     download.data()._progress = 1;
 
     qDebug() << id << download;
-    emit vodFetchCompleted(id, download);
+    emit vodFileDownloadCompleted(id, download);
 }
 
-// https://www.youtube.com/watch?v=9Idy_WwS_fU
 void
-// e https://www.twitch.tv/videos/161472611?t=07h49m09s
-VMYTDL::onProcessError(QProcess::ProcessError error) {
+VMYTDL::onProcessError(QProcess::ProcessError error)
+{
     QProcess* process = qobject_cast<QProcess*>(QObject::sender());
     Q_ASSERT(process);
 
@@ -473,7 +464,7 @@ VMYTDL::onProcessError(QProcess::ProcessError error) {
                 break;
             }
         }
-        emit fetchVodMetaDataCompleted(id, download);
+        emit vodMetaDataDownloadCompleted(id, download);
     } else {
         auto download = qvariant_cast<VMVodFileDownload>(result[s_Download]);
         if (download.error() != VMVodEnums::VM_ErrorCanceled) {
@@ -492,12 +483,13 @@ VMYTDL::onProcessError(QProcess::ProcessError error) {
                 break;
             }
         }
-        emit vodFetchCompleted(id, download);
+        emit vodFileDownloadCompleted(id, download);
     }
 }
 
 void
-VMYTDL::onYoutubeDlVodFileDownloadProcessReadReady() {
+VMYTDL::onYoutubeDlVodFileDownloadProcessReadReady()
+{
     QProcess* process = qobject_cast<QProcess*>(QObject::sender());
     Q_ASSERT(process);
 
@@ -565,7 +557,7 @@ VMYTDL::onYoutubeDlVodFileDownloadProcessReadReady() {
     // update changed
     download.data().timeChanged = QDateTime::currentDateTime();
     // go go go
-    emit vodStatusChanged(id, download);
+    emit vodFileDownloadChanged(id, download);
 }
 
 void

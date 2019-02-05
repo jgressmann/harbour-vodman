@@ -1,2 +1,3 @@
 youtube-dl*
 translations/*.qm
+qml/pages/YTDLPage.qml

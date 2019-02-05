@@ -3,7 +3,6 @@ SOURCES += \
     $$PWD/VMVod.cpp \
     $$PWD/VMVodFileDownload.cpp \
     $$PWD/VMVodMetaDataDownload.cpp \
-    $$PWD/VMService.cpp \
     $$PWD/VMYTDL.cpp \
     $$PWD/VMQuickYTDLDownloader.cpp
 
@@ -11,7 +10,6 @@ HEADERS += \
     $$PWD/VMVod.h \
     $$PWD/VMVodFileDownload.h \
     $$PWD/VMVodMetaDataDownload.h \
-    $$PWD/VMService.h \
     $$PWD/VMYTDL.h \
     $$PWD/VMQuickYTDLDownloader.h
 

@@ -34,7 +34,6 @@
 
 
 class QJsonObject;
-class QTemporaryFile;
 class VMVodData;
 class VMVodFormat;
 class VMVodFileDownload;
@@ -54,17 +53,18 @@ public:
 
     QString ytdlPath() const;
     void setYtdlPath(const QString& path);
-    bool startFetchVodMetaData(qint64 token, const QString& url);
-    bool fetchVod(qint64 token, const VMVodFileDownloadRequest& request, VMVodFileDownload* result = Q_NULLPTR);
-    void cancelFetchVod(qint64 token, bool deleteFile);
-    QVariantList inProgressVodFetches();
-    int fetchVodYoutubeDl(const VMVodFormat& format, const QString& filePath, VMVodFileDownload* _download);
     Normalizer setUrlNormalizer(Normalizer&& n);
 
+public slots:
+    bool startFetchVodMetaData(qint64 token, const QString& url);
+    bool startFetchVodFile(qint64 token, const VMVodFileDownloadRequest& request, VMVodFileDownload* result = Q_NULLPTR);
+    void cancelFetchVodFile(qint64 token, bool deleteFile);
+    QVariantList inProgressVodFetches();
+
 signals:
-    void fetchVodMetaDataCompleted(qint64 id, const VMVodMetaDataDownload& download);
-    void vodStatusChanged(qint64 id, const VMVodFileDownload& download);
-    void vodFetchCompleted(qint64 id, const VMVodFileDownload& download);
+    void vodMetaDataDownloadCompleted(qint64 id, const VMVodMetaDataDownload& download);
+    void vodFileDownloadChanged(qint64 id, const VMVodFileDownload& download);
+    void vodFileDownloadCompleted(qint64 id, const VMVodFileDownload& download);
     void ytdlPathChanged();
 
 private slots:
@@ -75,7 +75,6 @@ private slots:
 
 private:
     Q_DISABLE_COPY(VMYTDL)
-    QVariantMap parseResponse(QJsonDocument);
     void cleanupProcess(QProcess* process);
     void fillFrameRate(VMVodFormat& format, const QJsonObject& json) const;
     void fillFormatId(VMVodFormat& format, const QJsonObject& json) const;
