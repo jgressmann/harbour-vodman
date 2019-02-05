@@ -47,8 +47,7 @@ public:
     {
         StatusReady,
         StatusUnavailable,
-        StatusDownloading,
-        StatusError,
+        StatusDownloading
     };
     Q_ENUMS(Status)
 
