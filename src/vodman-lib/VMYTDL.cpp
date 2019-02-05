@@ -402,7 +402,7 @@ VMYTDL::onVodFileProcessFinished(int code, QProcess::ExitStatus status)
     VMVodFileDownload download = qvariant_cast<VMVodFileDownload>(result[s_Download]);
     VMVodFileDownloadData& downLoadData = download.data();
 
-    QString processError = QString::fromLocal8Bit(process->readAllStandardError());
+    auto processError = QString::fromLocal8Bit(process->readAllStandardError());
     auto errorLines = processError.splitRef(QChar('\n'), QString::SkipEmptyParts);
     for (int i = 0; i < errorLines.size(); ++i) {
         const auto& line = errorLines[i];
@@ -414,6 +414,9 @@ VMYTDL::onVodFileProcessFinished(int code, QProcess::ExitStatus status)
             } else if (line.indexOf(QStringLiteral("[Errno 28]"), 0, Qt::CaseInsensitive) >= 0) {
                 // ERROR: unable to write data: [Errno 28] No space left on device
                 download.data().error = VMVodEnums::VM_ErrorNoSpaceLeftOnDevice;
+            } else if (line.indexOf(QStringLiteral("timed out"), 0, Qt::CaseInsensitive) >= 0) {
+                // stderr "ERROR: unable to download video data: <urlopen error _ssl.c:584: The handshake operation timed out>"
+                download.data().error = VMVodEnums::VM_ErrorTimedOut;
             } else {
                 download.data().error = VMVodEnums::VM_ErrorUnknown;
             }
