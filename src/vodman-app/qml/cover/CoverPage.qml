@@ -93,32 +93,6 @@ CoverBackground {
                         cache: false
                     }
 
-    //                Thumbnail {
-    //                    id: thumbnail
-    //                    source: download.data.description.thumbnailUrl
-    //                    width: parent.height
-    //                    height: parent.height
-    //                    sourceSize.width: width
-    //                    sourceSize.height: height
-    //                    fillMode: Image.PreserveAspectFit
-    //                    priority: {
-    //                            if (cover.status === Cover.Activating ||
-    //                                cover.status === Cover.Active) {
-    //                                    return Thumbnail.HighPriority
-    //                            }
-
-    //                            return Thumbnail.LowPriority
-    //                    }
-
-    //                    // prevents the image from loading on device
-    //                    //asynchronous: true
-    //                    visible: status === Thumbnail.Ready
-
-    //                    onStatusChanged: {
-    //                        console.debug("thumbnail status=" + status)
-    //                    }
-    //                }
-
                     Item {
                         height: parent.height
                         width: parent.width
@@ -164,7 +138,7 @@ CoverBackground {
         // It looks like copying stuff to the clipboard doesn't update the
         // any Clipboard bound properties for the cover page. It works on for
         // the download page though.
-        enabled: hasDefaultVideoFormat
+        enabled: YTDLDownloader.status === YTDLDownloader.StatusReady && hasDefaultVideoFormat
 
         CoverAction {
             iconSource: "image://theme/icon-cover-new"
