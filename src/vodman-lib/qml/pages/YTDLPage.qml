@@ -59,7 +59,7 @@ Page {
                             //% "youtube-dl is being downloaded"
                             return qsTrId("ytdl-downloading")
                         case YTDLDownloader.StatusReady:
-                            return ":D"
+                            return ""
                         default:
                             return "YTDLPage FIX ME"
                         }
