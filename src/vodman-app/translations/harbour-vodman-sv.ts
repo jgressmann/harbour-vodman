@@ -430,22 +430,22 @@
     <message id="settings-ytdl-downloading">
         <location filename="../qml/pages/SettingsPage.qml" line="350"/>
         <source>youtube-dl is being downloaded</source>
-        <translation type="unfinished">youtube-dl laddas ner</translation>
+        <translation>youtube-dl laddas ner</translation>
     </message>
     <message id="settings-ytdl-unavailable">
         <location filename="../qml/pages/SettingsPage.qml" line="354"/>
         <source>youtube-dl is not available</source>
-        <translation type="unfinished">youtube-dl är inte tillgängligt</translation>
+        <translation>youtube-dl är inte tillgänglig</translation>
     </message>
     <message id="settings-ytdl-version">
         <location filename="../qml/pages/SettingsPage.qml" line="357"/>
         <source>youtube-dl version %1</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message id="settings-ytdl-update">
         <location filename="../qml/pages/SettingsPage.qml" line="370"/>
         <source>Update youtube-dl</source>
-        <translation type="unfinished"></translation>
+        <translation>Uppdatera youtube-dl</translation>
     </message>
     <message id="settings-page-header">
         <location filename="../qml/pages/SettingsPage.qml" line="394"/>
@@ -461,38 +461,38 @@
         <location filename="../qml/pages/YTDLPage.qml" line="54"/>
         <source>You seem to be missing a working youtube-dl</source>
         <oldsource>youtube-dl is unavailable</oldsource>
-        <translation type="unfinished"></translation>
+        <translation>Du verkar sakna en fungerande youtube-dl</translation>
     </message>
     <message id="ytdl-error">
         <location filename="../qml/pages/YTDLPage.qml" line="57"/>
         <source>There was an error downloading youtube-dl</source>
-        <translation type="unfinished"></translation>
+        <translation>Ett fel inträffade vid nerladdning av youtube-dl</translation>
     </message>
     <message id="ytdl-downloading">
         <location filename="../qml/pages/YTDLPage.qml" line="60"/>
         <source>youtube-dl is being downloaded</source>
-        <translation type="unfinished"></translation>
+        <translation>youtube-dl laddas ner</translation>
     </message>
     <message id="ytdl-unvailable-hint-offline">
         <location filename="../qml/pages/YTDLPage.qml" line="88"/>
         <source>Go online, then click the button below to start the download</source>
-        <translation type="unfinished"></translation>
+        <translation>Anslut till nätet och tryck sedan på nedanstående knapp för att starta nerladdningen</translation>
     </message>
     <message id="ytdl-downloading-hint">
         <location filename="../qml/pages/YTDLPage.qml" line="94"/>
         <source>Please be patient</source>
         <oldsource>youtube-dl is being downloaded</oldsource>
-        <translation type="unfinished"></translation>
+        <translation>Ha tålamod</translation>
     </message>
     <message id="ytdl-download-button">
         <location filename="../qml/pages/YTDLPage.qml" line="117"/>
         <source>Download youtube-dl</source>
-        <translation type="unfinished"></translation>
+        <translation>Ladda ner youtube-dl</translation>
     </message>
     <message id="ytdl-error-busy">
         <location filename="../qml/pages/YTDLPage.qml" line="137"/>
         <source>Try again later</source>
-        <translation type="unfinished"></translation>
+        <translation>Försök igen senare</translation>
     </message>
     <message id="ytdl-error-download-failed">
         <location filename="../qml/pages/YTDLPage.qml" line="140"/>
@@ -502,54 +502,54 @@
     <message id="ytdl-error-file-dir-creation">
         <location filename="../qml/pages/YTDLPage.qml" line="143"/>
         <source>Failed to create file/directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Kunde inte skapa fil/mapp</translation>
     </message>
     <message id="ytdl-error-config-malformed">
         <location filename="../qml/pages/YTDLPage.qml" line="146"/>
         <source>Malformed configuration file. Try to download again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Felformaterad configurationsfil. Försök ladda ner igen.</translation>
     </message>
     <message id="ytdl-error-no-space">
         <location filename="../qml/pages/YTDLPage.qml" line="149"/>
         <source>No space left on device</source>
-        <translation type="unfinished"></translation>
+        <translation>Det finns inget utrymme kvar på enheten</translation>
     </message>
     <message id="ytdl-error-python">
         <location filename="../qml/pages/YTDLPage.qml" line="152"/>
         <source>Python executable not found</source>
-        <translation type="unfinished"></translation>
+        <translation>Körbar Python kan inte hittas</translation>
     </message>
     <message id="ytdl-error-unknown">
         <location filename="../qml/pages/YTDLPage.qml" line="155"/>
         <source>An unknown error has occurred</source>
         <oldsource>Something bad has happened</oldsource>
-        <translation type="unfinished"></translation>
+        <translation>Ett okänt fel har inträffat</translation>
     </message>
     <message id="ytdl-error-unsupported-config-file-format">
         <location filename="../qml/pages/YTDLPage.qml" line="158"/>
         <source>Unsupported configuration file format. Try to update the application.</source>
-        <translation type="unfinished"></translation>
+        <translation>Konfigurationsfilens format stöds inte. Försök uppdatera appen.</translation>
     </message>
     <message id="ytdl-error-none">
         <location filename="../qml/pages/YTDLPage.qml" line="161"/>
         <source>All is well</source>
-        <translation type="unfinished"></translation>
+        <translation>Allt är bra</translation>
     </message>
     <message id="ytdl-error-offline">
         <location filename="../qml/pages/YTDLPage.qml" line="164"/>
         <source>Your device is offline</source>
         <oldsource>The device is offline</oldsource>
-        <translation type="unfinished"></translation>
+        <translation>Din enhet är offline</translation>
     </message>
     <message id="ytdl-unvailable-hint">
         <location filename="../qml/pages/YTDLPage.qml" line="84"/>
         <source>Click the button below to start the download</source>
-        <translation type="unfinished"></translation>
+        <translation>Tryck på knappen nedan för att starta nerladdningen</translation>
     </message>
     <message id="ytdl-error-hint">
         <location filename="../qml/pages/YTDLPage.qml" line="91"/>
         <source>Click the button below to try again</source>
-        <translation type="unfinished"></translation>
+        <translation>Tryck på knappen nedan för att försöka igen</translation>
     </message>
 </context>
 </TS>
