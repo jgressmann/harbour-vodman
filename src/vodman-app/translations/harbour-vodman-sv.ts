@@ -277,33 +277,38 @@
         <source>Open webpage</source>
         <translation>Öppna webbsidan</translation>
     </message>
+    <message id="download-item-copy-file-path-to-clipboard">
+        <location filename="../qml/pages/DownloadPage.qml" line="717"/>
+        <source>Copy file path to clipboard</source>
+        <translation>Kopiera filväg till urklipp</translation>
+    </message>
     <message id="download-placeholder-text-waiting-for-download-to-start">
-        <location filename="../qml/pages/DownloadPage.qml" line="723"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="729"/>
         <source>Download will start momentarily</source>
         <translation>Nerladdningen börjar omedelbart</translation>
     </message>
     <message id="download-placeholder-text-no-downloads">
-        <location filename="../qml/pages/DownloadPage.qml" line="728"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="734"/>
         <source>No downloads at present</source>
         <translation>Inga nerladdningar just nu</translation>
     </message>
     <message id="download-placeholder-text-metadata-download">
-        <location filename="../qml/pages/DownloadPage.qml" line="732"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="738"/>
         <source>Downloading VOD metadata</source>
         <translation>Laddar ner VOD metadata</translation>
     </message>
     <message id="download-placeholder-hint-pull-down-to-start-download-from-clipboard">
-        <location filename="../qml/pages/DownloadPage.qml" line="743"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="749"/>
         <source>Pull down to start download using the URL in the clipboard</source>
         <translation>Dra neråt för att starta nerladdning från URL i urklipp</translation>
     </message>
     <message id="download-placeholder-hint-copy-url-to-clipboard">
-        <location filename="../qml/pages/DownloadPage.qml" line="747"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="753"/>
         <source>Copy a URL to the clipboard then pull down to start the download</source>
         <translation>Kopiera URL till urklipp och dra sedan neråt för att starta nerladdningen</translation>
     </message>
     <message id="download-placeholder-hint-pull-down-to-cancel">
-        <location filename="../qml/pages/DownloadPage.qml" line="751"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="757"/>
         <source>Pull down to cancel</source>
         <translation>Dra neråt för att avbryta</translation>
     </message>
@@ -423,27 +428,27 @@
         <translation>Taggar {title} {id} {formatid}, kommer att hämtas från VOD:ens metadata</translation>
     </message>
     <message id="settings-ytdl-downloading">
-        <location filename="../qml/pages/SettingsPage.qml" line="349"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="350"/>
         <source>youtube-dl is being downloaded</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">youtube-dl laddas ner</translation>
     </message>
     <message id="settings-ytdl-unavailable">
-        <location filename="../qml/pages/SettingsPage.qml" line="353"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="354"/>
         <source>youtube-dl is not available</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">youtube-dl är inte tillgängligt</translation>
     </message>
     <message id="settings-ytdl-version">
-        <location filename="../qml/pages/SettingsPage.qml" line="356"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="357"/>
         <source>youtube-dl version %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message id="settings-ytdl-update">
-        <location filename="../qml/pages/SettingsPage.qml" line="367"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="370"/>
         <source>Update youtube-dl</source>
         <translation type="unfinished"></translation>
     </message>
     <message id="settings-page-header">
-        <location filename="../qml/pages/SettingsPage.qml" line="390"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="394"/>
         <source>Settings</source>
         <translation>Inställningar</translation>
     </message>
@@ -492,7 +497,7 @@
     <message id="ytdl-error-download-failed">
         <location filename="../qml/pages/YTDLPage.qml" line="140"/>
         <source>Download failed</source>
-        <translation type="unfinished">Nerladdning mysslyckades</translation>
+        <translation>Nerladdning mysslyckades</translation>
     </message>
     <message id="ytdl-error-file-dir-creation">
         <location filename="../qml/pages/YTDLPage.qml" line="143"/>

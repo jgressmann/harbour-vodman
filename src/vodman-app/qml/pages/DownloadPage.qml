@@ -711,6 +711,12 @@ Page {
                                 Qt.openUrlExternally(download.data.description.webPageUrl)
                             }
                         }
+
+                        MenuItem {
+                            //% "Copy file path to clipboard"
+                            text: qsTrId("download-item-copy-file-path-to-clipboard")
+                            onClicked: Clipboard.text = download.data.filePath
+                        }
                     }
                 }
             }

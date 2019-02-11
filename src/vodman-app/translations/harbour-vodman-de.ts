@@ -277,33 +277,38 @@
         <source>Open webpage</source>
         <translation>Webseite öffnen</translation>
     </message>
+    <message id="download-item-copy-file-path-to-clipboard">
+        <location filename="../qml/pages/DownloadPage.qml" line="717"/>
+        <source>Copy file path to clipboard</source>
+        <translation>Dateipfad in die Zwischenablage kopieren</translation>
+    </message>
     <message id="download-placeholder-text-waiting-for-download-to-start">
-        <location filename="../qml/pages/DownloadPage.qml" line="723"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="729"/>
         <source>Download will start momentarily</source>
         <translation>Der Download started in einigen Sekunden</translation>
     </message>
     <message id="download-placeholder-text-no-downloads">
-        <location filename="../qml/pages/DownloadPage.qml" line="728"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="734"/>
         <source>No downloads at present</source>
         <translation>Keine Downloads aktiv</translation>
     </message>
     <message id="download-placeholder-text-metadata-download">
-        <location filename="../qml/pages/DownloadPage.qml" line="732"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="738"/>
         <source>Downloading VOD metadata</source>
         <translation>Lade VOD Metadaten herunter</translation>
     </message>
     <message id="download-placeholder-hint-pull-down-to-start-download-from-clipboard">
-        <location filename="../qml/pages/DownloadPage.qml" line="743"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="749"/>
         <source>Pull down to start download using the URL in the clipboard</source>
         <translation>Zieh nach unten, um die URL in der Zwischenablage herunterzuladen.</translation>
     </message>
     <message id="download-placeholder-hint-copy-url-to-clipboard">
-        <location filename="../qml/pages/DownloadPage.qml" line="747"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="753"/>
         <source>Copy a URL to the clipboard then pull down to start the download</source>
         <translation>Kopiere eine Video URL in die Zwischenablage und zieh dann nach unten um den Download zu starten.</translation>
     </message>
     <message id="download-placeholder-hint-pull-down-to-cancel">
-        <location filename="../qml/pages/DownloadPage.qml" line="751"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="757"/>
         <source>Pull down to cancel</source>
         <translation>Zieh nach unten zum Abbrechen</translation>
     </message>
@@ -423,27 +428,27 @@
         <translation>Die Platzhalter {title} {id} {formatid} werden durch Werte aus den Video Metadaten ersetzt.</translation>
     </message>
     <message id="settings-ytdl-downloading">
-        <location filename="../qml/pages/SettingsPage.qml" line="349"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="350"/>
         <source>youtube-dl is being downloaded</source>
         <translation>youtube-dl wird heruntergeladen</translation>
     </message>
     <message id="settings-ytdl-unavailable">
-        <location filename="../qml/pages/SettingsPage.qml" line="353"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="354"/>
         <source>youtube-dl is not available</source>
         <translation>youtube-dl nicht vorhanden</translation>
     </message>
     <message id="settings-ytdl-version">
-        <location filename="../qml/pages/SettingsPage.qml" line="356"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="357"/>
         <source>youtube-dl version %1</source>
         <translation>youtube-dl Version %1</translation>
     </message>
     <message id="settings-ytdl-update">
-        <location filename="../qml/pages/SettingsPage.qml" line="367"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="370"/>
         <source>Update youtube-dl</source>
         <translation>youtube-dl aktualisieren</translation>
     </message>
     <message id="settings-page-header">
-        <location filename="../qml/pages/SettingsPage.qml" line="390"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="394"/>
         <source>Settings</source>
         <translation>Einstellungen</translation>
     </message>
