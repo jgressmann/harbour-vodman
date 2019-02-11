@@ -1,6 +1,6 @@
 /* The MIT License (MIT)
  *
- * Copyright (c) 2018 Jean Gressmann <jean@0x42.de>
+ * Copyright (c) 2018, 2019 Jean Gressmann <jean@0x42.de>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,17 +28,14 @@ import org.duckdns.jgressmann 1.0
 import "."
 
 
-
-
 ApplicationWindow {
     id: window
-    initialPage: Qt.resolvedUrl("pages/DownloadPage.qml")
+    initialPage: YTDLDownloader.status === YTDLDownloader.StatusReady
+                 ? Qt.resolvedUrl("pages/DownloadPage.qml")
+                 : Qt.resolvedUrl("pages/YTDLPage.qml")
     cover: Qt.resolvedUrl("cover/CoverPage.qml")
 
     allowedOrientations: defaultAllowedOrientations
-
-    readonly property bool clipBoardHasUrl: Clipboard.hasText && vodDownloadModel.isUrl(Clipboard.text)
-    readonly property bool canStartDownloadOfClipboardUrl: vodDownloadModel.canStartDownload && clipBoardHasUrl
 
     VodDownloadModel {
         id: vodDownloadModel
@@ -81,18 +78,52 @@ ApplicationWindow {
             id: debugApp
             key: "/debug"
             defaultValue: false
+
+            onValueChanged: _setMode()
         }
     }
 
-//    Connections {
-//        target: Clipboard
-//        onHasTextChanged: {
-//            console.debug("has text: " + Clipboard.hasText)
-//        }
+    Component.onCompleted: {
+        _setMode()
+        _setYtdlPath()
+    }
 
-//        onTextChanged: {
-//            console.debug("text: " + Clipboard.text)
-//        }
-//    }
+    Connections {
+        target: YTDLDownloader
+        onStatusChanged: _switchMainPage()
+        onYtdlPathChanged: _setYtdlPath()
+    }
+
+    Connections {
+        target: pageStack
+        onCurrentPageChanged: _switchMainPage()
+        onBusyChanged: _switchMainPage()
+    }
+
+    function _setYtdlPath() {
+        if (YTDLDownloader.status === YTDLDownloader.StatusReady) {
+            vodDownloadModel.ytdlPath = YTDLDownloader.ytdlPath
+        } else {
+            vodDownloadModel.ytdlPath = ""
+        }
+    }
+
+    function _setMode() {
+        YTDLDownloader.mode = debugApp.value ? YTDLDownloader.ModeTest : YTDLDownloader.ModeRelease
+    }
+
+    function _switchMainPage() {
+        if (pageStack.currentPage && !pageStack.busy) {
+            if (YTDLDownloader.status === YTDLDownloader.StatusReady) {
+                if (pageStack.currentPage.isYTDLPage) {
+                    pageStack.replace(Qt.resolvedUrl("pages/DownloadPage.qml"))
+                }
+            } else {
+                if (pageStack.currentPage.isDownloadPage) {
+                    pageStack.replace(Qt.resolvedUrl("pages/YTDLPage.qml"))
+                }
+            }
+        }
+    }
 }
 

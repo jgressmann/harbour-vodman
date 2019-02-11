@@ -30,10 +30,8 @@ class VMApp : public QObject
     Q_OBJECT
     Q_PROPERTY(QString version READ version CONSTANT)
     Q_PROPERTY(QString displayName READ displayName CONSTANT)
-    Q_PROPERTY(QString ytdlVersion READ ytdlVersion CONSTANT)
 
 public:
     QString version() const;
     QString displayName() const;
-    QString ytdlVersion() const;
 };

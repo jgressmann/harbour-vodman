@@ -37,164 +37,58 @@
 #include <QUrlQuery>
 #include <QFile>
 #include <QFileInfo>
-#include <QTemporaryFile>
 
 namespace {
 
 const QRegExp s_YTDLProgressRegexp("\\[download\\]\\s+(\\d+\\.\\d*)%\\s+");
+// 160p30
+const QRegExp s_FramerateRegexp("\\d+p(\\d+)");
 //const QRegExp s_CurlProgressRegexp("^.*(\\d+\\.\\d*)%$");
 
 const QString s_Token = QStringLiteral("token");
 const QString s_Type = QStringLiteral("type");
 const QString s_MetaData = QStringLiteral("metadata");
 const QString s_Download = QStringLiteral("download");
+const QString s_NoCallHome = QStringLiteral("--no-call-home");
+
+void Nop(QString&) {}
 
 } // anon
 
-QString VMYTDL::ms_YoutubeDl_Path;
-QString VMYTDL::ms_YoutubeDl_Version;
-
-
-VMYTDL::~VMYTDL() {
-
+VMYTDL::~VMYTDL()
+{
+    disconnect();
+    foreach (QProcess* p, m_ProcessMap.keys()) {
+        p->kill();
+        delete p;
+    }
 }
 
 VMYTDL::VMYTDL(QObject* parent)
     : QObject(parent)
+    , m_Normalizer(&Nop)
 {
+}
+
+QString
+VMYTDL::ytdlPath() const
+{
+    return m_YoutubeDl_Path;
+}
+
+void
+VMYTDL::setYtdlPath(const QString& path)
+{
+    if (m_YoutubeDl_Path != path) {
+        m_YoutubeDl_Path = path;
+        emit ytdlPathChanged();
+    }
 }
 
 bool
-VMYTDL::findExecutable(const QString& name, const QString& path)
+VMYTDL::available() const
 {
-     QFileInfo fi(path);
-     if (fi.exists() && fi.isFile()) {
-         qInfo("File %s exists\n", qPrintable(fi.filePath()));
-         return true;
-     }
-
-     qInfo("File %s doesn't exist\n", qPrintable(fi.filePath()));
-
-     QStringList arguments;
-     arguments << QStringLiteral("-c") << QStringLiteral("which %1").arg(name);
-
-     QProcess process;
-     process.start(QStringLiteral("/bin/sh"), arguments, QIODevice::ReadOnly);
-     process.waitForFinished();
-     if (process.exitStatus() == QProcess::NormalExit &&
-         process.exitCode() == 0) {
-         auto result = process.readAllStandardOutput();
-         result = result.simplified();
-         if (result.isEmpty()) {
-            qInfo("Could not find '%s' using 'which'\n", qPrintable(name));
-         } else {
-            qInfo("Found '%s' as %s\n", qPrintable(name), qPrintable(result));
-         }
-
-         return !result.isEmpty();
-     } else {
-         qDebug(
-                     "Failed to start /bin/sh -c \"which %s\" exitStatus=%d, exitCode=%d):\nstdout: %s\nstderr:%s\n",
-                     qPrintable(name),
-                     static_cast<int>(process.exitStatus()), static_cast<int>(process.exitCode()),
-                     qPrintable(process.readAllStandardOutput()), qPrintable(process.readAllStandardError()));
-     }
-
-     return false;
-}
-
-void
-VMYTDL::initialize()
-{
-    ms_YoutubeDl_Path.clear();
-    ms_YoutubeDl_Version.clear();
-
-    int python = -1;
-    if (findExecutable(QStringLiteral("python3"), QStringLiteral("/usr/bin/python3"))) {
-        python = 3;
-    } else if (findExecutable(QStringLiteral("python"), QStringLiteral("/usr/bin/python"))) {
-        python = 0;
-    } else {
-        qCritical("Failed to find python or python3\n");
-    }
-
-    if (-1 != python) {
-        const QString resourceFilePath = QStringLiteral(":/youtube-dl");
-        QFile resourceFile(resourceFilePath);
-        if (resourceFile.open(QIODevice::ReadOnly)) {
-            auto ytdl = resourceFile.readAll();
-            resourceFile.close();
-
-            if (3 == python) { // update binary to start python3
-                ytdl.insert(0x15, '3');
-            }
-
-            QTemporaryFile tempFile;
-            if (tempFile.open()) {
-                auto w = tempFile.write(ytdl);
-                if (w == ytdl.size() && tempFile.flush()) {
-                    tempFile.close();
-                    qInfo("Saved youtube-dl to %s\n", qPrintable(tempFile.fileName()));
-                    if (tempFile.setPermissions(QFile::ReadOwner | QFile::WriteOwner | QFile::ExeOwner | QFile::ReadGroup | QFile::ExeGroup | QFile::ReadOther | QFile::ExeOther)) {
-                        qInfo("Changed permissions to 0755\n");
-                        tempFile.setAutoRemove(false);
-                        ms_YoutubeDl_Path = tempFile.fileName();
-                    } else {
-                        qCritical("Failed to change permissions to 0755: %s (%d)\n", qPrintable(tempFile.errorString()), static_cast<int>(tempFile.error()));
-                    }
-                } else {
-                    qCritical("Failed to save youtube-dl to %s: %s (%d)\n", qPrintable(tempFile.fileName()), qPrintable(tempFile.errorString()), static_cast<int>(tempFile.error()));
-                }
-            } else {
-                qCritical("Failed to create temporary file for youtube-dl binary from %s\n", qPrintable(resourceFilePath));
-            }
-        } else {
-            qCritical("Failed to load youtube-dl from resources %s: %s (%d)\n", qPrintable(resourceFilePath), qPrintable(resourceFile.errorString()), static_cast<int>(resourceFile.error()));
-        }
-
-        if (!ms_YoutubeDl_Path.isEmpty()) {
-            QStringList arguments;
-            arguments << QStringLiteral("--no-call-home") << QStringLiteral("--version");
-
-            qDebug() << "Attempting to start" << ms_YoutubeDl_Path;
-
-            QProcess process;
-            process.start(ms_YoutubeDl_Path, arguments, QIODevice::ReadOnly);
-            process.waitForFinished();
-
-            if (process.exitStatus() == QProcess::NormalExit &&
-                process.exitCode() == 0) {
-                ms_YoutubeDl_Version = process.readAllStandardOutput();
-                ms_YoutubeDl_Version = ms_YoutubeDl_Version.simplified();
-                qInfo("youtube-dl version %s\n", qPrintable(ms_YoutubeDl_Version));
-            } else {
-                qCritical(
-                            "Failed to get youtube-dl version (exitStatus=%d, exitCode=%d):\nstdout: %s\nstderr:%s\n",
-                            static_cast<int>(process.exitStatus()), static_cast<int>(process.exitCode()),
-                            qPrintable(process.readAllStandardOutput()), qPrintable(process.readAllStandardError()));
-                ms_YoutubeDl_Version.clear();
-            }
-        }
-    }
-}
-
-void
-VMYTDL::finalize()
-{
-    if (!ms_YoutubeDl_Path.isEmpty()) {
-        QFile::remove(ms_YoutubeDl_Path);
-    }
-}
-
-void
-VMYTDL::normalizeUrl(QUrl& url) const {
-    if (url.hasQuery()) {
-        qDebug() << "in"  << url;
-        QUrlQuery q(url.query());
-        q.removeAllQueryItems(QStringLiteral("t"));
-        url.setQuery(q);
-        qDebug() << "out"  << url;
-    }
+    return !m_YoutubeDl_Path.isEmpty();
 }
 
 bool
@@ -203,19 +97,16 @@ VMYTDL::startFetchVodMetaData(qint64 token, const QString& _url) {
     VMVodMetaDataDownload download;
     VMVodMetaDataDownloadData& data = download.data();
 
-    QUrl url(_url);
-    normalizeUrl(url);
+    QString url(_url);
+    m_Normalizer(url);
 
-    data._url = url.toString();
+    data._url = url;
     if (!available()) {
-        data.errorMessage = QStringLiteral("no working youtube-dl @ ") + ms_YoutubeDl_Path;
+        data.errorMessage = QStringLiteral("no working youtube-dl @ ") + m_YoutubeDl_Path;
         data.error = VMVodEnums::VM_ErrorNoYoutubeDl;
         qDebug() << data.errorMessage;
         return false;
     }
-
-
-
 
     qDebug() << "Trying to obtain video urls for: " << url;
 
@@ -226,7 +117,7 @@ VMYTDL::startFetchVodMetaData(qint64 token, const QString& _url) {
             qDebug() << "Response for" << download.data()._url << "available in cache, using it";
             data._vod = cacheEntryPtr->vod;
             data.error = VMVodEnums::VM_ErrorNone;
-            emit fetchVodMetaDataCompleted(token, download);
+            emit vodMetaDataDownloadCompleted(token, download);
             return true;
         }
 
@@ -242,10 +133,10 @@ VMYTDL::startFetchVodMetaData(qint64 token, const QString& _url) {
     arguments << QStringLiteral("--dump-json")
               << QStringLiteral("--youtube-skip-dash-manifest")
               << QStringLiteral("--no-cache-dir")
-              << QStringLiteral("--no-call-home")
-              << url.toString();
+              << s_NoCallHome
+              << url;
 
-    qDebug() << "youtube-dl subprocess:" << ms_YoutubeDl_Path << arguments;
+    qDebug() << "youtube-dl subprocess:" << m_YoutubeDl_Path << arguments;
 
     QProcess* process = new QProcess(this);
 
@@ -256,13 +147,13 @@ VMYTDL::startFetchVodMetaData(qint64 token, const QString& _url) {
 
     m_ProcessMap.insert(process, result);
 
-    process->start(ms_YoutubeDl_Path, arguments, QIODevice::ReadOnly);
+    process->start(m_YoutubeDl_Path, arguments, QIODevice::ReadOnly);
     return true;
 }
 
 
 bool
-VMYTDL::fetchVod(qint64 token, const VMVodFileDownloadRequest& req, VMVodFileDownload* _download)
+VMYTDL::startFetchVodFile(qint64 token, const VMVodFileDownloadRequest& req, VMVodFileDownload* _download)
 {
     VMVodFileDownload download;
 
@@ -277,7 +168,7 @@ VMYTDL::fetchVod(qint64 token, const VMVodFileDownloadRequest& req, VMVodFileDow
     data.timeStarted = data.timeChanged = QDateTime::currentDateTime();
 
     if (!available()) {
-        data.errorMessage = QStringLiteral("no working youtube-dl @ ") + ms_YoutubeDl_Path;
+        data.errorMessage = QStringLiteral("no working youtube-dl @ ") + m_YoutubeDl_Path;
         data.error = VMVodEnums::VM_ErrorNoYoutubeDl;
         return false;
     }
@@ -298,12 +189,12 @@ VMYTDL::fetchVod(qint64 token, const VMVodFileDownloadRequest& req, VMVodFileDow
               << QStringLiteral("--newline")
               << QStringLiteral("--no-part")
               << QStringLiteral("--no-cache-dir")
-              << QStringLiteral("--no-call-home")
+              << s_NoCallHome
               << QStringLiteral("-f") << req.format.id()
               << QStringLiteral("-o") << req.filePath
               << req.format.vodUrl();
 
-    qDebug() << "youtube-dl subprocess:" << ms_YoutubeDl_Path << arguments;
+    qDebug() << "youtube-dl subprocess:" << m_YoutubeDl_Path << arguments;
 
     QProcess* process = new QProcess(this);
     connect(process, SIGNAL(finished(int, QProcess::ExitStatus)),
@@ -317,12 +208,12 @@ VMYTDL::fetchVod(qint64 token, const VMVodFileDownloadRequest& req, VMVodFileDow
     m_ProcessMap.insert(process, result);
     m_VodDownloads.insert(token, process);
 
-    process->start(ms_YoutubeDl_Path, arguments, QIODevice::ReadOnly);
+    process->start(m_YoutubeDl_Path, arguments, QIODevice::ReadOnly);
     return true;
 }
 
 void
-VMYTDL::cancelFetchVod(qint64 token, bool deleteFile) {
+VMYTDL::cancelFetchVodFile(qint64 token, bool deleteFile) {
     qDebug() << "token" << token << "delete?" << deleteFile;
 
     QProcess* process = m_VodDownloads.value(token);
@@ -353,12 +244,8 @@ VMYTDL::onMetaDataProcessFinished(int code, QProcess::ExitStatus status)
              << "finished, status:" << status
              << ", exit code:" << code;
 
-    QVariantMap result;
-    {
-
-        result = m_ProcessMap.value(process);
-        m_ProcessMap.remove(process);
-    }
+    auto result = m_ProcessMap.value(process);
+    m_ProcessMap.remove(process);
 
     const qint64 id = qvariant_cast<qint64>(result[s_Token]);
     VMVodMetaDataDownload download = qvariant_cast<VMVodMetaDataDownload>(result[s_Download]);
@@ -385,7 +272,7 @@ VMYTDL::onMetaDataProcessFinished(int code, QProcess::ExitStatus status)
             } else {
                 downLoadData.error = VMVodEnums::VM_ErrorUnknown;
             }
-            emit fetchVodMetaDataCompleted(id, download);
+            emit vodMetaDataDownloadCompleted(id, download);
             return;
         }
     }
@@ -397,7 +284,7 @@ VMYTDL::onMetaDataProcessFinished(int code, QProcess::ExitStatus status)
         downLoadData.error = VMVodEnums::VM_ErrorInvalidResponse;
         downLoadData.errorMessage = QStringLiteral("JSON parse error: %1").arg(error.errorString());
         qCritical() << "JSON parse error:" << error.errorString();
-        emit fetchVodMetaDataCompleted(id, download);
+        emit vodMetaDataDownloadCompleted(id, download);
         return;
     }
 
@@ -414,7 +301,7 @@ VMYTDL::onMetaDataProcessFinished(int code, QProcess::ExitStatus status)
         qCritical() << message;
         downLoadData.error = VMVodEnums::VM_ErrorInvalidResponse;
         downLoadData.errorMessage = message;
-        emit fetchVodMetaDataCompleted(id, download);
+        emit vodMetaDataDownloadCompleted(id, download);
         return;
     }
 
@@ -426,53 +313,79 @@ VMYTDL::onMetaDataProcessFinished(int code, QProcess::ExitStatus status)
     descData._thumbnail = root.value(QStringLiteral("thumbnail")).toString();
 
     QJsonArray formats = root.value(QStringLiteral("formats")).toArray();
+    int lastResortIndex = -1;
     for (int i = 0; i < formats.size(); ++i) {
         QJsonObject format = formats[i].toObject();
         QString vcodec = format.value(QStringLiteral("vcodec")).toString();
         QString acodec = format.value(QStringLiteral("acodec")).toString();
-        if (vcodec.isEmpty() || QStringLiteral("none") == vcodec ||  // no video
-            acodec.isEmpty() || QStringLiteral("none") == acodec) { // no audio
-            continue;
-        }
 
-          //"format_id": "160p30",
-        vodData._formats.append(VMVodFormat());
-        VMVodFormat& vodFormat = vodData._formats.last();
-        VMVodFormatData& vodFormatData = vodFormat.data();
-        vodFormatData._vodUrl = descData._webPageUrl;
-        vodFormatData._width = format.value(QStringLiteral("width")).toInt();
-        vodFormatData._height = format.value(QStringLiteral("height")).toInt();
-        vodFormatData._id = format.value(QStringLiteral("format_id")).toString();
-        vodFormatData._fileUrl = format.value(QStringLiteral("url")).toString();
-        vodFormatData._displayName = format.value(QStringLiteral("format")).toString();
-        vodFormatData._fileExtension = format.value(QStringLiteral("ext")).toString();
-        fillFrameRate(vodFormat, format);
-        fillFormatId(vodFormat, format);
-//        qDebug() << vodFormatData._width << vodFormatData._height << vodFormatData._format;
+        auto hasVideo = !vcodec.isEmpty() && QStringLiteral("none") != vcodec;
+        auto hasAudio = !acodec.isEmpty() && QStringLiteral("none") != acodec;
+
+        if (hasVideo) {
+            if (lastResortIndex == -1) {
+                lastResortIndex = i;
+            }
+
+            if (hasAudio) {
+                //"format_id": "160p30",
+                vodData._formats.append(VMVodFormat());
+                VMVodFormat& vodFormat = vodData._formats.last();
+                VMVodFormatData& vodFormatData = vodFormat.data();
+                vodFormatData._vodUrl = descData._webPageUrl;
+                vodFormatData._width = format.value(QStringLiteral("width")).toInt();
+                vodFormatData._height = format.value(QStringLiteral("height")).toInt();
+                vodFormatData._id = format.value(QStringLiteral("format_id")).toString();
+                vodFormatData._fileUrl = format.value(QStringLiteral("url")).toString();
+                vodFormatData._displayName = format.value(QStringLiteral("format")).toString();
+                vodFormatData._fileExtension = format.value(QStringLiteral("ext")).toString();
+                fillFrameRate(vodFormat, format);
+                fillFormatId(vodFormat, format);
+                //        qDebug() << vodFormatData._width << vodFormatData._height << vodFormatData._format;
+            }
+        }
     }
 
     if (vodData._formats.isEmpty()) {
-        QString message = QStringLiteral("No format has video");
-        qCritical() << message;
-        downLoadData.error = VMVodEnums::VM_ErrorNoVideo;
-        downLoadData.errorMessage = message;
-        emit fetchVodMetaDataCompleted(id, download);
+        if (formats.isEmpty()) {
+            QString message = QStringLiteral("No format has video");
+            qCritical() << message;
+            downLoadData.error = VMVodEnums::VM_ErrorNoVideo;
+            downLoadData.errorMessage = message;
+            emit vodMetaDataDownloadCompleted(id, download);
+        } else {
+            if (lastResortIndex == -1) {
+                lastResortIndex = 0;
+            }
+
+            QJsonObject format = formats[lastResortIndex].toObject();
+            vodData._formats.append(VMVodFormat());
+            VMVodFormat& vodFormat = vodData._formats.last();
+            VMVodFormatData& vodFormatData = vodFormat.data();
+            vodFormatData._vodUrl = descData._webPageUrl;
+            vodFormatData._width = format.value(QStringLiteral("width")).toInt();
+            vodFormatData._height = format.value(QStringLiteral("height")).toInt();
+            vodFormatData._id = format.value(QStringLiteral("format_id")).toString();
+            vodFormatData._fileUrl = format.value(QStringLiteral("url")).toString();
+            vodFormatData._displayName = format.value(QStringLiteral("format")).toString();
+            vodFormatData._fileExtension = format.value(QStringLiteral("ext")).toString();
+            fillFrameRate(vodFormat, format);
+            fillFormatId(vodFormat, format);
+        }
     }
 
-    {
-
-        auto cacheEntry = new CacheEntry;
-        cacheEntry->fetchTime = QDateTime::currentDateTime();
-        cacheEntry->vod = downLoadData._vod;
-        m_MetaDataCache.insert(downLoadData._url, cacheEntry);
-    }
+    auto cacheEntry = new CacheEntry;
+    cacheEntry->fetchTime = QDateTime::currentDateTime();
+    cacheEntry->vod = downLoadData._vod;
+    m_MetaDataCache.insert(downLoadData._url, cacheEntry);
 
     qDebug() << "emit fetchVodMetaDataCompleted("<< id << ", " << download << ")";
-    emit fetchVodMetaDataCompleted(id, download);
+    emit vodMetaDataDownloadCompleted(id, download);
 }
 
 void
-VMYTDL::onVodFileProcessFinished(int code, QProcess::ExitStatus status) {
+VMYTDL::onVodFileProcessFinished(int code, QProcess::ExitStatus status)
+{
     QProcess* process = qobject_cast<QProcess*>(QObject::sender());
     Q_ASSERT(process);
 
@@ -482,20 +395,14 @@ VMYTDL::onVodFileProcessFinished(int code, QProcess::ExitStatus status) {
              << "finished, status:" << status
              << ", exit code:" << code;
 
-    QVariantMap result;
-    qint64 id;
-
-    {
-        result = m_ProcessMap.value(process);
-        m_ProcessMap.remove(process);
-        id = qvariant_cast<qint64>(result[s_Token]);
-        m_VodDownloads.remove(id);
-    }
+    auto result = m_ProcessMap.value(process);
+    m_ProcessMap.remove(process);
+    const auto id = qvariant_cast<qint64>(result[s_Token]);
 
     VMVodFileDownload download = qvariant_cast<VMVodFileDownload>(result[s_Download]);
     VMVodFileDownloadData& downLoadData = download.data();
 
-    QString processError = QString::fromLocal8Bit(process->readAllStandardError());
+    auto processError = QString::fromLocal8Bit(process->readAllStandardError());
     auto errorLines = processError.splitRef(QChar('\n'), QString::SkipEmptyParts);
     for (int i = 0; i < errorLines.size(); ++i) {
         const auto& line = errorLines[i];
@@ -507,11 +414,14 @@ VMYTDL::onVodFileProcessFinished(int code, QProcess::ExitStatus status) {
             } else if (line.indexOf(QStringLiteral("[Errno 28]"), 0, Qt::CaseInsensitive) >= 0) {
                 // ERROR: unable to write data: [Errno 28] No space left on device
                 download.data().error = VMVodEnums::VM_ErrorNoSpaceLeftOnDevice;
+            } else if (line.indexOf(QStringLiteral("timed out"), 0, Qt::CaseInsensitive) >= 0) {
+                // stderr "ERROR: unable to download video data: <urlopen error _ssl.c:584: The handshake operation timed out>"
+                download.data().error = VMVodEnums::VM_ErrorTimedOut;
             } else {
                 download.data().error = VMVodEnums::VM_ErrorUnknown;
             }
             downLoadData.errorMessage = line.toString();
-            emit vodFetchCompleted(id, download);
+            emit vodFileDownloadCompleted(id, download);
             return;
         }
     }
@@ -519,13 +429,12 @@ VMYTDL::onVodFileProcessFinished(int code, QProcess::ExitStatus status) {
     download.data()._progress = 1;
 
     qDebug() << id << download;
-    emit vodFetchCompleted(id, download);
+    emit vodFileDownloadCompleted(id, download);
 }
 
-// https://www.youtube.com/watch?v=9Idy_WwS_fU
 void
-// e https://www.twitch.tv/videos/161472611?t=07h49m09s
-VMYTDL::onProcessError(QProcess::ProcessError error) {
+VMYTDL::onProcessError(QProcess::ProcessError error)
+{
     QProcess* process = qobject_cast<QProcess*>(QObject::sender());
     Q_ASSERT(process);
 
@@ -546,7 +455,7 @@ VMYTDL::onProcessError(QProcess::ProcessError error) {
             switch (error) {
             case QProcess::Crashed:
                 download.data().error = VMVodEnums::VM_ErrorCrashed;
-                download.data().errorMessage = QStringLiteral("process path=%1 pid=%2 crashed").arg(ms_YoutubeDl_Path, process->pid());
+                download.data().errorMessage = QStringLiteral("process path=%1 pid=%2 crashed").arg(m_YoutubeDl_Path, process->pid());
                 break;
             case QProcess::Timedout:
                 download.data().error = VMVodEnums::VM_ErrorTimedOut;
@@ -558,14 +467,14 @@ VMYTDL::onProcessError(QProcess::ProcessError error) {
                 break;
             }
         }
-        emit fetchVodMetaDataCompleted(id, download);
+        emit vodMetaDataDownloadCompleted(id, download);
     } else {
         auto download = qvariant_cast<VMVodFileDownload>(result[s_Download]);
         if (download.error() != VMVodEnums::VM_ErrorCanceled) {
             switch (error) {
             case QProcess::Crashed:
                 download.data().error = VMVodEnums::VM_ErrorCrashed;
-                download.data().errorMessage = QStringLiteral("process path=%1 pid=%2 crashed").arg(ms_YoutubeDl_Path, process->pid());
+                download.data().errorMessage = QStringLiteral("process path=%1 pid=%2 crashed").arg(m_YoutubeDl_Path, process->pid());
                 break;
             case QProcess::Timedout:
                 download.data().error = VMVodEnums::VM_ErrorTimedOut;
@@ -577,12 +486,13 @@ VMYTDL::onProcessError(QProcess::ProcessError error) {
                 break;
             }
         }
-        emit vodFetchCompleted(id, download);
+        emit vodFileDownloadCompleted(id, download);
     }
 }
 
 void
-VMYTDL::onYoutubeDlVodFileDownloadProcessReadReady() {
+VMYTDL::onYoutubeDlVodFileDownloadProcessReadReady()
+{
     QProcess* process = qobject_cast<QProcess*>(QObject::sender());
     Q_ASSERT(process);
 
@@ -650,7 +560,7 @@ VMYTDL::onYoutubeDlVodFileDownloadProcessReadReady() {
     // update changed
     download.data().timeChanged = QDateTime::currentDateTime();
     // go go go
-    emit vodStatusChanged(id, download);
+    emit vodFileDownloadChanged(id, download);
 }
 
 void
@@ -677,11 +587,9 @@ VMYTDL::fillFrameRate(VMVodFormat& format, const QJsonObject& json) const {
     int frameRate = -1;
     auto jsonFps = json.value(QStringLiteral("fps")).toString();
     if (jsonFps.isEmpty()) {
-        // 160p30
-        auto id = format.id();
-        auto index = id.indexOf(QChar('p'));
-        if (index > 0) {
-            frameRate = id.rightRef(id.size()-index-1).toInt();
+        if (s_YTDLProgressRegexp.indexIn(format.id()) != -1) {
+            auto cap = s_YTDLProgressRegexp.cap(1);
+            frameRate = cap.toInt();
         }
     } else {
         frameRate = jsonFps.toInt();
@@ -691,28 +599,39 @@ VMYTDL::fillFrameRate(VMVodFormat& format, const QJsonObject& json) const {
 }
 
 void
-VMYTDL::fillFormatId(VMVodFormat& f, const QJsonObject& json) const {
+VMYTDL::fillFormatId(VMVodFormat& f, const QJsonObject& json) const
+{
     Q_UNUSED(json);
     VMVodEnums::Format format = VMVodEnums::VM_Unknown;
 
     auto value = f.height();
-    if (value <= 160) {
-        format = VMVodEnums::VM_160p;
-    } else if (value <= 240) {
-        format = VMVodEnums::VM_240p;
-    } else if (value <= 360) {
-        format = VMVodEnums::VM_360p;
-    } else if (value <= 480) {
-        format = VMVodEnums::VM_480p;
-    } else if (value <= 720) {
-        format = VMVodEnums::VM_720p;
-    } else if (value <= 1080) {
-        format = VMVodEnums::VM_1080p;
-    } else if (value <= 1440) {
-        format = VMVodEnums::VM_1440p;
-    } else {
-        format = VMVodEnums::VM_2160p;
+    if (value > 0) {
+        if (value <= 160) {
+            format = VMVodEnums::VM_160p;
+        } else if (value <= 240) {
+            format = VMVodEnums::VM_240p;
+        } else if (value <= 360) {
+            format = VMVodEnums::VM_360p;
+        } else if (value <= 480) {
+            format = VMVodEnums::VM_480p;
+        } else if (value <= 720) {
+            format = VMVodEnums::VM_720p;
+        } else if (value <= 1080) {
+            format = VMVodEnums::VM_1080p;
+        } else if (value <= 1440) {
+            format = VMVodEnums::VM_1440p;
+        } else {
+            format = VMVodEnums::VM_2160p;
+        }
     }
 
     f.data()._format = format;
+}
+
+VMYTDL::Normalizer
+VMYTDL::setUrlNormalizer(Normalizer&& n)
+{
+    auto result = std::move(m_Normalizer);
+    m_Normalizer = std::move(n);
+    return result;
 }

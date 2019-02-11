@@ -26,13 +26,15 @@
 
 #include "VMVodFileDownload.h"
 #include "VMVodMetaDataDownload.h"
-#include "VMService.h"
+#include "VMYTDL.h"
 
 #include <QAbstractListModel>
 #include <QNetworkConfigurationManager>
 
 
 class VMQuickVodDownload;
+class VMVodFileDownload;
+class VMVodMetaDataDownload;
 class VMQuickVodDownloadModel : public QAbstractListModel
 {
     Q_OBJECT
@@ -41,6 +43,7 @@ class VMQuickVodDownloadModel : public QAbstractListModel
     Q_PROPERTY(bool isOnBroadband READ isOnBroadband NOTIFY isOnBroadbandChanged)
     Q_PROPERTY(bool isOnMobile READ isOnMobile NOTIFY isOnMobileChanged)
     Q_PROPERTY(bool downloadsPending READ downloadsPending NOTIFY downloadsPendingChanged)
+    Q_PROPERTY(QString ytdlPath READ ytdlPath WRITE setYtdlPath NOTIFY ytdlPathChanged)
 
 public:
     explicit VMQuickVodDownloadModel(QObject *parent = Q_NULLPTR);
@@ -50,6 +53,7 @@ public:
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     QHash<int, QByteArray> roleNames() const;
+
 public:
     Q_INVOKABLE void startDownloadMetaData(const QString& url);
     Q_INVOKABLE void cancelDownloadMetaData();
@@ -63,6 +67,8 @@ public:
     bool isOnBroadband() const;
     bool isOnMobile() const;
     bool downloadsPending() const;
+    QString ytdlPath() const;
+    void setYtdlPath(const QString& path);
 
 Q_SIGNALS: // signals
     void metaDataDownloadSubmitted(const QString& url, qint64 token);
@@ -74,20 +80,21 @@ Q_SIGNALS: // signals
     void isOnBroadbandChanged();
     void isOnMobileChanged();
     void downloadsPendingChanged();
+    void ytdlPathChanged();
 
 private slots:
-    void onVodFileDownloadAdded(qint64 handle, const QByteArray& download);
-    void onVodFileDownloadRemoved(qint64 handle, const QByteArray& download);
-    void onVodFileDownloadChanged(qint64 handle, const QByteArray& download);
-    void onVodFileMetaDataDownloadCompleted(qint64 handle, const QByteArray& download);
+    void onVodFileDownloadCompleted(qint64 handle, const VMVodFileDownload& download);
+    void onVodFileDownloadChanged(qint64 handle, const VMVodFileDownload& download);
+    void onVodFileMetaDataDownloadCompleted(qint64 handle, const VMVodMetaDataDownload& download);
     void onOnlineChanged(bool online);
+    void onYtdlPathChanged();
 
 private:
     int getHandleRow(qint64 handle) const;
     void vodFileDownloadAdded(qint64 handle, const VMVodFileDownload& download);
 
 private:
-    VMService m_Service;
+    VMYTDL m_Ytdl;
     QNetworkConfigurationManager m_NetworkConfigurationManager;
     QHash<qint64, VMQuickVodDownload*> m_Downloads;
     QList<qint64> m_Rows;
@@ -96,6 +103,7 @@ private:
     QString m_Url;
     QString m_FilePath;
     qint64 m_Token;
+    qint64 m_TokenGenerator;
 
 private:
     static const QHash<int, QByteArray> ms_Roles;

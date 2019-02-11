@@ -1,5 +1,0 @@
-<RCC>
-    <qresource prefix="/">
-        <file>youtube-dl</file>
-    </qresource>
-</RCC>

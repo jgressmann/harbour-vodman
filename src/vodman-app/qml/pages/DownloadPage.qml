@@ -34,6 +34,15 @@ import ".."
 Page {
     id: page
 
+    readonly property bool isDownloadPage: true
+    // page could be underneath settings page
+    readonly property bool operational: YTDLDownloader.status === YTDLDownloader.StatusReady
+    readonly property bool canStartDownload: operational && vodDownloadModel.canStartDownload
+    readonly property bool clipBoardHasUrl: Clipboard.hasText && vodDownloadModel.isUrl(Clipboard.text)
+    readonly property bool canStartDownloadOfClipboardUrl: canStartDownload && clipBoardHasUrl
+
+
+
     function targetWidth(format) {
         switch (format) {
         case VM.VM_240p:
@@ -184,7 +193,6 @@ Page {
         case VM.VM_ErrorCanceled:
             return;
         case VM.VM_ErrorNoYoutubeDl:
-
             errorNotification.body = errorNotification.previewBody =
                     //% "youtube-dl not working"
                     qsTrId("error-youtube-dl-not-working")
@@ -225,9 +233,10 @@ Page {
                     qsTrId("error-network-down")
             break
         case VM.VM_ErrorInvalidUrl:
-            errorNotification.body = errorNotification.previewBody =
-                    //% "Invalid URL."
-                    qsTrId("error-invalid-url")
+            //% "Invalid URL"
+            errorNotification.previewBody = qsTrId("error-invalid-url-preview-body")
+            //% "Invalid URL '%1'"
+            errorNotification.body = qsTrId("error-invalid-url-body").arg(url)
             break
         case VM.VM_ErrorNoSpaceLeftOnDevice:
             errorNotification.body = errorNotification.previewBody =
@@ -255,7 +264,8 @@ Page {
         successNotification.previewBody = download.description.fullTitle
         successNotification.remoteActions = [ {
                                                  "name": "default",
-                                                 "displayName": qsTrId("play"), //% "Play"
+                                                 //% "Play"
+                                                 "displayName": qsTrId("play"),
                                                  "icon": "icon-cover-play",
                                                  "service": "org.duckdns.jgressmann.vodman.app",
                                                  "path": "/instance",
@@ -278,10 +288,50 @@ Page {
         service: 'org.duckdns.jgressmann.vodman.app'
         iface: 'org.duckdns.jgressmann.vodman.app'
         path: '/instance'
+        xml:
+"<interface name=\"org.duckdns.jgressmann.vodman.app\">\n" +
+"   <property name=\"canStartDownload\" type=\"boolean\" access=\"readonly\"/>\n" +
+"   <method name=\"download\">\n" +
+"       <arg name=\"url\" type=\"s\" direction=\"in\"/>\n" +
+"   </method>\n" +
+"   <method name=\"downloadEx\">\n" +
+"       <arg name=\"url\" type=\"s\" direction=\"in\"/>\n" +
+"       <arg name=\"notify\" type=\"b\" direction=\"in\"/>\n" +
+"       <arg name=\"success\" type=\"b\" direction=\"out\"/>\n" +
+"   </method>\n" +
+"</interface>\n"
 
+        readonly property bool canStartDownload: page.canStartDownload
         function play(filePath) {
             console.debug("play path=" + filePath)
             Qt.openUrlExternally("file://" + filePath)
+        }
+
+        function download(url) {
+            downloadEx(url, true)
+        }
+
+        function downloadEx(url, notify) {
+            console.debug("download url=" + url + ", notify=" + notify)
+            if (canStartDownload) {
+                vodDownloadModel.startDownloadMetaData(url)
+                if (notify) {
+                    //% "Started download of '%1'"
+                    startedNotification.summary = qsTrId("nofification-download-started-summary").arg(url)
+                    startedNotification.publish()
+                }
+
+                return true
+            }
+
+            if (notify) {
+                errorNotification.body = errorNotification.previewBody =
+                        //% "%1 is busy. Try again later."
+                        qsTrId("notification-busy").arg(App.displayName)
+                errorNotification.publish()
+            }
+
+            return false
         }
     }
 
@@ -305,6 +355,16 @@ Page {
         previewSummary: qsTrId("nofification-download-finished-summary")
     }
 
+    Notification {
+        id: startedNotification
+        //category: "x-nemo.transfer.complete"
+        appName: App.displayName
+        appIcon: "/usr/share/icons/hicolor/86x86/apps/harbour-vodman.png"
+        icon: appIcon
+        //% "Download started"
+        previewSummary: qsTrId("nofification-download-started-preview-summary")
+    }
+
     RemorsePopup { id: remorse }
 
     SilicaFlickable {
@@ -325,29 +385,43 @@ Page {
             MenuItem {
                 text: "Download small video"
                 visible: debugApp.value
-                enabled: vodDownloadModel.canStartDownload
+                enabled: page.canStartDownload
                 onClicked: vodDownloadModel.startDownloadMetaData("https://www.youtube.com/watch?v=7t-l0q_v4D8")
             }
 
             MenuItem {
                 text: "Download large video"
                 visible: debugApp.value
-                enabled: vodDownloadModel.canStartDownload
+                enabled: page.canStartDownload
                 onClicked: vodDownloadModel.startDownloadMetaData("https://www.twitch.tv/videos/161472611?t=07h49m09s")
             }
 
             MenuItem {
                 text: "Download medium video"
                 visible: debugApp.value
-                enabled: vodDownloadModel.canStartDownload
+                enabled: page.canStartDownload
                 onClicked: vodDownloadModel.startDownloadMetaData("https://www.youtube.com/watch?v=KMAqSLWhH5w")
             }
 
             MenuItem {
                 text: "Download reddit"
                 visible: debugApp.value
-                enabled: vodDownloadModel.canStartDownload
+                enabled: page.canStartDownload
                 onClicked: vodDownloadModel.startDownloadMetaData("https://www.reddit.com")
+            }
+
+            MenuItem {
+                text: "Download mp4"
+                visible: debugApp.value
+                enabled: page.canStartDownload
+                onClicked: vodDownloadModel.startDownloadMetaData("http://techslides.com/demos/samples/sample.mp4")
+            }
+
+            MenuItem {
+                text: "Download png"
+                visible: debugApp.value
+                enabled: page.canStartDownload
+                onClicked: vodDownloadModel.startDownloadMetaData("https://openrepos.net/sites/default/files/openrepos_beta.png")
             }
 
             MenuItem {
@@ -361,7 +435,6 @@ Page {
             MenuItem {
                 text: "Copy small video url to clipboard"
                 visible: debugApp.value
-//                enabled: vodDownloadModel.canStartDownload
                 onClicked: {
                     Clipboard.text = "https://www.youtube.com/watch?v=7t-l0q_v4D8"
                 }
@@ -373,6 +446,14 @@ Page {
                 onClicked: {
                     Clipboard.text = "https://www.reddit.com"
                 }
+            }
+
+            MenuItem {
+                text: "Delete youtube-dl"
+                visible: debugApp.value &&
+                         !vodDownloadModel.downloadsPending &&
+                         YTDLDownloader.status == YTDLDownloader.StatusReady
+                onClicked: YTDLDownloader.remove()
             }
 
             MenuItem {
@@ -411,14 +492,14 @@ Page {
             MenuItem {
                 //% "Cancel"
                 text: qsTrId("cancel")
-                visible: !vodDownloadModel.canStartDownload
+                visible: operational && !vodDownloadModel.canStartDownload
                 onClicked: vodDownloadModel.cancelDownloadMetaData()
             }
 
             MenuItem {
                 //% "Download from clipboard"
                 text: qsTrId("menu-item-download-from-clipboard")
-                enabled: canStartDownloadOfClipboardUrl
+                enabled: page.canStartDownloadOfClipboardUrl
                 onClicked: vodDownloadModel.startDownloadMetaData(Clipboard.text)
             }
         }
@@ -431,7 +512,7 @@ Page {
 
         SilicaListView {
             id: listView
-            visible: true
+            visible: YTDLDownloader.status === YTDLDownloader.StatusDownloading || YTDLDownloader.status === YTDLDownloader.StatusReady
             anchors.fill: parent
             model: vodDownloadModel
             header: PageHeader {
@@ -439,7 +520,7 @@ Page {
                 title: qsTrId("download-page-header")
 
                 BusyIndicator {
-                    running: !vodDownloadModel.canStartDownload
+                    running: YTDLDownloader.status === YTDLDownloader.StatusDownloading || !vodDownloadModel.canStartDownload
                     size: BusyIndicatorSize.Small
                     x: Theme.horizontalPageMargin
                     anchors.verticalCenter: parent.verticalCenter
@@ -595,8 +676,7 @@ Page {
                                 width: parent.width
                                 plainText: download.data.description.webPageUrl
                                 font.pixelSize: Theme.fontSizeTiny
-                                color: Theme.secondaryColor
-//                                truncationMode: TruncationMode.Fade
+                                shortenUrl: true
                             }
                         }
                     }
@@ -630,6 +710,12 @@ Page {
                                 console.debug("opening: " + download.data.description.webPageUrl)
                                 Qt.openUrlExternally(download.data.description.webPageUrl)
                             }
+                        }
+
+                        MenuItem {
+                            //% "Copy file path to clipboard"
+                            text: qsTrId("download-item-copy-file-path-to-clipboard")
+                            onClicked: Clipboard.text = download.data.filePath
                         }
                     }
                 }
