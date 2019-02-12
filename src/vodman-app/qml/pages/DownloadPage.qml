@@ -372,7 +372,7 @@ Page {
 
         PullDownMenu {
             MenuItem {
-                //% "About Vodman"
+                //% "About %1"
                 text: qsTrId("menu-item-about-vodman").arg(App.displayName)
                 onClicked: pageStack.push(Qt.resolvedUrl("AboutPage.qml"))
             }

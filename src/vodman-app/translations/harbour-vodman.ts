@@ -27,7 +27,8 @@
     </message>
     <message id="about-page-header">
         <location filename="../qml/pages/AboutPage.qml" line="42"/>
-        <source>About Vodman</source>
+        <source>About %1</source>
+        <oldsource>About Vodman</oldsource>
         <translation>About %1</translation>
     </message>
     <message id="about-version-text">
@@ -111,6 +112,16 @@
         <source>names of translators</source>
         <oldsource>Swedish</oldsource>
         <translation>Åke Engelbrektson</translation>
+    </message>
+    <message id="about-translations-zh-cn-label">
+        <location filename="../qml/pages/AboutPage.qml" line="182"/>
+        <source>Chinese (People&apos;s Republic of China)</source>
+        <translation>Chinese (People&apos;s Republic of China)</translation>
+    </message>
+    <message id="about-translations-zh-cn-value">
+        <location filename="../qml/pages/AboutPage.qml" line="184"/>
+        <source>names of translators</source>
+        <translation>dashinfantry</translation>
     </message>
     <message id="error-youtube-dl-not-working">
         <location filename="../qml/pages/DownloadPage.qml" line="198"/>
@@ -214,8 +225,9 @@
     </message>
     <message id="menu-item-about-vodman">
         <location filename="../qml/pages/DownloadPage.qml" line="376"/>
-        <source>About Vodman</source>
-        <translation>About %1</translation>
+        <source>About %1</source>
+        <oldsource>About Vodman</oldsource>
+        <translation type="unfinished">About %1</translation>
     </message>
     <message id="menu-item-settings">
         <location filename="../qml/pages/DownloadPage.qml" line="382"/>

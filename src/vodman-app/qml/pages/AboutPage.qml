@@ -38,7 +38,7 @@ Page {
             width: parent.width
 
             PageHeader {
-                //% "About Vodman"
+                //% "About %1"
                 title: qsTrId("about-page-header").arg(App.displayName)
             }
 
@@ -175,6 +175,13 @@ Page {
                     label: qsTrId("about-translations-swedish-label")
                     //% "names of translators"
                     value: qsTrId("about-translations-swedish-value")
+                }
+
+                DetailItem {
+                    //% "Chinese (People's Republic of China)"
+                    label: qsTrId("about-translations-zh-cn-label")
+                    //% "names of translators"
+                    value: qsTrId("about-translations-zh-cn-value")
                 }
             }
         }

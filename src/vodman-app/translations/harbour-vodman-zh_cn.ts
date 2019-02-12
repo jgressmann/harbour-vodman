@@ -27,7 +27,8 @@
     </message>
     <message id="about-page-header">
         <location filename="../qml/pages/AboutPage.qml" line="42"/>
-        <source>About Vodman</source>
+        <source>About %1</source>
+        <oldsource>About Vodman</oldsource>
         <translation>关于 Vodman</translation>
     </message>
     <message id="about-version-text">
@@ -56,7 +57,7 @@
         <location filename="../qml/pages/AboutPage.qml" line="130"/>
         <source>Copyright (c) 2018, 2019 Jean Gressmann...</source>
         <oldsource>Copyright (c) 2018, 2019 Jean Gressmann.</oldsource>
-        <translation>Copyright (c) 2018, 2019 Jean Gressmann.
+        <translation type="unfinished">Copyright (c) 2018, 2019 Jean Gressmann.
 
 %1 ist unter der &lt;a href=&quot;https://opensource.org/licenses/MIT&quot;&gt;MIT&lt;/a&gt; Lizenz verfügbar.
 %1 verwendet youtube-dl, das sich in der &lt;a href=&quot;http://unlicense.org/&quot;&gt;Public Domain&lt;/a&gt; befindet.</translation>
@@ -111,6 +112,16 @@
         <source>names of translators</source>
         <oldsource>Swedish</oldsource>
         <translation>Åke Engelbrektson</translation>
+    </message>
+    <message id="about-translations-zh-cn-label">
+        <location filename="../qml/pages/AboutPage.qml" line="182"/>
+        <source>Chinese (People&apos;s Republic of China)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="about-translations-zh-cn-value">
+        <location filename="../qml/pages/AboutPage.qml" line="184"/>
+        <source>names of translators</source>
+        <translation type="unfinished">dashinfantry</translation>
     </message>
     <message id="error-youtube-dl-not-working">
         <location filename="../qml/pages/DownloadPage.qml" line="198"/>
@@ -213,8 +224,8 @@
     </message>
     <message id="menu-item-about-vodman">
         <location filename="../qml/pages/DownloadPage.qml" line="376"/>
-        <source>About Vodman</source>
-        <translation>关于 Vodman</translation>
+        <source>About %1</source>
+        <translation>关于 %1</translation>
     </message>
     <message id="menu-item-settings">
         <location filename="../qml/pages/DownloadPage.qml" line="382"/>
@@ -355,7 +366,8 @@
     <message id="settings-save-location-header">
         <location filename="../qml/pages/SettingsPage.qml" line="194"/>
         <source>Location</source>
-        <translation>Speicherort位置
+        <translation type="unfinished"></translation>
+    </message>
     <message id="settings-save-location-directory-label">
         <location filename="../qml/pages/SettingsPage.qml" line="205"/>
         <source>Directory</source>
