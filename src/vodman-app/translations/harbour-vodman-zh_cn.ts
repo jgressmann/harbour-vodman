@@ -120,7 +120,7 @@
     </message>
     <message id="about-translations-zh-cn-value">
         <location filename="../qml/pages/AboutPage.qml" line="184"/>
-        <source>names of translators</source>
+        <source>云雾</source>
         <translation type="unfinished">dashinfantry</translation>
     </message>
     <message id="error-youtube-dl-not-working">
