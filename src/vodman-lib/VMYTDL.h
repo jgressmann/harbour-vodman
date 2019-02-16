@@ -59,6 +59,7 @@ public slots:
     void startFetchVodMetaData(qint64 token, const QString& url);
     void startFetchVodFile(qint64 token, const VMVodFileDownloadRequest& request, VMVodFileDownload* result = nullptr);
     void cancelFetchVodFile(qint64 token, bool deleteFile);
+    void clearCache() { m_MetaDataCache.clear(); }
     QVariantList inProgressVodFetches();
 
 signals:
