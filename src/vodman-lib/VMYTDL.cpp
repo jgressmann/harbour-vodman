@@ -158,11 +158,11 @@ VMYTDL::startFetchVodFile(qint64 token, const VMVodFileDownloadRequest& req, VMV
 {
     VMVodFileDownload download;
 
-    if (_download) {
-        *_download = download;
+    if (!_download) {
+        _download = &download;
     }
 
-    VMVodFileDownloadData& data = download.data();
+    VMVodFileDownloadData& data = _download->data();
     data._filePath = req.filePath;
     data.format = req.format;
     data.description = req.description;
@@ -180,7 +180,7 @@ VMYTDL::startFetchVodFile(qint64 token, const VMVodFileDownloadRequest& req, VMV
     QVariantMap result;
 
     result[s_Type] = QStringLiteral("vod");
-    result[s_Download] = QVariant::fromValue(download);
+    result[s_Download] = QVariant::fromValue(*_download);
     result[s_Token] = token;
 
     qDebug() << "Trying to obtain video file for: " << req.format.vodUrl() << "format:" << req.format.id() << "file path:" << req.filePath;
