@@ -91,7 +91,7 @@ VMYTDL::available() const
     return !m_YoutubeDl_Path.isEmpty();
 }
 
-bool
+void
 VMYTDL::startFetchVodMetaData(qint64 token, const QString& _url) {
 
     VMVodMetaDataDownload download;
@@ -102,10 +102,11 @@ VMYTDL::startFetchVodMetaData(qint64 token, const QString& _url) {
 
     data._url = url;
     if (!available()) {
-        data.errorMessage = QStringLiteral("no working youtube-dl @ ") + m_YoutubeDl_Path;
+        data.errorMessage = QStringLiteral("path to youtube-dl no set");
         data.error = VMVodEnums::VM_ErrorNoYoutubeDl;
         qDebug() << data.errorMessage;
-        return false;
+        emit vodMetaDataDownloadCompleted(token, download);
+        return;
     }
 
     qDebug() << "Trying to obtain video urls for: " << url;
@@ -118,7 +119,7 @@ VMYTDL::startFetchVodMetaData(qint64 token, const QString& _url) {
             data._vod = cacheEntryPtr->vod;
             data.error = VMVodEnums::VM_ErrorNone;
             emit vodMetaDataDownloadCompleted(token, download);
-            return true;
+            return;
         }
 
         m_MetaDataCache.remove(download.data()._url);
@@ -148,11 +149,11 @@ VMYTDL::startFetchVodMetaData(qint64 token, const QString& _url) {
     m_ProcessMap.insert(process, result);
 
     process->start(m_YoutubeDl_Path, arguments, QIODevice::ReadOnly);
-    return true;
+    return;
 }
 
 
-bool
+void
 VMYTDL::startFetchVodFile(qint64 token, const VMVodFileDownloadRequest& req, VMVodFileDownload* _download)
 {
     VMVodFileDownload download;
@@ -170,7 +171,9 @@ VMYTDL::startFetchVodFile(qint64 token, const VMVodFileDownloadRequest& req, VMV
     if (!available()) {
         data.errorMessage = QStringLiteral("no working youtube-dl @ ") + m_YoutubeDl_Path;
         data.error = VMVodEnums::VM_ErrorNoYoutubeDl;
-        return false;
+        qDebug() << data.errorMessage;
+        emit vodFileDownloadCompleted(token, *_download);
+        return;
     }
 
 
@@ -209,7 +212,6 @@ VMYTDL::startFetchVodFile(qint64 token, const VMVodFileDownloadRequest& req, VMV
     m_VodDownloads.insert(token, process);
 
     process->start(m_YoutubeDl_Path, arguments, QIODevice::ReadOnly);
-    return true;
 }
 
 void

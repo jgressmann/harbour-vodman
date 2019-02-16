@@ -56,8 +56,8 @@ public:
     Normalizer setUrlNormalizer(Normalizer&& n);
 
 public slots:
-    bool startFetchVodMetaData(qint64 token, const QString& url);
-    bool startFetchVodFile(qint64 token, const VMVodFileDownloadRequest& request, VMVodFileDownload* result = Q_NULLPTR);
+    void startFetchVodMetaData(qint64 token, const QString& url);
+    void startFetchVodFile(qint64 token, const VMVodFileDownloadRequest& request, VMVodFileDownload* result = nullptr);
     void cancelFetchVodFile(qint64 token, bool deleteFile);
     QVariantList inProgressVodFetches();
 
