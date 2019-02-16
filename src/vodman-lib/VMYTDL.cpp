@@ -168,7 +168,7 @@ VMYTDL::startFetchVodFile(qint64 token, const VMVodFileDownloadRequest& req, VMV
     data.timeStarted = data.timeChanged = QDateTime::currentDateTime();
 
     if (!available()) {
-        data.errorMessage = QStringLiteral("no working youtube-dl @ ") + m_YoutubeDl_Path;
+        data.errorMessage = QStringLiteral("path to youtube-dl no set");
         data.error = VMVodEnums::VM_ErrorNoYoutubeDl;
         qDebug() << data.errorMessage;
         emit vodFileDownloadCompleted(token, *_download);
