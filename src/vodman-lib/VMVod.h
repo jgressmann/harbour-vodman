@@ -51,7 +51,7 @@ public:
         VM_1440p, //1440p (2k)	16 Mbps	24 Mbps
         VM_2160p, // 2160p (4k)	35-45 Mbps	53-68 Mbps
     };
-    Q_ENUMS(Format)
+    Q_ENUM(Format)
 
     enum Error
     {
@@ -71,8 +71,10 @@ public:
         VM_ErrorAlreadyDownloading,
         VM_ErrorUnsupportedConfigurationFormat,
         VM_ErrorParseError,
+        VM_ErrorIo,
+        VM_ErrorAccess,
     };
-    Q_ENUMS(Error)
+    Q_ENUM(Error)
 
 public:
     ~VMVodEnums();
