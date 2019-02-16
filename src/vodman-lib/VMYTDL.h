@@ -80,6 +80,7 @@ private:
     void fillFrameRate(VMVodFormat& format, const QJsonObject& json) const;
     void fillFormatId(VMVodFormat& format) const;
     bool available() const;
+    QProcess* createProcess();
 
 private:
     struct CacheEntry

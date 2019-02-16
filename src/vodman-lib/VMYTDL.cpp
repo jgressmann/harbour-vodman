@@ -139,8 +139,7 @@ VMYTDL::startFetchVodMetaData(qint64 token, const QString& _url) {
 
     qDebug() << "youtube-dl subprocess:" << m_YoutubeDl_Path << arguments;
 
-    QProcess* process = new QProcess(this);
-
+    auto process = createProcess();
     connect(process, SIGNAL(finished(int, QProcess::ExitStatus)),
             this, SLOT(onMetaDataProcessFinished(int, QProcess::ExitStatus)));
     connect(process, SIGNAL(error(QProcess::ProcessError)),
@@ -199,7 +198,7 @@ VMYTDL::startFetchVodFile(qint64 token, const VMVodFileDownloadRequest& req, VMV
 
     qDebug() << "youtube-dl subprocess:" << m_YoutubeDl_Path << arguments;
 
-    QProcess* process = new QProcess(this);
+    QProcess* process = createProcess();
     connect(process, SIGNAL(finished(int, QProcess::ExitStatus)),
             this, SLOT(onVodFileProcessFinished(int,QProcess::ExitStatus)));
     connect(process, &QProcess::readyReadStandardOutput,
@@ -635,4 +634,15 @@ VMYTDL::setUrlNormalizer(Normalizer&& n)
     auto result = std::move(m_Normalizer);
     m_Normalizer = std::move(n);
     return result;
+}
+
+
+QProcess*
+VMYTDL::createProcess()
+{
+    QProcess* process = new QProcess(this);
+    auto env = QProcessEnvironment::systemEnvironment();
+    env.insert(QStringLiteral("LC_ALL"), QStringLiteral("C"));
+    process->setProcessEnvironment(env);
+    return process;
 }
