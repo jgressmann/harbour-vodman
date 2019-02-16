@@ -78,7 +78,7 @@ private:
     Q_DISABLE_COPY(VMYTDL)
     void cleanupProcess(QProcess* process);
     void fillFrameRate(VMVodFormat& format, const QJsonObject& json) const;
-    void fillFormatId(VMVodFormat& format, const QJsonObject& json) const;
+    void fillFormatId(VMVodFormat& format) const;
     bool available() const;
 
 private:

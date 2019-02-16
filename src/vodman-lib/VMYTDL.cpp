@@ -342,7 +342,7 @@ VMYTDL::onMetaDataProcessFinished(int code, QProcess::ExitStatus status)
                 vodFormatData._displayName = format.value(QStringLiteral("format")).toString();
                 vodFormatData._fileExtension = format.value(QStringLiteral("ext")).toString();
                 fillFrameRate(vodFormat, format);
-                fillFormatId(vodFormat, format);
+                fillFormatId(vodFormat);
                 //        qDebug() << vodFormatData._width << vodFormatData._height << vodFormatData._format;
             }
         }
@@ -372,7 +372,7 @@ VMYTDL::onMetaDataProcessFinished(int code, QProcess::ExitStatus status)
             vodFormatData._displayName = format.value(QStringLiteral("format")).toString();
             vodFormatData._fileExtension = format.value(QStringLiteral("ext")).toString();
             fillFrameRate(vodFormat, format);
-            fillFormatId(vodFormat, format);
+            fillFormatId(vodFormat);
         }
     }
 
@@ -601,9 +601,8 @@ VMYTDL::fillFrameRate(VMVodFormat& format, const QJsonObject& json) const {
 }
 
 void
-VMYTDL::fillFormatId(VMVodFormat& f, const QJsonObject& json) const
+VMYTDL::fillFormatId(VMVodFormat& f) const
 {
-    Q_UNUSED(json);
     VMVodEnums::Format format = VMVodEnums::VM_Unknown;
 
     auto value = f.height();
