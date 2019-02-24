@@ -271,7 +271,7 @@ VMYTDL::onMetaDataProcessFinished(int code, QProcess::ExitStatus status)
                 //ERROR: '' is not a valid URL. Set --default-search \"ytsearch\" (or run  youtube-dl \"ytsearch:\" ) to search YouTube
                 downLoadData.error = VMVodEnums::VM_ErrorInvalidUrl;
             } else if (line.indexOf(QStringLiteral("This video is unavailable."), 0, Qt::CaseInsensitive) >= 0) {
-                downLoadData.error = VMVodEnums::VM_ErrorNoVideo;
+                downLoadData.error = VMVodEnums::VM_ErrorContentGone;
             } else {
                 downLoadData.error = VMVodEnums::VM_ErrorUnknown;
             }

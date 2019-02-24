@@ -73,6 +73,7 @@ public:
         VM_ErrorParseError,
         VM_ErrorIo,
         VM_ErrorAccess,
+        VM_ErrorContentGone,
     };
     Q_ENUM(Error)
 
