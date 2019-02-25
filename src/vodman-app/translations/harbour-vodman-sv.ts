@@ -469,7 +469,7 @@
         <translation>Uppdatera youtube-dl</translation>
     </message>
     <message id="settings-page-header">
-        <location filename="../qml/pages/SettingsPage.qml" line="394"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="399"/>
         <source>Settings</source>
         <translation>Inställningar</translation>
     </message>

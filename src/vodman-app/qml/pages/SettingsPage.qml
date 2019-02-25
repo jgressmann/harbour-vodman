@@ -377,6 +377,12 @@ Page {
                 }
             }
         }
+
+        Item {
+            // dummy item to have some space at bottom of the page
+            width: parent.width
+            height: Theme.paddingLarge
+        }
     }
 
     SilicaFlickable {
