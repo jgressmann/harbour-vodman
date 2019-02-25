@@ -248,6 +248,12 @@ Page {
                     //% "Already downloading %1"
                     qsTrId("error-already-downloading").arg(filePath)
             break
+        case VM.VM_ErrorContentGone:
+            //% "Video gone"
+            errorNotification.previewBody = qsTrId("error-content-gone-preview-body")
+            //% "Video '%1' is no longer available."
+            errorNotification.body = qsTrId("error-content-gone-body").arg(url)
+            break
         default:
             errorNotification.body = errorNotification.previewBody =
                     //% "Yikes! An unknown error has occured :/"
