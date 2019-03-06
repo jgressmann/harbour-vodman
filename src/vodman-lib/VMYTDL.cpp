@@ -67,6 +67,7 @@ VMYTDL::~VMYTDL()
 VMYTDL::VMYTDL(QObject* parent)
     : QObject(parent)
     , m_Normalizer(&Nop)
+    , m_MetaDataSecondsValid(3600) // one hour timeout, typically vod file urls go stale
 {
 }
 
@@ -82,6 +83,28 @@ VMYTDL::setYtdlPath(const QString& path)
     if (m_YoutubeDl_Path != path) {
         m_YoutubeDl_Path = path;
         emit ytdlPathChanged();
+    }
+}
+
+void
+VMYTDL::setMetaDataCacheCapacity(int value)
+{
+    if (value < 0) {
+        value = 100;
+    }
+
+    if (m_MetaDataCache.maxCost() != value) {
+        m_MetaDataCache.setMaxCost(value);
+        emit metaDataCacheCapacityChanged();
+    }
+}
+
+void
+VMYTDL::setMetaDataSecondsValid(int value)
+{
+    if (m_MetaDataSecondsValid != value) {
+        m_MetaDataSecondsValid= value;
+        emit metaDataSecondsValidChanged();
     }
 }
 
@@ -114,7 +137,7 @@ VMYTDL::startFetchVodMetaData(qint64 token, const QString& _url) {
     auto cacheEntryPtr = m_MetaDataCache[download.data()._url];
     if (cacheEntryPtr) {
         auto now = QDateTime::currentDateTime();
-        if (now <= cacheEntryPtr->fetchTime.addSecs(3600)) { // one hour timeout, typically vod file urls go stale
+        if (m_MetaDataSecondsValid < 0 || now <= cacheEntryPtr->fetchTime.addSecs(m_MetaDataSecondsValid)) {
             qDebug() << "Response for" << download.data()._url << "available in cache, using it";
             data._vod = cacheEntryPtr->vod;
             data.error = VMVodEnums::VM_ErrorNone;

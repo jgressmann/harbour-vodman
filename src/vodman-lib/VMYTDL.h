@@ -44,6 +44,8 @@ class VMYTDL : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QString ytdlPath READ ytdlPath WRITE setYtdlPath NOTIFY ytdlPathChanged)
+    Q_PROPERTY(int metaDataCacheCapacity READ metaDataCacheCapacity WRITE setMetaDataCacheCapacity NOTIFY metaDataCacheCapacityChanged)
+    Q_PROPERTY(int metaDataSecondsValid READ metaDataSecondsValid WRITE setMetaDataSecondsValid NOTIFY metaDataSecondsValidChanged)
 public:
     using Normalizer = std::function<void(QString&)>;
 
@@ -53,6 +55,10 @@ public:
 
     QString ytdlPath() const;
     void setYtdlPath(const QString& path);
+    int metaDataCacheCapacity() const { return m_MetaDataCache.maxCost(); }
+    void setMetaDataCacheCapacity(int value);
+    int metaDataSecondsValid() const { return m_MetaDataSecondsValid; }
+    void setMetaDataSecondsValid(int value);
     Normalizer setUrlNormalizer(Normalizer&& n);
 
 public slots:
@@ -67,6 +73,8 @@ signals:
     void vodFileDownloadChanged(qint64 id, const VMVodFileDownload& download);
     void vodFileDownloadCompleted(qint64 id, const VMVodFileDownload& download);
     void ytdlPathChanged();
+    void metaDataCacheCapacityChanged();
+    void metaDataSecondsValidChanged();
 
 private slots:
     void onMetaDataProcessFinished(int, QProcess::ExitStatus);
@@ -95,6 +103,7 @@ private:
     QHash<qint64, QProcess*> m_VodDownloads;
     Normalizer m_Normalizer;
     QString m_YoutubeDl_Path;
+    int m_MetaDataSecondsValid;
 };
 
 
