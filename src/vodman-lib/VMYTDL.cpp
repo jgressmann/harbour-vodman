@@ -339,7 +339,7 @@ VMYTDL::onMetaDataProcessFinished(int code, QProcess::ExitStatus status)
     descData._thumbnail = root.value(QStringLiteral("thumbnail")).toString();
 
     QJsonArray formats = root.value(QStringLiteral("formats")).toArray();
-    int lastResortIndex = -1;
+    QVector<int> videoIndices;
     for (int i = 0; i < formats.size(); ++i) {
         QJsonObject format = formats[i].toObject();
         QString vcodec = format.value(QStringLiteral("vcodec")).toString();
@@ -349,25 +349,11 @@ VMYTDL::onMetaDataProcessFinished(int code, QProcess::ExitStatus status)
         auto hasAudio = !acodec.isEmpty() && QStringLiteral("none") != acodec;
 
         if (hasVideo) {
-            if (lastResortIndex == -1) {
-                lastResortIndex = i;
-            }
-
             if (hasAudio) {
                 //"format_id": "160p30",
-                vodData._formats.append(VMVodFormat());
-                VMVodFormat& vodFormat = vodData._formats.last();
-                VMVodFormatData& vodFormatData = vodFormat.data();
-                vodFormatData._vodUrl = descData._webPageUrl;
-                vodFormatData._width = format.value(QStringLiteral("width")).toInt();
-                vodFormatData._height = format.value(QStringLiteral("height")).toInt();
-                vodFormatData._id = format.value(QStringLiteral("format_id")).toString();
-                vodFormatData._fileUrl = format.value(QStringLiteral("url")).toString();
-                vodFormatData._displayName = format.value(QStringLiteral("format")).toString();
-                vodFormatData._fileExtension = format.value(QStringLiteral("ext")).toString();
-                fillFrameRate(vodFormat, format);
-                fillFormatId(vodFormat);
-                //        qDebug() << vodFormatData._width << vodFormatData._height << vodFormatData._format;
+                appendFormat(vodData, descData._webPageUrl, format);
+            } else {
+                videoIndices << i;
             }
         }
     }
@@ -380,23 +366,20 @@ VMYTDL::onMetaDataProcessFinished(int code, QProcess::ExitStatus status)
             downLoadData.errorMessage = message;
             emit vodMetaDataDownloadCompleted(id, download);
         } else {
-            if (lastResortIndex == -1) {
-                lastResortIndex = 0;
+            if (videoIndices.isEmpty()) {
+                // assume they are all valid matches
+                videoIndices.resize(formats.size());
+                for (int i = 0; i < videoIndices.size(); ++i) {
+                    videoIndices[i] = i;
+                }
             }
 
-            QJsonObject format = formats[lastResortIndex].toObject();
-            vodData._formats.append(VMVodFormat());
-            VMVodFormat& vodFormat = vodData._formats.last();
-            VMVodFormatData& vodFormatData = vodFormat.data();
-            vodFormatData._vodUrl = descData._webPageUrl;
-            vodFormatData._width = format.value(QStringLiteral("width")).toInt();
-            vodFormatData._height = format.value(QStringLiteral("height")).toInt();
-            vodFormatData._id = format.value(QStringLiteral("format_id")).toString();
-            vodFormatData._fileUrl = format.value(QStringLiteral("url")).toString();
-            vodFormatData._displayName = format.value(QStringLiteral("format")).toString();
-            vodFormatData._fileExtension = format.value(QStringLiteral("ext")).toString();
-            fillFrameRate(vodFormat, format);
-            fillFormatId(vodFormat);
+            // pick up all remaining videos
+            for (int i = 0; i < videoIndices.size(); ++i) {
+                auto formatIndex = videoIndices[i];
+                QJsonObject format = formats[formatIndex].toObject();
+                appendFormat(vodData, descData._webPageUrl, format);
+            }
         }
     }
 
@@ -407,6 +390,24 @@ VMYTDL::onMetaDataProcessFinished(int code, QProcess::ExitStatus status)
 
     qDebug() << "emit fetchVodMetaDataCompleted("<< id << ", " << download << ")";
     emit vodMetaDataDownloadCompleted(id, download);
+}
+
+void
+VMYTDL::appendFormat(VMVodData& vodData, const QString& vodUrl, const QJsonObject& format) const
+{
+    vodData._formats.append(VMVodFormat());
+    VMVodFormat& vodFormat = vodData._formats.last();
+    VMVodFormatData& vodFormatData = vodFormat.data();
+    vodFormatData._vodUrl = vodUrl;
+    vodFormatData._width = format.value(QStringLiteral("width")).toInt();
+    vodFormatData._height = format.value(QStringLiteral("height")).toInt();
+    vodFormatData._id = format.value(QStringLiteral("format_id")).toString();
+    vodFormatData._fileUrl = format.value(QStringLiteral("url")).toString();
+    vodFormatData._displayName = format.value(QStringLiteral("format")).toString();
+    vodFormatData._fileExtension = format.value(QStringLiteral("ext")).toString();
+    fillFrameRate(vodFormatData, format);
+    fillFormatId(vodFormatData);
+    fillWidth(vodFormatData);
 }
 
 void
@@ -609,11 +610,11 @@ VMYTDL::inProgressVodFetches() {
 }
 
 void
-VMYTDL::fillFrameRate(VMVodFormat& format, const QJsonObject& json) const {
+VMYTDL::fillFrameRate(VMVodFormatData& format, const QJsonObject& json) const {
     int frameRate = -1;
     auto jsonFps = json.value(QStringLiteral("fps")).toString();
     if (jsonFps.isEmpty()) {
-        if (s_YTDLProgressRegexp.indexIn(format.id()) != -1) {
+        if (s_YTDLProgressRegexp.indexIn(format._id) != -1) {
             auto cap = s_YTDLProgressRegexp.cap(1);
             frameRate = cap.toInt();
         }
@@ -621,15 +622,15 @@ VMYTDL::fillFrameRate(VMVodFormat& format, const QJsonObject& json) const {
         frameRate = jsonFps.toInt();
     }
 
-    format.data()._frameRate = frameRate;
+    format._frameRate = frameRate;
 }
 
 void
-VMYTDL::fillFormatId(VMVodFormat& f) const
+VMYTDL::fillFormatId(VMVodFormatData& f) const
 {
     VMVodEnums::Format format = VMVodEnums::VM_Unknown;
 
-    auto value = f.height();
+    auto value = f._height;
     if (value > 0) {
         if (value <= 160) {
             format = VMVodEnums::VM_160p;
@@ -650,7 +651,40 @@ VMYTDL::fillFormatId(VMVodFormat& f) const
         }
     }
 
-    f.data()._format = format;
+    f._format = format;
+}
+
+void
+VMYTDL::fillWidth(VMVodFormatData& format) const
+{
+    if (0 == format._width && format._format != VMVodEnums::VM_Unknown) {
+        switch (format._format) {
+        case VMVodEnums::VM_160p:
+            format._width = 280;
+            break;
+        case VMVodEnums::VM_240p:
+            format._width = 320;
+            break;
+        case VMVodEnums::VM_360p:
+            format._width = 480;
+            break;
+        case VMVodEnums::VM_480p:
+            format._width = 640;
+            break;
+        case VMVodEnums::VM_720p:
+            format._width = 1280;
+            break;
+        case VMVodEnums::VM_1080p:
+            format._width = 1920;
+            break;
+        case VMVodEnums::VM_1440p:
+            format._width = 2560;
+            break;
+        case VMVodEnums::VM_2160p:
+            format._width = 3840;
+            break;
+        }
+    }
 }
 
 VMYTDL::Normalizer

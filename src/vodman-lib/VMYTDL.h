@@ -34,8 +34,6 @@
 
 
 class QJsonObject;
-class VMVodData;
-class VMVodFormat;
 class VMVodFileDownload;
 class VMVodFileDownloadRequest;
 class VMVodMetaDataDownload;
@@ -85,8 +83,10 @@ private slots:
 private:
     Q_DISABLE_COPY(VMYTDL)
     void cleanupProcess(QProcess* process);
-    void fillFrameRate(VMVodFormat& format, const QJsonObject& json) const;
-    void fillFormatId(VMVodFormat& format) const;
+    void fillFrameRate(VMVodFormatData& format, const QJsonObject& json) const;
+    void fillFormatId(VMVodFormatData& format) const;
+    void fillWidth(VMVodFormatData& format) const;
+    void appendFormat(VMVodData& vodData, const QString& vodUrl, const QJsonObject& json) const;
     bool available() const;
     QProcess* createProcess();
 
