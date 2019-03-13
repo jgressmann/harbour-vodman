@@ -1,3 +1,7 @@
+isEmpty(VODMAN_TARGETDIR) {
+    VODMAN_TARGETDIR = $$_PRO_FILE_PWD_
+}
+
 
 SOURCES += \
     $$PWD/VMVod.cpp \
@@ -19,7 +23,7 @@ DISTFILES += $$PWD/qml/pages/YTDLPage.qml
 OTHER_FILES += $$PWD/config.json
 
 
-vodmanfiles.commands += $(COPY_DIR) $$shell_path($$PWD/qml) $$shell_path($$_PRO_FILE_PWD_);
+vodmanfiles.commands += $(COPY_DIR) $$shell_path($$PWD/qml) $$shell_path($$VODMAN_TARGETDIR);
 
 PRE_TARGETDEPS += vodmanfiles
 QMAKE_EXTRA_TARGETS += vodmanfiles
