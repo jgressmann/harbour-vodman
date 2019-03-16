@@ -44,84 +44,85 @@
     </message>
     <message id="about-description-text">
         <location filename="../qml/pages/AboutPage.qml" line="116"/>
-        <source>%1 is a versatile tool...</source>
-        <oldsource>%1 is a versatile tool for downloading videos on demand (VODs) to your device from popular sites such as &lt;a href=\&quot;https://www.youtube.com/\&quot;&gt;Youtube&lt;/a&gt; or &lt;a href=\&quot;https://www.twitch.tv/\&quot;&gt;Twitch&lt;/a&gt;.</oldsource>
+        <source>%1 is a versatile tool for downloading videos on demand (VODs) to your device from popular sites such as &lt;a href=&apos;https://www.youtube.com/&apos;&gt;Youtube&lt;/a&gt; or &lt;a href=&apos;https://www.twitch.tv/&apos;&gt;Twitch&lt;/a&gt;.</source>
+        <oldsource>%1 is a versatile tool...</oldsource>
         <translation>%1 ist eine Anwendung zum Herunterladen von Video On Demand (VOD) Inhalten von populären Webseiten wie &lt;a href=&quot;https://www.youtube.com/&quot;&gt;Youtube&lt;/a&gt; und &lt;a href=&quot;https://www.twitch.tv/&quot;&gt;Twitch&lt;/a&gt;.</translation>
     </message>
     <message id="about-licensing-header">
-        <location filename="../qml/pages/AboutPage.qml" line="123"/>
+        <location filename="../qml/pages/AboutPage.qml" line="125"/>
         <source>Licensing</source>
         <translation>Lizenz</translation>
     </message>
     <message id="about-licensing-text">
-        <location filename="../qml/pages/AboutPage.qml" line="130"/>
-        <source>Copyright (c) 2018, 2019 Jean Gressmann...</source>
-        <oldsource>Copyright (c) 2018, 2019 Jean Gressmann.</oldsource>
-        <translation>Copyright (c) 2018, 2019 Jean Gressmann.
+        <location filename="../qml/pages/AboutPage.qml" line="132"/>
+        <source>Copyright © 2018, 2019 Jean Gressmann.&lt;br/&gt;&lt;br/&gt;%1 is available under the &lt;a href=&apos;https://opensource.org/licenses/MIT&apos;&gt;MIT&lt;/a&gt; license.&lt;br/&gt;%1 uses youtube-dl which is in the &lt;a href=&apos;http://unlicense.org/&apos;&gt;public domain&lt;/a&gt;.</source>
+        <oldsource>Copyright (c) 2018, 2019 Jean Gressmann...</oldsource>
+        <translation>Copyright © 2018, 2019 Jean Gressmann.
 
 %1 ist unter der &lt;a href=&quot;https://opensource.org/licenses/MIT&quot;&gt;MIT&lt;/a&gt; Lizenz verfügbar.
 %1 verwendet youtube-dl, das sich in der &lt;a href=&quot;http://unlicense.org/&quot;&gt;Public Domain&lt;/a&gt; befindet.</translation>
     </message>
     <message id="about-sources-header">
-        <location filename="../qml/pages/AboutPage.qml" line="137"/>
+        <location filename="../qml/pages/AboutPage.qml" line="141"/>
         <source>Sources</source>
         <translation>Quellen</translation>
     </message>
     <message id="about-sources-text">
-        <location filename="../qml/pages/AboutPage.qml" line="144"/>
+        <location filename="../qml/pages/AboutPage.qml" line="148"/>
         <source>Sources are on Github</source>
         <translation>Die Quellen sind auf &lt;a href=&quot;https://github.com/jgressmann/harbour-vodman&quot;&gt;GitHub&lt;/a&gt; verfügbar.</translation>
     </message>
     <message id="about-translations-header">
-        <location filename="../qml/pages/AboutPage.qml" line="151"/>
+        <location filename="../qml/pages/AboutPage.qml" line="157"/>
         <source>Translations</source>
         <translation>Übersetzungen</translation>
     </message>
     <message id="about-translations-english-label">
-        <location filename="../qml/pages/AboutPage.qml" line="161"/>
+        <location filename="../qml/pages/AboutPage.qml" line="167"/>
         <source>English</source>
         <oldsource>names of translators</oldsource>
         <translation>englisch</translation>
     </message>
     <message id="about-translations-english-value">
-        <location filename="../qml/pages/AboutPage.qml" line="163"/>
-        <source>names of translators</source>
-        <oldsource>English</oldsource>
+        <location filename="../qml/pages/AboutPage.qml" line="169"/>
+        <source>English translator names</source>
+        <oldsource>names of translators</oldsource>
         <translation>Jean Gressmann</translation>
     </message>
     <message id="about-translations-german-label">
-        <location filename="../qml/pages/AboutPage.qml" line="168"/>
+        <location filename="../qml/pages/AboutPage.qml" line="174"/>
         <source>German</source>
         <oldsource>names of translators</oldsource>
         <translation>deutsch</translation>
     </message>
     <message id="about-translations-german-value">
-        <location filename="../qml/pages/AboutPage.qml" line="170"/>
-        <source>names of translators</source>
-        <oldsource>German</oldsource>
+        <location filename="../qml/pages/AboutPage.qml" line="176"/>
+        <source>German translator names</source>
+        <oldsource>names of translators</oldsource>
         <translation>Jean Gressmann</translation>
     </message>
     <message id="about-translations-swedish-label">
-        <location filename="../qml/pages/AboutPage.qml" line="175"/>
+        <location filename="../qml/pages/AboutPage.qml" line="181"/>
         <source>Swedish</source>
         <oldsource>names of translators</oldsource>
         <translation>schwedisch</translation>
     </message>
     <message id="about-translations-swedish-value">
-        <location filename="../qml/pages/AboutPage.qml" line="177"/>
-        <source>names of translators</source>
-        <oldsource>Swedish</oldsource>
+        <location filename="../qml/pages/AboutPage.qml" line="183"/>
+        <source>Swedish translator names</source>
+        <oldsource>names of translators</oldsource>
         <translation>Åke Engelbrektson</translation>
     </message>
     <message id="about-translations-zh-cn-label">
-        <location filename="../qml/pages/AboutPage.qml" line="182"/>
+        <location filename="../qml/pages/AboutPage.qml" line="188"/>
         <source>Chinese (People&apos;s Republic of China)</source>
         <translation>chinesisch (Volksrepublik China)</translation>
     </message>
     <message id="about-translations-zh-cn-value">
-        <location filename="../qml/pages/AboutPage.qml" line="184"/>
-        <source>names of translators</source>
-        <translation>dashinfantry</translation>
+        <location filename="../qml/pages/AboutPage.qml" line="190"/>
+        <source>Chinese translator names</source>
+        <oldsource>names of translators</oldsource>
+        <translation>dashinfantry, Zichen Wang</translation>
     </message>
     <message id="error-youtube-dl-not-working">
         <location filename="../qml/pages/DownloadPage.qml" line="198"/>
@@ -470,7 +471,7 @@
         <translation>youtube-dl aktualisieren</translation>
     </message>
     <message id="settings-page-header">
-        <location filename="../qml/pages/SettingsPage.qml" line="399"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="400"/>
         <source>Settings</source>
         <translation>Einstellungen</translation>
     </message>
