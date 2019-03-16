@@ -43,7 +43,7 @@ Page {
             }
 
             Column {
-                spacing: Theme.paddingSmall
+                spacing: Theme.paddingLarge
                 width: parent.width
 
                 Image {
@@ -112,10 +112,12 @@ Page {
             LinkedLabel {
                 x: Theme.horizontalPageMargin
                 width: parent.width - 2*x
-                //% "%1 is a versatile tool..."
+                //% "%1 is a versatile tool for downloading videos on demand (VODs) to your device from popular sites such as <a href='https://www.youtube.com/'>Youtube</a> or <a href='https://www.twitch.tv/'>Twitch</a>."
                 text: qsTrId("about-description-text").arg(App.displayName)
                 wrapMode: Text.WordWrap
                 font.pixelSize: Theme.fontSizeSmall
+                color: Theme.secondaryHighlightColor
+                linkColor: Theme.secondaryColor
             }
 
             SectionHeader {
@@ -126,10 +128,12 @@ Page {
             LinkedLabel {
                 x: Theme.horizontalPageMargin
                 width: parent.width - 2*x
-                //% "Copyright (c) 2018, 2019 Jean Gressmann..."
+                //% "Copyright © 2018, 2019 Jean Gressmann.<br/><br/>%1 is available under the <a href='https://opensource.org/licenses/MIT'>MIT</a> license.<br/>%1 uses youtube-dl which is in the <a href='http://unlicense.org/'>public domain</a>.
                 text: qsTrId("about-licensing-text").arg(App.displayName)
                 wrapMode: Text.WordWrap
                 font.pixelSize: Theme.fontSizeSmall
+                color: Theme.secondaryHighlightColor
+                linkColor: Theme.secondaryColor
             }
 
             SectionHeader {
@@ -144,6 +148,8 @@ Page {
                 text: qsTrId("about-sources-text")
                 wrapMode: Text.WordWrap
                 font.pixelSize: Theme.fontSizeSmall
+                color: Theme.secondaryHighlightColor
+                linkColor: Theme.secondaryColor
             }
 
             SectionHeader {
@@ -159,30 +165,35 @@ Page {
                 DetailItem {
                     //% "English"
                     label: qsTrId("about-translations-english-label")
-                    //% "names of translators"
+                    //% "English translator names"
                     value: qsTrId("about-translations-english-value")
                 }
 
                 DetailItem {
                     //% "German"
                     label: qsTrId("about-translations-german-label")
-                    //% "names of translators"
+                    //% "German translator names"
                     value: qsTrId("about-translations-german-value")
                 }
 
                 DetailItem {
                     //% "Swedish"
                     label: qsTrId("about-translations-swedish-label")
-                    //% "names of translators"
+                    //% "Swedish translator names"
                     value: qsTrId("about-translations-swedish-value")
                 }
 
                 DetailItem {
                     //% "Chinese (People's Republic of China)"
                     label: qsTrId("about-translations-zh-cn-label")
-                    //% "names of translators"
+                    //% "Chinese translator names"
                     value: qsTrId("about-translations-zh-cn-value")
                 }
+            }
+
+            Item {
+                width: parent.width
+                height: Theme.paddingLarge
             }
         }
     }
