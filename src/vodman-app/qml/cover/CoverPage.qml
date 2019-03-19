@@ -138,7 +138,8 @@ CoverBackground {
         // It looks like copying stuff to the clipboard doesn't update the
         // any Clipboard bound properties for the cover page. It works on for
         // the download page though.
-        enabled: YTDLDownloader.status === YTDLDownloader.StatusReady && hasDefaultVideoFormat
+        // Disabled in non-debug mode until fixed.
+        enabled: debugApp.value && YTDLDownloader.status === YTDLDownloader.StatusReady && hasDefaultVideoFormat
 
         CoverAction {
             iconSource: "image://theme/icon-cover-new"
