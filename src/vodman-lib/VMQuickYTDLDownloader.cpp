@@ -22,7 +22,6 @@
  */
 
 #include "VMQuickYTDLDownloader.h"
-#include "VMVod.h"
 
 #include <QStandardPaths>
 #include <QDir>
@@ -44,9 +43,70 @@ QNetworkRequest makeRequest(const QUrl& url)
 {
     QNetworkRequest request;
     request.setUrl(url);
-    request.setRawHeader("User-Agent", "vodman-lib"); // must be set else no reply
+    request.setRawHeader("User-Agent", "vodman-lib " QT_STRINGIFY(VODMAN_LIB_MAJOR) "." QT_STRINGIFY(VODMAN_LIB_MINOR) "." QT_STRINGIFY(VODMAN_LIB_PATCH)); // must be set else no reply
 
     return request;
+}
+
+bool parseConfigFile(const QByteArray& buffer, const QString& mode, int* configFileVersion, QString* ytdlUrl, QString* ytdlVersion)
+{
+    Q_ASSERT(configFileVersion);
+    Q_ASSERT(ytdlUrl);
+    Q_ASSERT(ytdlVersion);
+
+    *configFileVersion = -1;
+
+    QJsonParseError e;
+    auto doc = QJsonDocument::fromJson(buffer, &e);
+    if (!doc.isObject()) {
+        qCritical("Malformed configuration file, expected top level {}. Parse error %s\n", qPrintable(e.errorString()));
+        qDebug("%s\n", buffer.data());
+        return false;
+    }
+
+    auto root = doc.object();
+    *configFileVersion = root.value(QStringLiteral("version")).toInt();
+    if (*configFileVersion == 0) {
+        qCritical("Malformed configuration file: expected {version:int}\n");
+        qDebug("%s\n", buffer.data());
+        return false;
+    }
+
+    if (*configFileVersion != 1) {
+        qDebug("Unsupported configuration file version %d\n", *configFileVersion);
+        qDebug("%s\n", buffer.data());
+        return false;
+    }
+
+    auto ytdlObject = root.value(QStringLiteral("youtube-dl")).toObject();
+    if (ytdlObject.isEmpty()) {
+        qCritical("Malformed configuration file: expected {youtube-dl:{}}\n");
+        qDebug("%s\n", buffer.data());
+        return false;
+    }
+
+    auto modeObject = ytdlObject.value(mode).toObject();
+    if (modeObject.isEmpty()) {
+        qCritical("Malformed configuration file: expected {youtube-dl:{%s:{}}}\n", qPrintable(mode));
+        qDebug("%s\n", buffer.data());
+        return false;
+    }
+
+    *ytdlUrl = modeObject.value(QStringLiteral("url")).toString();
+    if (ytdlUrl->isEmpty()) {
+        qCritical("Malformed configuration file: expected {youtube-dl:{%s:{url:string}}}\n", qPrintable(mode));
+        qDebug("%s\n", buffer.data());
+        return false;
+    }
+
+    *ytdlVersion = modeObject.value(QStringLiteral("version")).toString();
+    if (ytdlVersion->isEmpty()) {
+        qCritical("Malformed configuration file: expected {youtube-dl:{%s:{version:string}}}\n", qPrintable(mode));
+        qDebug("%s\n", buffer.data());
+        return false;
+    }
+
+    return true;
 }
 
 bool parseConfigFile(const QString& path, const QString& mode, int* configFileVersion, QString* ytdlUrl, QString* ytdlVersion)
@@ -59,51 +119,8 @@ bool parseConfigFile(const QString& path, const QString& mode, int* configFileVe
 
     QFile f(path);
     if (f.open(QIODevice::ReadOnly)) {
-        QJsonParseError e;
-        auto doc = QJsonDocument::fromJson(f.readAll(), &e);
-        if (!doc.isObject()) {
-            qCritical("Malformed configuration file %s, expected top level {}. Parse error %s\n", qPrintable(path), qPrintable(e.errorString()));
-            return false;
-        }
-
-        auto root = doc.object();
-        *configFileVersion = root.value(QStringLiteral("version")).toInt();
-        if (*configFileVersion == 0) {
-            qCritical("Malformed configuration file %s: expected {version:int}\n", qPrintable(path));
-            return false;
-        }
-
-        if (*configFileVersion != 1) {
-            qDebug("Unsupported configuration file version %d\n", *configFileVersion);
-            return false;
-        }
-
-        auto ytdlObject = root.value(QStringLiteral("youtube-dl")).toObject();
-        if (ytdlObject.isEmpty()) {
-            qCritical("Malformed configuration file %s: expected {youtube-dl:{}}\n", qPrintable(path));
-            return false;
-        }
-
-        auto modeObject = ytdlObject.value(mode).toObject();
-        if (modeObject.isEmpty()) {
-            qCritical("Malformed configuration file %s: expected {youtube-dl:{%s:{}}}\n", qPrintable(path), qPrintable(mode));
-            return false;
-        }
-
-        *ytdlUrl = modeObject.value(QStringLiteral("url")).toString();
-        if (ytdlUrl->isEmpty()) {
-            qCritical("Malformed configuration file %s: expected {youtube-dl:{%s:{url:string}}}\n", qPrintable(path), qPrintable(mode));
-            return false;
-        }
-
-        *ytdlVersion = modeObject.value(QStringLiteral("version")).toString();
-        if (ytdlVersion->isEmpty()) {
-            qCritical("Malformed configuration file %s: expected {youtube-dl:{%s:{version:string}}}\n", qPrintable(path), qPrintable(mode));
-            return false;
-        }
-
-        return true;
-
+        auto bytes = f.readAll();
+        return parseConfigFile(bytes, mode, configFileVersion, ytdlUrl, ytdlVersion);
     } else {
         qCritical("Failed to open %s for reading: %s (%d)\n",
                   qPrintable(path), qPrintable(f.errorString()), f.error());
@@ -127,7 +144,8 @@ VMQuickYTDLDownloader::VMQuickYTDLDownloader(QObject* parent)
     : QObject(parent)
 {
     m_pythonVersion = -1;
-    m_status = StatusUnavailable;
+    m_DownloadStatus = StatusUnavailable;
+    m_UpdateStatus = StatusUnavailable;
     m_error = ErrorNone;
     m_dead = false;
     m_stage = None;
@@ -182,10 +200,10 @@ void VMQuickYTDLDownloader::findBinary()
                 if (parseConfigFile(m_configFilePath, mode, &configFileVersion, &url, &m_ytdlVersion)) {
                     qInfo("youtube-dl version %s, mode %s\n", qPrintable(m_ytdlVersion), qPrintable(mode));
                     setError(ErrorNone);
-                    setStatus(StatusReady);
+                    setDownloadStatus(StatusReady);
                     emit ytdlVersionChanged();
                 } else {
-                    setStatus(StatusUnavailable);
+                    setDownloadStatus(StatusUnavailable);
                     if (configFileVersion == -1) {
                         setError(ErrorUnsupportedConfigurationFileFormat);
                     } else {
@@ -195,17 +213,17 @@ void VMQuickYTDLDownloader::findBinary()
                 }
             } else {
                 setError(ErrorNone);
-                setStatus(StatusUnavailable);
+                setDownloadStatus(StatusUnavailable);
                 qInfo("youtube-dl binary %s doesn't exist.\n", qPrintable(m_ytdlPath));
             }
         } else {
             setError(ErrorNone);
-            setStatus(StatusUnavailable);
+            setDownloadStatus(StatusUnavailable);
             qInfo("Configuration file %s doesn't exist.\n", qPrintable(m_configFilePath));
         }
     } else {
         qCritical("Failed to create directory %s.\n", qPrintable(baseDirectory));
-        setStatus(StatusUnavailable);
+        setDownloadStatus(StatusUnavailable);
         setError(ErrorFileOrDirCreationFailed);
     }
 }
@@ -227,14 +245,27 @@ void VMQuickYTDLDownloader::setMode(Mode value)
         emit modeChanged();
         qDebug("mode changed to %s\n", qPrintable(modeName(m_mode)));
         findBinary();
+        m_UpdateStatus = StatusUnavailable;
+        m_UpdateVersion.clear();
+        emit isUpdateAvailableChanged();
+        emit updateVersionChanged();
     }
 }
 
-void VMQuickYTDLDownloader::setStatus(Status value)
+void VMQuickYTDLDownloader::setDownloadStatus(Status value)
 {
-    if (value != m_status) {
-        m_status = value;
-        emit statusChanged();
+    if (value != m_DownloadStatus) {
+        m_DownloadStatus = value;
+        emit downloadStatusChanged();
+        emit busyChanged();
+    }
+}
+
+void VMQuickYTDLDownloader::setUpdateStatus(Status value)
+{
+    if (value != m_UpdateStatus) {
+        m_UpdateStatus = value;
+        emit updateStatusChanged();
         emit busyChanged();
     }
 }
@@ -283,6 +314,7 @@ VMQuickYTDLDownloader::findExecutable(const QString& name, const QString& path)
              qPrintable(process.readAllStandardOutput()), qPrintable(process.readAllStandardError()));
      }
 
+
      return false;
 }
 
@@ -307,7 +339,35 @@ VMQuickYTDLDownloader::download()
     m_stage = ConfigFile;
     m_networkAccessManager.get(makeRequest(s_ConfigFileUrl));
     setError(ErrorNone);
-    setStatus(StatusDownloading);
+    setDownloadStatus(StatusDownloading);
+}
+
+void
+VMQuickYTDLDownloader::checkForUpdate()
+{
+    if (m_dead) {
+        qWarning("dead, not checking for update\n");
+        return;
+    }
+
+    if (busy()) {
+        setError(ErrorBusy);
+        return;
+    }
+
+    if (!m_networkConfigurationManager.isOnline()) {
+        setError(ErrorOffline);
+        return;
+    }
+
+    m_UpdateVersion.clear();
+    emit updateVersionChanged();
+    emit isUpdateAvailableChanged();
+
+    m_stage = ConfigFile;
+    m_networkAccessManager.get(makeRequest(s_ConfigFileUrl));
+    setError(ErrorNone);
+    setUpdateStatus(StatusDownloading);
 }
 
 void
@@ -317,7 +377,11 @@ VMQuickYTDLDownloader::requestFinished(QNetworkReply *reply)
 
     switch (reply->error()) {
     case QNetworkReply::OperationCanceledError:
-        setStatus(StatusUnavailable);
+        if (StatusDownloading == m_DownloadStatus) {
+            setDownloadStatus(StatusUnavailable);
+        } else {
+            setUpdateStatus(StatusUnavailable);
+        }
         break;
     case QNetworkReply::NoError: {
         // Get the http status code
@@ -327,38 +391,57 @@ VMQuickYTDLDownloader::requestFinished(QNetworkReply *reply)
             auto bytes = reply->readAll();
             switch (m_stage) {
             case ConfigFile: {
-                QFile f(m_configFilePath);
-                if (f.open(QIODevice::Truncate | QIODevice::WriteOnly)) {
-                    auto w = f.write(bytes);
-                    if (w == bytes.size() && f.flush()) {
-                        qInfo("Stored configuration file at %s\n", qPrintable(m_configFilePath));
-                        int configFileVersion = 0;
-                        QString url;
-                        auto mode = modeName(m_mode);
-                        if (parseConfigFile(m_configFilePath, mode, &configFileVersion, &url, &m_ytdlVersion)) {
-                            qInfo("youtube-dl version %s, mode %s\n", qPrintable(m_ytdlVersion), qPrintable(mode));
-                            emit ytdlVersionChanged();
-                            m_stage = Binary;
-                            m_networkAccessManager.get(makeRequest(url));
-                        } else if (-1 == configFileVersion) {
-                            setStatus(StatusUnavailable);
-                            setError(ErrorUnsupportedConfigurationFileFormat);
+                if (StatusDownloading == m_DownloadStatus) {
+                    QFile f(m_configFilePath);
+                    if (f.open(QIODevice::Truncate | QIODevice::WriteOnly)) {
+                        auto w = f.write(bytes);
+                        if (w == bytes.size() && f.flush()) {
+                            qInfo("Stored configuration file at %s\n", qPrintable(m_configFilePath));
+                            int configFileVersion = 0;
+                            QString url;
+                            auto mode = modeName(m_mode);
+                            if (parseConfigFile(m_configFilePath, mode, &configFileVersion, &url, &m_ytdlVersion)) {
+                                qInfo("youtube-dl version %s, mode %s\n", qPrintable(m_ytdlVersion), qPrintable(mode));
+                                emit ytdlVersionChanged();
+                                m_UpdateVersion = m_ytdlVersion;
+                                emit updateVersionChanged();
+                                emit isUpdateAvailableChanged();
+                                setUpdateStatus(StatusReady);
+                                m_stage = Binary;
+                                m_networkAccessManager.get(makeRequest(url));
+                            } else if (-1 == configFileVersion) {
+                                setDownloadStatus(StatusUnavailable);
+                                setError(ErrorUnsupportedConfigurationFileFormat);
+                            } else {
+                                QFile::remove(m_configFilePath);
+                                setDownloadStatus(StatusUnavailable);
+                                setError(ErrorMalformedConfigurationFile);
+                            }
                         } else {
-                            QFile::remove(m_configFilePath);
-                            setStatus(StatusUnavailable);
-                            setError(ErrorMalformedConfigurationFile);
+                            setDownloadStatus(StatusUnavailable);
+                            setError(ErrorNoSpaceLeftOnDevice);
+                            qCritical("Failed to save configuration file %s: %s (%d)\n",
+                                      qPrintable(m_configFilePath), qPrintable(f.errorString()), f.error());
                         }
                     } else {
-                        setStatus(StatusUnavailable);
-                        setError(ErrorNoSpaceLeftOnDevice);
-                        qCritical("Failed to save configuration file %s: %s (%d)\n",
+                        setDownloadStatus(StatusUnavailable);
+                        setError(ErrorFileOrDirCreationFailed);
+                        qCritical("Failed to create/truncate configuration file %s: %s (%d)\n",
                                   qPrintable(m_configFilePath), qPrintable(f.errorString()), f.error());
                     }
                 } else {
-                    setStatus(StatusUnavailable);
-                    setError(ErrorFileOrDirCreationFailed);
-                    qCritical("Failed to create/truncate configuration file %s: %s (%d)\n",
-                              qPrintable(m_configFilePath), qPrintable(f.errorString()), f.error());
+                    auto mode = modeName(m_mode);
+                    int configFileVersion = 0;
+                    QString url;
+                    if (parseConfigFile(bytes, mode, &configFileVersion, &url, &m_UpdateVersion)) {
+                        qInfo("mode %s youtube-dl version %s available\n", qPrintable(mode), qPrintable(m_UpdateVersion));
+                        emit updateVersionChanged();
+                        emit isUpdateAvailableChanged();
+                        setUpdateStatus(StatusReady);
+                    } else if (-1 == configFileVersion) {
+                        setUpdateStatus(StatusUnavailable);
+                        setError(ErrorUnsupportedConfigurationFileFormat);
+                    }
                 }
             } break;
             case Binary: {
@@ -374,33 +457,33 @@ VMQuickYTDLDownloader::requestFinished(QNetworkReply *reply)
                             qInfo("Stored youtube-dl at %s\n", qPrintable(m_ytdlPath));
                             if (f.setPermissions(QFile::ReadOwner | QFile::WriteOwner | QFile::ExeOwner | QFile::ReadGroup | QFile::ExeGroup | QFile::ReadOther | QFile::ExeOther)) {
                                 qInfo("Changed permissions of %s to 0755\n", qPrintable(m_ytdlPath));
-                                setStatus(StatusReady);
+                                setDownloadStatus(StatusReady);
                                 setError(ErrorNone);
                             } else {
                                 qCritical("Failed to change permissions of %s to 0755: %s (%d)\n", qPrintable(m_ytdlPath), qPrintable(f.errorString()), static_cast<int>(f.error()));
-                                setStatus(StatusUnavailable);
+                                setDownloadStatus(StatusUnavailable);
                                 setError(ErrorFileOrDirCreationFailed);
                             }
                         } else {
-                            setStatus(StatusUnavailable);
+                            setDownloadStatus(StatusUnavailable);
                             setError(ErrorNoSpaceLeftOnDevice);
                             qCritical("Failed to save youtube-dl to %s: %s (%d)\n",
                                       qPrintable(m_ytdlPath), qPrintable(f.errorString()), f.error());
                         }
                     } else {
-                        setStatus(StatusUnavailable);
+                        setDownloadStatus(StatusUnavailable);
                         setError(ErrorFileOrDirCreationFailed);
                         qCritical("Failed to create/truncate youtube-dl file %s: %s (%d)\n",
                                   qPrintable(m_ytdlPath), qPrintable(f.errorString()), f.error());
                     }
                 } else {
-                    setStatus(StatusUnavailable);
+                    setDownloadStatus(StatusUnavailable);
                     setError(ErrorFileOrDirCreationFailed);
                     qCritical("Failed to create directory %s\n", qPrintable(modeDir(m_mode)));
                 }
             } break;
             default:
-                setStatus(StatusUnavailable);
+                setDownloadStatus(StatusUnavailable);
                 setError(ErrorUnknown);
                 qCritical("Unknown download stage %d\n", m_stage);
                 break;
@@ -415,13 +498,21 @@ VMQuickYTDLDownloader::requestFinished(QNetworkReply *reply)
             m_networkAccessManager.get(makeRequest(newUrl));
         } else  {
             qDebug() << "Http status code:" << v;
-            setStatus(StatusUnavailable);
+            if (StatusDownloading == m_DownloadStatus) {
+                setDownloadStatus(StatusUnavailable);
+            } else {
+                setUpdateStatus(StatusUnavailable);
+            }
             setError(ErrorDownloadFailed);
         }
     } break;
     default: {
         qDebug() << "Network request failed: " << reply->error() << reply->errorString() << reply->url();
-        setStatus(StatusUnavailable);
+        if (StatusDownloading == m_DownloadStatus) {
+            setDownloadStatus(StatusUnavailable);
+        } else {
+            setUpdateStatus(StatusUnavailable);
+        }
         setError(ErrorDownloadFailed);
     } break;
     }
@@ -443,18 +534,26 @@ VMQuickYTDLDownloader::remove()
         qInfo("Removed %s\n", qPrintable(m_ytdlPath));
     }
 
-    setStatus(StatusUnavailable);
+    setDownloadStatus(StatusUnavailable);
     setError(ErrorNone);
 }
 
 bool
 VMQuickYTDLDownloader::busy() const
 {
-    return StatusDownloading == m_status;
+    return StatusDownloading == m_DownloadStatus || StatusDownloading == m_UpdateStatus;
 }
 
 void
 VMQuickYTDLDownloader::onlineStateChanged(bool)
 {
     emit isOnlineChanged();
+}
+
+bool
+VMQuickYTDLDownloader::isUpdateAvailable() const
+{
+    return !m_UpdateVersion.isEmpty() &&
+            !m_ytdlVersion.isEmpty() &&
+            m_UpdateVersion.compare(m_ytdlVersion) > 0;
 }

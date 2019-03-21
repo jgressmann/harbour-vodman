@@ -24,18 +24,21 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 import Nemo.Configuration 1.0
+import Nemo.Notifications 1.0
 import org.duckdns.jgressmann 1.0
 import "."
 
 
 ApplicationWindow {
     id: window
-    initialPage: YTDLDownloader.status === YTDLDownloader.StatusReady
+    initialPage: YTDLDownloader.downloadStatus === YTDLDownloader.StatusReady
                  ? Qt.resolvedUrl("pages/DownloadPage.qml")
                  : Qt.resolvedUrl("pages/YTDLPage.qml")
     cover: Qt.resolvedUrl("cover/CoverPage.qml")
 
     allowedOrientations: defaultAllowedOrientations
+    property bool _hasCheckedForYtdlUpdate: false
+
 
     VodDownloadModel {
         id: vodDownloadModel
@@ -84,14 +87,25 @@ ApplicationWindow {
     }
 
     Component.onCompleted: {
+        YTDLDownloader.isUpdateAvailableChanged.connect(_ytdlUpdateAvailableChanged)
         _setMode()
         _setYtdlPath()
+        _checkForYtdlUpate()
+    }
+
+    Component.onDestruction: {
+        YTDLDownloader.isUpdateAvailableChanged.disconnect(_ytdlUpdateAvailableChanged)
     }
 
     Connections {
         target: YTDLDownloader
-        onStatusChanged: _switchMainPage()
         onYtdlPathChanged: _setYtdlPath()
+
+        onDownloadStatusChanged: {
+            _switchMainPage()
+            _checkForYtdlUpate()
+        }
+        onIsOnlineChanged: _checkForYtdlUpate()
     }
 
     Connections {
@@ -100,8 +114,33 @@ ApplicationWindow {
         onBusyChanged: _switchMainPage()
     }
 
+    Notification {
+        id: updateNotification
+        appName: App.displayName
+        appIcon: "/usr/share/icons/hicolor/86x86/apps/harbour-vodman.png"
+        icon: appIcon
+        //% "youtube-dl update available"
+        summary: qsTrId("nofification-download-ytdl-update-available-summary")
+        previewSummary: summary
+        //% "youtube-dl version %1 available"
+        body: qsTrId("nofification-ytdl-update-available-body").arg(YTDLDownloader.updateVersion)
+        previewBody: body
+        remoteActions: [ {
+             "name": "default",
+             //% "Update youtube-dl"
+             "displayName": qsTrId("nofification-ytdl-update-available-action"),
+             //"icon": "icon-cover-play",
+             "service": "org.duckdns.jgressmann.vodman.app",
+             "path": "/instance",
+             "iface": "org.duckdns.jgressmann.vodman.app",
+             "method": "updateYtdl",
+         } ]
+    }
+
+
+
     function _setYtdlPath() {
-        if (YTDLDownloader.status === YTDLDownloader.StatusReady) {
+        if (YTDLDownloader.downloadStatus === YTDLDownloader.StatusReady) {
             vodDownloadModel.ytdlPath = YTDLDownloader.ytdlPath
         } else {
             vodDownloadModel.ytdlPath = ""
@@ -114,7 +153,7 @@ ApplicationWindow {
 
     function _switchMainPage() {
         if (pageStack.currentPage && !pageStack.busy) {
-            if (YTDLDownloader.status === YTDLDownloader.StatusReady) {
+            if (YTDLDownloader.downloadStatus === YTDLDownloader.StatusReady) {
                 if (pageStack.currentPage.isYTDLPage) {
                     pageStack.replace(Qt.resolvedUrl("pages/DownloadPage.qml"))
                 }
@@ -123,6 +162,22 @@ ApplicationWindow {
                     pageStack.replace(Qt.resolvedUrl("pages/YTDLPage.qml"))
                 }
             }
+        }
+    }
+
+    function _ytdlUpdateAvailableChanged() {
+        if (YTDLDownloader.isUpdateAvailable) {
+            updateNotification.publish()
+        }
+    }
+
+    function _checkForYtdlUpate() {
+        if (!_hasCheckedForYtdlUpdate &&
+            YTDLDownloader.isOnline &&
+            YTDLDownloader.downloadStatus === YTDLDownloader.StatusReady &&
+            YTDLDownloader.updateStatus === YTDLDownloader.StatusUnavailable) {
+            _hasCheckedForYtdlUpdate = true
+            YTDLDownloader.checkForUpdate()
         }
     }
 }

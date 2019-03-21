@@ -36,11 +36,10 @@ Page {
 
     readonly property bool isDownloadPage: true
     // page could be underneath settings page
-    readonly property bool operational: YTDLDownloader.status === YTDLDownloader.StatusReady
+    readonly property bool operational: YTDLDownloader.downloadStatus === YTDLDownloader.StatusReady
     readonly property bool canStartDownload: operational && vodDownloadModel.canStartDownload
     readonly property bool clipBoardHasUrl: Clipboard.hasText && vodDownloadModel.isUrl(Clipboard.text)
     readonly property bool canStartDownloadOfClipboardUrl: canStartDownload && clipBoardHasUrl
-
 
 
     function targetWidth(format) {
@@ -345,6 +344,17 @@ Page {
 
             return false
         }
+
+        function updateYtdl() {
+            if (!canStartDownload || vodDownloadModel.downloadsPending) {
+                errorNotification.body = errorNotification.previewBody =
+                        //% "%1 is busy. Try again later."
+                        qsTrId("notification-busy").arg(App.displayName)
+                errorNotification.publish()
+            } else {
+                YTDLDownloader.download()
+            }
+        }
     }
 
     Notification {
@@ -464,7 +474,7 @@ Page {
                 text: "Delete youtube-dl"
                 visible: debugApp.value &&
                          !vodDownloadModel.downloadsPending &&
-                         YTDLDownloader.status == YTDLDownloader.StatusReady
+                         YTDLDownloader.downloadStatus == YTDLDownloader.StatusReady
                 onClicked: YTDLDownloader.remove()
             }
 
@@ -524,7 +534,7 @@ Page {
 
         SilicaListView {
             id: listView
-            visible: YTDLDownloader.status === YTDLDownloader.StatusDownloading || YTDLDownloader.status === YTDLDownloader.StatusReady
+            visible: YTDLDownloader.downloadStatus === YTDLDownloader.StatusDownloading || YTDLDownloader.downloadStatus === YTDLDownloader.StatusReady
             anchors.fill: parent
             model: vodDownloadModel
             header: PageHeader {
@@ -532,7 +542,7 @@ Page {
                 title: qsTrId("download-page-header")
 
                 BusyIndicator {
-                    running: YTDLDownloader.status === YTDLDownloader.StatusDownloading || !vodDownloadModel.canStartDownload
+                    running: YTDLDownloader.downloadStatus === YTDLDownloader.StatusDownloading || !vodDownloadModel.canStartDownload
                     size: BusyIndicatorSize.Small
                     x: Theme.horizontalPageMargin
                     anchors.verticalCenter: parent.verticalCenter

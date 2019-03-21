@@ -48,7 +48,7 @@ Page {
                     horizontalAlignment: Text.AlignHCenter
                     wrapMode: Text.Wrap
                     text: {
-                        switch (YTDLDownloader.status) {
+                        switch (YTDLDownloader.downloadStatus) {
                         case YTDLDownloader.StatusUnavailable:
                             //% "You seem to be missing a working youtube-dl"
                             return qsTrId("ytdl-unvailable")
@@ -77,7 +77,7 @@ Page {
                     horizontalAlignment: Text.AlignHCenter
                     wrapMode: Text.Wrap
                     text: {
-                        switch (YTDLDownloader.status) {
+                        switch (YTDLDownloader.downloadStatus) {
                         case YTDLDownloader.StatusUnavailable:
                             if (YTDLDownloader.isOnline) {
                                 //% "Click the button below to start the download"
@@ -110,7 +110,7 @@ Page {
             }
 
             Button {
-                visible: !(YTDLDownloader.status === YTDLDownloader.StatusDownloading || YTDLDownloader.status === YTDLDownloader.StatusReady)
+                visible: !(YTDLDownloader.downloadStatus === YTDLDownloader.StatusDownloading || YTDLDownloader.downloadStatus === YTDLDownloader.StatusReady)
                 enabled: YTDLDownloader.isOnline
                 anchors.horizontalCenter: parent.horizontalCenter
                 //% "Download youtube-dl"
@@ -120,7 +120,7 @@ Page {
 
             BusyIndicator {
                 visible: running
-                running: YTDLDownloader.status === YTDLDownloader.StatusDownloading
+                running: YTDLDownloader.downloadStatus === YTDLDownloader.StatusDownloading
                 anchors.horizontalCenter: parent.horizontalCenter
                 size: BusyIndicatorSize.Large
             }

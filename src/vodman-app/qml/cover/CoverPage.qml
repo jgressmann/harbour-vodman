@@ -139,7 +139,7 @@ CoverBackground {
         // any Clipboard bound properties for the cover page. It works on for
         // the download page though.
         // Disabled in non-debug mode until fixed.
-        enabled: debugApp.value && YTDLDownloader.status === YTDLDownloader.StatusReady && hasDefaultVideoFormat
+        enabled: debugApp.value && YTDLDownloader.downloadStatus === YTDLDownloader.StatusReady && hasDefaultVideoFormat
 
         CoverAction {
             iconSource: "image://theme/icon-cover-new"

@@ -36,11 +36,14 @@ class VMQuickYTDLDownloader : public QObject
 public:
     Q_PROPERTY(QString ytdlVersion READ ytdlVersion NOTIFY ytdlVersionChanged)
     Q_PROPERTY(QString ytdlPath READ ytdlPath NOTIFY ytdlPathChanged)
-    Q_PROPERTY(Status status READ status NOTIFY statusChanged)
+    Q_PROPERTY(Status downloadStatus READ downloadStatus NOTIFY downloadStatusChanged)
+    Q_PROPERTY(Status updateStatus READ updateStatus NOTIFY updateStatusChanged)
     Q_PROPERTY(Error error READ error NOTIFY errorChanged)
     Q_PROPERTY(Mode mode READ mode WRITE setMode NOTIFY modeChanged)
     Q_PROPERTY(bool busy READ busy NOTIFY busyChanged)
     Q_PROPERTY(bool isOnline READ isOnline NOTIFY isOnlineChanged)
+    Q_PROPERTY(bool isUpdateAvailable READ isUpdateAvailable NOTIFY isUpdateAvailableChanged)
+    Q_PROPERTY(QString updateVersion READ updateVersion NOTIFY updateVersionChanged)
 
 public:
     enum Status
@@ -79,25 +82,30 @@ public:
 public:
     QString ytdlVersion() const { return m_ytdlVersion; }
     QString ytdlPath() const { return m_ytdlPath; }
-    Status status() const { return m_status; }
-    void setStatus(Status value);
+    Status downloadStatus() const { return m_DownloadStatus; }
+    Status updateStatus() const { return m_UpdateStatus; }
     Error error() const { return m_error; }
-    void setError(Error value);
     Mode mode() const { return m_mode; }
     void setMode(Mode value);
     bool busy() const;
     bool isOnline() const { return m_networkConfigurationManager.isOnline(); }
+    QString updateVersion() const { return m_UpdateVersion; }
+    bool isUpdateAvailable() const;
     Q_INVOKABLE void download();
     Q_INVOKABLE void remove();
+    Q_INVOKABLE void checkForUpdate();
 
 signals:
     void ytdlPathChanged();
     void ytdlVersionChanged();
-    void statusChanged();
+    void downloadStatusChanged();
     void errorChanged();
     void modeChanged();
     void busyChanged();
     void isOnlineChanged();
+    void isUpdateAvailableChanged();
+    void updateVersionChanged();
+    void updateStatusChanged();
 
 private slots:
     void requestFinished(QNetworkReply *reply);
@@ -117,6 +125,9 @@ private:
     Q_DISABLE_COPY(VMQuickYTDLDownloader)
     QString baseDir() const;
     QString modeDir(Mode value) const;
+    void setError(Error value);
+    void setDownloadStatus(Status value);
+    void setUpdateStatus(Status value);
 
 private:
     QNetworkConfigurationManager m_networkConfigurationManager;
@@ -124,7 +135,9 @@ private:
     QString m_ytdlVersion;
     QString m_ytdlPath;
     QString m_configFilePath;
-    Status m_status;
+    QString m_UpdateVersion;
+    Status m_DownloadStatus;
+    Status m_UpdateStatus;
     Error m_error;
     int m_pythonVersion;
     DownloadStage m_stage;

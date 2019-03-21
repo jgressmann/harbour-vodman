@@ -89,7 +89,7 @@ Page {
                 }
 
                 Label {
-                    visible: YTDLDownloader.status === YTDLDownloader.StatusReady
+                    visible: YTDLDownloader.downloadStatus === YTDLDownloader.StatusReady
                     text: "youtube-dl " + YTDLDownloader.ytdlVersion
                     anchors.horizontalCenter: parent.horizontalCenter
                     font.pixelSize: Theme.fontSizeMedium

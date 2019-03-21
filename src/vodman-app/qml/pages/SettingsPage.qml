@@ -344,7 +344,7 @@ Page {
 
                 color: Theme.highlightColor
                 text: {
-                    switch (YTDLDownloader.status) {
+                    switch (YTDLDownloader.downloadStatus) {
                     case YTDLDownloader.StatusDownloading:
                         //% "youtube-dl is being downloaded"
                         return qsTrId("settings-ytdl-downloading")
@@ -359,12 +359,22 @@ Page {
                 }
             }
 
+            Label {
+                x: Theme.horizontalPageMargin
+                width: parent.width-2*x
+                visible: YTDLDownloader.isUpdateAvailable
+                font.pixelSize: Theme.fontSizeExtraSmall
+                color: Theme.highlightColor
+                //% "Version %1 is available for update"
+                text: qsTrId("settings-ytdl-update-available").arg(YTDLDownloader.updateVersion)
+            }
+
             ButtonLayout {
                 width: parent.width
                 Button {
                     anchors.horizontalCenter: parent.horizontalCenter
                     enabled: YTDLDownloader.isOnline &&
-                             YTDLDownloader.status !== YTDLDownloader.StatusDownloading &&
+                             YTDLDownloader.downloadStatus !== YTDLDownloader.StatusDownloading &&
                              !vodDownloadModel.downloadsPending
                     //% "Update youtube-dl"
                     text: qsTrId("settings-ytdl-update")
