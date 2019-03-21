@@ -288,6 +288,12 @@ Page {
         vodDownloadModel.downloadSucceeded.connect(downloadSucceeded)
     }
 
+    Component.onDestruction: {
+        vodDownloadModel.metaDataDownloadSucceeded.disconnect(metaDataDownloadSucceeded)
+        vodDownloadModel.downloadFailed.disconnect(downloadFailed)
+        vodDownloadModel.downloadSucceeded.disconnect(downloadSucceeded)
+    }
+
     DBusAdaptor {
         id: dbus
         bus: DBus.SessionBus
