@@ -41,10 +41,6 @@
 namespace {
 
 const QRegExp s_YTDLProgressRegexp("\\[download\\]\\s+(\\d+\\.\\d*)%\\s+");
-// 160p30
-const QRegExp s_FramerateRegexp("\\d+p(\\d+)");
-//const QRegExp s_CurlProgressRegexp("^.*(\\d+\\.\\d*)%$");
-
 const QString s_Token = QStringLiteral("token");
 const QString s_Type = QStringLiteral("type");
 const QString s_MetaData = QStringLiteral("metadata");
