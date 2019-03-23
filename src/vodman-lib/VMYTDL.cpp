@@ -850,7 +850,7 @@ VMYTDL::createProcess()
 {
     QProcess* process = new QProcess(this);
     auto env = QProcessEnvironment::systemEnvironment();
-    env.insert(QStringLiteral("LC_ALL"), QStringLiteral("C"));
+    env.insert(QStringLiteral("LC_ALL"), QStringLiteral("en_US.UTF-8"));
     process->setProcessEnvironment(env);
     return process;
 }
