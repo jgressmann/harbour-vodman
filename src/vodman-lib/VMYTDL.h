@@ -28,14 +28,15 @@
 #include <QVariantMap>
 #include <QDateTime>
 #include <QScopedPointer>
+#include <QVector>
 #include <functional>
 
 #include "VMVod.h"
 
 
 class QJsonObject;
-class VMVodFileDownload;
-class VMVodFileDownloadRequest;
+class VMVodPlaylistDownload;
+class VMVodPlaylistDownloadRequest;
 class VMVodMetaDataDownload;
 
 class VMYTDL : public QObject
@@ -61,15 +62,15 @@ public:
 
 public slots:
     void startFetchVodMetaData(qint64 token, const QString& url);
-    void startFetchVodFile(qint64 token, const VMVodFileDownloadRequest& request, VMVodFileDownload* result = nullptr);
+    void startFetchVodFile(qint64 token, const VMVodPlaylistDownloadRequest& request, VMVodPlaylistDownload* result = nullptr);
     void cancelFetchVodFile(qint64 token, bool deleteFile);
     void clearCache() { m_MetaDataCache.clear(); }
     QVariantList inProgressVodFetches();
 
 signals:
     void vodMetaDataDownloadCompleted(qint64 id, const VMVodMetaDataDownload& download);
-    void vodFileDownloadChanged(qint64 id, const VMVodFileDownload& download);
-    void vodFileDownloadCompleted(qint64 id, const VMVodFileDownload& download);
+    void vodFileDownloadChanged(qint64 id, const VMVodPlaylistDownload& download);
+    void vodFileDownloadCompleted(qint64 id, const VMVodPlaylistDownload& download);
     void ytdlPathChanged();
     void metaDataCacheCapacityChanged();
     void metaDataSecondsValidChanged();
@@ -83,17 +84,17 @@ private slots:
 private:
     Q_DISABLE_COPY(VMYTDL)
     void cleanupProcess(QProcess* process);
-    void fillFrameRate(VMVodFormatData& format, const QJsonObject& json) const;
     void fillFormatId(VMVodFormatData& format) const;
     void fillWidth(VMVodFormatData& format) const;
-    void appendFormat(VMVodData& vodData, const QString& vodUrl, const QJsonObject& json) const;
+    void appendFormat(VMVodPlaylistData& data, const QString& vodUrl, const QJsonObject& json) const;
     bool available() const;
     QProcess* createProcess();
+    static bool parseJson(const QByteArray& bytes, QVector<int>* ends);
 
 private:
     struct CacheEntry
     {
-        VMVod vod;
+        VMVodPlaylist playlist;
         QDateTime fetchTime;
     };
 

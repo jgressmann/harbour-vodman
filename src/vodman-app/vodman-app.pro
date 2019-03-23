@@ -61,15 +61,19 @@ TRANSLATIONS += translations/harbour-vodman-zh_cn.ts
 
 
 
-SOURCES += harbour-vodman.cpp
-SOURCES += VMQuickVodDownloadModel.cpp
-SOURCES += VMQuickVodDownload.cpp
+SOURCES += harbour-vodman.cpp \
+    VMQuickVodPlaylistDownload.cpp \
+    VMQuickVodPlaylistDownloadModel.cpp
+SOURCES +=
+SOURCES +=
 SOURCES += VMApp.cpp
 
 
 
-HEADERS += VMQuickVodDownloadModel.h
-HEADERS += VMQuickVodDownload.h
+HEADERS += \
+    VMQuickVodPlaylistDownload.h \
+    VMQuickVodPlaylistDownloadModel.h
+HEADERS +=
 HEADERS += VMApp.h
 
 

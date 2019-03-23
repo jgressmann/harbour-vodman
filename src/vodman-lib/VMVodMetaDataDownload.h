@@ -1,6 +1,6 @@
 /* The MIT License (MIT)
  *
- * Copyright (c) 2018 Jean Gressmann <jean@0x42.de>
+ * Copyright (c) 2018, 2019 Jean Gressmann <jean@0x42.de>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,9 +27,9 @@
 
 struct VMVodMetaDataDownloadData : public QSharedData
 {
-    VMVod _vod;
+    VMVodPlaylist playlist;
     QString errorMessage;
-    QString _url;
+    QString url;
     int error;
 
     VMVodMetaDataDownloadData() = default;
@@ -41,7 +41,7 @@ class VMVodMetaDataDownload
 public:
     Q_PROPERTY(VMVodEnums::Error error READ error CONSTANT)
     Q_PROPERTY(QString errorMessage READ errorMessage CONSTANT)
-    Q_PROPERTY(VMVod vod READ vod CONSTANT)
+    Q_PROPERTY(VMVodPlaylist playlist READ playlist CONSTANT)
     Q_PROPERTY(QString url READ url CONSTANT)
 
 public:
@@ -50,11 +50,11 @@ public:
     VMVodMetaDataDownload(const VMVodMetaDataDownload& /*other*/) = default;
     VMVodMetaDataDownload& operator=(const VMVodMetaDataDownload& /*other*/) = default;
 
-    inline VMVod vod() const { return d->_vod; }
+    inline VMVodPlaylist playlist() const { return d->playlist; }
     inline VMVodEnums::Error error() const { return (VMVodEnums::Error)d->error; }
     inline QString errorMessage() const { return d->errorMessage; }
-    inline QString url() const { return d->_url; }
-    inline bool isValid() const { return d->_vod.isValid(); }
+    inline QString url() const { return d->url; }
+    inline bool isValid() const { return d->playlist.isValid(); }
 
 public:
     inline VMVodMetaDataDownloadData& data() { return *d; }

@@ -24,6 +24,7 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 import org.duckdns.jgressmann 1.0
+import Vodman 2.0
 import ".."
 
 CoverBackground {
@@ -85,7 +86,7 @@ CoverBackground {
 
                     Image {
                         id: thumbnail
-                        source: download.data.description.thumbnailUrl
+                        source: download.data.playlist.description.thumbnailUrl
                         width: parent.height
                         height: parent.height
                         fillMode: Image.PreserveAspectFit
@@ -101,7 +102,7 @@ CoverBackground {
                             anchors.left: parent.left
                             anchors.right: percentLabel.left
                             anchors.verticalCenter: parent.verticalCenter
-                            text: download.data.description.fullTitle
+                            text: download.data.playlist.description.fullTitle
                             font.pixelSize: Theme.fontSizeSmall
                             truncationMode: TruncationMode.Fade
                             visible: !thumbnail.visible

@@ -21,9 +21,9 @@
  * THE SOFTWARE.
  */
 
-#include "VMQuickVodDownloadModel.h"
+#include "VMQuickVodPlaylistDownloadModel.h"
 #include "VMVodMetaDataDownload.h"
-#include "VMQuickVodDownload.h"
+#include "VMQuickVodPlaylistDownload.h"
 
 #include <QDebug>
 #include <QUrl>
@@ -37,9 +37,9 @@ MakeRoleNames() {
     return roleNames;
 }
 
-const QHash<int, QByteArray> VMQuickVodDownloadModel::ms_Roles = MakeRoleNames();
+const QHash<int, QByteArray> VMQuickVodPlaylistDownloadModel::ms_Roles = MakeRoleNames();
 
-VMQuickVodDownloadModel::~VMQuickVodDownloadModel()
+VMQuickVodPlaylistDownloadModel::~VMQuickVodPlaylistDownloadModel()
 {
     const auto beg = m_Downloads.begin();
     const auto end = m_Downloads.end();
@@ -48,28 +48,30 @@ VMQuickVodDownloadModel::~VMQuickVodDownloadModel()
     }
 }
 
-VMQuickVodDownloadModel::VMQuickVodDownloadModel(QObject *parent)
+VMQuickVodPlaylistDownloadModel::VMQuickVodPlaylistDownloadModel(QObject *parent)
     : QAbstractListModel(parent)
     , m_Ytdl(this)
     , m_Token(-1)
     , m_TokenGenerator(0)
 {
-    connect(&m_Ytdl, &VMYTDL::ytdlPathChanged, this, &VMQuickVodDownloadModel::onYtdlPathChanged);
-    connect(&m_Ytdl, &VMYTDL::vodFileDownloadCompleted, this, &VMQuickVodDownloadModel::onVodFileDownloadCompleted);
-    connect(&m_Ytdl, &VMYTDL::vodFileDownloadChanged, this, &VMQuickVodDownloadModel::onVodFileDownloadChanged);
-    connect(&m_Ytdl, &VMYTDL::vodMetaDataDownloadCompleted, this, &VMQuickVodDownloadModel::onVodFileMetaDataDownloadCompleted);
+    connect(&m_Ytdl, &VMYTDL::ytdlPathChanged, this, &VMQuickVodPlaylistDownloadModel::onYtdlPathChanged);
+    connect(&m_Ytdl, &VMYTDL::vodFileDownloadCompleted, this, &VMQuickVodPlaylistDownloadModel::onVodFileDownloadCompleted);
+    connect(&m_Ytdl, &VMYTDL::vodFileDownloadChanged, this, &VMQuickVodPlaylistDownloadModel::onVodFileDownloadChanged);
+    connect(&m_Ytdl, &VMYTDL::vodMetaDataDownloadCompleted, this, &VMQuickVodPlaylistDownloadModel::onVodFileMetaDataDownloadCompleted);
 
-    connect(&m_NetworkConfigurationManager, &QNetworkConfigurationManager::onlineStateChanged, this, &VMQuickVodDownloadModel::onOnlineChanged);
+    connect(&m_NetworkConfigurationManager, &QNetworkConfigurationManager::onlineStateChanged, this, &VMQuickVodPlaylistDownloadModel::onOnlineChanged);
 }
 
 void
-VMQuickVodDownloadModel::onVodFileDownloadCompleted(qint64 handle, const VMVodFileDownload& download)
+VMQuickVodPlaylistDownloadModel::onVodFileDownloadCompleted(qint64 handle, const VMVodPlaylistDownload& download)
 {
     qDebug() << "enter" << handle;
     auto it = m_Downloads.find(handle);
     if (m_Downloads.end() == it) {
         qDebug() << "received download removed event for handle" << handle
                  << "but no such entry.";
+        --m_PendingDownloads;
+        emit downloadsPendingChanged();
     } else {
         it.value()->deleteLater();
         m_Downloads.erase(it);
@@ -80,56 +82,43 @@ VMQuickVodDownloadModel::onVodFileDownloadCompleted(qint64 handle, const VMVodFi
         qDebug() << "removed row" << row;
     }
 
-    if (m_UserDownloads.removeOne(handle)) {
-        if (m_UserDownloadsFilePaths.removeOne(download.filePath())) {
-            emit downloadsPendingChanged();
-            qDebug() << "file path" << download.filePath() << "removed from user downloads";
+    if (download.isValid()) {
+        emit downloadSucceeded(QVariant::fromValue(download));
+    } else {
+        const auto& downloadData = download.data();
+        QString filePath;
+        if (downloadData.currentFileIndex >= 0 && downloadData.currentFileIndex < downloadData.files.size()) {
+            filePath = downloadData.files[downloadData.currentFileIndex].filePath();
         }
 
-        qDebug() << "mine removed" << handle << download;
-
-        if (download.isValid()) {
-            emit downloadSucceeded(QVariant::fromValue(download));
-        } else {
-            emit downloadFailed(
-                        download.data().description.webPageUrl(),
-                        download.error(),
-                        download.data()._filePath);
-        }
+        emit downloadFailed(
+                    downloadData.playlist.description().webPageUrl(),
+                    downloadData.error,
+                    filePath);
     }
 
     qDebug() << "exit" << handle;
 }
 
 void
-VMQuickVodDownloadModel::onVodFileDownloadChanged(qint64 handle, const VMVodFileDownload& download)
+VMQuickVodPlaylistDownloadModel::onVodFileDownloadChanged(qint64 handle, const VMVodPlaylistDownload& download)
 {
-    qDebug() << "enter" << handle;
-
-    if (!download.isValid()) {
-        qDebug() << "exit" << handle << download;
-        return;
-    }
-
     auto it = m_Downloads.find(handle);
     if (m_Downloads.end() == it) {
         vodFileDownloadAdded(handle, download);
         return;
     }
 
-    qDebug() << "changed handle" << handle << "download" << download;
     it.value()->setData(download);
     auto row = getHandleRow(handle);
     emit dataChanged(index(row), index(row));
-    qDebug() << "exit" << handle;
 }
 
 void
-VMQuickVodDownloadModel::onVodFileMetaDataDownloadCompleted(qint64 token, const VMVodMetaDataDownload& download)
+VMQuickVodPlaylistDownloadModel::onVodFileMetaDataDownloadCompleted(qint64 token, const VMVodMetaDataDownload& download)
 {
     qDebug() << "enter" << token;
     if (token == m_Token) {
-        m_UserDownloads << token;
         auto url = m_Url;
         m_Token = -1;
         m_Url.clear();
@@ -139,7 +128,7 @@ VMQuickVodDownloadModel::onVodFileMetaDataDownloadCompleted(qint64 token, const 
 
         if (download.isValid()) {
             if (download.error() == VMVodEnums::VM_ErrorNone) {
-                emit metaDataDownloadSucceeded(token, download.vod());
+                emit metaDataDownloadSucceeded(token, download.playlist());
             } else {
                 emit downloadFailed(url, download.error(), QString());
             }
@@ -158,13 +147,13 @@ VMQuickVodDownloadModel::onVodFileMetaDataDownloadCompleted(qint64 token, const 
 }
 
 int
-VMQuickVodDownloadModel::getHandleRow(qint64 handle) const
+VMQuickVodPlaylistDownloadModel::getHandleRow(qint64 handle) const
 {
     return m_Rows.indexOf(handle);
 }
 
 QVariant
-VMQuickVodDownloadModel::data(const QModelIndex &index, int role) const
+VMQuickVodPlaylistDownloadModel::data(const QModelIndex &index, int role) const
 {
     if (role > Qt::UserRole) {
         int column = role - Qt::UserRole - 1;
@@ -184,7 +173,7 @@ VMQuickVodDownloadModel::data(const QModelIndex &index, int role) const
 }
 
 int
-VMQuickVodDownloadModel::rowCount(const QModelIndex &parent) const
+VMQuickVodPlaylistDownloadModel::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent);
     return m_Rows.size();
@@ -192,7 +181,7 @@ VMQuickVodDownloadModel::rowCount(const QModelIndex &parent) const
 
 
 void
-VMQuickVodDownloadModel::startDownloadMetaData(const QString& url)
+VMQuickVodPlaylistDownloadModel::startDownloadMetaData(const QString& url)
 {
     if (!canStartDownload()) {
         return;
@@ -210,7 +199,7 @@ VMQuickVodDownloadModel::startDownloadMetaData(const QString& url)
 }
 
 void
-VMQuickVodDownloadModel::cancelDownloadMetaData()
+VMQuickVodPlaylistDownloadModel::cancelDownloadMetaData()
 {
     m_Url.clear();
     m_Token = -1;
@@ -218,41 +207,38 @@ VMQuickVodDownloadModel::cancelDownloadMetaData()
 }
 
 void
-VMQuickVodDownloadModel::startDownloadVod(
-        qint64 token, const VMVod& vod, int formatIndex, const QString& filePath) {
+VMQuickVodPlaylistDownloadModel::startDownloadVod(
+        qint64 token, const VMVodPlaylist& playlist, int formatIndex, const QString& filePath) {
 
     if (!canStartDownload()) {
         return;
     }
 
-    qDebug() << "token" << token << "vod" << vod << "index" << formatIndex << "path" << filePath;
+    qDebug() << "token" << token << "playlist" << playlist << "index" << formatIndex << "path" << filePath;
 
-    if (!vod.isValid() || formatIndex < 0 || formatIndex >= vod.formats() ||
-        filePath.isEmpty()) {
+//    if (m_UserDownloadsFilePaths.indexOf(filePath) >= 0) {
+//        emit downloadFailed(playlist.description().webPageUrl(), VMVodEnums::VM_ErrorAlreadyDownloading, filePath);
+//        return;
+//    }
+
+    VMVodPlaylistDownloadRequest req;
+    req.filePath = filePath;
+    req.formatIndex = formatIndex;
+    req.playlist = playlist;
+
+    if (!req.isValid()) {
         qDebug() << "invalid params";
         return;
     }
 
-    if (m_UserDownloadsFilePaths.indexOf(filePath) >= 0) {
-        emit downloadFailed(vod.description().webPageUrl(), VMVodEnums::VM_ErrorAlreadyDownloading, filePath);
-        return;
-    }
-
-    m_FilePath = filePath;
-
-    VMVodFileDownloadRequest req;
-    req.description = vod.data().description;
-    req.filePath = filePath;
-    req.format = vod.data()._formats[formatIndex];
-
-    m_UserDownloadsFilePaths << m_FilePath;
+    ++m_PendingDownloads;
     emit downloadsPendingChanged();
-    m_FilePath.clear();
+
     m_Ytdl.startFetchVodFile(token, req);
 }
 
 void
-VMQuickVodDownloadModel::cancelDownload(int index, bool deleteFile)
+VMQuickVodPlaylistDownloadModel::cancelDownload(int index, bool deleteFile)
 {
     qDebug() << "index" << index << "delete?" << deleteFile;
 
@@ -264,7 +250,7 @@ VMQuickVodDownloadModel::cancelDownload(int index, bool deleteFile)
 }
 
 void
-VMQuickVodDownloadModel::cancelDownloads(bool deleteFiles) {
+VMQuickVodPlaylistDownloadModel::cancelDownloads(bool deleteFiles) {
     qDebug() << "delete?" << deleteFiles;
 
     for (auto i = 0; i < m_Rows.size(); ++i) {
@@ -275,27 +261,31 @@ VMQuickVodDownloadModel::cancelDownloads(bool deleteFiles) {
 }
 
 void
-VMQuickVodDownloadModel::vodFileDownloadAdded(qint64 handle, const VMVodFileDownload& download) {
-    auto it = m_Downloads.insert(handle, new VMQuickVodDownload(this));
+VMQuickVodPlaylistDownloadModel::vodFileDownloadAdded(qint64 handle, const VMVodPlaylistDownload& download) {
+    auto it = m_Downloads.insert(handle, new VMQuickVodPlaylistDownload(this));
     it.value()->setData(download);
     beginInsertRows(QModelIndex(), m_Rows.count(), m_Rows.count());
     m_Rows << handle;
     endInsertRows();
     qDebug() << "added row" << m_Rows.count();
+
+    --m_PendingDownloads;
+    emit downloadsPendingChanged();
+
 }
 
 QHash<int, QByteArray>
-VMQuickVodDownloadModel::roleNames() const {
+VMQuickVodPlaylistDownloadModel::roleNames() const {
     return ms_Roles;
 }
 
 bool
-VMQuickVodDownloadModel::canStartDownload() const {
-    return m_Url.isEmpty() && m_FilePath.isEmpty();
+VMQuickVodPlaylistDownloadModel::canStartDownload() const {
+    return m_Url.isEmpty();
 }
 
 QString
-VMQuickVodDownloadModel::sanatizePath(QString path) const {
+VMQuickVodPlaylistDownloadModel::sanatizePath(QString path) const {
     // https://msdn.microsoft.com/en-us/library/aa365247
     static const QRegExp s_WindowsForbidden("[<>:\"\\|?*]");
     Q_ASSERT(s_WindowsForbidden.isValid());
@@ -336,18 +326,18 @@ VMQuickVodDownloadModel::sanatizePath(QString path) const {
 }
 
 bool
-VMQuickVodDownloadModel::isUrl(QString str) const {
+VMQuickVodPlaylistDownloadModel::isUrl(QString str) const {
     QUrl url(str);
     return url.isValid();
 }
 
 bool
-VMQuickVodDownloadModel::isOnline() const {
+VMQuickVodPlaylistDownloadModel::isOnline() const {
     return m_NetworkConfigurationManager.isOnline();
 }
 
 bool
-VMQuickVodDownloadModel::isOnBroadband() const {
+VMQuickVodPlaylistDownloadModel::isOnBroadband() const {
     auto configs = m_NetworkConfigurationManager.allConfigurations(QNetworkConfiguration::Active);
     foreach (const auto& config, configs) {
         if (config.isValid()) {
@@ -365,7 +355,7 @@ VMQuickVodDownloadModel::isOnBroadband() const {
 }
 
 bool
-VMQuickVodDownloadModel::isOnMobile() const {
+VMQuickVodPlaylistDownloadModel::isOnMobile() const {
     auto configs = m_NetworkConfigurationManager.allConfigurations(QNetworkConfiguration::Active);
     foreach (const auto& config, configs) {
         if (config.isValid()) {
@@ -385,7 +375,7 @@ VMQuickVodDownloadModel::isOnMobile() const {
 }
 
 void
-VMQuickVodDownloadModel::onOnlineChanged(bool online) {
+VMQuickVodPlaylistDownloadModel::onOnlineChanged(bool online) {
     Q_UNUSED(online);
     emit isOnlineChanged();
     emit isOnMobileChanged();
@@ -394,25 +384,25 @@ VMQuickVodDownloadModel::onOnlineChanged(bool online) {
 }
 
 bool
-VMQuickVodDownloadModel::downloadsPending() const
+VMQuickVodPlaylistDownloadModel::downloadsPending() const
 {
-    return !m_UserDownloadsFilePaths.isEmpty();
+    return m_PendingDownloads > 0 || m_Rows.count() > 0;
 }
 
 QString
-VMQuickVodDownloadModel::ytdlPath() const
+VMQuickVodPlaylistDownloadModel::ytdlPath() const
 {
     return m_Ytdl.ytdlPath();
 }
 
 void
-VMQuickVodDownloadModel::setYtdlPath(const QString& path)
+VMQuickVodPlaylistDownloadModel::setYtdlPath(const QString& path)
 {
     m_Ytdl.setYtdlPath(path);
 }
 
 void
-VMQuickVodDownloadModel::onYtdlPathChanged()
+VMQuickVodPlaylistDownloadModel::onYtdlPathChanged()
 {
     emit ytdlPathChanged();
 }

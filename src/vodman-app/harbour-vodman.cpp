@@ -28,7 +28,7 @@
 
 #include <sailfishapp.h>
 
-#include "VMQuickVodDownloadModel.h"
+#include "VMQuickVodPlaylistDownloadModel.h"
 #include "VMApp.h"
 #include "VMQuickYTDLDownloader.h"
 
@@ -49,10 +49,10 @@ int main(int argc, char *argv[])
 
     qInfo("%s version %s\n", qPrintable(app->applicationName()), qPrintable(app->applicationVersion()));
 
-    qmlRegisterType<VMQuickVodDownloadModel>(VODMAN_NAMESPACE, 1, 0, "VodDownloadModel");
-    qmlRegisterUncreatableType<VMVodEnums>(VODMAN_NAMESPACE, 1, 0, "VM", QStringLiteral("wrapper around C++ enums"));
+    qmlRegisterType<VMQuickVodPlaylistDownloadModel>(VODMAN_NAMESPACE, 1, 0, "DownloadModel");
+    qmlRegisterUncreatableType<VMVodEnums>(VODMAN_LIB_NAMESPACE, VODMAN_LIB_VERSION_MAJOR, VODMAN_LIB_VERSION_MINOR, "VM", QStringLiteral("wrapper around C++ enums"));
     qmlRegisterSingletonType<VMApp>(VODMAN_NAMESPACE, 1, 0, "App", vmAppProvider);
-    qmlRegisterSingletonType<VMQuickYTDLDownloader>(VODMAN_NAMESPACE, 1, 0, "YTDLDownloader", vmQuickYTDLDownloader);
+    qmlRegisterSingletonType<VMQuickYTDLDownloader>(VODMAN_LIB_NAMESPACE, VODMAN_LIB_VERSION_MAJOR, VODMAN_LIB_VERSION_MINOR, "YTDLDownloader", vmQuickYTDLDownloader);
 
 
     QScopedPointer<QQuickView> view(SailfishApp::createView());

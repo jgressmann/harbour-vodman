@@ -1,6 +1,6 @@
 /* The MIT License (MIT)
  *
- * Copyright (c) 2018 Jean Gressmann <jean@0x42.de>
+ * Copyright (c) 2018, 2019 Jean Gressmann <jean@0x42.de>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,90 +26,75 @@
 
 #include <QDebug>
 #include <QDebugStateSaver>
-#include <QDataStream>
 
-
-
-bool VMVodFileDownloadRequest::isValid() const {
-    return !filePath.isEmpty() && format.isValid() && description.isValid();
-}
-
-
-QDataStream &operator<<(QDataStream &stream, const VMVodFileDownloadRequest &value) {
-    stream << value.description;
-    stream << value.filePath;
-    stream << value.format;
-    return stream;
-}
-
-QDataStream &operator>>(QDataStream &stream, VMVodFileDownloadRequest &value) {
-    stream >> value.description;
-    stream >> value.filePath;
-    stream >> value.format;
-    return stream;
+bool VMVodPlaylistDownloadRequest::isValid() const
+{
+    return !filePath.isEmpty() &&
+            playlist.isValid() &&
+            formatIndex >= 0 &&
+            formatIndex < playlist.formats();
 }
 
 VMVodFileDownload::VMVodFileDownload()
     : d(new VMVodFileDownloadData())
+{}
+
+
+bool VMVodFileDownload::isValid() const
 {
+    return !filePath().isEmpty() &&
+//           !url().isEmpty() &&
+            progress() >= 0;
 }
 
+VMVodPlaylistDownload::VMVodPlaylistDownload()
+    : d(new VMVodPlaylistDownloadData())
+{}
 
-bool VMVodFileDownload::isValid() const {
-    return d->error == VMVodEnums::VM_ErrorNone &&
-            d->format.isValid() &&
-            d->description.isValid();
+
+bool VMVodPlaylistDownload::isValid() const
+{
+    return playlist().isValid() &&
+            files() > 0 &&
+            currentFileIndex() >= 0 &&
+            currentFileIndex() < files();
 }
 
-QDataStream &operator<<(QDataStream &stream, const VMVodFileDownloadData &value) {
-    stream << value.format;
-    stream << value.errorMessage;
-    stream << value._progress;
-    stream << value.error;
-    stream << value._filePath;
-    stream << value.description;
-    stream << value.fileSize;
-    stream << value.timeStarted;
-    stream << value.timeChanged;
-    return stream;
+QVariant VMVodPlaylistDownload::file(int index) const
+{
+    if (index >= 0 && index < d->files.size()) {
+        return QVariant::fromValue(d->files[index]);
+    }
+
+    return QVariant();
 }
 
-QDataStream &operator>>(QDataStream &stream, VMVodFileDownloadData &value) {
-    stream >> value.format;
-    stream >> value.errorMessage;
-    stream >> value._progress;
-    stream >> value.error;
-    stream >> value._filePath;
-    stream >> value.description;
-    stream >> value.fileSize;
-    stream >> value.timeStarted;
-    stream >> value.timeChanged;
-    return stream;
-}
-
-QDataStream &operator<<(QDataStream &stream, const VMVodFileDownload &value) {
-    return stream << value.data();
-}
-
-QDataStream &operator>>(QDataStream &stream, VMVodFileDownload &value) {
-    return stream >> value.data();
-}
-
-
-QDebug operator<<(QDebug debug, const VMVodFileDownload& value) {
+QDebug operator<<(QDebug debug, const VMVodFileDownload& value)
+{
     const VMVodFileDownloadData& data = value.data();
     QDebugStateSaver saver(debug);
     debug.nospace() << "VMVodFileDownload("
-//                    << "url=" << value.url()
-                    << "progress=" << data._progress
+//                    << "url=" << data.url
+                    << "progress=" << data.progress
+                    << ", filePath=" << data.filePath
+                    << ", fileSize=" << data.fileSize
+                    << ")";
+    return debug;
+}
+
+QDebug operator<<(QDebug debug, const VMVodPlaylistDownload& value)
+{
+    const VMVodPlaylistDownloadData& data = value.data();
+    QDebugStateSaver saver(debug);
+    debug.nospace() << "VMVodPlaylistDownload("
+                    << "url=" << data.playlist.description().webPageUrl()
+                    << ", #files=" << data.playlist.vods()
+                    << ", progress=" << data.progress
                     << ", error=" << data.error
                     << ", message=" << data.errorMessage
-                    << ", filePath=" << data._filePath
-                    << ", fileSize=" << data.fileSize
                     << ", started=" << data.timeStarted
                     << ", changed=" << data.timeChanged
-                    << ", format=" << data.format
-                    << ", desc=" << data.description
+                    << ", format=" << data.playlist._formats()[data.formatIndex]
                     << ")";
     return debug;
 }

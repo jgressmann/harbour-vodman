@@ -32,10 +32,10 @@
 #include <QNetworkConfigurationManager>
 
 
-class VMQuickVodDownload;
-class VMVodFileDownload;
+class VMQuickVodPlaylistDownload;
+class VMVodPlaylistDownload;
 class VMVodMetaDataDownload;
-class VMQuickVodDownloadModel : public QAbstractListModel
+class VMQuickVodPlaylistDownloadModel : public QAbstractListModel
 {
     Q_OBJECT
     Q_PROPERTY(bool canStartDownload READ canStartDownload NOTIFY canStartDownloadChanged)
@@ -46,8 +46,8 @@ class VMQuickVodDownloadModel : public QAbstractListModel
     Q_PROPERTY(QString ytdlPath READ ytdlPath WRITE setYtdlPath NOTIFY ytdlPathChanged)
 
 public:
-    explicit VMQuickVodDownloadModel(QObject *parent = Q_NULLPTR);
-    ~VMQuickVodDownloadModel();
+    explicit VMQuickVodPlaylistDownloadModel(QObject *parent = Q_NULLPTR);
+    ~VMQuickVodPlaylistDownloadModel();
 
 public:
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
@@ -57,7 +57,7 @@ public:
 public:
     Q_INVOKABLE void startDownloadMetaData(const QString& url);
     Q_INVOKABLE void cancelDownloadMetaData();
-    Q_INVOKABLE void startDownloadVod(qint64 token, const VMVod& vod, int formatIndex, const QString& filePath);
+    Q_INVOKABLE void startDownloadVod(qint64 token, const VMVodPlaylist& playlist, int formatIndex, const QString& filePath);
     Q_INVOKABLE void cancelDownload(int index, bool deleteFile);
     Q_INVOKABLE void cancelDownloads(bool deleteFiles);
     Q_INVOKABLE QString sanatizePath(QString path) const;
@@ -72,7 +72,7 @@ public:
 
 Q_SIGNALS: // signals
     void metaDataDownloadSubmitted(const QString& url, qint64 token);
-    void metaDataDownloadSucceeded(qint64 token, VMVod vod);
+    void metaDataDownloadSucceeded(qint64 token, VMVodPlaylist playlist);
     void downloadFailed(QString url, int error, QString filePath);
     void downloadSucceeded(QVariant download);
     void canStartDownloadChanged();
@@ -83,27 +83,25 @@ Q_SIGNALS: // signals
     void ytdlPathChanged();
 
 private slots:
-    void onVodFileDownloadCompleted(qint64 handle, const VMVodFileDownload& download);
-    void onVodFileDownloadChanged(qint64 handle, const VMVodFileDownload& download);
+    void onVodFileDownloadCompleted(qint64 handle, const VMVodPlaylistDownload& download);
+    void onVodFileDownloadChanged(qint64 handle, const VMVodPlaylistDownload& download);
     void onVodFileMetaDataDownloadCompleted(qint64 handle, const VMVodMetaDataDownload& download);
     void onOnlineChanged(bool online);
     void onYtdlPathChanged();
 
 private:
     int getHandleRow(qint64 handle) const;
-    void vodFileDownloadAdded(qint64 handle, const VMVodFileDownload& download);
+    void vodFileDownloadAdded(qint64 handle, const VMVodPlaylistDownload& download);
 
 private:
     VMYTDL m_Ytdl;
     QNetworkConfigurationManager m_NetworkConfigurationManager;
-    QHash<qint64, VMQuickVodDownload*> m_Downloads;
+    QHash<qint64, VMQuickVodPlaylistDownload*> m_Downloads;
     QList<qint64> m_Rows;
-    QList<qint64> m_UserDownloads;
-    QList<QString> m_UserDownloadsFilePaths;
     QString m_Url;
-    QString m_FilePath;
     qint64 m_Token;
     qint64 m_TokenGenerator;
+    int m_PendingDownloads;
 
 private:
     static const QHash<int, QByteArray> ms_Roles;

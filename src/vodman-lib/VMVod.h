@@ -1,6 +1,6 @@
 /* The MIT License (MIT)
  *
- * Copyright (c) 2018 Jean Gressmann <jean@0x42.de>
+ * Copyright (c) 2018, 2019 Jean Gressmann <jean@0x42.de>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -74,6 +74,7 @@ public:
         VM_ErrorIo,
         VM_ErrorAccess,
         VM_ErrorContentGone,
+        VM_ErrorInvalidRequest
     };
     Q_ENUM(Error)
 
@@ -84,16 +85,15 @@ public:
 
 struct VMVodFormatData : public QSharedData
 {
-    quint64 _fileSize;
-    QString _id;
-    QString _displayName;
-    QString _fileExtension;
-    QString _fileUrl;
-    QString _vodUrl;
-    int _width;
-    int _height;
-    int _format;
-    int _frameRate;
+    QString id;
+    QString displayName;
+    QString fileExtension;
+    QString fileUrl;
+    QString vodUrl;
+    int width;
+    int height;
+    int format;
+    float tbr;
 
     VMVodFormatData() = default;
 };
@@ -107,9 +107,8 @@ class VMVodFormat
     Q_PROPERTY(QString displayName READ displayName CONSTANT)
     Q_PROPERTY(QString fileUrl READ fileUrl CONSTANT)
     Q_PROPERTY(QString fileExtension READ fileExtension CONSTANT)
-    Q_PROPERTY(quint64 fileSize READ fileSize CONSTANT)
     Q_PROPERTY(VMVodEnums::Format format READ format CONSTANT)
-    Q_PROPERTY(int frameRate READ frameRate CONSTANT)
+    Q_PROPERTY(float tbr READ tbr CONSTANT)
 
 public:
     ~VMVodFormat() = default;
@@ -117,16 +116,15 @@ public:
     VMVodFormat(const VMVodFormat& /*other*/) = default;
     VMVodFormat& operator=(const VMVodFormat& /*other*/) = default;
 
-    inline int width() const { return d->_width; }
-    inline int height() const { return d->_height; }
-    inline QString id() const { return d->_id; }
-    inline QString displayName() const { return d->_displayName; }
-    inline QString fileExtension() const { return d->_fileExtension; }
-    inline QString fileUrl() const { return d->_fileUrl; }
-    inline QString vodUrl() const { return d->_vodUrl; }
-    inline quint64 fileSize() const { return d->_fileSize; }
-    inline VMVodEnums::Format format() const { return (VMVodEnums::Format)d->_format; }
-    inline int frameRate() const { return d->_frameRate; }
+    inline int width() const { return d->width; }
+    inline int height() const { return d->height; }
+    inline QString id() const { return d->id; }
+    inline QString displayName() const { return d->displayName; }
+    inline QString fileExtension() const { return d->fileExtension; }
+    inline QString fileUrl() const { return d->fileUrl; }
+    inline QString vodUrl() const { return d->vodUrl; }
+    inline VMVodEnums::Format format() const { return (VMVodEnums::Format)d->format; }
+    inline float tbr() const { return d->tbr; }
     bool isValid() const;
 
 public:
@@ -140,11 +138,11 @@ private:
 
 struct VMVodDescriptionData : public QSharedData
 {
-    QString _thumbnail;
-    QString _webPageUrl;
-    QString _title;
-    QString _fullTitle;
-    QString _id;
+    QString thumbnailUrl;
+    QString webPageUrl;
+    QString title;
+    QString fullTitle;
+    QString id;
     int durationS;
 
     VMVodDescriptionData() = default;
@@ -167,11 +165,11 @@ public:
     VMVodDescription& operator=(const VMVodDescription& /*other*/) = default;
 
 public:
-    inline QString thumbnailUrl() const { return d->_thumbnail; }
-    inline QString webPageUrl() const { return d->_webPageUrl; }
-    inline QString title() const { return d->_title; }
-    inline QString fullTitle() const { return d->_fullTitle; }
-    inline QString id() const { return d->_id; }
+    inline QString thumbnailUrl() const { return d->thumbnailUrl; }
+    inline QString webPageUrl() const { return d->webPageUrl; }
+    inline QString title() const { return d->title; }
+    inline QString fullTitle() const { return d->fullTitle; }
+    inline QString id() const { return d->id; }
     inline int duration() const { return d->durationS; }
     bool isValid() const;
 
@@ -186,15 +184,15 @@ private:
 
 struct VMVodData : public QSharedData
 {
-    VMVodDescription description;
-    QList<VMVodFormat> _formats;
+    int durationS;
+    int playlistIndex;
 };
 
 class VMVod
 {
     Q_GADGET
-    Q_PROPERTY(VMVodDescription description READ description CONSTANT)
-    Q_PROPERTY(int formats READ formats CONSTANT)
+    Q_PROPERTY(int duration READ duration CONSTANT)
+    Q_PROPERTY(int playlistIndex READ playlistIndex CONSTANT)
 public:
     ~VMVod() = default;
     VMVod();
@@ -202,10 +200,8 @@ public:
     VMVod& operator=(const VMVod& /*other*/) = default;
 
 public:
-    inline VMVodDescription description() const { return d->description; }
-    inline const QList<VMVodFormat>& _formats() const { return d->_formats; }
-    inline int formats() const { return d->_formats.size(); }
-    Q_INVOKABLE QVariant format(int index) const;
+    int duration() const { return d->durationS; }
+    int playlistIndex() const { return d->playlistIndex; }
     bool isValid() const;
 
 public:
@@ -216,10 +212,49 @@ private:
     QExplicitlySharedDataPointer<VMVodData> d;
 };
 
+struct VMVodPlaylistData : public QSharedData
+{
+    VMVodDescription description;
+    QList<VMVodFormat> formats;
+    QList<VMVod> vods;
+};
+
+class VMVodPlaylist
+{
+    Q_GADGET
+    Q_PROPERTY(VMVodDescription description READ description CONSTANT)
+    Q_PROPERTY(int formats READ formats CONSTANT)
+    Q_PROPERTY(int vods READ vods CONSTANT)
+public:
+    ~VMVodPlaylist() = default;
+    VMVodPlaylist();
+    VMVodPlaylist(const VMVodPlaylist& /*other*/) = default;
+    VMVodPlaylist& operator=(const VMVodPlaylist& /*other*/) = default;
+
+public:
+    inline VMVodDescription description() const { return d->description; }
+    inline const QList<VMVodFormat>& _formats() const { return d->formats; }
+    inline const QList<VMVod>& _vods() const { return d->vods; }
+    inline int formats() const { return d->formats.size(); }
+    inline int vods() const { return d->vods.size(); }
+    Q_INVOKABLE QVariant format(int index) const;
+    Q_INVOKABLE QVariant vod(int index) const;
+    bool isValid() const;
+    int duration() const;
+
+public:
+    inline VMVodPlaylistData& data() { return *d; }
+    inline const VMVodPlaylistData& data() const { return *d; }
+
+private:
+    QExplicitlySharedDataPointer<VMVodPlaylistData> d;
+};
+
 
 Q_DECLARE_METATYPE(VMVodFormat)
 Q_DECLARE_METATYPE(VMVodDescription)
 Q_DECLARE_METATYPE(VMVod)
+Q_DECLARE_METATYPE(VMVodPlaylist)
 
 
 
@@ -235,9 +270,12 @@ QDataStream &operator<<(QDataStream &stream, const VMVodData &value);
 QDataStream &operator>>(QDataStream &stream, VMVodData &value);
 QDataStream &operator<<(QDataStream &stream, const VMVod &value);
 QDataStream &operator>>(QDataStream &stream, VMVod &value);
+QDataStream &operator<<(QDataStream &stream, const VMVodPlaylist &value);
+QDataStream &operator>>(QDataStream &stream, VMVodPlaylist &value);
 
 
 QDebug operator<<(QDebug debug, const VMVodFormat& value);
 QDebug operator<<(QDebug debug, const VMVodDescription& value);
 QDebug operator<<(QDebug debug, const VMVod& value);
+QDebug operator<<(QDebug debug, const VMVodPlaylist& value);
 

@@ -1,6 +1,6 @@
 /* The MIT License (MIT)
  *
- * Copyright (c) 2018 Jean Gressmann <jean@0x42.de>
+ * Copyright (c) 2018, 2019 Jean Gressmann <jean@0x42.de>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,6 +27,10 @@
 #include <QDebugStateSaver>
 #include <QDataStream>
 
+namespace
+{
+const quint8 Version = 1;
+}
 
 VMVodMetaDataDownload::VMVodMetaDataDownload()
     : d(new VMVodMetaDataDownloadData())
@@ -35,18 +39,26 @@ VMVodMetaDataDownload::VMVodMetaDataDownload()
 
 
 QDataStream &operator<<(QDataStream &stream, const VMVodMetaDataDownloadData &value) {
-    stream << value._vod;
+    stream << Version;
+    stream << value.playlist;
     stream << value.errorMessage;
     stream << value.error;
-    stream << value._url;
+    stream << value.url;
     return stream;
 }
 
 QDataStream &operator>>(QDataStream &stream, VMVodMetaDataDownloadData &value) {
-    stream >> value._vod;
-    stream >> value.errorMessage;
-    stream >> value.error;
-    stream >> value._url;
+    quint8 version;
+    stream >> version;
+    switch (version) {
+    case 1:
+        stream >> value.playlist;
+        stream >> value.errorMessage;
+        stream >> value.error;
+        stream >> value.url;
+        break;
+    }
+
     return stream;
 }
 
@@ -65,8 +77,8 @@ QDebug operator<<(QDebug debug, const VMVodMetaDataDownload& value) {
     debug.nospace() << "VMVodMetaDataDownload("
                     << "error=" << data.error
                     << ", errorMessage=" << data.errorMessage
-                    << ", url=" << data._url
-                    << ", vod=" << data._vod
+                    << ", url=" << data.url
+                    << ", playlist=" << data.playlist
                     << ")";
     return debug;
 }

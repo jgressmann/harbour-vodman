@@ -27,6 +27,7 @@ import Nemo.Notifications 1.0
 import Nemo.Configuration 1.0
 import Nemo.DBus 2.0
 import org.duckdns.jgressmann 1.0
+import Vodman 2.0
 
 import ".."
 
@@ -55,13 +56,13 @@ Page {
         }
     }
 
-    function metaDataDownloadSucceeded(token, vod) {
-//        console.debug("token=" + token + ", vod=" + vod)
-        console.debug(".description=" + vod.description)
-        console.debug("#formats=" + vod.formats)
-        for (var i = 0; i < vod.formats; ++i) {
+    function metaDataDownloadSucceeded(token, playlist) {
+//        console.debug("token=" + token + ", playlist=" + playlist)
+        console.debug(".description=" + playlist.description)
+        console.debug("#formats=" + playlist.formats)
+        for (var i = 0; i < playlist.formats; ++i) {
 //            _vodFormat = vod.format(i)
-            var f = vod.format(i)
+            var f = playlist.format(i)
 //            console.debug(i + " " + f)
             console.debug(i + " " + f.width + "x" + f.height + " format " + f.format)
         }
@@ -94,8 +95,8 @@ Page {
         if (VM.VM_Any === formatId) {
             var labels = []
             var values = []
-            for (var i = 0; i < vod.formats; ++i) {
-                var f = vod.format(i)
+            for (var i = 0; i < playlist.formats; ++i) {
+                var f = playlist.format(i)
                 labels.push(f.displayName)
                 values.push(f.id)
             }
@@ -106,32 +107,32 @@ Page {
                             "values": values
                                         })
             dialog.accepted.connect(function() {
-                _metaDataDownloadSucceededEx(token, vod, dialog.formatIndex)
+                _metaDataDownloadSucceededEx(token, playlist, dialog.formatIndex)
 
             })
             return
         }
-        var formatIndex = _findBestFormat(vod, formatId)
-        _metaDataDownloadSucceededEx(token, vod, formatIndex)
+        var formatIndex = _findBestFormat(playlist, formatId)
+        _metaDataDownloadSucceededEx(token, playlist, formatIndex)
     }
 
-    function _findBestFormat(vod, formatId) {
+    function _findBestFormat(playlist, formatId) {
         var formatIndex = -1
         if (VM.VM_Smallest === formatId) {
-            var best = vod.format(0)
+            var best = playlist.format(0)
             formatIndex = 0
-            for (var i = 1; i < vod.formats; ++i) {
-                var f = vod.format(i)
+            for (var i = 1; i < playlist.formats; ++i) {
+                var f = playlist.format(i)
                 if (f.height < best.height) {
                     best = f;
                     formatIndex = i;
                 }
             }
         } else if (VM.VM_Largest === formatId) {
-            var best = vod.format(0)
+            var best = playlist.format(0)
             formatIndex = 0
-            for (var i = 1; i < vod.formats; ++i) {
-                var f = vod.format(i)
+            for (var i = 1; i < playlist.formats; ++i) {
+                var f = playlist.format(i)
                 if (f.height > best.height) {
                     best = f;
                     formatIndex = i;
@@ -139,8 +140,8 @@ Page {
             }
         } else {
             // try to find exact match
-            for (var i = 0; i < vod.formats; ++i) {
-                var f = vod.format(i)
+            for (var i = 0; i < playlist.formats; ++i) {
+                var f = playlist.format(i)
                 if (f.format === formatId) {
                     formatIndex = i
                     break
@@ -149,10 +150,10 @@ Page {
 
             if (formatIndex === -1) {
                 var target = targetWidth(formatId)
-                var bestdelta = Math.abs(vod.format(0).height - target)
+                var bestdelta = Math.abs(playlist.format(0).height - target)
                 formatIndex = 0
-                for (var i = 1; i < vod.formats; ++i) {
-                    var f = vod.format(i)
+                for (var i = 1; i < playlist.formats; ++i) {
+                    var f = playlist.format(i)
                     var delta = Math.abs(f.width - target)
                     if (delta < bestdelta) {
                         bestdelta = delta;
@@ -165,24 +166,24 @@ Page {
         return formatIndex
     }
 
-    function _metaDataDownloadSucceededEx(token, vod, formatIndex) {
+    function _metaDataDownloadSucceededEx(token, playlist, formatIndex) {
         console.debug("formatIndex=" + formatIndex)
         var path = settingDefaultDirectory.value
         if (!path) {
             path = StandardPaths.download
         }
 
-        var format = vod.format(formatIndex)
+        var format = playlist.format(formatIndex)
         var fileName = settingDefaultFileName.value
-        fileName = fileName.replace("{title}", vod.description.title)
-        fileName = fileName.replace("{id}", vod.description.id)
+        fileName = fileName.replace("{title}", playlist.description.title)
+        fileName = fileName.replace("{id}", playlist.description.id)
         fileName = fileName.replace("{formatid}", format.id)
         path = path + "/" + fileName + "." + format.fileExtension
         path = vodDownloadModel.sanatizePath(path)
 
         console.debug("format=" + format)
         console.debug("path=" + path)
-        vodDownloadModel.startDownloadVod(token, vod, formatIndex, path)
+        vodDownloadModel.startDownloadVod(token, playlist, formatIndex, path)
     }
 
     function downloadFailed(url, error, filePath) {
@@ -265,8 +266,8 @@ Page {
 
     function downloadSucceeded(download) {
         console.debug("download=" + download)
-        successNotification.body = download.description.fullTitle
-        successNotification.previewBody = download.description.fullTitle
+        successNotification.body = download.playlist.description.fullTitle
+        successNotification.previewBody = download.playlist.description.fullTitle
         successNotification.remoteActions = [ {
                                                  "name": "default",
                                                  //% "Play"
@@ -276,7 +277,7 @@ Page {
                                                  "path": "/instance",
                                                  "iface": "org.duckdns.jgressmann.vodman.app",
                                                  "method": "play",
-                                                 "arguments": [ download.filePath ]
+                                                 "arguments": [ download.file(0).filePath ]
                                              } ]
         successNotification.publish()
     }
@@ -426,6 +427,13 @@ Page {
             }
 
             MenuItem {
+                text: "Download playlist video"
+                visible: debugApp.value
+                enabled: page.canStartDownload
+                onClicked: vodDownloadModel.startDownloadMetaData("http://vod.afreecatv.com/PLAYER/STATION/42458592")
+            }
+
+            MenuItem {
                 text: "Download reddit"
                 visible: debugApp.value
                 enabled: page.canStartDownload
@@ -559,7 +567,7 @@ Page {
                 function cancelDownload(deleteFile) {
                     remorseAction(
                         //% "Stopping %1"
-                        qsTrId("download-item-remorse-cancel").arg(download.data.description.fullTitle),
+                        qsTrId("download-item-remorse-cancel").arg(download.data.playlist.description.fullTitle),
                         function() {
                             if (typeof(index) === "number") { // list item could have been removed
                                 vodDownloadModel.cancelDownload(index, deleteFile)
@@ -578,7 +586,7 @@ Page {
 
                         Image {
                             id: thumbnail
-                            source: download.data.description.thumbnailUrl
+                            source: download.data.playlist.description.thumbnailUrl
                             width: parent.height
                             height: parent.height
                             sourceSize.width: width
@@ -647,7 +655,7 @@ Page {
                             Label {
                                 id: title
                                 width: parent.width
-                                text: download.data.description.fullTitle
+                                text: download.data.playlist.description.fullTitle
                                 font.pixelSize: Theme.fontSizeSmall
                                 truncationMode: TruncationMode.Fade
                             }
@@ -671,11 +679,29 @@ Page {
                                 width: parent.width
                                 text: {
                                     var str = ""
-                                    str += download.data.format.width
-                                    str += "x"
-                                    str += download.data.format.height
-                                    if (download.data.fileSize > 0) {
-                                        str += ", "
+                                    var format = download.data.playlist.format(download.data.formatIndex)
+                                    if (format.width > 0 || format.height > 0) {
+                                        str += format.width + "x" + format.height
+                                    }
+
+                                    if (format.tbr > 0) {
+                                        if (str.length > 0) {
+                                            str += ", "
+                                        }
+                                        str += format.tbr.toFixed(0) + " [tbr]"
+                                    }
+
+                                    if (download.data.files > 1) {
+                                        if (str.length > 0) {
+                                            str += ", "
+                                        }
+                                        str += (download.data.currentFileIndex + 1) + "/" + download.data.files
+                                    }
+
+                                    if (download.data.fileSize) {
+                                        if (str.length > 0) {
+                                            str += ", "
+                                        }
                                         str += makeSizeString(download.data.fileSize)
                                     }
 
@@ -688,7 +714,7 @@ Page {
 
                             Label {
                                 width: parent.width
-                                text: download.data.filePath
+                                text: download.data.file(download.data.currentFileIndex).filePath
                                 font.pixelSize: Theme.fontSizeTiny
                                 color: Theme.secondaryColor
                                 truncationMode: TruncationMode.Fade
@@ -696,7 +722,7 @@ Page {
 
                             LinkedLabel {
                                 width: parent.width
-                                plainText: download.data.description.webPageUrl
+                                plainText: download.data.playlist.description.webPageUrl
                                 font.pixelSize: Theme.fontSizeTiny
                                 shortenUrl: true
                             }
@@ -722,22 +748,22 @@ Page {
                         MenuItem {
                             //% "Play"
                             text: qsTrId("play")
-                            onClicked: Qt.openUrlExternally("file://" + download.data.filePath)
+                            onClicked: Qt.openUrlExternally("file://" + download.data.file(0).filePath)
                         }
 
                         MenuItem {
                             //% "Open webpage"
                             text: qsTrId("download-item-open-webpage")
                             onClicked: {
-                                console.debug("opening: " + download.data.description.webPageUrl)
-                                Qt.openUrlExternally(download.data.description.webPageUrl)
+                                console.debug("opening: " + download.data.playlist.description.webPageUrl)
+                                Qt.openUrlExternally(download.data.playlist.description.webPageUrl)
                             }
                         }
 
                         MenuItem {
                             //% "Copy file path to clipboard"
                             text: qsTrId("download-item-copy-file-path-to-clipboard")
-                            onClicked: Clipboard.text = download.data.filePath
+                            onClicked: Clipboard.text = download.data.file(0).filePath
                         }
                     }
                 }

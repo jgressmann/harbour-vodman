@@ -1,6 +1,6 @@
 /* The MIT License (MIT)
  *
- * Copyright (c) 2018 Jean Gressmann <jean@0x42.de>
+ * Copyright (c) 2018, 2019 Jean Gressmann <jean@0x42.de>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,20 +21,31 @@
  * THE SOFTWARE.
  */
 
-#include "VMQuickVodDownload.h"
+#pragma once
 
-VMQuickVodDownload::~VMQuickVodDownload()
+#include "VMVodFileDownload.h"
+
+
+class VMQuickVodPlaylistDownload : public QObject
 {
+    Q_OBJECT
+public:
+    Q_PROPERTY(VMVodPlaylistDownload data READ data NOTIFY dataChanged)
+    Q_PROPERTY(qint64 token READ token CONSTANT)
 
-}
+public:
+    ~VMQuickVodPlaylistDownload();
+    explicit VMQuickVodPlaylistDownload(QObject* parent = Q_NULLPTR);
+    VMVodPlaylistDownload data() const { return m_Download; }
+    void setData(const VMVodPlaylistDownload& value);
+    qint64 token() const { return m_Token; }
+    void  setToken(qint64 value) { m_Token = value; }
 
-VMQuickVodDownload::VMQuickVodDownload(QObject* parent)
-    : QObject(parent)
-{}
 
+signals:
+    void dataChanged();
 
-void VMQuickVodDownload::setData(const VMVodFileDownload& value) {
-    m_Download = value;
-    emit dataChanged();
-//    emit progressChanged();
-}
+private:
+    VMVodPlaylistDownload m_Download;
+    qint64 m_Token;
+};
