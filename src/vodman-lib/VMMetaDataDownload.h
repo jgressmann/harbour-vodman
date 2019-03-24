@@ -23,13 +23,14 @@
 
 #pragma once
 
-#include "VMVod.h"
+#include "VMPlaylist.h"
 
 struct VMVodMetaDataDownloadData : public QSharedData
 {
     VMVodPlaylist playlist;
     QString errorMessage;
     QString url;
+    QVariant userData;
     int error;
 
     VMVodMetaDataDownloadData() = default;
@@ -43,6 +44,7 @@ public:
     Q_PROPERTY(QString errorMessage READ errorMessage CONSTANT)
     Q_PROPERTY(VMVodPlaylist playlist READ playlist CONSTANT)
     Q_PROPERTY(QString url READ url CONSTANT)
+    Q_PROPERTY(QVariant userData READ userData CONSTANT)
 
 public:
     ~VMVodMetaDataDownload() = default;
@@ -54,6 +56,7 @@ public:
     inline VMVodEnums::Error error() const { return (VMVodEnums::Error)d->error; }
     inline QString errorMessage() const { return d->errorMessage; }
     inline QString url() const { return d->url; }
+    inline QVariant userData() const { return d->userData; }
     inline bool isValid() const { return d->playlist.isValid(); }
 
 public:

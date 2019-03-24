@@ -376,7 +376,7 @@ Page {
                     anchors.horizontalCenter: parent.horizontalCenter
                     enabled: YTDLDownloader.isOnline &&
                              YTDLDownloader.downloadStatus !== YTDLDownloader.StatusDownloading &&
-                             !vodDownloadModel.downloadsPending
+                             !vodDownloadModel.busy
                     //% "Update youtube-dl"
                     text: qsTrId("settings-ytdl-update")
                     onClicked: YTDLDownloader.download()

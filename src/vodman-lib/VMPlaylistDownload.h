@@ -23,14 +23,15 @@
 
 #pragma once
 
-#include "VMVod.h"
+#include "VMPlaylist.h"
 #include <QDateTime>
 
 struct VMVodPlaylistDownloadRequest
 {
     QString filePath;
     VMVodPlaylist playlist;
-    int formatIndex;
+    QString format;
+    QVariant userData;
 
     bool isValid() const;
 };
@@ -42,6 +43,8 @@ struct VMVodFileDownloadData : public QSharedData
     QString filePath;
     quint64 fileSize;
     float progress;
+
+    VMVodFileDownloadData() = default;
 };
 
 class VMVodFileDownload
@@ -79,13 +82,16 @@ struct VMVodPlaylistDownloadData : public QSharedData
     VMVodPlaylist playlist;
     QList<VMVodFileDownload> files;
     QString errorMessage;
+    QString format;
     QDateTime timeStarted;
     QDateTime timeChanged;
+    QVariant userData;
     quint64 fileSize;
     float progress;
     int error;
-    int formatIndex;
     int currentFileIndex;
+
+    VMVodPlaylistDownloadData() = default;
 };
 
 class VMVodPlaylistDownload
@@ -93,14 +99,16 @@ class VMVodPlaylistDownload
     Q_GADGET
     Q_PROPERTY(float progress READ progress CONSTANT)
     Q_PROPERTY(VMVodEnums::Error error READ error CONSTANT)
+    Q_PROPERTY(QString format READ format CONSTANT)
     Q_PROPERTY(QString errorMessage READ errorMessage CONSTANT)
     Q_PROPERTY(QDateTime timeStarted READ timeStarted CONSTANT)
     Q_PROPERTY(QDateTime timeChanged READ timeChanged CONSTANT)
-    Q_PROPERTY(int formatIndex READ formatIndex CONSTANT)
+    Q_PROPERTY(QString format READ format CONSTANT)
     Q_PROPERTY(int currentFileIndex READ currentFileIndex CONSTANT)
     Q_PROPERTY(int files READ files CONSTANT)
     Q_PROPERTY(VMVodPlaylist playlist READ playlist CONSTANT)
     Q_PROPERTY(quint64 fileSize READ fileSize CONSTANT)
+    Q_PROPERTY(QVariant userData READ userData CONSTANT)
 
 public:
     ~VMVodPlaylistDownload() = default;
@@ -116,11 +124,12 @@ public:
     inline QDateTime timeChanged() const { return d->timeChanged; }
     inline int files() const { return d->files.size(); }
     Q_INVOKABLE QVariant file(int index) const;
-    inline int formatIndex() const { return d->formatIndex; }
+    inline QString format() const { return d->format; }
     inline int currentFileIndex() const { return d->currentFileIndex; }
     inline VMVodPlaylist playlist() const { return d->playlist; }
     inline quint64 fileSize() const { return d->fileSize; }
     inline const QList<VMVodFileDownload>& _files() const { return d->files; }
+    inline QVariant userData() const { return d->userData; }
 
 public:
     inline VMVodPlaylistDownloadData& data() { return *d; }

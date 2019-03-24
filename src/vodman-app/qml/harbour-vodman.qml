@@ -83,7 +83,10 @@ ApplicationWindow {
             key: "/debug"
             defaultValue: false
 
-            onValueChanged: _setMode()
+            onValueChanged: {
+
+                _setMode()
+            }
         }
     }
 

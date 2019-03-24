@@ -38,33 +38,147 @@ Page {
     readonly property bool isDownloadPage: true
     // page could be underneath settings page
     readonly property bool operational: YTDLDownloader.downloadStatus === YTDLDownloader.StatusReady
-    readonly property bool canStartDownload: operational && vodDownloadModel.canStartDownload
+    readonly property bool canStartDownload: operational
     readonly property bool clipBoardHasUrl: Clipboard.hasText && vodDownloadModel.isUrl(Clipboard.text)
     readonly property bool canStartDownloadOfClipboardUrl: canStartDownload && clipBoardHasUrl
 
+    function _download(url) {
+        vodDownloadModel.startDownloadMetaData(vodDownloadModel.newToken(), url)
+    }
 
-    function targetWidth(format) {
-        switch (format) {
-        case VM.VM_240p:
-            return 240
-        case VM.VM_360p:
-            return 360
-        case VM.VM_720p:
-            return 720
-        default:
-            return 1080
+    function _selectMergedFormat(playlist, more) {
+        if (playlist.videoFormats === 1) {
+            if (playlist.audioFormats === 1) {
+                more(0, 0)
+            } else {
+                var videoFormatId = playlist.videoFormat(0).id
+                _selectAudioFormat(playlist, function (audioFormatIndex) {
+                    more(0, audioFormatIndex)
+                })
+            }
+        } else {
+            if (playlist.audioFormats === 1) {
+                var audioFormatId = playlist.audioFormat(0).id
+                _selectVideoFormat(playlist, function (videoFormatIndex) {
+                    more(videoFormatIndex, 0)
+                })
+            } else {
+                // FIX ME
+            }
         }
+    }
+
+    function _selectVideoFormat(playlist, more) {
+        if (playlist.videoFormats > 1) {
+            var labels = []
+            var values = []
+
+            for (var i = 0; i < playlist.videoFormats; ++i) {
+                var f = playlist.videoFormat(i)
+                labels.push(f.displayName + " / " + f.tbr.toFixed(0) + " [tbr] " + f.extension)
+                values.push(f.id)
+            }
+
+            var dialog = pageStack.push(
+                Qt.resolvedUrl("SelectFormatDialog.qml"), {
+                            //% "Select video format"
+                            "title": qsTrId("select-video-format-dialog-title"),
+                            "labels" : labels,
+                            "values": values,
+                        })
+            dialog.accepted.connect(function() {
+                more(dialog.formatIndex)
+            })
+        } else {
+            more(0)
+        }
+    }
+
+    function _selectAudioFormat(playlist, more) {
+        if (playlist.audioFormats > 1) {
+            var labels = []
+            var values = []
+            for (var i = 0; i < playlist.audioFormats; ++i) {
+                var f = playlist.audioFormat(i)
+                labels.push(f.displayName + " / " + f.abr.toFixed(0) + " [abr] " + f.extension)
+                values.push(f.id)
+            }
+
+            var dialog = pageStack.push(
+                Qt.resolvedUrl("SelectFormatDialog.qml"), {
+                            //% "Select audio format"
+                            "title": qsTrId("select-audio-format-dialog-title"),
+                            "labels" : labels,
+                            "values": values
+                        })
+            dialog.accepted.connect(function() {
+                more(dialog.formatIndex)
+            })
+        } else {
+            more(0)
+        }
+    }
+
+    function _selectAvFormat(playlist, more) {
+        if (playlist.avFormats > 1) {
+            var labels = []
+            var values = []
+            for (var i = 0; i < playlist.avFormats; ++i) {
+                var f = playlist.avFormat(i)
+                labels.push(f.displayName + " / " + f.tbr.toFixed(0) + " [tbr] " + f.extension)
+                values.push(f.id)
+            }
+
+            var dialog = pageStack.push(
+                Qt.resolvedUrl("SelectFormatDialog.qml"), {
+                            //% "Select a format"
+                            "title": qsTrId("select-av-format-dialog-title"),
+                            "labels" : labels,
+                            "values": values
+                        })
+            dialog.accepted.connect(function() {
+                more(dialog.formatIndex)
+            })
+        } else {
+            more(0)
+        }
+    }
+
+    function _makeDisplayString(format) {
+        var str = ""
+        if (format.width > 0 || format.height > 0) {
+            str += format.width + "x" + format.height
+        }
+
+        if (format.tbr > 0) {
+            if (str.length > 0) {
+                str += ", "
+            }
+            str += format.tbr.toFixed(0) + " [tbr]"
+        }
+
+        return str
     }
 
     function metaDataDownloadSucceeded(token, playlist) {
 //        console.debug("token=" + token + ", playlist=" + playlist)
         console.debug(".description=" + playlist.description)
-        console.debug("#formats=" + playlist.formats)
-        for (var i = 0; i < playlist.formats; ++i) {
-//            _vodFormat = vod.format(i)
-            var f = playlist.format(i)
-//            console.debug(i + " " + f)
-            console.debug(i + " " + f.width + "x" + f.height + " format " + f.format)
+        console.debug("#av formats=" + playlist.avFormats)
+        for (var i = 0; i < playlist.avFormats; ++i) {
+            var f = playlist.avFormat(i)
+            console.debug(i + " " + f.width + "x" + f.height + " format " + f.format + " " + f.displayName + " " + f.extension)
+        }
+
+        console.debug("#video formats=" + playlist.videoFormats)
+        for (var i = 0; i < playlist.videoFormats; ++i) {
+            var f = playlist.videoFormat(i)
+            console.debug(i + " " + f.width + "x" + f.height + " format " + f.format + " " + f.displayName + " " + f.extension)
+        }
+
+        console.debug("#audio formats=" + playlist.audioFormats)
+        for (var i = 0; i < playlist.audioFormats; ++i) {
+            var f = playlist.audioFormat(i)
+            console.debug(i + " " + f.codec + " " + f.displayName + " " + f.extension)
         }
 
         var formatId
@@ -93,97 +207,89 @@ Page {
 
         console.debug("format=" + formatId)
         if (VM.VM_Any === formatId) {
-            var labels = []
-            var values = []
-            for (var i = 0; i < playlist.formats; ++i) {
-                var f = playlist.format(i)
-                labels.push(f.displayName)
-                values.push(f.id)
+            // FIX ME add support for ffmpeg
+            if (false && playlist.audioFormats > 0 && playlist.videoFormats > 0) { // prefer more choice
+                _selectMergedFormat(playlist, function (videoFormatIndex, audioFormatIndex) {
+                    var videoFormat = playlist.videoFormat(videoFormatIndex)
+                    var audioFormat = playlist.audioFormat(audioFormatIndex)
+                    _metaDataDownloadSucceededEx(token, playlist, videoFormat.id + "+" + audioFormat.id, _makeDisplayString(videoFormat))
+                })
+                return
             }
 
-            var dialog = pageStack.push(
-                Qt.resolvedUrl("SelectFormatDialog.qml"), {
-                            "labels" : labels,
-                            "values": values
-                                        })
-            dialog.accepted.connect(function() {
-                _metaDataDownloadSucceededEx(token, playlist, dialog.formatIndex)
-
-            })
-            return
+            if (playlist.avFormats > 0) {
+                _selectAvFormat(playlist, function (formatIndex) {
+                    var avFormat = playlist.avFormat(formatIndex)
+                    _metaDataDownloadSucceededEx(token, playlist, format.id, _makeDisplayString(avFormat))
+                })
+                return
+            }
         }
-        var formatIndex = _findBestFormat(playlist, formatId)
-        _metaDataDownloadSucceededEx(token, playlist, formatIndex)
+
+        var res = _findBestFormat(playlist, formatId)
+        var format = res[0]
+        var displayFormat = res[1]
+        _metaDataDownloadSucceededEx(token, playlist, format, displayFormat)
     }
 
     function _findBestFormat(playlist, formatId) {
-        var formatIndex = -1
         if (VM.VM_Smallest === formatId) {
-            var best = playlist.format(0)
-            formatIndex = 0
-            for (var i = 1; i < playlist.formats; ++i) {
-                var f = playlist.format(i)
-                if (f.height < best.height) {
-                    best = f;
-                    formatIndex = i;
-                }
-            }
-        } else if (VM.VM_Largest === formatId) {
-            var best = playlist.format(0)
-            formatIndex = 0
-            for (var i = 1; i < playlist.formats; ++i) {
-                var f = playlist.format(i)
-                if (f.height > best.height) {
-                    best = f;
-                    formatIndex = i;
-                }
-            }
-        } else {
-            // try to find exact match
-            for (var i = 0; i < playlist.formats; ++i) {
-                var f = playlist.format(i)
-                if (f.format === formatId) {
-                    formatIndex = i
-                    break
-                }
-            }
-
-            if (formatIndex === -1) {
-                var target = targetWidth(formatId)
-                var bestdelta = Math.abs(playlist.format(0).height - target)
-                formatIndex = 0
-                for (var i = 1; i < playlist.formats; ++i) {
-                    var f = playlist.format(i)
-                    var delta = Math.abs(f.width - target)
-                    if (delta < bestdelta) {
-                        bestdelta = delta;
-                        formatIndex = i;
-                    }
-                }
-            }
+            var f = playlist.avFormat(0)
+            return ["worst", _makeDisplayString(f)]
+            //return "worstvideo+worstaudio/worst"
         }
 
-        return formatIndex
+        if (VM.VM_Largest === formatId) {
+            var f = playlist.avFormat(playlist.avFormats-1)
+            return ["best", _makeDisplayString(f)]
+//            return "best"
+            //return "bestvideo+bestaudio/best"
+        }
+
+        var height
+        var width
+        switch (formatId) {
+        case VM.VM_240p:
+            height = 240
+            width = 426
+            break
+        case VM.VM_360p:
+            height = 360
+            width = 640
+            break
+        case VM.VM_720p:
+            height = 720
+            width = 1280
+            break
+        default:
+            height = 1080
+            width = 1920
+            break
+        }
+
+        return ["best[height=" + height + "]/best[height<=" + height + "]/best", "~" + width + "x" + height]
+        //return "bestvideo[height=" + height + "]+bestaudio/bestvideo[height<=" + height + "]+bestaudio/best"
     }
 
-    function _metaDataDownloadSucceededEx(token, playlist, formatIndex) {
-        console.debug("formatIndex=" + formatIndex)
+    function _metaDataDownloadSucceededEx(token, playlist, format, displayFormat) {
+        console.debug("format=" + format)
         var path = settingDefaultDirectory.value
         if (!path) {
             path = StandardPaths.download
         }
 
-        var format = playlist.format(formatIndex)
         var fileName = settingDefaultFileName.value
         fileName = fileName.replace("{title}", playlist.description.title)
         fileName = fileName.replace("{id}", playlist.description.id)
         fileName = fileName.replace("{formatid}", format.id)
-        path = path + "/" + fileName + "." + format.fileExtension
-        path = vodDownloadModel.sanatizePath(path)
+        if (playlist.vods > 1) { // youtube-dl meta var
+            fileName += "_%(playlist_index)s"
+        }
+        path = path + "/" + fileName + ".%(ext)s"
 
         console.debug("format=" + format)
         console.debug("path=" + path)
-        vodDownloadModel.startDownloadVod(token, playlist, formatIndex, path)
+        vodDownloadModel.startDownloadPlaylist(token, playlist, format, path, displayFormat)
     }
 
     function downloadFailed(url, error, filePath) {
@@ -261,6 +367,18 @@ Page {
             break
         }
 
+        errorNotification.remoteActions = [ {
+                                               "name": "default",
+                                               //% "Retry"
+                                               "displayName": qsTrId("retry"),
+                                               "icon": "icon-cover-refresh",
+                                               "service": "org.duckdns.jgressmann.vodman.app",
+                                               "path": "/instance",
+                                               "iface": "org.duckdns.jgressmann.vodman.app",
+                                               "method": "download",
+                                               "arguments": [ url ]
+                                           } ]
+
         errorNotification.publish()
     }
 
@@ -326,7 +444,7 @@ Page {
         function downloadEx(url, notify) {
             console.debug("download url=" + url + ", notify=" + notify)
             if (canStartDownload) {
-                vodDownloadModel.startDownloadMetaData(url)
+                _download(url)
                 if (notify) {
                     //% "Started download of '%1'"
                     startedNotification.summary = qsTrId("nofification-download-started-summary").arg(url)
@@ -347,7 +465,7 @@ Page {
         }
 
         function updateYtdl() {
-            if (!canStartDownload || vodDownloadModel.downloadsPending) {
+            if (!canStartDownload || vodDownloadModel.busy) {
                 errorNotification.body = errorNotification.previewBody =
                         //% "%1 is busy. Try again later."
                         qsTrId("notification-busy").arg(App.displayName)
@@ -380,12 +498,12 @@ Page {
 
     Notification {
         id: startedNotification
-        //category: "x-nemo.transfer.complete"
         appName: App.displayName
         appIcon: "/usr/share/icons/hicolor/86x86/apps/harbour-vodman.png"
         icon: appIcon
         //% "Download started"
         previewSummary: qsTrId("nofification-download-started-preview-summary")
+        isTransient: true
     }
 
     RemorsePopup { id: remorse }
@@ -409,49 +527,49 @@ Page {
                 text: "Download small video"
                 visible: debugApp.value
                 enabled: page.canStartDownload
-                onClicked: vodDownloadModel.startDownloadMetaData("https://www.youtube.com/watch?v=7t-l0q_v4D8")
+                onClicked: _download("https://www.youtube.com/watch?v=7t-l0q_v4D8")
             }
 
             MenuItem {
                 text: "Download large video"
                 visible: debugApp.value
                 enabled: page.canStartDownload
-                onClicked: vodDownloadModel.startDownloadMetaData("https://www.twitch.tv/videos/161472611?t=07h49m09s")
+                onClicked: _download("https://www.twitch.tv/videos/161472611?t=07h49m09s")
             }
 
             MenuItem {
                 text: "Download medium video"
                 visible: debugApp.value
                 enabled: page.canStartDownload
-                onClicked: vodDownloadModel.startDownloadMetaData("https://www.youtube.com/watch?v=KMAqSLWhH5w")
+                onClicked: _download("https://www.youtube.com/watch?v=KMAqSLWhH5w")
             }
 
             MenuItem {
                 text: "Download playlist video"
                 visible: debugApp.value
                 enabled: page.canStartDownload
-                onClicked: vodDownloadModel.startDownloadMetaData("http://vod.afreecatv.com/PLAYER/STATION/42458592")
+                onClicked: _download("http://vod.afreecatv.com/PLAYER/STATION/42458592")
             }
 
             MenuItem {
                 text: "Download reddit"
                 visible: debugApp.value
                 enabled: page.canStartDownload
-                onClicked: vodDownloadModel.startDownloadMetaData("https://www.reddit.com")
+                onClicked: _download("https://www.reddit.com")
             }
 
             MenuItem {
                 text: "Download mp4"
                 visible: debugApp.value
                 enabled: page.canStartDownload
-                onClicked: vodDownloadModel.startDownloadMetaData("http://techslides.com/demos/samples/sample.mp4")
+                onClicked: _download("http://techslides.com/demos/samples/sample.mp4")
             }
 
             MenuItem {
                 text: "Download png"
                 visible: debugApp.value
                 enabled: page.canStartDownload
-                onClicked: vodDownloadModel.startDownloadMetaData("https://openrepos.net/sites/default/files/openrepos_beta.png")
+                onClicked: _download("https://openrepos.net/sites/default/files/openrepos_beta.png")
             }
 
             MenuItem {
@@ -481,7 +599,7 @@ Page {
             MenuItem {
                 text: "Delete youtube-dl"
                 visible: debugApp.value &&
-                         !vodDownloadModel.downloadsPending &&
+                         !vodDownloadModel.busy &&
                          YTDLDownloader.downloadStatus == YTDLDownloader.StatusReady
                 onClicked: YTDLDownloader.remove()
             }
@@ -520,17 +638,10 @@ Page {
             }
 
             MenuItem {
-                //% "Cancel"
-                text: qsTrId("cancel")
-                visible: operational && !vodDownloadModel.canStartDownload
-                onClicked: vodDownloadModel.cancelDownloadMetaData()
-            }
-
-            MenuItem {
                 //% "Download from clipboard"
                 text: qsTrId("menu-item-download-from-clipboard")
                 enabled: page.canStartDownloadOfClipboardUrl
-                onClicked: vodDownloadModel.startDownloadMetaData(Clipboard.text)
+                onClicked: _download(Clipboard.text)
             }
         }
 
@@ -550,7 +661,7 @@ Page {
                 title: qsTrId("download-page-header")
 
                 BusyIndicator {
-                    running: YTDLDownloader.downloadStatus === YTDLDownloader.StatusDownloading || !vodDownloadModel.canStartDownload
+                    running: YTDLDownloader.downloadStatus === YTDLDownloader.StatusDownloading || vodDownloadModel.metaDataDownloadsPending
                     size: BusyIndicatorSize.Small
                     x: Theme.horizontalPageMargin
                     anchors.verticalCenter: parent.verticalCenter
@@ -666,36 +777,33 @@ Page {
                                     var oneMb = 1000000
 
                                     if (size >= 10*oneGb) { // 10GB
-                                        return (size/oneGb).toFixed(1) + " GB"
+                                        //% "%1 GB"
+                                        return qsTrId("unit-gb").arg((size/oneGb).toFixed(1))
                                     }
 
                                     if (size >= oneGb) { // 1GB
-                                        return (size/oneGb).toFixed(2) + " GB"
+                                        //% "%1 GB"
+                                        return qsTrId("unit-gb").arg((size/oneGb).toFixed(2))
                                     }
 
-                                    return (size/oneMb).toFixed(0) + " MB"
+                                    //% "%1 MB"
+                                    return qsTrId("unit-mb").arg((size/oneMb).toFixed(0))
                                 }
 
                                 width: parent.width
                                 text: {
                                     var str = ""
-                                    var format = download.data.playlist.format(download.data.formatIndex)
-                                    if (format.width > 0 || format.height > 0) {
-                                        str += format.width + "x" + format.height
+                                    if (download.data.userData) {
+                                        str = "" + download.data.userData
                                     }
 
-                                    if (format.tbr > 0) {
+                                    if (download.data.currentFileIndex >= 0 && download.data.playlist.vods > 1) {
                                         if (str.length > 0) {
                                             str += ", "
                                         }
-                                        str += format.tbr.toFixed(0) + " [tbr]"
-                                    }
 
-                                    if (download.data.files > 1) {
-                                        if (str.length > 0) {
-                                            str += ", "
-                                        }
-                                        str += (download.data.currentFileIndex + 1) + "/" + download.data.files
+                                        //% "file %1"
+                                        str += qsTrId("download-item-vod-file").arg((download.data.currentFileIndex + 1) + "/" + download.data.playlist.vods)
                                     }
 
                                     if (download.data.fileSize) {
@@ -748,6 +856,7 @@ Page {
                         MenuItem {
                             //% "Play"
                             text: qsTrId("play")
+                            visible: download.data.currentFileIndex >= 0 && !!download.data.file(0).filePath
                             onClicked: Qt.openUrlExternally("file://" + download.data.file(0).filePath)
                         }
 
@@ -772,37 +881,32 @@ Page {
             ViewPlaceholder {
                 enabled: listView.count === 0
                 text: {
-                    if (vodDownloadModel.downloadsPending) {
+                    if (vodDownloadModel.metaDataDownloadsPending) {
+                        //% "Downloading VOD metadata"
+                        return qsTrId("download-placeholder-text-metadata-download")
+                    }
+
+                    if (vodDownloadModel.busy) {
                         //% "Download will start momentarily"
                         return qsTrId("download-placeholder-text-waiting-for-download-to-start")
                     }
 
-                    if (vodDownloadModel.canStartDownload) {
-                        //% "No downloads at present"
-                        return qsTrId("download-placeholder-text-no-downloads")
-                    }
-
-                    //% "Downloading VOD metadata"
-                    return qsTrId("download-placeholder-text-metadata-download")
+                    //% "No downloads at present"
+                    return qsTrId("download-placeholder-text-no-downloads")
                 }
 
                 hintText: {
-                    if (vodDownloadModel.downloadsPending) {
+                    if (vodDownloadModel.busy) {
                         return ""
                     }
 
-                    if (!vodDownloadModel.downloadsPending && vodDownloadModel.canStartDownload) {
-                        if (clipBoardHasUrl) {
-                            //% "Pull down to start download using the URL in the clipboard"
-                            return qsTrId("download-placeholder-hint-pull-down-to-start-download-from-clipboard")
-                        }
-
-                        //% "Copy a URL to the clipboard then pull down to start the download"
-                        return qsTrId("download-placeholder-hint-copy-url-to-clipboard")
+                    if (clipBoardHasUrl) {
+                        //% "Pull down to start download using the URL in the clipboard"
+                        return qsTrId("download-placeholder-hint-pull-down-to-start-download-from-clipboard")
                     }
 
-                    //% "Pull down to cancel"
-                    return qsTrId("download-placeholder-hint-pull-down-to-cancel")
+                    //% "Copy a URL to the clipboard then pull down to start the download"
+                    return qsTrId("download-placeholder-hint-copy-url-to-clipboard")
                 }
             }
         }

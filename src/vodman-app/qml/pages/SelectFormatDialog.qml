@@ -29,6 +29,7 @@ Dialog {
     id: root
 
     property alias formatIndex: comboBox.currentIndex
+    property alias title: header.title
     canAccept: formatIndex !== -1
     property var values: []
     property var labels: []
@@ -73,8 +74,7 @@ text: \"" + label + "\"
         width: parent.width
 
         DialogHeader {
-            //% "Select a format"
-            title: qsTrId("select-format-dialog-title") // Select a format
+            id: header
         }
 
         Flickable {

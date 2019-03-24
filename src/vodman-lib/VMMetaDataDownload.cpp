@@ -21,55 +21,17 @@
  * THE SOFTWARE.
  */
 
-#include "VMVodMetaDataDownload.h"
+#include "VMMetaDataDownload.h"
 
 #include <QDebug>
 #include <QDebugStateSaver>
-#include <QDataStream>
 
-namespace
-{
-const quint8 Version = 1;
-}
+
 
 VMVodMetaDataDownload::VMVodMetaDataDownload()
     : d(new VMVodMetaDataDownloadData())
 {
 }
-
-
-QDataStream &operator<<(QDataStream &stream, const VMVodMetaDataDownloadData &value) {
-    stream << Version;
-    stream << value.playlist;
-    stream << value.errorMessage;
-    stream << value.error;
-    stream << value.url;
-    return stream;
-}
-
-QDataStream &operator>>(QDataStream &stream, VMVodMetaDataDownloadData &value) {
-    quint8 version;
-    stream >> version;
-    switch (version) {
-    case 1:
-        stream >> value.playlist;
-        stream >> value.errorMessage;
-        stream >> value.error;
-        stream >> value.url;
-        break;
-    }
-
-    return stream;
-}
-
-QDataStream &operator<<(QDataStream &stream, const VMVodMetaDataDownload &value) {
-    return stream << value.data();
-}
-
-QDataStream &operator>>(QDataStream &stream, VMVodMetaDataDownload &value) {
-    return stream >> value.data();
-}
-
 
 QDebug operator<<(QDebug debug, const VMVodMetaDataDownload& value) {
     const VMVodMetaDataDownloadData& data = value.data();
@@ -79,6 +41,7 @@ QDebug operator<<(QDebug debug, const VMVodMetaDataDownload& value) {
                     << ", errorMessage=" << data.errorMessage
                     << ", url=" << data.url
                     << ", playlist=" << data.playlist
+                    << ", userData=" << data.userData
                     << ")";
     return debug;
 }

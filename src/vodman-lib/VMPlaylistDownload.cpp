@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-#include "VMVodFileDownload.h"
+#include "VMPlaylistDownload.h"
 
 
 #include <QDebug>
@@ -30,9 +30,8 @@
 bool VMVodPlaylistDownloadRequest::isValid() const
 {
     return !filePath.isEmpty() &&
-            playlist.isValid() &&
-            formatIndex >= 0 &&
-            formatIndex < playlist.formats();
+            !format.isEmpty() &&
+            playlist.isValid();
 }
 
 VMVodFileDownload::VMVodFileDownload()
@@ -74,7 +73,6 @@ QDebug operator<<(QDebug debug, const VMVodFileDownload& value)
     const VMVodFileDownloadData& data = value.data();
     QDebugStateSaver saver(debug);
     debug.nospace() << "VMVodFileDownload("
-//                    << "url=" << data.url
                     << "progress=" << data.progress
                     << ", filePath=" << data.filePath
                     << ", fileSize=" << data.fileSize
@@ -90,11 +88,13 @@ QDebug operator<<(QDebug debug, const VMVodPlaylistDownload& value)
                     << "url=" << data.playlist.description().webPageUrl()
                     << ", #files=" << data.playlist.vods()
                     << ", progress=" << data.progress
+                    << ", fileSize=" << data.fileSize
                     << ", error=" << data.error
                     << ", message=" << data.errorMessage
                     << ", started=" << data.timeStarted
                     << ", changed=" << data.timeChanged
-                    << ", format=" << data.playlist._formats()[data.formatIndex]
+                    << ", format=" << data.format
+                    << ", userData=" << data.userData
                     << ")";
     return debug;
 }

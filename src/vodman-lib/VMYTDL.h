@@ -31,7 +31,7 @@
 #include <QVector>
 #include <functional>
 
-#include "VMVod.h"
+#include "VMPlaylist.h"
 
 
 class QJsonObject;
@@ -45,6 +45,8 @@ class VMYTDL : public QObject
     Q_PROPERTY(QString ytdlPath READ ytdlPath WRITE setYtdlPath NOTIFY ytdlPathChanged)
     Q_PROPERTY(int metaDataCacheCapacity READ metaDataCacheCapacity WRITE setMetaDataCacheCapacity NOTIFY metaDataCacheCapacityChanged)
     Q_PROPERTY(int metaDataSecondsValid READ metaDataSecondsValid WRITE setMetaDataSecondsValid NOTIFY metaDataSecondsValidChanged)
+    Q_PROPERTY(QStringList customYtdlOptions READ customYtdlOptions WRITE setCustomYtdlOptions NOTIFY customYtdlOptionsChanged)
+    Q_PROPERTY(bool ytdlVerbose READ ytdlVerbose WRITE setYtdlVerbose NOTIFY ytdlVerboseChanged)
 public:
     using Normalizer = std::function<void(QString&)>;
 
@@ -59,37 +61,45 @@ public:
     int metaDataSecondsValid() const { return m_MetaDataSecondsValid; }
     void setMetaDataSecondsValid(int value);
     Normalizer setUrlNormalizer(Normalizer&& n);
+    QStringList customYtdlOptions() const { return m_CustomOptions; }
+    void setCustomYtdlOptions(const QStringList& value);
+    bool ytdlVerbose() const { return m_YtdlVerbose; }
+    void setYtdlVerbose(bool value);
 
 public slots:
-    void startFetchVodMetaData(qint64 token, const QString& url);
-    void startFetchVodFile(qint64 token, const VMVodPlaylistDownloadRequest& request, VMVodPlaylistDownload* result = nullptr);
-    void cancelFetchVodFile(qint64 token, bool deleteFile);
+    void startFetchMetaData(qint64 token, const QString& url, const QVariant& userData = QVariant());
+    void startFetchPlaylist(qint64 token, const VMVodPlaylistDownloadRequest& request, VMVodPlaylistDownload* result = nullptr);
+    void cancelFetchPlaylist(qint64 token, bool deleteFile);
     void clearCache() { m_MetaDataCache.clear(); }
-    QVariantList inProgressVodFetches();
+    QVariantList inProgressPlaylistFetches();
 
 signals:
-    void vodMetaDataDownloadCompleted(qint64 id, const VMVodMetaDataDownload& download);
-    void vodFileDownloadChanged(qint64 id, const VMVodPlaylistDownload& download);
-    void vodFileDownloadCompleted(qint64 id, const VMVodPlaylistDownload& download);
+    void metaDataDownloadCompleted(qint64 id, const VMVodMetaDataDownload& download);
+    void playlistDownloadChanged(qint64 id, const VMVodPlaylistDownload& download);
+    void playlistDownloadCompleted(qint64 id, const VMVodPlaylistDownload& download);
     void ytdlPathChanged();
     void metaDataCacheCapacityChanged();
     void metaDataSecondsValidChanged();
+    void customYtdlOptionsChanged();
+    void ytdlVerboseChanged();
 
 private slots:
     void onMetaDataProcessFinished(int, QProcess::ExitStatus);
     void onProcessError(QProcess::ProcessError);
-    void onVodFileProcessFinished(int, QProcess::ExitStatus);
+    void onVodPlaylistProcessFinished(int, QProcess::ExitStatus);
     void onYoutubeDlVodFileDownloadProcessReadReady();
 
 private:
     Q_DISABLE_COPY(VMYTDL)
     void cleanupProcess(QProcess* process);
-    void fillFormatId(VMVodFormatData& format) const;
-    void fillWidth(VMVodFormatData& format) const;
-    void appendFormat(VMVodPlaylistData& data, const QString& vodUrl, const QJsonObject& json) const;
+    void fillFormatId(VMVideoFormatData& format) const;
+    void fillWidth(VMVideoFormatData& format) const;
+    void appendVideoFormat(VMVodPlaylistData& data, const QJsonObject& json) const;
+    void appendAudioFormat(VMVodPlaylistData& data, const QJsonObject& json) const;
+    void appendAvFormat(VMVodPlaylistData& data, const QJsonObject& json) const;
     bool available() const;
     QProcess* createProcess();
-    static bool parseJson(const QByteArray& bytes, QVector<int>* ends);
+    static bool parseJson(const QByteArray& bytes, QVector<int>* starts, QVector<int>* ends);
 
 private:
     struct CacheEntry
@@ -103,8 +113,10 @@ private:
     QHash<QProcess*, QVariantMap> m_ProcessMap;
     QHash<qint64, QProcess*> m_VodDownloads;
     Normalizer m_Normalizer;
+    QStringList m_CustomOptions;
     QString m_YoutubeDl_Path;
     int m_MetaDataSecondsValid;
+    bool m_YtdlVerbose;
 };
 
 
