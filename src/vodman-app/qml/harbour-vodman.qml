@@ -43,6 +43,10 @@ ApplicationWindow {
 
     DownloadModel {
         id: vodDownloadModel
+        Component.onCompleted: {
+            ytdl.cacheDirectory = StandardPaths.cache + "/youtube-dl/cache"
+            ytdl.ytdlVerbose = debugApp.value
+        }
     }
 
     ConfigurationGroup {
@@ -84,7 +88,7 @@ ApplicationWindow {
             defaultValue: false
 
             onValueChanged: {
-
+                vodDownloadModel.ytdl.ytdlVerbose = value
                 _setMode()
             }
         }
@@ -145,9 +149,9 @@ ApplicationWindow {
 
     function _setYtdlPath() {
         if (YTDLDownloader.downloadStatus === YTDLDownloader.StatusReady) {
-            vodDownloadModel.ytdlPath = YTDLDownloader.ytdlPath
+            vodDownloadModel.ytdl.ytdlPath = YTDLDownloader.ytdlPath
         } else {
-            vodDownloadModel.ytdlPath = ""
+            vodDownloadModel.ytdl.ytdlPath = ""
         }
     }
 

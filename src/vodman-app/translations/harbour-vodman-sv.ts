@@ -181,7 +181,7 @@
     </message>
     <message id="play">
         <location filename="../qml/pages/DownloadPage.qml" line="392"/>
-        <location filename="../qml/pages/DownloadPage.qml" line="858"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="860"/>
         <source>Play</source>
         <translation>Spela</translation>
     </message>
@@ -265,103 +265,103 @@
         <translation>Inställningar</translation>
     </message>
     <message id="menu-item-clear-clipboard">
-        <location filename="../qml/pages/DownloadPage.qml" line="609"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="611"/>
         <source>Clear clipboard</source>
         <translation>Rensa urklipp</translation>
     </message>
     <message id="menu-item-cancel-all-downloads">
-        <location filename="../qml/pages/DownloadPage.qml" line="618"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="620"/>
         <source>Cancel all downloads</source>
         <translation>Avbryt alla nerladdningar</translation>
     </message>
     <message id="remorse-cancel-all-downloads">
-        <location filename="../qml/pages/DownloadPage.qml" line="623"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="625"/>
         <source>Stopping all downloads</source>
         <translation>Stoppar alla nerladdningar</translation>
     </message>
     <message id="menu-item-cancel-all-downloads-delete">
-        <location filename="../qml/pages/DownloadPage.qml" line="630"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="632"/>
         <source>Cancel all downloads and delete files</source>
         <translation>Avbryt alla nerladdningar och ta bort filerna</translation>
     </message>
     <message id="remorse-cancel-all-downloads-delete">
-        <location filename="../qml/pages/DownloadPage.qml" line="635"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="637"/>
         <source>Purging all downloads</source>
         <translation>Tar bort alla nerladdningar</translation>
     </message>
     <message id="cancel">
-        <location filename="../qml/pages/DownloadPage.qml" line="852"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="854"/>
         <source>Cancel</source>
         <translation>Avbryt</translation>
     </message>
     <message id="menu-item-download-from-clipboard">
-        <location filename="../qml/pages/DownloadPage.qml" line="642"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="644"/>
         <source>Download from clipboard</source>
         <translation>Ladda ner från urklipp</translation>
     </message>
     <message id="download-page-header">
-        <location filename="../qml/pages/DownloadPage.qml" line="661"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="663"/>
         <source>Downloads</source>
         <translation>Nerladdningar</translation>
     </message>
     <message id="download-item-remorse-cancel">
-        <location filename="../qml/pages/DownloadPage.qml" line="681"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="683"/>
         <source>Stopping %1</source>
         <translation>Stoppar %1</translation>
     </message>
     <message id="unit-gb">
-        <location filename="../qml/pages/DownloadPage.qml" line="781"/>
-        <location filename="../qml/pages/DownloadPage.qml" line="786"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="783"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="788"/>
         <source>%1 GB</source>
         <translation type="unfinished"></translation>
     </message>
     <message id="unit-mb">
-        <location filename="../qml/pages/DownloadPage.qml" line="790"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="792"/>
         <source>%1 MB</source>
         <translation type="unfinished"></translation>
     </message>
     <message id="download-item-vod-file">
-        <location filename="../qml/pages/DownloadPage.qml" line="806"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="808"/>
         <source>file %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message id="download-item-cancel-and-delete">
-        <location filename="../qml/pages/DownloadPage.qml" line="846"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="848"/>
         <source>Cancel and delete file</source>
         <translation>Avbryt och ta bort filen</translation>
     </message>
     <message id="download-item-open-webpage">
-        <location filename="../qml/pages/DownloadPage.qml" line="865"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="867"/>
         <source>Open webpage</source>
         <translation>Öppna webbsidan</translation>
     </message>
     <message id="download-item-copy-file-path-to-clipboard">
-        <location filename="../qml/pages/DownloadPage.qml" line="874"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="876"/>
         <source>Copy file path to clipboard</source>
         <translation>Kopiera filväg till urklipp</translation>
     </message>
     <message id="download-placeholder-text-waiting-for-download-to-start">
-        <location filename="../qml/pages/DownloadPage.qml" line="891"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="893"/>
         <source>Download will start momentarily</source>
         <translation>Nerladdningen börjar omedelbart</translation>
     </message>
     <message id="download-placeholder-text-no-downloads">
-        <location filename="../qml/pages/DownloadPage.qml" line="895"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="897"/>
         <source>No downloads at present</source>
         <translation>Inga nerladdningar just nu</translation>
     </message>
     <message id="download-placeholder-text-metadata-download">
-        <location filename="../qml/pages/DownloadPage.qml" line="886"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="888"/>
         <source>Downloading VOD metadata</source>
         <translation>Laddar ner VOD metadata</translation>
     </message>
     <message id="download-placeholder-hint-pull-down-to-start-download-from-clipboard">
-        <location filename="../qml/pages/DownloadPage.qml" line="905"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="907"/>
         <source>Pull down to start download using the URL in the clipboard</source>
         <translation>Dra neråt för att starta nerladdning från URL i urklipp</translation>
     </message>
     <message id="download-placeholder-hint-copy-url-to-clipboard">
-        <location filename="../qml/pages/DownloadPage.qml" line="909"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="911"/>
         <source>Copy a URL to the clipboard then pull down to start the download</source>
         <translation>Kopiera URL till urklipp och dra sedan neråt för att starta nerladdningen</translation>
     </message>
@@ -606,17 +606,17 @@
         <translation>Tryck på knappen nedan för att försöka igen</translation>
     </message>
     <message id="nofification-download-ytdl-update-available-summary">
-        <location filename="../qml/harbour-vodman.qml" line="127"/>
+        <location filename="../qml/harbour-vodman.qml" line="131"/>
         <source>youtube-dl update available</source>
         <translation type="unfinished"></translation>
     </message>
     <message id="nofification-ytdl-update-available-body">
-        <location filename="../qml/harbour-vodman.qml" line="130"/>
+        <location filename="../qml/harbour-vodman.qml" line="134"/>
         <source>youtube-dl version %1 available</source>
         <translation type="unfinished"></translation>
     </message>
     <message id="nofification-ytdl-update-available-action">
-        <location filename="../qml/harbour-vodman.qml" line="135"/>
+        <location filename="../qml/harbour-vodman.qml" line="139"/>
         <source>Update youtube-dl</source>
         <translation type="unfinished">Uppdatera youtube-dl</translation>
     </message>

@@ -179,7 +179,7 @@
     </message>
     <message id="play">
         <location filename="../qml/pages/DownloadPage.qml" line="392"/>
-        <location filename="../qml/pages/DownloadPage.qml" line="858"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="860"/>
         <source>Play</source>
         <translation>Abspielen</translation>
     </message>
@@ -264,103 +264,103 @@
         <translation>Einstellungen</translation>
     </message>
     <message id="menu-item-clear-clipboard">
-        <location filename="../qml/pages/DownloadPage.qml" line="609"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="611"/>
         <source>Clear clipboard</source>
         <translation>Zwischenablage löschen</translation>
     </message>
     <message id="menu-item-cancel-all-downloads">
-        <location filename="../qml/pages/DownloadPage.qml" line="618"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="620"/>
         <source>Cancel all downloads</source>
         <translation>Alle Downloads abbrechen</translation>
     </message>
     <message id="remorse-cancel-all-downloads">
-        <location filename="../qml/pages/DownloadPage.qml" line="623"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="625"/>
         <source>Stopping all downloads</source>
         <translation>Beende alle Downloads</translation>
     </message>
     <message id="menu-item-cancel-all-downloads-delete">
-        <location filename="../qml/pages/DownloadPage.qml" line="630"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="632"/>
         <source>Cancel all downloads and delete files</source>
         <translation>Alle Downloads abbrechen und Dateien löschen</translation>
     </message>
     <message id="remorse-cancel-all-downloads-delete">
-        <location filename="../qml/pages/DownloadPage.qml" line="635"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="637"/>
         <source>Purging all downloads</source>
         <translation>Beende alle Downloads</translation>
     </message>
     <message id="cancel">
-        <location filename="../qml/pages/DownloadPage.qml" line="852"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="854"/>
         <source>Cancel</source>
         <translation>Abbrechen</translation>
     </message>
     <message id="menu-item-download-from-clipboard">
-        <location filename="../qml/pages/DownloadPage.qml" line="642"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="644"/>
         <source>Download from clipboard</source>
         <translation>URL in Zwischenablage herunterladen</translation>
     </message>
     <message id="download-page-header">
-        <location filename="../qml/pages/DownloadPage.qml" line="661"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="663"/>
         <source>Downloads</source>
         <translation>Downloads</translation>
     </message>
     <message id="download-item-remorse-cancel">
-        <location filename="../qml/pages/DownloadPage.qml" line="681"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="683"/>
         <source>Stopping %1</source>
         <translation>Beende %1</translation>
     </message>
     <message id="unit-gb">
-        <location filename="../qml/pages/DownloadPage.qml" line="781"/>
-        <location filename="../qml/pages/DownloadPage.qml" line="786"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="783"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="788"/>
         <source>%1 GB</source>
         <translation>%1 GB</translation>
     </message>
     <message id="unit-mb">
-        <location filename="../qml/pages/DownloadPage.qml" line="790"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="792"/>
         <source>%1 MB</source>
         <translation>%1 MB</translation>
     </message>
     <message id="download-item-vod-file">
-        <location filename="../qml/pages/DownloadPage.qml" line="806"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="808"/>
         <source>file %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message id="download-item-cancel-and-delete">
-        <location filename="../qml/pages/DownloadPage.qml" line="846"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="848"/>
         <source>Cancel and delete file</source>
         <translation>Abbrechen und Datei löschen</translation>
     </message>
     <message id="download-item-open-webpage">
-        <location filename="../qml/pages/DownloadPage.qml" line="865"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="867"/>
         <source>Open webpage</source>
         <translation>Webseite öffnen</translation>
     </message>
     <message id="download-item-copy-file-path-to-clipboard">
-        <location filename="../qml/pages/DownloadPage.qml" line="874"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="876"/>
         <source>Copy file path to clipboard</source>
         <translation>Dateipfad in die Zwischenablage kopieren</translation>
     </message>
     <message id="download-placeholder-text-waiting-for-download-to-start">
-        <location filename="../qml/pages/DownloadPage.qml" line="891"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="893"/>
         <source>Download will start momentarily</source>
         <translation>Der Download started in einigen Sekunden</translation>
     </message>
     <message id="download-placeholder-text-no-downloads">
-        <location filename="../qml/pages/DownloadPage.qml" line="895"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="897"/>
         <source>No downloads at present</source>
         <translation>Keine Downloads aktiv</translation>
     </message>
     <message id="download-placeholder-text-metadata-download">
-        <location filename="../qml/pages/DownloadPage.qml" line="886"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="888"/>
         <source>Downloading VOD metadata</source>
         <translation>Lade VOD Metadaten herunter</translation>
     </message>
     <message id="download-placeholder-hint-pull-down-to-start-download-from-clipboard">
-        <location filename="../qml/pages/DownloadPage.qml" line="905"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="907"/>
         <source>Pull down to start download using the URL in the clipboard</source>
         <translation>Zieh nach unten, um die URL in der Zwischenablage herunterzuladen.</translation>
     </message>
     <message id="download-placeholder-hint-copy-url-to-clipboard">
-        <location filename="../qml/pages/DownloadPage.qml" line="909"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="911"/>
         <source>Copy a URL to the clipboard then pull down to start the download</source>
         <translation>Kopiere eine Video URL in die Zwischenablage und zieh dann nach unten um den Download zu starten.</translation>
     </message>
@@ -604,17 +604,17 @@
         <translation>Drücke auf den Knopf um es erneut zu versuchen</translation>
     </message>
     <message id="nofification-download-ytdl-update-available-summary">
-        <location filename="../qml/harbour-vodman.qml" line="127"/>
+        <location filename="../qml/harbour-vodman.qml" line="131"/>
         <source>youtube-dl update available</source>
         <translation>youtube-dl Update verfügbar</translation>
     </message>
     <message id="nofification-ytdl-update-available-body">
-        <location filename="../qml/harbour-vodman.qml" line="130"/>
+        <location filename="../qml/harbour-vodman.qml" line="134"/>
         <source>youtube-dl version %1 available</source>
         <translation>youtube-dl Version %1 verfügbar</translation>
     </message>
     <message id="nofification-ytdl-update-available-action">
-        <location filename="../qml/harbour-vodman.qml" line="135"/>
+        <location filename="../qml/harbour-vodman.qml" line="139"/>
         <source>Update youtube-dl</source>
         <translation>youtube-dl aktualisieren</translation>
     </message>

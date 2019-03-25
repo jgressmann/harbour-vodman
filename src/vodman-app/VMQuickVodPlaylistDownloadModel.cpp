@@ -54,7 +54,6 @@ VMQuickVodPlaylistDownloadModel::VMQuickVodPlaylistDownloadModel(QObject *parent
     , m_TokenGenerator(0)
     , m_MetaDataDownloads(0)
 {
-    connect(&m_Ytdl, &VMYTDL::ytdlPathChanged, this, &VMQuickVodPlaylistDownloadModel::onYtdlPathChanged);
     connect(&m_Ytdl, &VMYTDL::playlistDownloadCompleted, this, &VMQuickVodPlaylistDownloadModel::onPlaylistDownloadCompleted);
     connect(&m_Ytdl, &VMYTDL::playlistDownloadChanged, this, &VMQuickVodPlaylistDownloadModel::onPlaylistDownloadChanged);
     connect(&m_Ytdl, &VMYTDL::metaDataDownloadCompleted, this, &VMQuickVodPlaylistDownloadModel::onMetaDataDownloadCompleted);
@@ -326,24 +325,6 @@ bool
 VMQuickVodPlaylistDownloadModel::busy() const
 {
     return m_MetaDataDownloads > 0 || m_UrlsBeingDownloaded.size() > 0;
-}
-
-QString
-VMQuickVodPlaylistDownloadModel::ytdlPath() const
-{
-    return m_Ytdl.ytdlPath();
-}
-
-void
-VMQuickVodPlaylistDownloadModel::setYtdlPath(const QString& path)
-{
-    m_Ytdl.setYtdlPath(path);
-}
-
-void
-VMQuickVodPlaylistDownloadModel::onYtdlPathChanged()
-{
-    emit ytdlPathChanged();
 }
 
 qint64

@@ -43,7 +43,7 @@ class VMQuickVodPlaylistDownloadModel : public QAbstractListModel
     Q_PROPERTY(bool isOnMobile READ isOnMobile NOTIFY isOnMobileChanged)
     Q_PROPERTY(bool busy READ busy NOTIFY busyChanged)
     Q_PROPERTY(bool metaDataDownloadsPending READ metaDataDownloadsPending NOTIFY metaDataDownloadsPendingChanged)
-    Q_PROPERTY(QString ytdlPath READ ytdlPath WRITE setYtdlPath NOTIFY ytdlPathChanged)
+    Q_PROPERTY(VMYTDL* ytdl READ ytdl CONSTANT)
 
 public:
     explicit VMQuickVodPlaylistDownloadModel(QObject *parent = Q_NULLPTR);
@@ -66,10 +66,9 @@ public:
     bool isOnMobile() const;
     bool busy() const;
     bool metaDataDownloadsPending() const { return m_MetaDataDownloads > 0; }
-    QString ytdlPath() const;
-    void setYtdlPath(const QString& path);
+    VMYTDL* ytdl() { return &m_Ytdl; }
 
-Q_SIGNALS: // signals
+Q_SIGNALS:
     void metaDataDownloadSubmitted(const QString& url, qint64 token);
     void metaDataDownloadSucceeded(qint64 token, VMVodPlaylist playlist);
     void downloadFailed(QString url, int error, QString filePath);
@@ -79,14 +78,12 @@ Q_SIGNALS: // signals
     void isOnMobileChanged();
     void busyChanged();
     void metaDataDownloadsPendingChanged();
-    void ytdlPathChanged();
 
 private slots:
     void onPlaylistDownloadCompleted(qint64 handle, const VMVodPlaylistDownload& download);
     void onPlaylistDownloadChanged(qint64 handle, const VMVodPlaylistDownload& download);
     void onMetaDataDownloadCompleted(qint64 handle, const VMVodMetaDataDownload& download);
     void onOnlineChanged(bool online);
-    void onYtdlPathChanged();
 
 private:
     int getHandleRow(qint64 handle) const;
@@ -104,3 +101,4 @@ private:
 private:
     static const QHash<int, QByteArray> ms_Roles;
 };
+

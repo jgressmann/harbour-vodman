@@ -46,6 +46,7 @@ class VMYTDL : public QObject
     Q_PROPERTY(int metaDataCacheCapacity READ metaDataCacheCapacity WRITE setMetaDataCacheCapacity NOTIFY metaDataCacheCapacityChanged)
     Q_PROPERTY(int metaDataSecondsValid READ metaDataSecondsValid WRITE setMetaDataSecondsValid NOTIFY metaDataSecondsValidChanged)
     Q_PROPERTY(QStringList customYtdlOptions READ customYtdlOptions WRITE setCustomYtdlOptions NOTIFY customYtdlOptionsChanged)
+    Q_PROPERTY(QString cacheDirectory READ cacheDirectory WRITE setCacheDirectory NOTIFY cacheDirectoryChanged)
     Q_PROPERTY(bool ytdlVerbose READ ytdlVerbose WRITE setYtdlVerbose NOTIFY ytdlVerboseChanged)
 public:
     using Normalizer = std::function<void(QString&)>;
@@ -65,6 +66,8 @@ public:
     void setCustomYtdlOptions(const QStringList& value);
     bool ytdlVerbose() const { return m_YtdlVerbose; }
     void setYtdlVerbose(bool value);
+    QString cacheDirectory() const { return m_CacheDirectory; }
+    void setCacheDirectory(const QString& value);
 
 public slots:
     void startFetchMetaData(qint64 token, const QString& url, const QVariant& userData = QVariant());
@@ -82,6 +85,7 @@ signals:
     void metaDataSecondsValidChanged();
     void customYtdlOptionsChanged();
     void ytdlVerboseChanged();
+    void cacheDirectoryChanged();
 
 private slots:
     void onMetaDataProcessFinished(int, QProcess::ExitStatus);
@@ -115,6 +119,7 @@ private:
     Normalizer m_Normalizer;
     QStringList m_CustomOptions;
     QString m_YoutubeDl_Path;
+    QString m_CacheDirectory;
     int m_MetaDataSecondsValid;
     bool m_YtdlVerbose;
 };

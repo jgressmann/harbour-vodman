@@ -55,6 +55,7 @@ void Nop(QString&) {}
 
 void ParseYtdlOutput(QString& str, VMVodPlaylistDownloadData& downloadData)
 {
+    qDebug("%s\n", qPrintable(str));
     if (s_YTDLVideoNumberRegexp.indexIn(str) != -1) {
         QString capture = s_YTDLVideoNumberRegexp.cap(1);
         bool ok = false;
@@ -116,7 +117,7 @@ VMYTDL::VMYTDL(QObject* parent)
     : QObject(parent)
     , m_Normalizer(&Nop)
     , m_MetaDataSecondsValid(3600) // one hour timeout, typically vod file urls go stale
-    , m_YtdlVerbose(true)
+    , m_YtdlVerbose(false)
 {
 }
 
@@ -207,9 +208,15 @@ VMYTDL::startFetchMetaData(qint64 token, const QString& _url, const QVariant& us
     if (m_YtdlVerbose) {
         arguments << QStringLiteral("--verbose");
     }
+
+    if (m_CacheDirectory.isEmpty()) {
+        arguments << QStringLiteral("--no-cache-dir");
+    } else {
+        arguments << QStringLiteral("--cache-dir") << m_CacheDirectory;
+    }
+
     arguments << QStringLiteral("--dump-json")
               //<< QStringLiteral("--youtube-skip-dash-manifest")
-              << QStringLiteral("--no-cache-dir")
               << s_NoCallHome
               << m_CustomOptions
               << url;
@@ -276,12 +283,17 @@ VMYTDL::startFetchPlaylist(qint64 token, const VMVodPlaylistDownloadRequest& req
         arguments << QStringLiteral("--verbose");
     }
 
-    arguments << QStringLiteral("-c")
+    if (m_CacheDirectory.isEmpty()) {
+        arguments << QStringLiteral("--no-cache-dir");
+    } else {
+        arguments << QStringLiteral("--cache-dir") << m_CacheDirectory;
+    }
+
+    arguments //<< QStringLiteral("-c")
               << QStringLiteral("--newline")
               << QStringLiteral("--no-part")
-              << QStringLiteral("--no-cache-dir")
+              << QStringLiteral("--fixup") << QStringLiteral("never")
               << s_NoCallHome
-              << QStringLiteral("--no-resize-buffer")
               << QStringLiteral("-f") << req.format
               << QStringLiteral("-o") << req.filePath
               << m_CustomOptions
@@ -988,5 +1000,13 @@ VMYTDL::setYtdlVerbose(bool value)
         m_YtdlVerbose = value;
         emit ytdlVerboseChanged();
     }
+}
 
+void
+VMYTDL::setCacheDirectory(const QString& value)
+{
+    if (value != m_CacheDirectory) {
+        m_CacheDirectory = value;
+        emit ytdlVerboseChanged();
+    }
 }

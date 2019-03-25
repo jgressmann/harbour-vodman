@@ -548,7 +548,9 @@ Page {
                 text: "Download playlist video"
                 visible: debugApp.value
                 enabled: page.canStartDownload
-                onClicked: _download("http://vod.afreecatv.com/PLAYER/STATION/42458592")
+                //onClicked: _download("http://vod.afreecatv.com/PLAYER/STATION/42458592")
+                onClicked: _download("http://vod.afreecatv.com/PLAYER/STATION/42098913")
+
             }
 
             MenuItem {
