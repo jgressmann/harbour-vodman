@@ -23,8 +23,7 @@
 
 #include "VMYTDL.h"
 #include "VMPlaylist.h"
-#include "VMPlaylistDownload.h"
-#include "VMMetaDataDownload.h"
+#include "VMDownload.h"
 
 #include <QJsonDocument>
 #include <QJsonObject>

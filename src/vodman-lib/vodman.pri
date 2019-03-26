@@ -13,16 +13,14 @@ isEmpty(VODMAN_LIB_TARGETDIR) {
 SOURCES += \
     $$PWD/VMYTDL.cpp \
     $$PWD/VMQuickYTDLDownloader.cpp \
-    $$PWD/VMPlaylistDownload.cpp \
-    $$PWD/VMMetaDataDownload.cpp \
-    $$PWD/VMPlaylist.cpp
+    $$PWD/VMPlaylist.cpp \
+    $$PWD/VMDownload.cpp
 
 HEADERS += \
     $$PWD/VMYTDL.h \
     $$PWD/VMQuickYTDLDownloader.h \
-    $$PWD/VMMetaDataDownload.h \
-    $$PWD/VMPlaylistDownload.h \
-    $$PWD/VMPlaylist.h
+    $$PWD/VMPlaylist.h \
+    $$PWD/VMDownload.h
 
 
 

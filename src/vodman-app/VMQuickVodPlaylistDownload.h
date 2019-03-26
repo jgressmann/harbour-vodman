@@ -23,7 +23,7 @@
 
 #pragma once
 
-#include "VMPlaylistDownload.h"
+#include "VMDownload.h"
 
 
 class VMQuickVodPlaylistDownload : public QObject

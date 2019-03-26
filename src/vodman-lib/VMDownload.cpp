@@ -21,11 +21,17 @@
  * THE SOFTWARE.
  */
 
-#include "VMPlaylistDownload.h"
+#include "VMDownload.h"
 
 
 #include <QDebug>
 #include <QDebugStateSaver>
+
+
+VMVodMetaDataDownload::VMVodMetaDataDownload()
+    : d(new VMVodMetaDataDownloadData())
+{}
+
 
 bool VMVodPlaylistDownloadRequest::isValid() const
 {
@@ -66,6 +72,20 @@ QVariant VMVodPlaylistDownload::file(int index) const
     }
 
     return QVariant();
+}
+
+
+QDebug operator<<(QDebug debug, const VMVodMetaDataDownload& value) {
+    const VMVodMetaDataDownloadData& data = value.data();
+    QDebugStateSaver saver(debug);
+    debug.nospace() << "VMVodMetaDataDownload("
+                    << "error=" << data.error
+                    << ", errorMessage=" << data.errorMessage
+                    << ", url=" << data.url
+                    << ", playlist=" << data.playlist
+                    << ", userData=" << data.userData
+                    << ")";
+    return debug;
 }
 
 QDebug operator<<(QDebug debug, const VMVodFileDownload& value)

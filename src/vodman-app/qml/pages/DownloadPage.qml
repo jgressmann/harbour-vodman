@@ -545,12 +545,18 @@ Page {
             }
 
             MenuItem {
-                text: "Download playlist video"
+                text: "Download afreecatv playlist video"
                 visible: debugApp.value
                 enabled: page.canStartDownload
                 onClicked: _download("http://vod.afreecatv.com/PLAYER/STATION/42458592")
                 //onClicked: _download("http://vod.afreecatv.com/PLAYER/STATION/42098913")
+            }
 
+            MenuItem {
+                text: "Download youtube playlist video"
+                visible: debugApp.value
+                enabled: page.canStartDownload
+                onClicked: _download("https://www.youtube.com/playlist?list=PLB4brr7vf-P7pT4mcWuAZJ79o-38RZ3Bx")
             }
 
             MenuItem {

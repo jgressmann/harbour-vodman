@@ -24,8 +24,7 @@
 #pragma once
 
 
-#include "VMPlaylistDownload.h"
-#include "VMMetaDataDownload.h"
+#include "VMDownload.h"
 #include "VMYTDL.h"
 
 #include <QAbstractListModel>

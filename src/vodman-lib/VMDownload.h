@@ -26,6 +26,52 @@
 #include "VMPlaylist.h"
 #include <QDateTime>
 
+
+struct VMVodMetaDataDownloadData : public QSharedData
+{
+    VMVodPlaylist playlist;
+    QString errorMessage;
+    QString url;
+    QVariant userData;
+    int error;
+
+    VMVodMetaDataDownloadData() = default;
+};
+
+
+class VMVodMetaDataDownload
+{
+    Q_GADGET
+public:
+    Q_PROPERTY(VMVodEnums::Error error READ error CONSTANT)
+    Q_PROPERTY(QString errorMessage READ errorMessage CONSTANT)
+    Q_PROPERTY(VMVodPlaylist playlist READ playlist CONSTANT)
+    Q_PROPERTY(QString url READ url CONSTANT)
+    Q_PROPERTY(QVariant userData READ userData CONSTANT)
+
+public:
+    ~VMVodMetaDataDownload() = default;
+    VMVodMetaDataDownload();
+    VMVodMetaDataDownload(const VMVodMetaDataDownload& /*other*/) = default;
+    VMVodMetaDataDownload& operator=(const VMVodMetaDataDownload& /*other*/) = default;
+
+    inline VMVodPlaylist playlist() const { return d->playlist; }
+    inline VMVodEnums::Error error() const { return (VMVodEnums::Error)d->error; }
+    inline QString errorMessage() const { return d->errorMessage; }
+    inline QString url() const { return d->url; }
+    inline QVariant userData() const { return d->userData; }
+    inline bool isValid() const { return d->playlist.isValid(); }
+
+public:
+    inline VMVodMetaDataDownloadData& data() { return *d; }
+    inline const VMVodMetaDataDownloadData& data() const { return *d; }
+
+private:
+    QExplicitlySharedDataPointer<VMVodMetaDataDownloadData> d;
+};
+
+Q_DECLARE_METATYPE(VMVodMetaDataDownload)
+
 struct VMVodPlaylistDownloadRequest
 {
     QString filePath;
@@ -103,7 +149,6 @@ class VMVodPlaylistDownload
     Q_PROPERTY(QString errorMessage READ errorMessage CONSTANT)
     Q_PROPERTY(QDateTime timeStarted READ timeStarted CONSTANT)
     Q_PROPERTY(QDateTime timeChanged READ timeChanged CONSTANT)
-    Q_PROPERTY(QString format READ format CONSTANT)
     Q_PROPERTY(int currentFileIndex READ currentFileIndex CONSTANT)
     Q_PROPERTY(int files READ files CONSTANT)
     Q_PROPERTY(VMVodPlaylist playlist READ playlist CONSTANT)
@@ -144,8 +189,7 @@ Q_DECLARE_METATYPE(VMVodFileDownload)
 Q_DECLARE_METATYPE(VMVodPlaylistDownload)
 
 
-
-
 QDebug operator<<(QDebug debug, const VMVodFileDownload& value);
 QDebug operator<<(QDebug debug, const VMVodPlaylistDownload& value);
+QDebug operator<<(QDebug debug, const VMVodMetaDataDownload& value);
 

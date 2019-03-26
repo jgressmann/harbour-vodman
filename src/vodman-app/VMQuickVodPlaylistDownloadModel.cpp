@@ -22,7 +22,6 @@
  */
 
 #include "VMQuickVodPlaylistDownloadModel.h"
-#include "VMMetaDataDownload.h"
 #include "VMQuickVodPlaylistDownload.h"
 
 #include <QDebug>
