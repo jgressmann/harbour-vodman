@@ -548,8 +548,8 @@ Page {
                 text: "Download playlist video"
                 visible: debugApp.value
                 enabled: page.canStartDownload
-                //onClicked: _download("http://vod.afreecatv.com/PLAYER/STATION/42458592")
-                onClicked: _download("http://vod.afreecatv.com/PLAYER/STATION/42098913")
+                onClicked: _download("http://vod.afreecatv.com/PLAYER/STATION/42458592")
+                //onClicked: _download("http://vod.afreecatv.com/PLAYER/STATION/42098913")
 
             }
 
@@ -597,6 +597,16 @@ Page {
                     Clipboard.text = "https://www.reddit.com"
                 }
             }
+
+            MenuItem {
+                text: "Copy m3u8 to clipboard"
+                visible: debugApp.value
+                onClicked: {
+                    Clipboard.text = "http://videofile-hls-ko-record-cf.afreecatv.com/video/_definst_/vod/20190317/085/806BF397_212355085_1.smil/chunklist_b1000000_t64aGQ=.m3u8"
+                }
+            }
+
+
 
             MenuItem {
                 text: "Delete youtube-dl"
