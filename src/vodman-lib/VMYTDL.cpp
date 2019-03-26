@@ -32,7 +32,6 @@
 #include <QStringList>
 #include <QProcess>
 #include <QDebug>
-#include <QProcess>
 #include <QRegExp>
 #include <QUrlQuery>
 #include <QFile>
