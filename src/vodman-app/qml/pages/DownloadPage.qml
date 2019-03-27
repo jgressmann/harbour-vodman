@@ -713,7 +713,7 @@ Page {
 
                         Image {
                             id: thumbnail
-                            source: download.data.currentVod.thumbnailUrl
+                            source: download.data.playlist.vod(download.data.currentFileIndex).thumbnailUrl
                             width: parent.height
                             height: parent.height
                             sourceSize.width: width
