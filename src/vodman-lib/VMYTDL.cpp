@@ -39,10 +39,12 @@
 
 namespace {
 //[download] Destination: youtube-dl tutorial for windows-fKe9rV-gl1c.f251.webm
+//[download] METAL ALLEGIANCE - Anaheim Show 2019 (OFFICIAL TRAILER)-dmhgRlaReho.mp4 has already been downloaded
 
-const QRegExp s_YTDLVideoNumberRegexp("\\[download\\]\\s+Downloading video (\\d+) of \\d+\\s*");
-const QRegExp s_YTDLVideoFileNameRegexp("\\[download\\]\\s+Destination:\\s+(.+)\\s*$");
-const QRegExp s_YTDLProgressRegexp("\\[download\\]\\s+(\\d+\\.\\d*)%\\s+");
+const QRegExp s_YTDLVideoNumberRegexp("^\\[download\\]\\s+Downloading video (\\d+) of \\d+\\s*");
+const QRegExp s_YTDLDestinationRegexp("^\\[download\\]\\s+Destination:\\s+(.+)\\s*$");
+const QRegExp s_YTDLAlreadyDownloadedRegexp("^\\[download\\]\\s+(.+)\\s+has already been downloaded\\s*$");
+const QRegExp s_YTDLProgressRegexp("^\\[download\\]\\s+(\\d+\\.\\d*)%\\s+");
 const QString s_Token = QStringLiteral("token");
 const QString s_Type = QStringLiteral("type");
 const QString s_MetaData = QStringLiteral("metadata");
@@ -50,12 +52,32 @@ const QString s_Download = QStringLiteral("download");
 const QString s_NoCallHome = QStringLiteral("--no-call-home");
 const QString s_NoColor = QStringLiteral("--no-color");
 
+
+
 void Nop(QString&) {}
 
 void ParseYtdlOutput(QString& str, VMPlaylistDownloadData& downloadData)
 {
     qDebug("%s\n", qPrintable(str));
-    if (s_YTDLVideoNumberRegexp.indexIn(str) != -1) {
+    if (s_YTDLProgressRegexp.indexIn(str) != -1) {
+        QString capture = s_YTDLProgressRegexp.cap(1);
+        bool ok = false;
+        auto value = capture.toFloat(&ok);
+        if (ok) {
+//            qDebug() << str;
+            auto normalized = qMax(0.0f, qMin(value/100, 1.0f));
+            downloadData.files[downloadData.currentFileIndex].data().progress = normalized;
+
+            // compute total progress
+            float totalProgress = 0;
+            for (int i = 0; i < downloadData.currentFileIndex; ++i) {
+                totalProgress += downloadData.playlist._vods()[i].duration();
+            }
+            totalProgress += normalized * downloadData.playlist._vods()[downloadData.currentFileIndex].duration();
+            totalProgress /= downloadData.playlist.duration();
+            downloadData.progress = totalProgress;
+        }
+    } else if (s_YTDLVideoNumberRegexp.indexIn(str) != -1) {
         QString capture = s_YTDLVideoNumberRegexp.cap(1);
         bool ok = false;
         auto value = capture.toInt(&ok);
@@ -76,26 +98,10 @@ void ParseYtdlOutput(QString& str, VMPlaylistDownloadData& downloadData)
                 downloadData.currentFileIndex = qMin(fileIndex, downloadData.playlist.vods());
             }
         }
-    } else if (s_YTDLVideoFileNameRegexp.indexIn(str) != -1) {
-        downloadData.files[downloadData.currentFileIndex].data().filePath = s_YTDLVideoFileNameRegexp.cap(1);
-    } else if (s_YTDLProgressRegexp.indexIn(str) != -1) {
-        QString capture = s_YTDLProgressRegexp.cap(1);
-        bool ok = false;
-        auto value = capture.toFloat(&ok);
-        if (ok) {
-//            qDebug() << str;
-            auto normalized = qMax(0.0f, qMin(value/100, 1.0f));
-            downloadData.files[downloadData.currentFileIndex].data().progress = normalized;
-
-            // compute total progress
-            float totalProgress = 0;
-            for (int i = 0; i < downloadData.currentFileIndex; ++i) {
-                totalProgress += downloadData.playlist._vods()[i].duration();
-            }
-            totalProgress += normalized * downloadData.playlist._vods()[downloadData.currentFileIndex].duration();
-            totalProgress /= downloadData.playlist.duration();
-            downloadData.progress = totalProgress;
-        }
+    } else if (s_YTDLDestinationRegexp.indexIn(str) != -1) {
+        downloadData.files[downloadData.currentFileIndex].data().filePath = s_YTDLDestinationRegexp.cap(1);
+    } else if (s_YTDLAlreadyDownloadedRegexp.indexIn(str) != -1) {
+        downloadData.files[downloadData.currentFileIndex].data().filePath = s_YTDLAlreadyDownloadedRegexp.cap(1);
     }
 }
 
@@ -388,7 +394,7 @@ VMYTDL::onMetaDataProcessFinished(int code, QProcess::ExitStatus status)
     }
 
     QByteArray output = process->readAllStandardOutput();
-    qDebug("%s\n", output.data());
+//    qDebug("%s\n", output.data());
     QVector<int> starts, ends;
     if (!parseJson(output, &starts, &ends)) {
         downLoadData.error = VMVodEnums::VM_ErrorInvalidResponse;
@@ -430,7 +436,7 @@ VMYTDL::onMetaDataProcessFinished(int code, QProcess::ExitStatus status)
     // we need to forward the actual playlist url, not the url of the first
     // video which is what we get with youtube.com
     vodPlaylistData.webPageUrl = download.url();
-    //descData.thumbnailUrl = root.value(QStringLiteral("thumbnail")).toString();
+
 
     auto playlistId = root.value(QStringLiteral("playlist_id")).toString();
     if (playlistId.isEmpty()) {
@@ -442,15 +448,6 @@ VMYTDL::onMetaDataProcessFinished(int code, QProcess::ExitStatus status)
         vodPlaylistData.title = root.value(QStringLiteral("playlist_title")).toString();
         vodPlaylistData.id = root.value(QStringLiteral("playlist_id")).toString();
     }
-
-//    if (ends.size() == 1) {
-//        descData.fullTitle = root.value(QStringLiteral("fulltitle")).toString();
-//        vodPlaylistData.title = root.value(QStringLiteral("title")).toString();
-//        descData.id = root.value(QStringLiteral("id")).toString();
-//    } else {
-//        vodPlaylistData.title = root.value(QStringLiteral("playlist_title")).toString();
-//        vodPlaylistData.id = root.value(QStringLiteral("playlist_id")).toString();
-//    }
 
 
     QJsonArray formats = root.value(QStringLiteral("formats")).toArray();
