@@ -320,10 +320,12 @@
         <source>file %1</source>
         <translation type="unfinished"></translation>
     </message>
-    <message id="download-item-cancel-and-delete">
+    <message id="download-item-cancel-and-delete" numerus="yes">
         <location filename="../qml/pages/DownloadPage.qml" line="862"/>
         <source>Cancel and delete file</source>
-        <translation>取消并删除文件</translation>
+        <translation type="unfinished">
+            <numerusform>取消并删除文件</numerusform>
+        </translation>
     </message>
     <message id="download-item-open-webpage">
         <location filename="../qml/pages/DownloadPage.qml" line="881"/>
@@ -331,32 +333,33 @@
         <translation>打开网页</translation>
     </message>
     <message id="download-item-copy-file-path-to-clipboard">
-        <location filename="../qml/pages/DownloadPage.qml" line="890"/>
-        <source>Copy file path to clipboard</source>
-        <translation>复制文件路径到剪贴板</translation>
+        <location filename="../qml/pages/DownloadPage.qml" line="891"/>
+        <source></source>
+        <oldsource>Copy file path to clipboard</oldsource>
+        <translation type="unfinished">复制文件路径到剪贴板</translation>
     </message>
     <message id="download-placeholder-text-waiting-for-download-to-start">
-        <location filename="../qml/pages/DownloadPage.qml" line="907"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="908"/>
         <source>Download will start momentarily</source>
         <translation>下载将会立即开始</translation>
     </message>
     <message id="download-placeholder-text-no-downloads">
-        <location filename="../qml/pages/DownloadPage.qml" line="911"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="912"/>
         <source>No downloads at present</source>
         <translation>暂无下载</translation>
     </message>
     <message id="download-placeholder-text-metadata-download">
-        <location filename="../qml/pages/DownloadPage.qml" line="902"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="903"/>
         <source>Downloading VOD metadata</source>
         <translation>正在下载视频元数据</translation>
     </message>
     <message id="download-placeholder-hint-pull-down-to-start-download-from-clipboard">
-        <location filename="../qml/pages/DownloadPage.qml" line="921"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="922"/>
         <source>Pull down to start download using the URL in the clipboard</source>
         <translation>下拉以开始下载剪贴板中的网址</translation>
     </message>
     <message id="download-placeholder-hint-copy-url-to-clipboard">
-        <location filename="../qml/pages/DownloadPage.qml" line="925"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="926"/>
         <source>Copy a URL to the clipboard then pull down to start the download</source>
         <translation>复制一个网址到剪贴板然后下拉以开始下载</translation>
     </message>

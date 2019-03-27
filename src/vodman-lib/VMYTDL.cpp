@@ -230,7 +230,6 @@ VMYTDL::startFetchMetaData(qint64 token, const QString& _url, const QVariant& us
     m_ProcessMap.insert(process, result);
 
     process->start(m_YoutubeDl_Path, arguments, QIODevice::ReadOnly);
-    return;
 }
 
 
@@ -249,7 +248,6 @@ VMYTDL::startFetchPlaylist(qint64 token, const VMPlaylistDownloadRequest& req, V
     data.userData = req.userData;
     data.timeStarted = data.timeChanged = QDateTime::currentDateTime();
     data.files.append(VMFileDownload());
-    data.files.last().data().filePath = req.filePath;
 
     if (!req.isValid()) {
         data.errorMessage = QStringLiteral("invalid download request");
@@ -273,8 +271,6 @@ VMYTDL::startFetchPlaylist(qint64 token, const VMPlaylistDownloadRequest& req, V
     result[s_Token] = token;
 
     qDebug() << "Trying to obtain" << data.playlist.vods() << "video file(s) for:" << data.playlist.webPageUrl() << "format:" << req.format << "file path:" << req.filePath;
-
-    // youtube-dl -f 160p30 https://www.twitch.tv/videos/161472611?t=07h49m09s --no-cache-dir --no-call-home --newline -o foo.bar
 
     QStringList arguments;
     if (m_YtdlVerbose) {

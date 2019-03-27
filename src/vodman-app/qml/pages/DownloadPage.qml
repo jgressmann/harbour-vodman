@@ -813,7 +813,7 @@ Page {
                                         str = "" + download.data.userData
                                     }
 
-                                    if (download.data.currentFileIndex >= 0 && download.data.playlist.vods > 1) {
+                                    if (download.data.playlist.vods > 1) {
                                         if (str.length > 0) {
                                             str += ", "
                                         }
@@ -859,7 +859,7 @@ Page {
                     ContextMenu {
                         MenuItem {
                             //% "Cancel and delete file"
-                            text: qsTrId("download-item-cancel-and-delete")
+                            text: qsTrId("download-item-cancel-and-delete", download.data.playlist.vods)
                             onClicked: cancelDownload(true)
                         }
 
@@ -872,7 +872,7 @@ Page {
                         MenuItem {
                             //% "Play"
                             text: qsTrId("play")
-                            visible: download.data.currentFileIndex >= 0 && !!download.data.file(0).filePath
+                            visible: !!download.data.file(0).filePath
                             onClicked: Qt.openUrlExternally("file://" + download.data.file(0).filePath)
                         }
 
@@ -887,6 +887,7 @@ Page {
 
                         MenuItem {
                             //% "Copy file path to clipboard"
+                            visible: !!download.data.file(0).filePath
                             text: qsTrId("download-item-copy-file-path-to-clipboard")
                             onClicked: Clipboard.text = download.data.file(0).filePath
                         }
