@@ -61,7 +61,7 @@ VMQuickVodPlaylistDownloadModel::VMQuickVodPlaylistDownloadModel(QObject *parent
 }
 
 void
-VMQuickVodPlaylistDownloadModel::onPlaylistDownloadCompleted(qint64 token, const VMVodPlaylistDownload& download)
+VMQuickVodPlaylistDownloadModel::onPlaylistDownloadCompleted(qint64 token, const VMPlaylistDownload& download)
 {
     m_UrlsBeingDownloaded.remove(token);
     emit busyChanged();
@@ -91,7 +91,7 @@ VMQuickVodPlaylistDownloadModel::onPlaylistDownloadCompleted(qint64 token, const
             }
 
             emit downloadFailed(
-                        downloadData.playlist.description().webPageUrl(),
+                        downloadData.playlist.webPageUrl(),
                         downloadData.error,
                         filePath);
         }
@@ -99,7 +99,7 @@ VMQuickVodPlaylistDownloadModel::onPlaylistDownloadCompleted(qint64 token, const
 }
 
 void
-VMQuickVodPlaylistDownloadModel::onPlaylistDownloadChanged(qint64 handle, const VMVodPlaylistDownload& download)
+VMQuickVodPlaylistDownloadModel::onPlaylistDownloadChanged(qint64 handle, const VMPlaylistDownload& download)
 {
     auto it = m_Downloads.find(handle);
     if (m_Downloads.end() == it) {
@@ -113,7 +113,7 @@ VMQuickVodPlaylistDownloadModel::onPlaylistDownloadChanged(qint64 handle, const 
 }
 
 void
-VMQuickVodPlaylistDownloadModel::onMetaDataDownloadCompleted(qint64 token, const VMVodMetaDataDownload& download)
+VMQuickVodPlaylistDownloadModel::onMetaDataDownloadCompleted(qint64 token, const VMMetaDataDownload& download)
 {
     if (--m_MetaDataDownloads == 0) {
         emit metaDataDownloadsPendingChanged();
@@ -191,14 +191,14 @@ VMQuickVodPlaylistDownloadModel::startDownloadMetaData(
 void
 VMQuickVodPlaylistDownloadModel::startDownloadPlaylist(
         qint64 token,
-        const VMVodPlaylist& playlist,
+        const VMPlaylist& playlist,
         QString format,
         const QString& filePath,
         const QVariant& userData) {
 
     qDebug() << "token" << token << "playlist" << playlist << "format" << format << "path" << filePath << "userData" << userData;
 
-    auto url = playlist.description().webPageUrl();
+    auto url = playlist.webPageUrl();
     auto beg = m_UrlsBeingDownloaded.cbegin();
     auto end = m_UrlsBeingDownloaded.cend();
     for (auto it = beg; it != end; ++it) {
@@ -208,7 +208,7 @@ VMQuickVodPlaylistDownloadModel::startDownloadPlaylist(
         }
     }
 
-    VMVodPlaylistDownloadRequest req;
+    VMPlaylistDownloadRequest req;
     req.filePath = filePath;
     req.format = format;
     req.playlist = playlist;
@@ -249,7 +249,7 @@ VMQuickVodPlaylistDownloadModel::cancelDownloads(bool deleteFiles) {
 }
 
 void
-VMQuickVodPlaylistDownloadModel::playlistDownloadAdded(qint64 handle, const VMVodPlaylistDownload& download) {
+VMQuickVodPlaylistDownloadModel::playlistDownloadAdded(qint64 handle, const VMPlaylistDownload& download) {
     auto it = m_Downloads.insert(handle, new VMQuickVodPlaylistDownload(this));
     it.value()->setData(download);
     beginInsertRows(QModelIndex(), m_Rows.count(), m_Rows.count());

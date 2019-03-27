@@ -69,19 +69,6 @@ bool VMAudioFormat::isValid() const
 
 ////////////////////////////////////////////////////////////////////
 
-VMVodDescription::VMVodDescription()
-    : d(new VMVodDescriptionData())
-{
-}
-
-bool VMVodDescription::isValid() const
-{
-    return !d->id.isEmpty();
-}
-
-////////////////////////////////////////////////////////////////////
-
-
 VMVod::VMVod()
     : d(new VMVodData())
 {
@@ -94,55 +81,18 @@ bool VMVod::isValid() const
 
 ////////////////////////////////////////////////////////////////////////////////
 
-VMVodPlaylist::VMVodPlaylist()
-    : d(new VMVodPlaylistData())
+VMPlaylist::VMPlaylist()
+    : d(new VMPlaylistData())
 {
 }
 
-bool VMVodPlaylist::isValid() const
+bool VMPlaylist::isValid() const
 {
     return (d->videoFormats.size() > 0 || d->avFormats.size() > 0) &&
-            d->vods.size() > 0 &&
-            d->description.isValid();
+            d->vods.size() > 0;
 }
 
-QVariant VMVodPlaylist::videoFormat(int index) const
-{
-    if (index >= 0 && index < d->videoFormats.size()) {
-        return QVariant::fromValue(d->videoFormats[index]);
-    }
-
-    return QVariant();
-}
-
-QVariant VMVodPlaylist::audioFormat(int index) const
-{
-    if (index >= 0 && index < d->audioFormats.size()) {
-        return QVariant::fromValue(d->audioFormats[index]);
-    }
-
-    return QVariant();
-}
-
-QVariant VMVodPlaylist::avFormat(int index) const
-{
-    if (index >= 0 && index < d->avFormats.size()) {
-        return QVariant::fromValue(d->avFormats[index]);
-    }
-
-    return QVariant();
-}
-
-QVariant VMVodPlaylist::vod(int index) const
-{
-    if (index >= 0 && index < d->vods.size()) {
-        return QVariant::fromValue(d->vods[index]);
-    }
-
-    return QVariant();
-}
-
-int VMVodPlaylist::duration() const
+int VMPlaylist::duration() const
 {
     const auto& v = d->vods;
     int duration = 0;
@@ -151,6 +101,42 @@ int VMVodPlaylist::duration() const
     }
 
     return duration;
+}
+
+QVariant VMPlaylist::videoFormat(int index) const
+{
+    if (index >= 0 && index < d->videoFormats.size()) {
+        return QVariant::fromValue(d->videoFormats[index]);
+    }
+
+    return QVariant();
+}
+
+QVariant VMPlaylist::audioFormat(int index) const
+{
+    if (index >= 0 && index < d->audioFormats.size()) {
+        return QVariant::fromValue(d->audioFormats[index]);
+    }
+
+    return QVariant();
+}
+
+QVariant VMPlaylist::avFormat(int index) const
+{
+    if (index >= 0 && index < d->avFormats.size()) {
+        return QVariant::fromValue(d->avFormats[index]);
+    }
+
+    return QVariant();
+}
+
+QVariant VMPlaylist::vod(int index) const
+{
+    if (index >= 0 && index < d->vods.size()) {
+        return QVariant::fromValue(d->vods[index]);
+    }
+
+    return QVariant();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -241,7 +227,7 @@ QDataStream &operator>>(QDataStream &stream, VMAudioFormat &value)
     return stream >> value.data();
 }
 
-QDataStream &operator<<(QDataStream &stream, const VMVodDescriptionData &value)
+QDataStream &operator<<(QDataStream &stream, const VMVodData &value)
 {
     stream << Version;
     stream << value.thumbnailUrl;
@@ -250,40 +236,6 @@ QDataStream &operator<<(QDataStream &stream, const VMVodDescriptionData &value)
     stream << value.fullTitle;
     stream << value.durationS;
     stream << value.id;
-    return stream;
-}
-
-QDataStream &operator>>(QDataStream &stream, VMVodDescriptionData &value)
-{
-    quint8 version;
-    stream >> version;
-    switch (version) {
-    case 1:
-        stream >> value.thumbnailUrl;
-        stream >> value.webPageUrl;
-        stream >> value.title;
-        stream >> value.fullTitle;
-        stream >> value.durationS;
-        stream >> value.id;
-        break;
-    }
-
-    return stream;
-}
-
-QDataStream &operator<<(QDataStream &stream, const VMVodDescription &value)
-{
-    return stream << value.data();
-}
-
-QDataStream &operator>>(QDataStream &stream, VMVodDescription &value)
-{
-    return stream >> value.data();
-}
-
-QDataStream &operator<<(QDataStream &stream, const VMVodData &value)
-{
-    stream << Version;
     stream << value.durationS;
     stream << value.playlistIndex;
     return stream;
@@ -295,6 +247,12 @@ QDataStream &operator>>(QDataStream &stream, VMVodData &value)
     stream >> version;
     switch (version) {
     case 1:
+        stream >> value.thumbnailUrl;
+        stream >> value.webPageUrl;
+        stream >> value.title;
+        stream >> value.fullTitle;
+        stream >> value.durationS;
+        stream >> value.id;
         stream >> value.durationS;
         stream >> value.playlistIndex;
         break;
@@ -312,10 +270,12 @@ QDataStream &operator>>(QDataStream &stream, VMVod &value)
     return stream >> value.data();
 }
 
-QDataStream &operator<<(QDataStream &stream, const VMVodPlaylistData &value)
+QDataStream &operator<<(QDataStream &stream, const VMPlaylistData &value)
 {
     stream << Version;
-    stream << value.description;
+    stream << value.id;
+    stream << value.title;
+    stream << value.webPageUrl;
     stream << value.videoFormats;
     stream << value.audioFormats;
     stream << value.avFormats;
@@ -323,13 +283,15 @@ QDataStream &operator<<(QDataStream &stream, const VMVodPlaylistData &value)
     return stream;
 }
 
-QDataStream &operator>>(QDataStream &stream, VMVodPlaylistData &value)
+QDataStream &operator>>(QDataStream &stream, VMPlaylistData &value)
 {
     quint8 version;
     stream >> version;
     switch (version) {
     case 1:
-        stream >> value.description;
+        stream >> value.id;
+        stream >> value.title;
+        stream >> value.webPageUrl;
         stream >> value.videoFormats;
         stream >> value.audioFormats;
         stream >> value.avFormats;
@@ -339,26 +301,28 @@ QDataStream &operator>>(QDataStream &stream, VMVodPlaylistData &value)
     return stream;
 }
 
-QDataStream &operator<<(QDataStream &stream, const VMVodPlaylist &value)
+QDataStream &operator<<(QDataStream &stream, const VMPlaylist &value)
 {
     return stream << value.data();
 }
 
-QDataStream &operator>>(QDataStream &stream, VMVodPlaylist &value)
+QDataStream &operator>>(QDataStream &stream, VMPlaylist &value)
 {
     return stream >> value.data();
 }
 
-QDebug operator<<(QDebug debug, const VMVodPlaylist& value)
+QDebug operator<<(QDebug debug, const VMPlaylist& value)
 {
-    const VMVodPlaylistData& data = value.data();
+    const VMPlaylistData& data = value.data();
     QDebugStateSaver saver(debug);
-    debug.nospace() << "VMVodPlaylist("
+    debug.nospace() << "VMPlaylist("
                     << "#av=" << data.avFormats.size()
                     << ", #video=" << data.videoFormats.size()
                     << ", #audio=" << data.audioFormats.size()
                     << ", #vods=" << data.vods.size()
-                    << ", desc=" << data.description
+                    << ", id=" << data.id
+                    << ", title=" << data.title
+                    << ", url=" << data.webPageUrl
                     << ")";
     return debug;
 }
@@ -368,23 +332,13 @@ QDebug operator<<(QDebug debug, const VMVod& value)
     const VMVodData& data = value.data();
     QDebugStateSaver saver(debug);
     debug.nospace() << "VMVod("
-                    << "durationS=" << data.durationS
-                    << ", playlistIndex=" << data.playlistIndex
-                    << ")";
-    return debug;
-}
-
-QDebug operator<<(QDebug debug, const VMVodDescription& value)
-{
-    const VMVodDescriptionData& data = value.data();
-    QDebugStateSaver saver(debug);
-    debug.nospace() << "VMVodDescription("
-                    << "id=" << data.id
-                    << ", title=" << data.title
-                    << ", fullTitle=" << data.fullTitle
-                    << ", thumbnail=" << data.thumbnailUrl
-                    << ", webpageUrl=" << data.webPageUrl
+                    << "fullTitle=" << data.fullTitle
+                    << ", title=" << data.fullTitle
+                    << ", id=" << data.id
                     << ", durationS=" << data.durationS
+                    << ", playlistIndex=" << data.playlistIndex
+                    << ", thumbnail=" << data.thumbnailUrl
+                    << ", url=" << data.webPageUrl
                     << ")";
     return debug;
 }

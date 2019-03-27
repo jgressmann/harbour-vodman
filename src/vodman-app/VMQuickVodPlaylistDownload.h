@@ -30,14 +30,14 @@ class VMQuickVodPlaylistDownload : public QObject
 {
     Q_OBJECT
 public:
-    Q_PROPERTY(VMVodPlaylistDownload data READ data NOTIFY dataChanged)
+    Q_PROPERTY(VMPlaylistDownload data READ data NOTIFY dataChanged)
     Q_PROPERTY(qint64 token READ token CONSTANT)
 
 public:
     ~VMQuickVodPlaylistDownload();
     explicit VMQuickVodPlaylistDownload(QObject* parent = Q_NULLPTR);
-    VMVodPlaylistDownload data() const { return m_Download; }
-    void setData(const VMVodPlaylistDownload& value);
+    VMPlaylistDownload data() const { return m_Download; }
+    void setData(const VMPlaylistDownload& value);
     qint64 token() const { return m_Token; }
     void  setToken(qint64 value) { m_Token = value; }
 
@@ -46,6 +46,6 @@ signals:
     void dataChanged();
 
 private:
-    VMVodPlaylistDownload m_Download;
+    VMPlaylistDownload m_Download;
     qint64 m_Token;
 };

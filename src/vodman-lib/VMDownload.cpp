@@ -28,36 +28,36 @@
 #include <QDebugStateSaver>
 
 
-VMVodMetaDataDownload::VMVodMetaDataDownload()
-    : d(new VMVodMetaDataDownloadData())
+VMMetaDataDownload::VMMetaDataDownload()
+    : d(new VMMetaDataDownloadData())
 {}
 
 
-bool VMVodPlaylistDownloadRequest::isValid() const
+bool VMPlaylistDownloadRequest::isValid() const
 {
     return !filePath.isEmpty() &&
             !format.isEmpty() &&
             playlist.isValid();
 }
 
-VMVodFileDownload::VMVodFileDownload()
-    : d(new VMVodFileDownloadData())
+VMFileDownload::VMFileDownload()
+    : d(new VMFileDownloadData())
 {}
 
 
-bool VMVodFileDownload::isValid() const
+bool VMFileDownload::isValid() const
 {
     return !filePath().isEmpty() &&
 //           !url().isEmpty() &&
             progress() >= 0;
 }
 
-VMVodPlaylistDownload::VMVodPlaylistDownload()
-    : d(new VMVodPlaylistDownloadData())
+VMPlaylistDownload::VMPlaylistDownload()
+    : d(new VMPlaylistDownloadData())
 {}
 
 
-bool VMVodPlaylistDownload::isValid() const
+bool VMPlaylistDownload::isValid() const
 {
     return playlist().isValid() &&
             files() > 0 &&
@@ -65,7 +65,7 @@ bool VMVodPlaylistDownload::isValid() const
             currentFileIndex() < files();
 }
 
-QVariant VMVodPlaylistDownload::file(int index) const
+QVariant VMPlaylistDownload::file(int index) const
 {
     if (index >= 0 && index < d->files.size()) {
         return QVariant::fromValue(d->files[index]);
@@ -74,9 +74,30 @@ QVariant VMVodPlaylistDownload::file(int index) const
     return QVariant();
 }
 
+//QVariant VMPlaylistDownload::currentVod() const
+//{
+//    const auto& vods = d->playlist._vods();
+//    auto index = d->currentFileIndex;
+//    if (index >= 0 && index < vods.size()) {
+//        return QVariant::fromValue(vods[index]);
+//    }
 
-QDebug operator<<(QDebug debug, const VMVodMetaDataDownload& value) {
-    const VMVodMetaDataDownloadData& data = value.data();
+//    return QVariant::fromValue(VMVod());
+//}
+
+//QVariant VMPlaylistDownload::currentFile() const
+//{
+//    const auto& files = d->files;
+//    auto index = d->currentFileIndex;
+//    if (index >= 0 && index < files.size()) {
+//        return QVariant::fromValue(files[index]);
+//    }
+
+//    return QVariant::fromValue(VMFileDownload());
+//}
+
+QDebug operator<<(QDebug debug, const VMMetaDataDownload& value) {
+    const VMMetaDataDownloadData& data = value.data();
     QDebugStateSaver saver(debug);
     debug.nospace() << "VMVodMetaDataDownload("
                     << "error=" << data.error
@@ -88,9 +109,9 @@ QDebug operator<<(QDebug debug, const VMVodMetaDataDownload& value) {
     return debug;
 }
 
-QDebug operator<<(QDebug debug, const VMVodFileDownload& value)
+QDebug operator<<(QDebug debug, const VMFileDownload& value)
 {
-    const VMVodFileDownloadData& data = value.data();
+    const VMFileDownloadData& data = value.data();
     QDebugStateSaver saver(debug);
     debug.nospace() << "VMVodFileDownload("
                     << "progress=" << data.progress
@@ -100,12 +121,12 @@ QDebug operator<<(QDebug debug, const VMVodFileDownload& value)
     return debug;
 }
 
-QDebug operator<<(QDebug debug, const VMVodPlaylistDownload& value)
+QDebug operator<<(QDebug debug, const VMPlaylistDownload& value)
 {
-    const VMVodPlaylistDownloadData& data = value.data();
+    const VMPlaylistDownloadData& data = value.data();
     QDebugStateSaver saver(debug);
-    debug.nospace() << "VMVodPlaylistDownload("
-                    << "url=" << data.playlist.description().webPageUrl()
+    debug.nospace() << "VMPlaylistDownload("
+                    << "url=" << data.playlist.webPageUrl()
                     << ", #files=" << data.playlist.vods()
                     << ", progress=" << data.progress
                     << ", fileSize=" << data.fileSize

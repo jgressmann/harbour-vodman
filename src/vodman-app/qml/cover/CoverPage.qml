@@ -86,7 +86,7 @@ CoverBackground {
 
                     Image {
                         id: thumbnail
-                        source: download.data.playlist.description.thumbnailUrl
+                        source: download.data.playlist.vod(download.data.currentFileIndex).thumbnailUrl
                         width: parent.height
                         height: parent.height
                         fillMode: Image.PreserveAspectFit
@@ -102,7 +102,7 @@ CoverBackground {
                             anchors.left: parent.left
                             anchors.right: percentLabel.left
                             anchors.verticalCenter: parent.verticalCenter
-                            text: download.data.playlist.description.fullTitle
+                            text: download.data.playlist.vod(download.data.currentFileIndex).title
                             font.pixelSize: Theme.fontSizeSmall
                             truncationMode: TruncationMode.Fade
                             visible: !thumbnail.visible

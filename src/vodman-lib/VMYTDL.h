@@ -35,9 +35,9 @@
 
 
 class QJsonObject;
-class VMVodPlaylistDownload;
-class VMVodPlaylistDownloadRequest;
-class VMVodMetaDataDownload;
+class VMPlaylistDownload;
+class VMPlaylistDownloadRequest;
+class VMMetaDataDownload;
 
 class VMYTDL : public QObject
 {
@@ -71,15 +71,15 @@ public:
 
 public slots:
     void startFetchMetaData(qint64 token, const QString& url, const QVariant& userData = QVariant());
-    void startFetchPlaylist(qint64 token, const VMVodPlaylistDownloadRequest& request, VMVodPlaylistDownload* result = nullptr);
+    void startFetchPlaylist(qint64 token, const VMPlaylistDownloadRequest& request, VMPlaylistDownload* result = nullptr);
     void cancelFetchPlaylist(qint64 token, bool deleteFile);
     void clearCache() { m_MetaDataCache.clear(); }
     QVariantList inProgressPlaylistFetches();
 
 signals:
-    void metaDataDownloadCompleted(qint64 id, const VMVodMetaDataDownload& download);
-    void playlistDownloadChanged(qint64 id, const VMVodPlaylistDownload& download);
-    void playlistDownloadCompleted(qint64 id, const VMVodPlaylistDownload& download);
+    void metaDataDownloadCompleted(qint64 id, const VMMetaDataDownload& download);
+    void playlistDownloadChanged(qint64 id, const VMPlaylistDownload& download);
+    void playlistDownloadCompleted(qint64 id, const VMPlaylistDownload& download);
     void ytdlPathChanged();
     void metaDataCacheCapacityChanged();
     void metaDataSecondsValidChanged();
@@ -90,7 +90,7 @@ signals:
 private slots:
     void onMetaDataProcessFinished(int, QProcess::ExitStatus);
     void onProcessError(QProcess::ProcessError);
-    void onVodPlaylistProcessFinished(int, QProcess::ExitStatus);
+    void onPlaylistProcessFinished(int, QProcess::ExitStatus);
     void onYoutubeDlVodFileDownloadProcessReadReady();
 
 private:
@@ -98,9 +98,10 @@ private:
     void cleanupProcess(QProcess* process);
     void fillFormatId(VMVideoFormatData& format) const;
     void fillWidth(VMVideoFormatData& format) const;
-    void appendVideoFormat(VMVodPlaylistData& data, const QJsonObject& json) const;
-    void appendAudioFormat(VMVodPlaylistData& data, const QJsonObject& json) const;
-    void appendAvFormat(VMVodPlaylistData& data, const QJsonObject& json) const;
+    void appendVideoFormat(VMPlaylistData& data, const QJsonObject& json) const;
+    void appendAudioFormat(VMPlaylistData& data, const QJsonObject& json) const;
+    void appendAvFormat(VMPlaylistData& data, const QJsonObject& json) const;
+    int appendVod(VMPlaylistData& data, const QJsonObject& json) const;
     bool available() const;
     QProcess* createProcess();
     static bool parseJson(const QByteArray& bytes, QVector<int>* starts, QVector<int>* ends);
@@ -108,7 +109,7 @@ private:
 private:
     struct CacheEntry
     {
-        VMVodPlaylist playlist;
+        VMPlaylist playlist;
         QDateTime fetchTime;
     };
 

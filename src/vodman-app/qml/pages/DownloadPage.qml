@@ -279,12 +279,12 @@ Page {
         }
 
         var fileName = settingDefaultFileName.value
-        fileName = fileName.replace("{title}", playlist.description.title)
-        fileName = fileName.replace("{id}", playlist.description.id)
+        fileName = fileName.replace("{title}", "%(title)s")
+        fileName = fileName.replace("{id}", "%(id)s")
         fileName = fileName.replace("{formatid}", format.id)
-        if (playlist.vods > 1) { // youtube-dl meta var
-            fileName += "_%(playlist_index)s"
-        }
+//        if (playlist.vods > 1) { // youtube-dl meta var
+//            fileName += "_%(playlist_index)s"
+//        }
         path = path + "/" + fileName + ".%(ext)s"
 
         console.debug("format=" + format)
@@ -384,8 +384,8 @@ Page {
 
     function downloadSucceeded(download) {
         console.debug("download=" + download)
-        successNotification.body = download.playlist.description.fullTitle
-        successNotification.previewBody = download.playlist.description.fullTitle
+        successNotification.body = download.playlist.title
+        successNotification.previewBody = download.playlist.title
         successNotification.remoteActions = [ {
                                                  "name": "default",
                                                  //% "Play"
@@ -553,7 +553,7 @@ Page {
             }
 
             MenuItem {
-                text: "Download youtube playlist video"
+                text: "Download youtube playlist"
                 visible: debugApp.value
                 enabled: page.canStartDownload
                 onClicked: _download("https://www.youtube.com/playlist?list=PLB4brr7vf-P7pT4mcWuAZJ79o-38RZ3Bx")
@@ -611,8 +611,6 @@ Page {
                     Clipboard.text = "http://videofile-hls-ko-record-cf.afreecatv.com/video/_definst_/vod/20190317/085/806BF397_212355085_1.smil/chunklist_b1000000_t64aGQ=.m3u8"
                 }
             }
-
-
 
             MenuItem {
                 text: "Delete youtube-dl"
@@ -696,7 +694,7 @@ Page {
                 function cancelDownload(deleteFile) {
                     remorseAction(
                         //% "Stopping %1"
-                        qsTrId("download-item-remorse-cancel").arg(download.data.playlist.description.fullTitle),
+                        qsTrId("download-item-remorse-cancel").arg(download.data.playlist.title),
                         function() {
                             if (typeof(index) === "number") { // list item could have been removed
                                 vodDownloadModel.cancelDownload(index, deleteFile)
@@ -715,7 +713,7 @@ Page {
 
                         Image {
                             id: thumbnail
-                            source: download.data.playlist.description.thumbnailUrl
+                            source: download.data.currentVod.thumbnailUrl
                             width: parent.height
                             height: parent.height
                             sourceSize.width: width
@@ -784,7 +782,7 @@ Page {
                             Label {
                                 id: title
                                 width: parent.width
-                                text: download.data.playlist.description.fullTitle
+                                text: download.data.playlist.vod(download.data.currentFileIndex).title
                                 font.pixelSize: Theme.fontSizeSmall
                                 truncationMode: TruncationMode.Fade
                             }
@@ -848,7 +846,7 @@ Page {
 
                             LinkedLabel {
                                 width: parent.width
-                                plainText: download.data.playlist.description.webPageUrl
+                                plainText: download.data.playlist.webPageUrl
                                 font.pixelSize: Theme.fontSizeTiny
                                 shortenUrl: true
                             }
@@ -882,8 +880,8 @@ Page {
                             //% "Open webpage"
                             text: qsTrId("download-item-open-webpage")
                             onClicked: {
-                                console.debug("opening: " + download.data.playlist.description.webPageUrl)
-                                Qt.openUrlExternally(download.data.playlist.description.webPageUrl)
+                                console.debug("opening: " + download.data.playlist.webPageUrl)
+                                Qt.openUrlExternally(download.data.playlist.webPageUrl)
                             }
                         }
 

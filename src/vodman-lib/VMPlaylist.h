@@ -179,54 +179,14 @@ private:
     QExplicitlySharedDataPointer<VMAudioFormatData> d;
 };
 
-struct VMVodDescriptionData : public QSharedData
+
+struct VMVodData : public QSharedData
 {
     QString thumbnailUrl;
     QString webPageUrl;
     QString title;
     QString fullTitle;
     QString id;
-    int durationS;
-
-    VMVodDescriptionData() = default;
-};
-
-
-class VMVodDescription
-{
-    Q_GADGET
-    Q_PROPERTY(QString thumbnailUrl READ thumbnailUrl CONSTANT)
-    Q_PROPERTY(QString webPageUrl READ webPageUrl CONSTANT)
-    Q_PROPERTY(QString title READ title CONSTANT)
-    Q_PROPERTY(QString fullTitle READ fullTitle CONSTANT)
-    Q_PROPERTY(QString id READ id CONSTANT)
-    Q_PROPERTY(int duration READ duration CONSTANT)
-public:
-    ~VMVodDescription() = default;
-    VMVodDescription();
-    VMVodDescription(const VMVodDescription& /*other*/) = default;
-    VMVodDescription& operator=(const VMVodDescription& /*other*/) = default;
-
-public:
-    inline QString thumbnailUrl() const { return d->thumbnailUrl; }
-    inline QString webPageUrl() const { return d->webPageUrl; }
-    inline QString title() const { return d->title; }
-    inline QString fullTitle() const { return d->fullTitle; }
-    inline QString id() const { return d->id; }
-    inline int duration() const { return d->durationS; }
-    bool isValid() const;
-
-public:
-    inline VMVodDescriptionData& data() { return *d; }
-    inline const VMVodDescriptionData& data() const { return *d; }
-
-private:
-    QExplicitlySharedDataPointer<VMVodDescriptionData> d;
-};
-
-
-struct VMVodData : public QSharedData
-{
     int durationS;
     int playlistIndex;
 
@@ -236,8 +196,14 @@ struct VMVodData : public QSharedData
 class VMVod
 {
     Q_GADGET
+    Q_PROPERTY(QString thumbnailUrl READ thumbnailUrl CONSTANT)
+    Q_PROPERTY(QString webPageUrl READ webPageUrl CONSTANT)
+    Q_PROPERTY(QString title READ title CONSTANT)
+    Q_PROPERTY(QString fullTitle READ fullTitle CONSTANT)
+    Q_PROPERTY(QString id READ id CONSTANT)
     Q_PROPERTY(int duration READ duration CONSTANT)
     Q_PROPERTY(int playlistIndex READ playlistIndex CONSTANT)
+
 public:
     ~VMVod() = default;
     VMVod();
@@ -245,6 +211,11 @@ public:
     VMVod& operator=(const VMVod& /*other*/) = default;
 
 public:
+    inline QString thumbnailUrl() const { return d->thumbnailUrl; }
+    inline QString webPageUrl() const { return d->webPageUrl; }
+    inline QString title() const { return d->title; }
+    inline QString fullTitle() const { return d->fullTitle; }
+    inline QString id() const { return d->id; }
     int duration() const { return d->durationS; }
     int playlistIndex() const { return d->playlistIndex; }
     bool isValid() const;
@@ -257,31 +228,37 @@ private:
     QExplicitlySharedDataPointer<VMVodData> d;
 };
 
-struct VMVodPlaylistData : public QSharedData
+struct VMPlaylistData : public QSharedData
 {
-    VMVodDescription description;
     QList<VMVideoFormat> videoFormats;
     QList<VMAudioFormat> audioFormats;
     QList<VMVideoFormat> avFormats;
     QList<VMVod> vods;
+    QString webPageUrl;
+    QString title;
+    QString id;
+
+    VMPlaylistData() = default;
 };
 
-class VMVodPlaylist
+class VMPlaylist
 {
     Q_GADGET
-    Q_PROPERTY(VMVodDescription description READ description CONSTANT)
     Q_PROPERTY(int videoFormats READ videoFormats CONSTANT)
     Q_PROPERTY(int audioFormats READ audioFormats CONSTANT)
     Q_PROPERTY(int avFormats READ avFormats CONSTANT)
     Q_PROPERTY(int vods READ vods CONSTANT)
+    Q_PROPERTY(QString webPageUrl READ webPageUrl CONSTANT)
+    Q_PROPERTY(QString title READ title CONSTANT)
+    Q_PROPERTY(QString id READ id CONSTANT)
+    Q_PROPERTY(int duration READ duration CONSTANT)
 public:
-    ~VMVodPlaylist() = default;
-    VMVodPlaylist();
-    VMVodPlaylist(const VMVodPlaylist& /*other*/) = default;
-    VMVodPlaylist& operator=(const VMVodPlaylist& /*other*/) = default;
+    ~VMPlaylist() = default;
+    VMPlaylist();
+    VMPlaylist(const VMPlaylist& /*other*/) = default;
+    VMPlaylist& operator=(const VMPlaylist& /*other*/) = default;
 
 public:
-    inline VMVodDescription description() const { return d->description; }
     inline const QList<VMVideoFormat>& _videoFormats() const { return d->videoFormats; }
     inline const QList<VMAudioFormat>& _audioFormats() const { return d->audioFormats; }
     inline const QList<VMVideoFormat>& _avFormats() const { return d->avFormats; }
@@ -294,23 +271,25 @@ public:
     Q_INVOKABLE QVariant audioFormat(int index) const;
     Q_INVOKABLE QVariant avFormat(int index) const;
     Q_INVOKABLE QVariant vod(int index) const;
-    bool isValid() const;
     int duration() const;
+    inline QString webPageUrl() const { return d->webPageUrl; }
+    inline QString title() const { return d->title; }
+    inline QString id() const { return d->id; }
+    bool isValid() const;
 
 public:
-    inline VMVodPlaylistData& data() { return *d; }
-    inline const VMVodPlaylistData& data() const { return *d; }
+    inline VMPlaylistData& data() { return *d; }
+    inline const VMPlaylistData& data() const { return *d; }
 
 private:
-    QExplicitlySharedDataPointer<VMVodPlaylistData> d;
+    QExplicitlySharedDataPointer<VMPlaylistData> d;
 };
 
 
 Q_DECLARE_METATYPE(VMVideoFormat)
 Q_DECLARE_METATYPE(VMAudioFormat)
-Q_DECLARE_METATYPE(VMVodDescription)
 Q_DECLARE_METATYPE(VMVod)
-Q_DECLARE_METATYPE(VMVodPlaylist)
+Q_DECLARE_METATYPE(VMPlaylist)
 
 
 QDataStream &operator<<(QDataStream &stream, const VMAudioFormatData &value);
@@ -321,21 +300,16 @@ QDataStream &operator<<(QDataStream &stream, const VMVideoFormatData &value);
 QDataStream &operator>>(QDataStream &stream, VMVideoFormatData &value);
 QDataStream &operator<<(QDataStream &stream, const VMVideoFormat &value);
 QDataStream &operator>>(QDataStream &stream, VMVideoFormat &value);
-QDataStream &operator<<(QDataStream &stream, const VMVodDescriptionData &value);
-QDataStream &operator>>(QDataStream &stream, VMVodDescriptionData &value);
-QDataStream &operator<<(QDataStream &stream, const VMVodDescription &value);
-QDataStream &operator>>(QDataStream &stream, VMVodDescription &value);
 QDataStream &operator<<(QDataStream &stream, const VMVodData &value);
 QDataStream &operator>>(QDataStream &stream, VMVodData &value);
 QDataStream &operator<<(QDataStream &stream, const VMVod &value);
 QDataStream &operator>>(QDataStream &stream, VMVod &value);
-QDataStream &operator<<(QDataStream &stream, const VMVodPlaylist &value);
-QDataStream &operator>>(QDataStream &stream, VMVodPlaylist &value);
+QDataStream &operator<<(QDataStream &stream, const VMPlaylist &value);
+QDataStream &operator>>(QDataStream &stream, VMPlaylist &value);
 
 
 QDebug operator<<(QDebug debug, const VMAudioFormat& value);
 QDebug operator<<(QDebug debug, const VMVideoFormat& value);
-QDebug operator<<(QDebug debug, const VMVodDescription& value);
 QDebug operator<<(QDebug debug, const VMVod& value);
-QDebug operator<<(QDebug debug, const VMVodPlaylist& value);
+QDebug operator<<(QDebug debug, const VMPlaylist& value);
 

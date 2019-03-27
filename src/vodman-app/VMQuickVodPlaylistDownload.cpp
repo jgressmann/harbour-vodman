@@ -33,7 +33,7 @@ VMQuickVodPlaylistDownload::VMQuickVodPlaylistDownload(QObject* parent)
 {}
 
 
-void VMQuickVodPlaylistDownload::setData(const VMVodPlaylistDownload& value)
+void VMQuickVodPlaylistDownload::setData(const VMPlaylistDownload& value)
 {
     m_Download = value;
     emit dataChanged();

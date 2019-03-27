@@ -27,35 +27,35 @@
 #include <QDateTime>
 
 
-struct VMVodMetaDataDownloadData : public QSharedData
+struct VMMetaDataDownloadData : public QSharedData
 {
-    VMVodPlaylist playlist;
+    VMPlaylist playlist;
     QString errorMessage;
     QString url;
     QVariant userData;
     int error;
 
-    VMVodMetaDataDownloadData() = default;
+    VMMetaDataDownloadData() = default;
 };
 
 
-class VMVodMetaDataDownload
+class VMMetaDataDownload
 {
     Q_GADGET
 public:
     Q_PROPERTY(VMVodEnums::Error error READ error CONSTANT)
     Q_PROPERTY(QString errorMessage READ errorMessage CONSTANT)
-    Q_PROPERTY(VMVodPlaylist playlist READ playlist CONSTANT)
+    Q_PROPERTY(VMPlaylist playlist READ playlist CONSTANT)
     Q_PROPERTY(QString url READ url CONSTANT)
     Q_PROPERTY(QVariant userData READ userData CONSTANT)
 
 public:
-    ~VMVodMetaDataDownload() = default;
-    VMVodMetaDataDownload();
-    VMVodMetaDataDownload(const VMVodMetaDataDownload& /*other*/) = default;
-    VMVodMetaDataDownload& operator=(const VMVodMetaDataDownload& /*other*/) = default;
+    ~VMMetaDataDownload() = default;
+    VMMetaDataDownload();
+    VMMetaDataDownload(const VMMetaDataDownload& /*other*/) = default;
+    VMMetaDataDownload& operator=(const VMMetaDataDownload& /*other*/) = default;
 
-    inline VMVodPlaylist playlist() const { return d->playlist; }
+    inline VMPlaylist playlist() const { return d->playlist; }
     inline VMVodEnums::Error error() const { return (VMVodEnums::Error)d->error; }
     inline QString errorMessage() const { return d->errorMessage; }
     inline QString url() const { return d->url; }
@@ -63,19 +63,19 @@ public:
     inline bool isValid() const { return d->playlist.isValid(); }
 
 public:
-    inline VMVodMetaDataDownloadData& data() { return *d; }
-    inline const VMVodMetaDataDownloadData& data() const { return *d; }
+    inline VMMetaDataDownloadData& data() { return *d; }
+    inline const VMMetaDataDownloadData& data() const { return *d; }
 
 private:
-    QExplicitlySharedDataPointer<VMVodMetaDataDownloadData> d;
+    QExplicitlySharedDataPointer<VMMetaDataDownloadData> d;
 };
 
-Q_DECLARE_METATYPE(VMVodMetaDataDownload)
 
-struct VMVodPlaylistDownloadRequest
+
+struct VMPlaylistDownloadRequest
 {
     QString filePath;
-    VMVodPlaylist playlist;
+    VMPlaylist playlist;
     QString format;
     QVariant userData;
 
@@ -83,17 +83,17 @@ struct VMVodPlaylistDownloadRequest
 };
 
 
-struct VMVodFileDownloadData : public QSharedData
+struct VMFileDownloadData : public QSharedData
 {
 //    QString url;
     QString filePath;
     quint64 fileSize;
     float progress;
 
-    VMVodFileDownloadData() = default;
+    VMFileDownloadData() = default;
 };
 
-class VMVodFileDownload
+class VMFileDownload
 {
     Q_GADGET
     Q_PROPERTY(float progress READ progress CONSTANT)
@@ -102,10 +102,10 @@ class VMVodFileDownload
 //    Q_PROPERTY(QString url READ url CONSTANT)
 
 public:
-    ~VMVodFileDownload() = default;
-    VMVodFileDownload();
-    VMVodFileDownload(const VMVodFileDownload& /*other*/) = default;
-    VMVodFileDownload& operator=(const VMVodFileDownload& /*other*/) = default;
+    ~VMFileDownload() = default;
+    VMFileDownload();
+    VMFileDownload(const VMFileDownload& /*other*/) = default;
+    VMFileDownload& operator=(const VMFileDownload& /*other*/) = default;
 
     bool isValid() const;
     inline float progress() const { return d->progress; }
@@ -114,19 +114,19 @@ public:
 //    inline QString url() const { return d->url; }
 
 public:
-    inline VMVodFileDownloadData& data() { return *d; }
-    inline const VMVodFileDownloadData& data() const { return *d; }
+    inline VMFileDownloadData& data() { return *d; }
+    inline const VMFileDownloadData& data() const { return *d; }
 
 private:
-    QExplicitlySharedDataPointer<VMVodFileDownloadData> d;
+    QExplicitlySharedDataPointer<VMFileDownloadData> d;
 };
 
 
 
-struct VMVodPlaylistDownloadData : public QSharedData
+struct VMPlaylistDownloadData : public QSharedData
 {
-    VMVodPlaylist playlist;
-    QList<VMVodFileDownload> files;
+    VMPlaylist playlist;
+    QList<VMFileDownload> files;
     QString errorMessage;
     QString format;
     QDateTime timeStarted;
@@ -137,10 +137,10 @@ struct VMVodPlaylistDownloadData : public QSharedData
     int error;
     int currentFileIndex;
 
-    VMVodPlaylistDownloadData() = default;
+    VMPlaylistDownloadData() = default;
 };
 
-class VMVodPlaylistDownload
+class VMPlaylistDownload
 {
     Q_GADGET
     Q_PROPERTY(float progress READ progress CONSTANT)
@@ -151,15 +151,17 @@ class VMVodPlaylistDownload
     Q_PROPERTY(QDateTime timeChanged READ timeChanged CONSTANT)
     Q_PROPERTY(int currentFileIndex READ currentFileIndex CONSTANT)
     Q_PROPERTY(int files READ files CONSTANT)
-    Q_PROPERTY(VMVodPlaylist playlist READ playlist CONSTANT)
+    Q_PROPERTY(VMPlaylist playlist READ playlist CONSTANT)
     Q_PROPERTY(quint64 fileSize READ fileSize CONSTANT)
     Q_PROPERTY(QVariant userData READ userData CONSTANT)
+//    Q_PROPERTY(QVariant currentFile READ currentFile CONSTANT)
+//    Q_PROPERTY(QVariant currentVod READ currentVod CONSTANT)
 
 public:
-    ~VMVodPlaylistDownload() = default;
-    VMVodPlaylistDownload();
-    VMVodPlaylistDownload(const VMVodPlaylistDownload& /*other*/) = default;
-    VMVodPlaylistDownload& operator=(const VMVodPlaylistDownload& /*other*/) = default;
+    ~VMPlaylistDownload() = default;
+    VMPlaylistDownload();
+    VMPlaylistDownload(const VMPlaylistDownload& /*other*/) = default;
+    VMPlaylistDownload& operator=(const VMPlaylistDownload& /*other*/) = default;
 
     bool isValid() const;
     inline float progress() const { return d->progress; }
@@ -171,25 +173,27 @@ public:
     Q_INVOKABLE QVariant file(int index) const;
     inline QString format() const { return d->format; }
     inline int currentFileIndex() const { return d->currentFileIndex; }
-    inline VMVodPlaylist playlist() const { return d->playlist; }
+    inline VMPlaylist playlist() const { return d->playlist; }
     inline quint64 fileSize() const { return d->fileSize; }
-    inline const QList<VMVodFileDownload>& _files() const { return d->files; }
+    inline const QList<VMFileDownload>& _files() const { return d->files; }
     inline QVariant userData() const { return d->userData; }
+//    QVariant currentVod() const;
+//    QVariant currentFile() const;
 
 public:
-    inline VMVodPlaylistDownloadData& data() { return *d; }
-    inline const VMVodPlaylistDownloadData& data() const { return *d; }
+    inline VMPlaylistDownloadData& data() { return *d; }
+    inline const VMPlaylistDownloadData& data() const { return *d; }
 
 private:
-    QExplicitlySharedDataPointer<VMVodPlaylistDownloadData> d;
+    QExplicitlySharedDataPointer<VMPlaylistDownloadData> d;
 };
 
+Q_DECLARE_METATYPE(VMMetaDataDownload)
+Q_DECLARE_METATYPE(VMFileDownload)
+Q_DECLARE_METATYPE(VMPlaylistDownload)
 
-Q_DECLARE_METATYPE(VMVodFileDownload)
-Q_DECLARE_METATYPE(VMVodPlaylistDownload)
 
-
-QDebug operator<<(QDebug debug, const VMVodFileDownload& value);
-QDebug operator<<(QDebug debug, const VMVodPlaylistDownload& value);
-QDebug operator<<(QDebug debug, const VMVodMetaDataDownload& value);
+QDebug operator<<(QDebug debug, const VMFileDownload& value);
+QDebug operator<<(QDebug debug, const VMPlaylistDownload& value);
+QDebug operator<<(QDebug debug, const VMMetaDataDownload& value);
 

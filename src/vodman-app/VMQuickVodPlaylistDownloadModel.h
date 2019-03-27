@@ -32,8 +32,8 @@
 
 
 class VMQuickVodPlaylistDownload;
-class VMVodPlaylistDownload;
-class VMVodMetaDataDownload;
+class VMPlaylistDownload;
+class VMMetaDataDownload;
 class VMQuickVodPlaylistDownloadModel : public QAbstractListModel
 {
     Q_OBJECT
@@ -56,7 +56,7 @@ public:
 public:
     Q_INVOKABLE qint64 newToken();
     Q_INVOKABLE void startDownloadMetaData(qint64 token, const QString& url, const QVariant& userData = QVariant());
-    Q_INVOKABLE void startDownloadPlaylist(qint64 token, const VMVodPlaylist& playlist, QString format, const QString& filePath, const QVariant& userData = QVariant());
+    Q_INVOKABLE void startDownloadPlaylist(qint64 token, const VMPlaylist& playlist, QString format, const QString& filePath, const QVariant& userData = QVariant());
     Q_INVOKABLE void cancelDownload(int index, bool deleteFile);
     Q_INVOKABLE void cancelDownloads(bool deleteFiles);
     Q_INVOKABLE bool isUrl(QString str) const;
@@ -69,7 +69,7 @@ public:
 
 Q_SIGNALS:
     void metaDataDownloadSubmitted(const QString& url, qint64 token);
-    void metaDataDownloadSucceeded(qint64 token, VMVodPlaylist playlist);
+    void metaDataDownloadSucceeded(qint64 token, VMPlaylist playlist);
     void downloadFailed(QString url, int error, QString filePath);
     void downloadSucceeded(QVariant download);
     void isOnlineChanged();
@@ -79,14 +79,14 @@ Q_SIGNALS:
     void metaDataDownloadsPendingChanged();
 
 private slots:
-    void onPlaylistDownloadCompleted(qint64 handle, const VMVodPlaylistDownload& download);
-    void onPlaylistDownloadChanged(qint64 handle, const VMVodPlaylistDownload& download);
-    void onMetaDataDownloadCompleted(qint64 handle, const VMVodMetaDataDownload& download);
+    void onPlaylistDownloadCompleted(qint64 handle, const VMPlaylistDownload& download);
+    void onPlaylistDownloadChanged(qint64 handle, const VMPlaylistDownload& download);
+    void onMetaDataDownloadCompleted(qint64 handle, const VMMetaDataDownload& download);
     void onOnlineChanged(bool online);
 
 private:
     int getHandleRow(qint64 handle) const;
-    void playlistDownloadAdded(qint64 handle, const VMVodPlaylistDownload& download);
+    void playlistDownloadAdded(qint64 handle, const VMPlaylistDownload& download);
 
 private:
     VMYTDL m_Ytdl;
