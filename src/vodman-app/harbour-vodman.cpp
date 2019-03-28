@@ -31,15 +31,21 @@
 #include "VMQuickVodPlaylistDownloadModel.h"
 #include "VMApp.h"
 #include "VMQuickYTDLDownloader.h"
+#include "VMYTDL.h"
 
 static QObject *vmAppProvider(QQmlEngine *, QJSEngine *)
 {
     return new VMApp();
 }
 
-static QObject *vmQuickYTDLDownloader(QQmlEngine *, QJSEngine *)
+static QObject *vmQuickYTDLDownloadProvider(QQmlEngine *, QJSEngine *)
 {
     return new VMQuickYTDLDownloader();
+}
+
+static QObject *vmYTDLProvider(QQmlEngine *, QJSEngine *)
+{
+    return new VMYTDL();
 }
 
 int main(int argc, char *argv[])
@@ -52,7 +58,8 @@ int main(int argc, char *argv[])
     qmlRegisterType<VMQuickVodPlaylistDownloadModel>(VODMAN_NAMESPACE, 1, 0, "DownloadModel");
     qmlRegisterUncreatableType<VMVodEnums>(VODMAN_LIB_NAMESPACE, VODMAN_LIB_VERSION_MAJOR, VODMAN_LIB_VERSION_MINOR, "VM", QStringLiteral("wrapper around C++ enums"));
     qmlRegisterSingletonType<VMApp>(VODMAN_NAMESPACE, 1, 0, "App", vmAppProvider);
-    qmlRegisterSingletonType<VMQuickYTDLDownloader>(VODMAN_LIB_NAMESPACE, VODMAN_LIB_VERSION_MAJOR, VODMAN_LIB_VERSION_MINOR, "YTDLDownloader", vmQuickYTDLDownloader);
+    qmlRegisterSingletonType<VMQuickYTDLDownloader>(VODMAN_LIB_NAMESPACE, VODMAN_LIB_VERSION_MAJOR, VODMAN_LIB_VERSION_MINOR, "YTDLDownloader", vmQuickYTDLDownloadProvider);
+    qmlRegisterSingletonType<VMYTDL>(VODMAN_LIB_NAMESPACE, VODMAN_LIB_VERSION_MAJOR, VODMAN_LIB_VERSION_MINOR, "YTDL", vmYTDLProvider);
 
 
     QScopedPointer<QQuickView> view(SailfishApp::createView());

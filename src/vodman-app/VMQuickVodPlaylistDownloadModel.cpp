@@ -23,6 +23,7 @@
 
 #include "VMQuickVodPlaylistDownloadModel.h"
 #include "VMQuickVodPlaylistDownload.h"
+#include "VMYTDL.h"
 
 #include <QDebug>
 #include <QUrl>
@@ -49,14 +50,10 @@ VMQuickVodPlaylistDownloadModel::~VMQuickVodPlaylistDownloadModel()
 
 VMQuickVodPlaylistDownloadModel::VMQuickVodPlaylistDownloadModel(QObject *parent)
     : QAbstractListModel(parent)
-    , m_Ytdl(this)
+    , m_Ytdl(nullptr)
     , m_TokenGenerator(0)
     , m_MetaDataDownloads(0)
 {
-    connect(&m_Ytdl, &VMYTDL::playlistDownloadCompleted, this, &VMQuickVodPlaylistDownloadModel::onPlaylistDownloadCompleted);
-    connect(&m_Ytdl, &VMYTDL::playlistDownloadChanged, this, &VMQuickVodPlaylistDownloadModel::onPlaylistDownloadChanged);
-    connect(&m_Ytdl, &VMYTDL::metaDataDownloadCompleted, this, &VMQuickVodPlaylistDownloadModel::onMetaDataDownloadCompleted);
-
     connect(&m_NetworkConfigurationManager, &QNetworkConfigurationManager::onlineStateChanged, this, &VMQuickVodPlaylistDownloadModel::onOnlineChanged);
 }
 
@@ -179,13 +176,18 @@ VMQuickVodPlaylistDownloadModel::startDownloadMetaData(
         return;
     }
 
+    if (!m_Ytdl) {
+        qWarning() << "ytdl not set";
+        return;
+    }
+
     if (m_MetaDataDownloads++ == 0) {
         emit metaDataDownloadsPendingChanged();
     }
 
     emit busyChanged();
 
-    m_Ytdl.startFetchMetaData(token, url, userData);
+    m_Ytdl->startFetchMetaData(token, url, userData);
 }
 
 void
@@ -197,6 +199,11 @@ VMQuickVodPlaylistDownloadModel::startDownloadPlaylist(
         const QVariant& userData) {
 
     qDebug() << "token" << token << "playlist" << playlist << "format" << format << "path" << filePath << "userData" << userData;
+
+    if (!m_Ytdl) {
+        qWarning() << "ytdl not set";
+        return;
+    }
 
     auto url = playlist.webPageUrl();
     auto beg = m_UrlsBeingDownloaded.cbegin();
@@ -215,14 +222,14 @@ VMQuickVodPlaylistDownloadModel::startDownloadPlaylist(
     req.userData = userData;
 
     if (!req.isValid()) {
-        qDebug() << "invalid params";
+        qWarning() << "invalid params";
         return;
     }
 
     m_UrlsBeingDownloaded.insert(token, url);
     emit busyChanged();
 
-    m_Ytdl.startFetchPlaylist(token, req);
+    m_Ytdl->startFetchPlaylist(token, req);
 }
 
 void
@@ -230,10 +237,15 @@ VMQuickVodPlaylistDownloadModel::cancelDownload(int index, bool deleteFile)
 {
     qDebug() << "index" << index << "delete?" << deleteFile;
 
+    if (!m_Ytdl) {
+        qWarning() << "ytdl not set";
+        return;
+    }
+
     if (index < m_Rows.size()) {
         auto handle = m_Rows[index];
         qDebug() << "handle" << handle << "delete?" << deleteFile;
-        m_Ytdl.cancelFetchPlaylist(handle, deleteFile);
+        m_Ytdl->cancelFetchPlaylist(handle, deleteFile);
     }
 }
 
@@ -241,10 +253,15 @@ void
 VMQuickVodPlaylistDownloadModel::cancelDownloads(bool deleteFiles) {
     qDebug() << "delete?" << deleteFiles;
 
+    if (!m_Ytdl) {
+        qWarning() << "ytdl not set";
+        return;
+    }
+
     for (auto i = 0; i < m_Rows.size(); ++i) {
         auto handle = m_Rows[i];
         qDebug() << "cancel" << handle;
-        m_Ytdl.cancelFetchPlaylist(handle, deleteFiles);
+        m_Ytdl->cancelFetchPlaylist(handle, deleteFiles);
     }
 }
 
@@ -330,4 +347,45 @@ qint64
 VMQuickVodPlaylistDownloadModel::newToken()
 {
     return m_TokenGenerator++;
+}
+
+void
+VMQuickVodPlaylistDownloadModel::setYtdl(VMYTDL* value)
+{
+    if (m_Ytdl != value) {
+        if (m_Ytdl) {
+            disconnect(m_Ytdl, &VMYTDL::playlistDownloadCompleted, this, &VMQuickVodPlaylistDownloadModel::onPlaylistDownloadCompleted);
+            disconnect(m_Ytdl, &VMYTDL::playlistDownloadChanged, this, &VMQuickVodPlaylistDownloadModel::onPlaylistDownloadChanged);
+            disconnect(m_Ytdl, &VMYTDL::metaDataDownloadCompleted, this, &VMQuickVodPlaylistDownloadModel::onMetaDataDownloadCompleted);
+
+            if (!m_Rows.empty()) {
+                beginResetModel();
+                m_Rows.clear();
+                endResetModel();
+            }
+
+            const auto beg = m_Downloads.begin();
+            const auto end = m_Downloads.end();
+            for (auto it = beg; it != end; ++it) {
+                delete it.value();
+            }
+
+
+            m_Downloads.clear();
+            m_UrlsBeingDownloaded.clear();
+            m_MetaDataDownloads = 0;
+            emit metaDataDownloadsPending();
+            emit busyChanged();
+        }
+
+        m_Ytdl = value;
+
+        if (m_Ytdl) {
+            connect(m_Ytdl, &VMYTDL::playlistDownloadCompleted, this, &VMQuickVodPlaylistDownloadModel::onPlaylistDownloadCompleted);
+            connect(m_Ytdl, &VMYTDL::playlistDownloadChanged, this, &VMQuickVodPlaylistDownloadModel::onPlaylistDownloadChanged);
+            connect(m_Ytdl, &VMYTDL::metaDataDownloadCompleted, this, &VMQuickVodPlaylistDownloadModel::onMetaDataDownloadCompleted);
+        }
+
+        emit ytdlChanged();
+    }
 }

@@ -504,7 +504,7 @@
         <translation>youtube-dl aktualisieren</translation>
     </message>
     <message id="settings-page-header">
-        <location filename="../qml/pages/SettingsPage.qml" line="411"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="421"/>
         <source>Settings</source>
         <translation>Einstellungen</translation>
     </message>
@@ -608,17 +608,17 @@
         <translation>Drücke auf den Knopf um es erneut zu versuchen</translation>
     </message>
     <message id="nofification-download-ytdl-update-available-summary">
-        <location filename="../qml/harbour-vodman.qml" line="131"/>
+        <location filename="../qml/harbour-vodman.qml" line="134"/>
         <source>youtube-dl update available</source>
         <translation>youtube-dl Update verfügbar</translation>
     </message>
     <message id="nofification-ytdl-update-available-body">
-        <location filename="../qml/harbour-vodman.qml" line="134"/>
+        <location filename="../qml/harbour-vodman.qml" line="137"/>
         <source>youtube-dl version %1 available</source>
         <translation>youtube-dl Version %1 verfügbar</translation>
     </message>
     <message id="nofification-ytdl-update-available-action">
-        <location filename="../qml/harbour-vodman.qml" line="139"/>
+        <location filename="../qml/harbour-vodman.qml" line="142"/>
         <source>Update youtube-dl</source>
         <translation>youtube-dl aktualisieren</translation>
     </message>

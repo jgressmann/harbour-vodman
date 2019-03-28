@@ -25,7 +25,7 @@
 
 
 #include "VMDownload.h"
-#include "VMYTDL.h"
+
 
 #include <QAbstractListModel>
 #include <QNetworkConfigurationManager>
@@ -34,6 +34,7 @@
 class VMQuickVodPlaylistDownload;
 class VMPlaylistDownload;
 class VMMetaDataDownload;
+class VMYTDL;
 class VMQuickVodPlaylistDownloadModel : public QAbstractListModel
 {
     Q_OBJECT
@@ -42,7 +43,7 @@ class VMQuickVodPlaylistDownloadModel : public QAbstractListModel
     Q_PROPERTY(bool isOnMobile READ isOnMobile NOTIFY isOnMobileChanged)
     Q_PROPERTY(bool busy READ busy NOTIFY busyChanged)
     Q_PROPERTY(bool metaDataDownloadsPending READ metaDataDownloadsPending NOTIFY metaDataDownloadsPendingChanged)
-    Q_PROPERTY(VMYTDL* ytdl READ ytdl CONSTANT)
+    Q_PROPERTY(VMYTDL* ytdl READ ytdl WRITE setYtdl NOTIFY ytdlChanged)
 
 public:
     explicit VMQuickVodPlaylistDownloadModel(QObject *parent = Q_NULLPTR);
@@ -65,7 +66,8 @@ public:
     bool isOnMobile() const;
     bool busy() const;
     bool metaDataDownloadsPending() const { return m_MetaDataDownloads > 0; }
-    VMYTDL* ytdl() { return &m_Ytdl; }
+    VMYTDL* ytdl() const { return m_Ytdl; }
+    void setYtdl(VMYTDL* value);
 
 Q_SIGNALS:
     void metaDataDownloadSubmitted(const QString& url, qint64 token);
@@ -77,6 +79,7 @@ Q_SIGNALS:
     void isOnMobileChanged();
     void busyChanged();
     void metaDataDownloadsPendingChanged();
+    void ytdlChanged();
 
 private slots:
     void onPlaylistDownloadCompleted(qint64 handle, const VMPlaylistDownload& download);
@@ -89,11 +92,11 @@ private:
     void playlistDownloadAdded(qint64 handle, const VMPlaylistDownload& download);
 
 private:
-    VMYTDL m_Ytdl;
     QNetworkConfigurationManager m_NetworkConfigurationManager;
     QHash<qint64, VMQuickVodPlaylistDownload*> m_Downloads;
     QList<qint64> m_Rows;
     QHash<qint64, QString> m_UrlsBeingDownloaded;
+    VMYTDL* m_Ytdl;
     qint64 m_TokenGenerator;
     int m_MetaDataDownloads;
 

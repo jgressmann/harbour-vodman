@@ -500,7 +500,7 @@
         <translation>更新 youtube-dl</translation>
     </message>
     <message id="settings-page-header">
-        <location filename="../qml/pages/SettingsPage.qml" line="411"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="421"/>
         <source>Settings</source>
         <translation>设置</translation>
     </message>
@@ -604,17 +604,17 @@
         <translation>点击下方按钮再试一次</translation>
     </message>
     <message id="nofification-download-ytdl-update-available-summary">
-        <location filename="../qml/harbour-vodman.qml" line="131"/>
+        <location filename="../qml/harbour-vodman.qml" line="134"/>
         <source>youtube-dl update available</source>
         <translation type="unfinished"></translation>
     </message>
     <message id="nofification-ytdl-update-available-body">
-        <location filename="../qml/harbour-vodman.qml" line="134"/>
+        <location filename="../qml/harbour-vodman.qml" line="137"/>
         <source>youtube-dl version %1 available</source>
         <translation type="unfinished"></translation>
     </message>
     <message id="nofification-ytdl-update-available-action">
-        <location filename="../qml/harbour-vodman.qml" line="139"/>
+        <location filename="../qml/harbour-vodman.qml" line="142"/>
         <source>Update youtube-dl</source>
         <translation type="unfinished">更新 youtube-dl</translation>
     </message>

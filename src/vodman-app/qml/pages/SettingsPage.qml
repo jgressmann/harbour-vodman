@@ -387,6 +387,16 @@ Page {
                     width: parent.width
                 }
             }
+
+
+            TextSwitch {
+                visible: debugApp.value
+                text: "verbose"
+                checked: YTDL.ytdlVerbose
+                onClicked: {
+                    YTDL.ytdlVerbose = !YTDL.ytdlVerbose
+                }
+            }
         }
 
         Item {

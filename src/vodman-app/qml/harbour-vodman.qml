@@ -43,10 +43,7 @@ ApplicationWindow {
 
     DownloadModel {
         id: vodDownloadModel
-        Component.onCompleted: {
-            ytdl.cacheDirectory = StandardPaths.cache + "/youtube-dl/cache"
-            ytdl.ytdlVerbose = debugApp.value
-        }
+        ytdl: YTDL
     }
 
     ConfigurationGroup {
@@ -88,13 +85,15 @@ ApplicationWindow {
             defaultValue: false
 
             onValueChanged: {
-                vodDownloadModel.ytdl.ytdlVerbose = value
+                YTDL.ytdlVerbose = value
                 _setMode()
             }
         }
     }
 
     Component.onCompleted: {
+        YTDL.cacheDirectory = StandardPaths.cache + "/youtube-dl/cache"
+        YTDL.ytdlVerbose = debugApp.value
         YTDLDownloader.isUpdateAvailableChanged.connect(_ytdlUpdateAvailableChanged)
         _setMode()
         _setYtdlPath()
@@ -137,7 +136,6 @@ ApplicationWindow {
              "name": "default",
              //% "Update youtube-dl"
              "displayName": qsTrId("nofification-ytdl-update-available-action"),
-             //"icon": "icon-cover-play",
              "service": "org.duckdns.jgressmann.vodman.app",
              "path": "/instance",
              "iface": "org.duckdns.jgressmann.vodman.app",
@@ -149,9 +147,9 @@ ApplicationWindow {
 
     function _setYtdlPath() {
         if (YTDLDownloader.downloadStatus === YTDLDownloader.StatusReady) {
-            vodDownloadModel.ytdl.ytdlPath = YTDLDownloader.ytdlPath
+            YTDL.ytdlPath = YTDLDownloader.ytdlPath
         } else {
-            vodDownloadModel.ytdl.ytdlPath = ""
+            YTDL.ytdlPath = ""
         }
     }
 
