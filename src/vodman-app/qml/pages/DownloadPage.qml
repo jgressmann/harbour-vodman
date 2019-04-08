@@ -350,10 +350,11 @@ Page {
                     qsTrId("error-no-space")
             break
         case VM.VM_ErrorAlreadyDownloading:
-            errorNotification.body = errorNotification.previewBody =
-                    //% "Already downloading %1"
-                    qsTrId("error-already-downloading").arg(filePath)
-            break
+            //% "Already downloading %1"
+            transientNotification.previewSummary = transientNotification.summary = qsTrId("error-already-downloading").arg(url)
+            transientNotification.previewBody = errorNotification.previewBody = filePath
+            transientNotification.publish()
+            return
         case VM.VM_ErrorContentGone:
             //% "Video gone"
             errorNotification.previewBody = qsTrId("error-content-gone-preview-body")
@@ -478,11 +479,20 @@ Page {
 
     Notification {
          id: errorNotification
-         category: "x-nemo.transfer.error"
+         appName: App.displayName
+         appIcon: "/usr/share/icons/hicolor/86x86/apps/harbour-vodman.png"
+         icon: appIcon
          //% "Download failed"
          summary: qsTrId("nofification-download-failed-summary")
-         //% "Download failed"
-         previewSummary: qsTrId("nofification-download-failed-summary")
+         previewSummary: summary
+    }
+
+    Notification {
+         id: transientNotification
+         appName: App.displayName
+         appIcon: "/usr/share/icons/hicolor/86x86/apps/harbour-vodman.png"
+         icon: appIcon
+         isTransient: true
     }
 
     Notification {
@@ -490,10 +500,10 @@ Page {
         category: "x-nemo.transfer.complete"
         appName: App.displayName
         appIcon: "/usr/share/icons/hicolor/86x86/apps/harbour-vodman.png"
+        icon: appIcon
         //% "Download finished"
         summary: qsTrId("nofification-download-finished-summary")
-        //% "Download finished"
-        previewSummary: qsTrId("nofification-download-finished-summary")
+        previewSummary: summary
     }
 
     Notification {
@@ -661,7 +671,6 @@ Page {
             }
         }
 
-        //contentWidth: parent.width - 2 * Theme.paddingMedium
         contentWidth: parent.width
 
 
