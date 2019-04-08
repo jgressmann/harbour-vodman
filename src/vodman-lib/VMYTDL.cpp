@@ -44,7 +44,7 @@ namespace {
 const QRegExp s_YTDLVideoNumberRegexp("^\\[download\\]\\s+Downloading video (\\d+) of \\d+\\s*");
 const QRegExp s_YTDLDestinationRegexp("^\\[download\\]\\s+Destination:\\s+(.+)\\s*$");
 const QRegExp s_YTDLAlreadyDownloadedRegexp("^\\[download\\]\\s+(.+)\\s+has already been downloaded\\s*$");
-const QRegExp s_YTDLProgressRegexp("^\\[download\\]\\s+(\\d+\\.\\d*)%\\s+");
+const QRegExp s_YTDLProgressRegexp("^\\[download\\]\\s+(\\d+(?:\\.\\d+)?)%\\s+");
 const QString s_Token = QStringLiteral("token");
 const QString s_Type = QStringLiteral("type");
 const QString s_MetaData = QStringLiteral("metadata");
