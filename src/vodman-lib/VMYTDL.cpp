@@ -219,7 +219,7 @@ VMYTDL::startFetchMetaData(qint64 token, const QString& _url, const QVariant& us
     }
 
     arguments << QStringLiteral("--dump-json")
-              //<< QStringLiteral("--youtube-skip-dash-manifest")
+              << QStringLiteral("--youtube-skip-dash-manifest")
               << s_NoCallHome
               << s_NoColor
               << m_CustomOptions
