@@ -580,7 +580,9 @@ Page {
                 text: "Download mp4"
                 visible: debugApp.value
                 enabled: page.canStartDownload
-                onClicked: _download("http://techslides.com/demos/samples/sample.mp4")
+                //onClicked: _download("http://techslides.com/demos/samples/sample.mp4")
+                onClicked: _download("https://rodlzdf-a.akamaihd.net/none/zdf/19/03/190329_sendung_hsh/3/190329_sendung_hsh_3328k_p36v14.mp4")
+
             }
 
             MenuItem {
@@ -722,7 +724,14 @@ Page {
 
                         Image {
                             id: thumbnail
-                            source: download.data.playlist.vod(download.data.currentFileIndex).thumbnailUrl
+                            source: {
+                                var thumbnailUrl = download.data.playlist.vod(download.data.currentFileIndex).thumbnailUrl
+                                if (thumbnailUrl) {
+                                    return thumbnailUrl
+                                }
+
+                                return "image://theme/icon-l-image"
+                            }
                             width: parent.height
                             height: parent.height
                             sourceSize.width: width

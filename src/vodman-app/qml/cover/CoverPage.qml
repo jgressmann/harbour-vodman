@@ -86,7 +86,14 @@ CoverBackground {
 
                     Image {
                         id: thumbnail
-                        source: download.data.playlist.vod(download.data.currentFileIndex).thumbnailUrl
+                        source: {
+                            var thumbnailUrl = download.data.playlist.vod(download.data.currentFileIndex).thumbnailUrl
+                            if (thumbnailUrl) {
+                                return thumbnailUrl
+                            }
+
+                            return "image://theme/icon-l-image"
+                        }
                         width: parent.height
                         height: parent.height
                         fillMode: Image.PreserveAspectFit
