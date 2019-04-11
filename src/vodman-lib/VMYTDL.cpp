@@ -67,15 +67,18 @@ void ParseYtdlOutput(QString& str, VMPlaylistDownloadData& downloadData)
 //            qDebug() << str;
             auto normalized = qMax(0.0f, qMin(value/100, 1.0f));
             downloadData.files[downloadData.currentFileIndex].data().progress = normalized;
-
-            // compute total progress
-            float totalProgress = 0;
-            for (int i = 0; i < downloadData.currentFileIndex; ++i) {
-                totalProgress += downloadData.playlist._vods()[i].duration();
+            if (downloadData.playlist.duration() > 0) {
+                // compute total progress
+                float totalProgress = 0;
+                for (int i = 0; i < downloadData.currentFileIndex; ++i) {
+                    totalProgress += downloadData.playlist._vods()[i].duration();
+                }
+                totalProgress += normalized * downloadData.playlist._vods()[downloadData.currentFileIndex].duration();
+                totalProgress /= downloadData.playlist.duration();
+                downloadData.progress = totalProgress;
+            } else {
+                downloadData.progress = normalized;
             }
-            totalProgress += normalized * downloadData.playlist._vods()[downloadData.currentFileIndex].duration();
-            totalProgress /= downloadData.playlist.duration();
-            downloadData.progress = totalProgress;
         }
     } else if (s_YTDLVideoNumberRegexp.indexIn(str) != -1) {
         QString capture = s_YTDLVideoNumberRegexp.cap(1);
