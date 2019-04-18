@@ -199,17 +199,17 @@
     <message id="select-video-format-dialog-title">
         <location filename="../qml/pages/DownloadPage.qml" line="85"/>
         <source>Select video format</source>
-        <translation type="unfinished"></translation>
+        <translation>选择视频格式</translation>
     </message>
     <message id="select-audio-format-dialog-title">
         <location filename="../qml/pages/DownloadPage.qml" line="110"/>
         <source>Select audio format</source>
-        <translation type="unfinished"></translation>
+        <translation>选择音频格式</translation>
     </message>
     <message id="select-av-format-dialog-title">
         <location filename="../qml/pages/DownloadPage.qml" line="135"/>
         <source>Select a format</source>
-        <translation type="unfinished">选择一个格式</translation>
+        <translation>选择一个格式</translation>
     </message>
     <message id="error-invalid-url-preview-body">
         <location filename="../qml/pages/DownloadPage.qml" line="343"/>
@@ -224,17 +224,17 @@
     <message id="error-content-gone-preview-body">
         <location filename="../qml/pages/DownloadPage.qml" line="360"/>
         <source>Video gone</source>
-        <translation type="unfinished"></translation>
+        <translation>视频不存在</translation>
     </message>
     <message id="error-content-gone-body">
         <location filename="../qml/pages/DownloadPage.qml" line="362"/>
         <source>Video &apos;%1&apos; is no longer available.</source>
-        <translation type="unfinished"></translation>
+        <translation>视频不可用</translation>
     </message>
     <message id="retry">
         <location filename="../qml/pages/DownloadPage.qml" line="374"/>
         <source>Retry</source>
-        <translation type="unfinished"></translation>
+        <translation>重试</translation>
     </message>
     <message id="notification-busy">
         <location filename="../qml/pages/DownloadPage.qml" line="461"/>
@@ -306,17 +306,17 @@
         <location filename="../qml/pages/DownloadPage.qml" line="815"/>
         <location filename="../qml/pages/DownloadPage.qml" line="820"/>
         <source>%1 GB</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 GB</translation>
     </message>
     <message id="unit-mb">
         <location filename="../qml/pages/DownloadPage.qml" line="824"/>
         <source>%1 MB</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 MB</translation>
     </message>
     <message id="download-item-vod-file">
         <location filename="../qml/pages/DownloadPage.qml" line="840"/>
         <source>file %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 文件</translation>
     </message>
     <message id="download-item-cancel-and-delete" numerus="yes">
         <location filename="../qml/pages/DownloadPage.qml" line="880"/>
@@ -334,7 +334,7 @@
         <location filename="../qml/pages/DownloadPage.qml" line="909"/>
         <source></source>
         <oldsource>Copy file path to clipboard</oldsource>
-        <translation type="unfinished">复制文件路径到剪贴板</translation>
+        <translation>复制文件路径到剪贴板</translation>
     </message>
     <message id="download-placeholder-text-waiting-for-download-to-start">
         <location filename="../qml/pages/DownloadPage.qml" line="926"/>
@@ -399,7 +399,7 @@
     <message id="settings-save-location-header">
         <location filename="../qml/pages/SettingsPage.qml" line="195"/>
         <source>Location</source>
-        <translation type="unfinished">地點</translation>
+        <translation>位置</translation>
     </message>
     <message id="settings-save-location-directory-label">
         <location filename="../qml/pages/SettingsPage.qml" line="206"/>
@@ -490,7 +490,7 @@
         <location filename="../qml/pages/SettingsPage.qml" line="370"/>
         <source>Version %1 is available for update</source>
         <oldsource>Version %1 available for update</oldsource>
-        <translation type="unfinished"></translation>
+        <translation>版本 %1 可供更新</translation>
     </message>
     <message id="settings-ytdl-update">
         <location filename="../qml/pages/SettingsPage.qml" line="381"/>
@@ -537,7 +537,7 @@
     <message id="ytdl-download-button">
         <location filename="../qml/pages/YTDLPage.qml" line="117"/>
         <source>Download youtube-dl</source>
-        <translation>下载youtube-dl </translation>
+        <translation>下载 youtube-dl </translation>
     </message>
     <message id="ytdl-error-busy">
         <location filename="../qml/pages/YTDLPage.qml" line="137"/>
@@ -604,17 +604,17 @@
     <message id="nofification-download-ytdl-update-available-summary">
         <location filename="../qml/harbour-vodman.qml" line="130"/>
         <source>youtube-dl update available</source>
-        <translation type="unfinished"></translation>
+        <translation>youtube-dl 可供更新</translation>
     </message>
     <message id="nofification-ytdl-update-available-body">
         <location filename="../qml/harbour-vodman.qml" line="133"/>
         <source>youtube-dl version %1 available</source>
-        <translation type="unfinished"></translation>
+        <translation>youtube-dl 版本 %1 可用</translation>
     </message>
     <message id="nofification-ytdl-update-available-action">
         <location filename="../qml/harbour-vodman.qml" line="138"/>
         <source>Update youtube-dl</source>
-        <translation type="unfinished">更新 youtube-dl</translation>
+        <translation>更新 youtube-dl</translation>
     </message>
 </context>
 </TS>
