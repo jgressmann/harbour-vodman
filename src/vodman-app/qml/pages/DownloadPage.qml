@@ -27,7 +27,7 @@ import Nemo.Notifications 1.0
 import Nemo.Configuration 1.0
 import Nemo.DBus 2.0
 import org.duckdns.jgressmann 1.0
-import Vodman 2.0
+import Vodman 2.1
 
 import ".."
 
@@ -119,12 +119,12 @@ Page {
         }
     }
 
-    function _selectAvFormat(playlist, more) {
-        if (playlist.avFormats > 1) {
+    function _selectAvFormat(vod, more) {
+        if (vod.avFormats > 1) {
             var labels = []
             var values = []
-            for (var i = 0; i < playlist.avFormats; ++i) {
-                var f = playlist.avFormat(i)
+            for (var i = 0; i < vod.avFormats; ++i) {
+                var f = vod.avFormat(i)
                 labels.push(f.displayName + " / " + f.tbr.toFixed(0) + " [tbr] " + f.extension)
                 values.push(f.id)
             }
@@ -162,24 +162,7 @@ Page {
 
     function metaDataDownloadSucceeded(token, playlist) {
 //        console.debug("token=" + token + ", playlist=" + playlist)
-        console.debug(".description=" + playlist.description)
-        console.debug("#av formats=" + playlist.avFormats)
-        for (var i = 0; i < playlist.avFormats; ++i) {
-            var f = playlist.avFormat(i)
-            console.debug(i + " " + f.width + "x" + f.height + " format " + f.format + " " + f.displayName + " " + f.extension)
-        }
-
-        console.debug("#video formats=" + playlist.videoFormats)
-        for (var i = 0; i < playlist.videoFormats; ++i) {
-            var f = playlist.videoFormat(i)
-            console.debug(i + " " + f.width + "x" + f.height + " format " + f.format + " " + f.displayName + " " + f.extension)
-        }
-
-        console.debug("#audio formats=" + playlist.audioFormats)
-        for (var i = 0; i < playlist.audioFormats; ++i) {
-            var f = playlist.audioFormat(i)
-            console.debug(i + " " + f.codec + " " + f.displayName + " " + f.extension)
-        }
+        console.debug("#vods=" + playlist.vods)
 
         var formatId
         switch (settingBearerMode.value) {
@@ -217,10 +200,12 @@ Page {
                 return
             }
 
-            if (playlist.avFormats > 0) {
-                _selectAvFormat(playlist, function (formatIndex) {
-                    var avFormat = playlist.avFormat(formatIndex)
-                    _metaDataDownloadSucceededEx(token, playlist, format.id, _makeDisplayString(avFormat))
+            var vod = playlist.vod(0)
+
+            if (vod.avFormats > 0) {
+                _selectAvFormat(vod, function (formatIndex) {
+                    var f = vod.avFormat(formatIndex)
+                    _metaDataDownloadSucceededEx(token, playlist, f.id, f.displayName)
                 })
                 return
             }
@@ -234,16 +219,13 @@ Page {
 
     function _findBestFormat(playlist, formatId) {
         if (VM.VM_Smallest === formatId) {
-            var f = playlist.avFormat(0)
-            return ["worst", _makeDisplayString(f)]
-            //return "worstvideo+worstaudio/worst"
+            //% "worst"
+            return ["worst", qsTrId("format-worst")]
         }
 
         if (VM.VM_Largest === formatId) {
-            var f = playlist.avFormat(playlist.avFormats-1)
-            return ["best", _makeDisplayString(f)]
-//            return "best"
-            //return "bestvideo+bestaudio/best"
+            //% "best"
+            return ["best", qsTrId("format-best")]
         }
 
         var height
@@ -268,7 +250,6 @@ Page {
         }
 
         return ["best[height=" + height + "]/best[height<=" + height + "]/best", "~" + width + "x" + height]
-        //return "bestvideo[height=" + height + "]+bestaudio/bestvideo[height<=" + height + "]+bestaudio/best"
     }
 
     function _metaDataDownloadSucceededEx(token, playlist, format, displayFormat) {

@@ -452,61 +452,17 @@ VMYTDL::onMetaDataProcessFinished(int code, QProcess::ExitStatus status)
         vodPlaylistData.id = root.value(QStringLiteral("playlist_id")).toString();
     }
 
+    vodPlaylistData.vods.reserve(ends.size());
 
-    QJsonArray formats = root.value(QStringLiteral("formats")).toArray();
-    QVector<int> videoIndices;
-    qDebug() << "#formats in JSON" << formats.size();
-    for (int i = 0; i < formats.size(); ++i) {
-        QJsonObject format = formats[i].toObject();
-        QString vcodec = format.value(QStringLiteral("vcodec")).toString();
-        QString acodec = format.value(QStringLiteral("acodec")).toString();
-
-        auto hasVideo = !vcodec.isEmpty() && QStringLiteral("none") != vcodec;
-        auto hasAudio = !acodec.isEmpty() && QStringLiteral("none") != acodec;
-
-        if (hasVideo) {
-            videoIndices << i;
-            if (hasAudio) {
-                appendAvFormat(vodPlaylistData, format);
-            } else {
-                appendVideoFormat(vodPlaylistData, format);
-            }
-        } else {
-            if (hasAudio) {
-                appendAudioFormat(vodPlaylistData, format);
-            }
-        }
+    if (!appendVod(vodPlaylistData, root)) {
+        QString message = QStringLiteral("No format has video");
+        qCritical() << message;
+        downLoadData.error = VMVodEnums::VM_ErrorNoVideo;
+        downLoadData.errorMessage = message;
+        emit metaDataDownloadCompleted(id, download);
+        return;
     }
 
-    if (vodPlaylistData.videoFormats.isEmpty()) {
-        if (formats.isEmpty()) {
-            QString message = QStringLiteral("No format has video");
-            qCritical() << message;
-            downLoadData.error = VMVodEnums::VM_ErrorNoVideo;
-            downLoadData.errorMessage = message;
-            emit metaDataDownloadCompleted(id, download);
-            return;
-        } else {
-            if (videoIndices.isEmpty()) {
-                // assume they are all valid matches
-                videoIndices.resize(formats.size());
-                for (int i = 0; i < videoIndices.size(); ++i) {
-                    videoIndices[i] = i;
-                }
-            }
-
-            // pick up all remaining videos
-            for (int i = 0; i < videoIndices.size(); ++i) {
-                auto formatIndex = videoIndices[i];
-                QJsonObject format = formats[formatIndex].toObject();
-                appendAvFormat(vodPlaylistData, format);
-            }
-        }
-    }
-
-    appendVod(vodPlaylistData, root);
-
-    // parse rest of playlist
     for (int i = 1; i < ends.size(); ++i) {
         qDebug("JSON object %d at [%d-%d)\n", i, starts[i], ends[i]);
         auto bytes = output.mid(starts[i], ends[i] - starts[i]);
@@ -521,7 +477,14 @@ VMYTDL::onMetaDataProcessFinished(int code, QProcess::ExitStatus status)
         }
 
         root = doc.object();
-        appendVod(vodPlaylistData, root);
+        if (!appendVod(vodPlaylistData, root)) {
+            QString message = QStringLiteral("No format has video");
+            qCritical() << message;
+            downLoadData.error = VMVodEnums::VM_ErrorNoVideo;
+            downLoadData.errorMessage = message;
+            emit metaDataDownloadCompleted(id, download);
+            return;
+        }
     }
 
     auto cacheEntry = new CacheEntry;
@@ -534,7 +497,7 @@ VMYTDL::onMetaDataProcessFinished(int code, QProcess::ExitStatus status)
 }
 
 void
-VMYTDL::appendVideoFormat(VMPlaylistData& data, const QJsonObject& format) const
+VMYTDL::appendVideoFormat(VMVodData& data, const QJsonObject& format) const
 {
     data.videoFormats.append(VMVideoFormat());
     VMVideoFormat& videoFormat = data.videoFormats.last();
@@ -555,7 +518,7 @@ VMYTDL::appendVideoFormat(VMPlaylistData& data, const QJsonObject& format) const
 }
 
 void
-VMYTDL::appendAudioFormat(VMPlaylistData& data, const QJsonObject& format) const
+VMYTDL::appendAudioFormat(VMVodData& data, const QJsonObject& format) const
 {
     data.audioFormats.append(VMAudioFormat());
     VMAudioFormat& audioFormat = data.audioFormats.last();
@@ -573,7 +536,7 @@ VMYTDL::appendAudioFormat(VMPlaylistData& data, const QJsonObject& format) const
 
 
 void
-VMYTDL::appendAvFormat(VMPlaylistData& data, const QJsonObject& format) const
+VMYTDL::appendAvFormat(VMVodData& data, const QJsonObject& format) const
 {
     data.avFormats.append(VMVideoFormat());
     VMVideoFormat& avFormat = data.avFormats.last();
@@ -593,7 +556,7 @@ VMYTDL::appendAvFormat(VMPlaylistData& data, const QJsonObject& format) const
     qDebug() << "added av format" << avFormat;
 }
 
-int
+bool
 VMYTDL::appendVod(VMPlaylistData& vodPlaylistData, const QJsonObject& root) const
 {
     vodPlaylistData.vods.append(VMVod());
@@ -607,7 +570,62 @@ VMYTDL::appendVod(VMPlaylistData& vodPlaylistData, const QJsonObject& root) cons
     vodData.id = root.value(QStringLiteral("id")).toString();
     vodData.title = root.value(QStringLiteral("title")).toString();
     vodData.fullTitle = root.value(QStringLiteral("fulltitle")).toString();
-    return vodDuration;
+
+    QJsonArray formats = root.value(QStringLiteral("formats")).toArray();
+    if (formats.isEmpty()) {
+        return false;
+    }
+
+    QVector<int> videoIndices;
+    videoIndices.reserve(formats.size());
+    vodData.avFormats.reserve(formats.size());
+    vodData.videoFormats.reserve(formats.size());
+    vodData.audioFormats.reserve(formats.size());
+    qDebug() << "#formats in JSON" << formats.size();
+    for (int i = 0; i < formats.size(); ++i) {
+        QJsonObject format = formats[i].toObject();
+        QString vcodec = format.value(QStringLiteral("vcodec")).toString();
+        QString acodec = format.value(QStringLiteral("acodec")).toString();
+
+        auto hasVideo = !vcodec.isEmpty() && QStringLiteral("none") != vcodec;
+        auto hasAudio = !acodec.isEmpty() && QStringLiteral("none") != acodec;
+
+        if (hasVideo) {
+            videoIndices << i;
+            if (hasAudio) {
+                appendAvFormat(vodData, format);
+            } else {
+                appendVideoFormat(vodData, format);
+            }
+        } else {
+            if (hasAudio) {
+                appendAudioFormat(vodData, format);
+            }
+        }
+    }
+
+    if (vodData.videoFormats.isEmpty()) {
+        if (formats.isEmpty()) {
+            return false;
+        } else {
+            if (videoIndices.isEmpty()) {
+                // assume they are all valid matches
+                videoIndices.resize(formats.size());
+                for (int i = 0; i < videoIndices.size(); ++i) {
+                    videoIndices[i] = i;
+                }
+            }
+
+            // pick up all remaining videos
+            for (int i = 0; i < videoIndices.size(); ++i) {
+                auto formatIndex = videoIndices[i];
+                QJsonObject format = formats[formatIndex].toObject();
+                appendAvFormat(vodData, format);
+            }
+        }
+    }
+
+    return true;
 }
 
 void

@@ -25,6 +25,7 @@
 
 #include <QObject>
 #include <QVariant>
+#include <QVector>
 #include <QExplicitlySharedDataPointer>
 
 class QDebug;
@@ -182,6 +183,9 @@ private:
 
 struct VMVodData : public QSharedData
 {
+    QVector<VMVideoFormat> videoFormats;
+    QVector<VMAudioFormat> audioFormats;
+    QVector<VMVideoFormat> avFormats;
     QString thumbnailUrl;
     QString webPageUrl;
     QString title;
@@ -196,6 +200,9 @@ struct VMVodData : public QSharedData
 class VMVod
 {
     Q_GADGET
+    Q_PROPERTY(int videoFormats READ videoFormats CONSTANT)
+    Q_PROPERTY(int audioFormats READ audioFormats CONSTANT)
+    Q_PROPERTY(int avFormats READ avFormats CONSTANT)
     Q_PROPERTY(QString thumbnailUrl READ thumbnailUrl CONSTANT)
     Q_PROPERTY(QString webPageUrl READ webPageUrl CONSTANT)
     Q_PROPERTY(QString title READ title CONSTANT)
@@ -211,13 +218,22 @@ public:
     VMVod& operator=(const VMVod& /*other*/) = default;
 
 public:
+    inline int videoFormats() const { return d->videoFormats.size(); }
+    inline int audioFormats() const { return d->audioFormats.size(); }
+    inline int avFormats() const { return d->avFormats.size(); }
+    inline const QVector<VMVideoFormat>& _videoFormats() const { return d->videoFormats; }
+    inline const QVector<VMAudioFormat>& _audioFormats() const { return d->audioFormats; }
+    inline const QVector<VMVideoFormat>& _avFormats() const { return d->avFormats; }
+    Q_INVOKABLE QVariant videoFormat(int index) const;
+    Q_INVOKABLE QVariant audioFormat(int index) const;
+    Q_INVOKABLE QVariant avFormat(int index) const;
     inline QString thumbnailUrl() const { return d->thumbnailUrl; }
     inline QString webPageUrl() const { return d->webPageUrl; }
     inline QString title() const { return d->title; }
     inline QString fullTitle() const { return d->fullTitle; }
     inline QString id() const { return d->id; }
-    int duration() const { return d->durationS; }
-    int playlistIndex() const { return d->playlistIndex; }
+    inline int duration() const { return d->durationS; }
+    inline int playlistIndex() const { return d->playlistIndex; }
     bool isValid() const;
 
 public:
@@ -230,10 +246,7 @@ private:
 
 struct VMPlaylistData : public QSharedData
 {
-    QList<VMVideoFormat> videoFormats;
-    QList<VMAudioFormat> audioFormats;
-    QList<VMVideoFormat> avFormats;
-    QList<VMVod> vods;
+    QVector<VMVod> vods;
     QString webPageUrl;
     QString title;
     QString id;
@@ -244,9 +257,6 @@ struct VMPlaylistData : public QSharedData
 class VMPlaylist
 {
     Q_GADGET
-    Q_PROPERTY(int videoFormats READ videoFormats CONSTANT)
-    Q_PROPERTY(int audioFormats READ audioFormats CONSTANT)
-    Q_PROPERTY(int avFormats READ avFormats CONSTANT)
     Q_PROPERTY(int vods READ vods CONSTANT)
     Q_PROPERTY(QString webPageUrl READ webPageUrl CONSTANT)
     Q_PROPERTY(QString title READ title CONSTANT)
@@ -259,17 +269,8 @@ public:
     VMPlaylist& operator=(const VMPlaylist& /*other*/) = default;
 
 public:
-    inline const QList<VMVideoFormat>& _videoFormats() const { return d->videoFormats; }
-    inline const QList<VMAudioFormat>& _audioFormats() const { return d->audioFormats; }
-    inline const QList<VMVideoFormat>& _avFormats() const { return d->avFormats; }
-    inline const QList<VMVod>& _vods() const { return d->vods; }
-    inline int videoFormats() const { return d->videoFormats.size(); }
-    inline int audioFormats() const { return d->audioFormats.size(); }
-    inline int avFormats() const { return d->avFormats.size(); }
     inline int vods() const { return d->vods.size(); }
-    Q_INVOKABLE QVariant videoFormat(int index) const;
-    Q_INVOKABLE QVariant audioFormat(int index) const;
-    Q_INVOKABLE QVariant avFormat(int index) const;
+    inline const QVector<VMVod>& _vods() const { return d->vods; }
     Q_INVOKABLE QVariant vod(int index) const;
     int duration() const;
     inline QString webPageUrl() const { return d->webPageUrl; }

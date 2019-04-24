@@ -29,7 +29,7 @@
 
 namespace
 {
-const quint8 Version = 1;
+const quint8 Version = 2;
 }
 
 VMVodEnums::~VMVodEnums()
@@ -76,8 +76,37 @@ VMVod::VMVod()
 
 bool VMVod::isValid() const
 {
-    return d->durationS > 0;
+    return d->durationS > 0 && (d->videoFormats.size() > 0 || d->avFormats.size() > 0);
 }
+
+
+QVariant VMVod::videoFormat(int index) const
+{
+    if (index >= 0 && index < d->videoFormats.size()) {
+        return QVariant::fromValue(d->videoFormats[index]);
+    }
+
+    return QVariant();
+}
+
+QVariant VMVod::audioFormat(int index) const
+{
+    if (index >= 0 && index < d->audioFormats.size()) {
+        return QVariant::fromValue(d->audioFormats[index]);
+    }
+
+    return QVariant();
+}
+
+QVariant VMVod::avFormat(int index) const
+{
+    if (index >= 0 && index < d->avFormats.size()) {
+        return QVariant::fromValue(d->avFormats[index]);
+    }
+
+    return QVariant();
+}
+
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -88,8 +117,7 @@ VMPlaylist::VMPlaylist()
 
 bool VMPlaylist::isValid() const
 {
-    return (d->videoFormats.size() > 0 || d->avFormats.size() > 0) &&
-            d->vods.size() > 0;
+    return d->vods.size() > 0;
 }
 
 int VMPlaylist::duration() const
@@ -101,33 +129,6 @@ int VMPlaylist::duration() const
     }
 
     return duration;
-}
-
-QVariant VMPlaylist::videoFormat(int index) const
-{
-    if (index >= 0 && index < d->videoFormats.size()) {
-        return QVariant::fromValue(d->videoFormats[index]);
-    }
-
-    return QVariant();
-}
-
-QVariant VMPlaylist::audioFormat(int index) const
-{
-    if (index >= 0 && index < d->audioFormats.size()) {
-        return QVariant::fromValue(d->audioFormats[index]);
-    }
-
-    return QVariant();
-}
-
-QVariant VMPlaylist::avFormat(int index) const
-{
-    if (index >= 0 && index < d->avFormats.size()) {
-        return QVariant::fromValue(d->avFormats[index]);
-    }
-
-    return QVariant();
 }
 
 QVariant VMPlaylist::vod(int index) const
@@ -238,6 +239,9 @@ QDataStream &operator<<(QDataStream &stream, const VMVodData &value)
     stream << value.id;
     stream << value.durationS;
     stream << value.playlistIndex;
+    stream << value.videoFormats;
+    stream << value.audioFormats;
+    stream << value.avFormats;
     return stream;
 }
 
@@ -255,6 +259,9 @@ QDataStream &operator>>(QDataStream &stream, VMVodData &value)
         stream >> value.id;
         stream >> value.durationS;
         stream >> value.playlistIndex;
+        stream >> value.videoFormats;
+        stream >> value.audioFormats;
+        stream >> value.avFormats;
         break;
     }
     return stream;
@@ -276,9 +283,6 @@ QDataStream &operator<<(QDataStream &stream, const VMPlaylistData &value)
     stream << value.id;
     stream << value.title;
     stream << value.webPageUrl;
-    stream << value.videoFormats;
-    stream << value.audioFormats;
-    stream << value.avFormats;
     stream << value.vods;
     return stream;
 }
@@ -292,9 +296,6 @@ QDataStream &operator>>(QDataStream &stream, VMPlaylistData &value)
         stream >> value.id;
         stream >> value.title;
         stream >> value.webPageUrl;
-        stream >> value.videoFormats;
-        stream >> value.audioFormats;
-        stream >> value.avFormats;
         stream >> value.vods;
         break;
     }
@@ -316,10 +317,7 @@ QDebug operator<<(QDebug debug, const VMPlaylist& value)
     const VMPlaylistData& data = value.data();
     QDebugStateSaver saver(debug);
     debug.nospace() << "VMPlaylist("
-                    << "#av=" << data.avFormats.size()
-                    << ", #video=" << data.videoFormats.size()
-                    << ", #audio=" << data.audioFormats.size()
-                    << ", #vods=" << data.vods.size()
+                    << "#vods=" << data.vods.size()
                     << ", id=" << data.id
                     << ", title=" << data.title
                     << ", url=" << data.webPageUrl
@@ -332,7 +330,10 @@ QDebug operator<<(QDebug debug, const VMVod& value)
     const VMVodData& data = value.data();
     QDebugStateSaver saver(debug);
     debug.nospace() << "VMVod("
-                    << "fullTitle=" << data.fullTitle
+                    << "#av=" << data.avFormats.size()
+                    << ", #video=" << data.videoFormats.size()
+                    << ", #audio=" << data.audioFormats.size()
+                    << ", fullTitle=" << data.fullTitle
                     << ", title=" << data.fullTitle
                     << ", id=" << data.id
                     << ", durationS=" << data.durationS

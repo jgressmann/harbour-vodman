@@ -98,10 +98,10 @@ private:
     void cleanupProcess(QProcess* process);
     void fillFormatId(VMVideoFormatData& format) const;
     void fillWidth(VMVideoFormatData& format) const;
-    void appendVideoFormat(VMPlaylistData& data, const QJsonObject& json) const;
-    void appendAudioFormat(VMPlaylistData& data, const QJsonObject& json) const;
-    void appendAvFormat(VMPlaylistData& data, const QJsonObject& json) const;
-    int appendVod(VMPlaylistData& data, const QJsonObject& json) const;
+    void appendVideoFormat(VMVodData& data, const QJsonObject& json) const;
+    void appendAudioFormat(VMVodData& data, const QJsonObject& json) const;
+    void appendAvFormat(VMVodData& data, const QJsonObject& json) const;
+    bool appendVod(VMPlaylistData& data, const QJsonObject& json) const;
     bool available() const;
     QProcess* createProcess();
     static bool parseJson(const QByteArray& bytes, QVector<int>* starts, QVector<int>* ends);

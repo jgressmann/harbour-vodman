@@ -64,8 +64,6 @@ TRANSLATIONS += translations/harbour-vodman-zh_cn.ts
 SOURCES += harbour-vodman.cpp \
     VMQuickVodPlaylistDownload.cpp \
     VMQuickVodPlaylistDownloadModel.cpp
-SOURCES +=
-SOURCES +=
 SOURCES += VMApp.cpp
 
 
@@ -73,7 +71,6 @@ SOURCES += VMApp.cpp
 HEADERS += \
     VMQuickVodPlaylistDownload.h \
     VMQuickVodPlaylistDownloadModel.h
-HEADERS +=
 HEADERS += VMApp.h
 
 
@@ -82,11 +79,4 @@ HEADERS += VMApp.h
 icons.path = /usr/share/$${TARGET}/icons
 icons.files = icons/cover.svg icons/icon.svg icons/tape.png
 INSTALLS += icons
-
-
-
-#include(../vodman-lib/vodman-lib.pri)
-#INCLUDEPATH += ../vodman-lib
-#LIBS += -L../vodman-lib -lvodman-lib
-#${TARGET}.depends += ../vodman-lib/vodman.qrc ../vodman-lib/libvodman.a
 
