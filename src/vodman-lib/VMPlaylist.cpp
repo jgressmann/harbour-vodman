@@ -162,7 +162,7 @@ QDataStream &operator>>(QDataStream &stream, VMVideoFormatData &value)
     quint8 version;
     stream >> version;
     switch (version) {
-    case 1:
+    case Version:
         stream >> value.width;
         stream >> value.height;
         stream >> value.id;
@@ -205,7 +205,7 @@ QDataStream &operator>>(QDataStream &stream, VMAudioFormatData &value)
     quint8 version;
     stream >> version;
     switch (version) {
-    case 1:
+    case Version:
         stream >> value.id;
         stream >> value.displayName;
         stream >> value.extension;
@@ -250,7 +250,7 @@ QDataStream &operator>>(QDataStream &stream, VMVodData &value)
     quint8 version;
     stream >> version;
     switch (version) {
-    case 1:
+    case Version:
         stream >> value.thumbnailUrl;
         stream >> value.webPageUrl;
         stream >> value.title;
@@ -292,7 +292,7 @@ QDataStream &operator>>(QDataStream &stream, VMPlaylistData &value)
     quint8 version;
     stream >> version;
     switch (version) {
-    case 1:
+    case Version:
         stream >> value.id;
         stream >> value.title;
         stream >> value.webPageUrl;
@@ -356,7 +356,7 @@ QDebug operator<<(QDebug debug, const VMVideoFormat& value)
                     << ", height=" << data.height
                     << ", tbr=" << data.tbr
                     << ", codec=" << data.codec
-                    << ", ext=" << data.extension
+                    << "Version, ext=" << data.extension
                     << ", streamUrl=" << data.streamUrl
                     << ")";
     return debug;
