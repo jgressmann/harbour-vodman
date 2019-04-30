@@ -64,8 +64,9 @@
     </message>
     <message id="about-sources-text">
         <location filename="../qml/pages/AboutPage.qml" line="149"/>
-        <source>Sources are on Github</source>
-        <translation>源代码位于 Github</translation>
+        <source>The sources are available on &lt;a href=&apos;https://github.com/jgressmann/harbour-vodman&apos;&gt;GitHub&lt;/a&gt;.</source>
+        <oldsource>Sources are on Github</oldsource>
+        <translation>源代码位于 &lt;a href=&apos;https://github.com/jgressmann/harbour-vodman&apos;&gt;GitHub&lt;/a&gt;</translation>
     </message>
     <message id="about-translations-header">
         <location filename="../qml/pages/AboutPage.qml" line="158"/>
@@ -321,7 +322,7 @@
     <message id="download-item-cancel-and-delete" numerus="yes">
         <location filename="../qml/pages/DownloadPage.qml" line="861"/>
         <source>Cancel and delete file</source>
-        <translation type="unfinished">
+        <translation>
             <numerusform>取消并删除文件</numerusform>
         </translation>
     </message>

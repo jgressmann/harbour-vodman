@@ -145,7 +145,7 @@ Page {
             LinkedLabel {
                 x: Theme.horizontalPageMargin
                 width: parent.width - 2*x
-                //% "Sources are on Github"
+                //% "The sources are available on <a href='https://github.com/jgressmann/harbour-vodman'>GitHub</a>."
                 text: qsTrId("about-sources-text")
                 wrapMode: Text.WordWrap
                 font.pixelSize: Theme.fontSizeSmall

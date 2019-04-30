@@ -64,8 +64,9 @@
     </message>
     <message id="about-sources-text">
         <location filename="../qml/pages/AboutPage.qml" line="149"/>
-        <source>Sources are on Github</source>
-        <translation>The sources are available on &lt;a href=&quot;https://github.com/jgressmann/harbour-vodman&quot;&gt;GitHub&lt;/a&gt;.</translation>
+        <source>The sources are available on &lt;a href=&apos;https://github.com/jgressmann/harbour-vodman&apos;&gt;GitHub&lt;/a&gt;.</source>
+        <oldsource>Sources are on Github</oldsource>
+        <translation>The sources are available on &lt;a href=&apos;https://github.com/jgressmann/harbour-vodman&apos;&gt;GitHub&lt;/a&gt;.</translation>
     </message>
     <message id="about-translations-header">
         <location filename="../qml/pages/AboutPage.qml" line="158"/>
@@ -337,7 +338,7 @@
         <location filename="../qml/pages/DownloadPage.qml" line="890"/>
         <source></source>
         <oldsource>Copy file path to clipboard</oldsource>
-        <translation type="unfinished">Copy file path to clipboard</translation>
+        <translation>Copy file path to clipboard</translation>
     </message>
     <message id="download-placeholder-text-waiting-for-download-to-start">
         <location filename="../qml/pages/DownloadPage.qml" line="907"/>

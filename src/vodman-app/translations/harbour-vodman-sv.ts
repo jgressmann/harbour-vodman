@@ -69,8 +69,9 @@
     </message>
     <message id="about-sources-text">
         <location filename="../qml/pages/AboutPage.qml" line="149"/>
-        <source>Sources are on Github</source>
-        <translation>Källkoder finns på &lt;a href=&quot;https://github.com/jgressmann/harbour-vodman&quot;&gt;GitHub&lt;/a&gt;.</translation>
+        <source>The sources are available on &lt;a href=&apos;https://github.com/jgressmann/harbour-vodman&apos;&gt;GitHub&lt;/a&gt;.</source>
+        <oldsource>Sources are on Github</oldsource>
+        <translation>Källkoder finns på &lt;a href=&apos;https://github.com/jgressmann/harbour-vodman&apos;&gt;GitHub&lt;/a&gt;.</translation>
     </message>
     <message id="about-translations-header">
         <location filename="../qml/pages/AboutPage.qml" line="158"/>
