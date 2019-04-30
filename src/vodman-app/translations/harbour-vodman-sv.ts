@@ -70,7 +70,7 @@
     <message id="about-sources-text">
         <location filename="../qml/pages/AboutPage.qml" line="149"/>
         <source>Sources are on Github</source>
-        <translation>Källkoder finns tillgängliga på &lt;a href=&quot;https://github.com/jgressmann/harbour-vodman&quot;&gt;GitHub&lt;/a&gt;.</translation>
+        <translation>Källkoder finns på &lt;a href=&quot;https://github.com/jgressmann/harbour-vodman&quot;&gt;GitHub&lt;/a&gt;.</translation>
     </message>
     <message id="about-translations-header">
         <location filename="../qml/pages/AboutPage.qml" line="158"/>
@@ -203,17 +203,17 @@
     <message id="select-video-format-dialog-title">
         <location filename="../qml/pages/DownloadPage.qml" line="85"/>
         <source>Select video format</source>
-        <translation type="unfinished"></translation>
+        <translation>Välj videoformat</translation>
     </message>
     <message id="select-audio-format-dialog-title">
         <location filename="../qml/pages/DownloadPage.qml" line="110"/>
         <source>Select audio format</source>
-        <translation type="unfinished"></translation>
+        <translation>Välj ljudformat</translation>
     </message>
     <message id="select-av-format-dialog-title">
         <location filename="../qml/pages/DownloadPage.qml" line="135"/>
         <source>Select a format</source>
-        <translation type="unfinished">Välj ett format</translation>
+        <translation>Välj ett format</translation>
     </message>
     <message id="error-invalid-url-preview-body">
         <location filename="../qml/pages/DownloadPage.qml" line="324"/>
@@ -238,7 +238,7 @@
     <message id="retry">
         <location filename="../qml/pages/DownloadPage.qml" line="355"/>
         <source>Retry</source>
-        <translation type="unfinished"></translation>
+        <translation>Försök igen</translation>
     </message>
     <message id="notification-busy">
         <location filename="../qml/pages/DownloadPage.qml" line="442"/>
@@ -311,17 +311,17 @@
         <location filename="../qml/pages/DownloadPage.qml" line="796"/>
         <location filename="../qml/pages/DownloadPage.qml" line="801"/>
         <source>%1 GB</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 GB</translation>
     </message>
     <message id="unit-mb">
         <location filename="../qml/pages/DownloadPage.qml" line="805"/>
         <source>%1 MB</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 MB</translation>
     </message>
     <message id="download-item-vod-file">
         <location filename="../qml/pages/DownloadPage.qml" line="821"/>
         <source>file %1</source>
-        <translation type="unfinished">fil %1</translation>
+        <translation>fil %1</translation>
     </message>
     <message id="download-item-cancel-and-delete" numerus="yes">
         <location filename="../qml/pages/DownloadPage.qml" line="861"/>
@@ -475,7 +475,7 @@
     <message id="settings-save-location-file-name-description">
         <location filename="../qml/pages/SettingsPage.qml" line="322"/>
         <source>Tags {title} {id} {formatid} will be substituded from the VOD&apos;s meta data.</source>
-        <translation>Taggar {title} {id} {formatid}, kommer att hämtas från VOD:ens metadata</translation>
+        <translation>Taggar {title} {id} {formatid}, kommer att hämtas från VOD:ens metadata.</translation>
     </message>
     <message id="settings-ytdl-downloading">
         <location filename="../qml/pages/SettingsPage.qml" line="351"/>
@@ -496,7 +496,7 @@
         <location filename="../qml/pages/SettingsPage.qml" line="370"/>
         <source>Version %1 is available for update</source>
         <oldsource>Version %1 available for update</oldsource>
-        <translation type="unfinished"></translation>
+        <translation>Version %1 finns tillgänglig för uppdatering</translation>
     </message>
     <message id="settings-ytdl-update">
         <location filename="../qml/pages/SettingsPage.qml" line="381"/>
@@ -610,17 +610,17 @@
     <message id="nofification-download-ytdl-update-available-summary">
         <location filename="../qml/harbour-vodman.qml" line="130"/>
         <source>youtube-dl update available</source>
-        <translation type="unfinished"></translation>
+        <translation>youtube-dl-uppdatering tillgänglig</translation>
     </message>
     <message id="nofification-ytdl-update-available-body">
         <location filename="../qml/harbour-vodman.qml" line="133"/>
         <source>youtube-dl version %1 available</source>
-        <translation type="unfinished"></translation>
+        <translation>youtube-dl-version %1 tillgänglig</translation>
     </message>
     <message id="nofification-ytdl-update-available-action">
         <location filename="../qml/harbour-vodman.qml" line="138"/>
         <source>Update youtube-dl</source>
-        <translation type="unfinished">Uppdatera youtube-dl</translation>
+        <translation>Uppdatera youtube-dl</translation>
     </message>
 </context>
 </TS>
