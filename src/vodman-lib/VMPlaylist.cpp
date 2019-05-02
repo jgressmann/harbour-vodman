@@ -356,7 +356,7 @@ QDebug operator<<(QDebug debug, const VMVideoFormat& value)
                     << ", height=" << data.height
                     << ", tbr=" << data.tbr
                     << ", codec=" << data.codec
-                    << "Version, ext=" << data.extension
+                    << ", ext=" << data.extension
                     << ", streamUrl=" << data.streamUrl
                     << ")";
     return debug;
