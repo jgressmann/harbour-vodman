@@ -35,7 +35,7 @@ struct VMMetaDataDownloadData : public QSharedData
     QVariant userData;
     int error;
 
-    VMMetaDataDownloadData() = default;
+    VMMetaDataDownloadData();
 };
 
 
@@ -78,6 +78,7 @@ struct VMPlaylistDownloadRequest
     VMPlaylist playlist;
     QString format;
     QVariant userData;
+    QVector<int> indices;
 
     bool isValid() const;
 };
@@ -85,12 +86,12 @@ struct VMPlaylistDownloadRequest
 
 struct VMFileDownloadData : public QSharedData
 {
-//    QString url;
     QString filePath;
     quint64 fileSize;
     float progress;
+    int playlistIndex;
 
-    VMFileDownloadData() = default;
+    VMFileDownloadData();
 };
 
 class VMFileDownload
@@ -99,7 +100,7 @@ class VMFileDownload
     Q_PROPERTY(float progress READ progress CONSTANT)
     Q_PROPERTY(QString filePath READ filePath CONSTANT)
     Q_PROPERTY(quint64 fileSize READ fileSize CONSTANT)
-//    Q_PROPERTY(QString url READ url CONSTANT)
+    Q_PROPERTY(int playlistIndex READ playlistIndex CONSTANT)
 
 public:
     ~VMFileDownload() = default;
@@ -111,7 +112,7 @@ public:
     inline float progress() const { return d->progress; }
     inline QString filePath() const { return d->filePath; }
     inline quint64 fileSize() const { return d->fileSize; }
-//    inline QString url() const { return d->url; }
+    inline int playlistIndex() const { return d->playlistIndex; }
 
 public:
     inline VMFileDownloadData& data() { return *d; }
@@ -126,7 +127,7 @@ private:
 struct VMPlaylistDownloadData : public QSharedData
 {
     VMPlaylist playlist;
-    QList<VMFileDownload> files;
+    QVector<VMFileDownload> files;
     QString errorMessage;
     QString format;
     QDateTime timeStarted;
@@ -137,7 +138,7 @@ struct VMPlaylistDownloadData : public QSharedData
     int error;
     int currentFileIndex;
 
-    VMPlaylistDownloadData() = default;
+    VMPlaylistDownloadData();
 };
 
 class VMPlaylistDownload
@@ -154,8 +155,6 @@ class VMPlaylistDownload
     Q_PROPERTY(VMPlaylist playlist READ playlist CONSTANT)
     Q_PROPERTY(quint64 fileSize READ fileSize CONSTANT)
     Q_PROPERTY(QVariant userData READ userData CONSTANT)
-//    Q_PROPERTY(QVariant currentFile READ currentFile CONSTANT)
-//    Q_PROPERTY(QVariant currentVod READ currentVod CONSTANT)
 
 public:
     ~VMPlaylistDownload() = default;
@@ -175,10 +174,8 @@ public:
     inline int currentFileIndex() const { return d->currentFileIndex; }
     inline VMPlaylist playlist() const { return d->playlist; }
     inline quint64 fileSize() const { return d->fileSize; }
-    inline const QList<VMFileDownload>& _files() const { return d->files; }
+    inline const QVector<VMFileDownload>& _files() const { return d->files; }
     inline QVariant userData() const { return d->userData; }
-//    QVariant currentVod() const;
-//    QVariant currentFile() const;
 
 public:
     inline VMPlaylistDownloadData& data() { return *d; }

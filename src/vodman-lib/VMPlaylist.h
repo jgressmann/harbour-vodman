@@ -96,7 +96,7 @@ struct VMVideoFormatData : public QSharedData
     int format;
     float tbr;
 
-    VMVideoFormatData() = default;
+    VMVideoFormatData();
 };
 
 class VMVideoFormat
@@ -145,7 +145,7 @@ struct VMAudioFormatData : public QSharedData
     QString codec;
     float abr;
 
-    VMAudioFormatData() = default;
+    VMAudioFormatData();
 };
 
 class VMAudioFormat
@@ -194,7 +194,7 @@ struct VMVodData : public QSharedData
     int durationS;
     int playlistIndex;
 
-    VMVodData() = default;
+    VMVodData();
 };
 
 class VMVod
@@ -251,7 +251,7 @@ struct VMPlaylistData : public QSharedData
     QString title;
     QString id;
 
-    VMPlaylistData() = default;
+    VMPlaylistData();
 };
 
 class VMPlaylist

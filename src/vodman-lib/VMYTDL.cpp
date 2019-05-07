@@ -36,6 +36,8 @@
 #include <QFile>
 #include <QFileInfo>
 
+using IndexList = QVector<int>;
+Q_DECLARE_METATYPE(IndexList)
 
 namespace {
 //[download] Destination: youtube-dl tutorial for windows-fKe9rV-gl1c.f251.webm
@@ -49,6 +51,8 @@ const QString s_Token = QStringLiteral("token");
 const QString s_Type = QStringLiteral("type");
 const QString s_MetaData = QStringLiteral("metadata");
 const QString s_Download = QStringLiteral("download");
+const QString s_Indices = QStringLiteral("indices");
+const QString s_Duration = QStringLiteral("duration");
 const QString s_NoCallHome = QStringLiteral("--no-call-home");
 const QString s_NoColor = QStringLiteral("--no-color");
 
@@ -56,7 +60,7 @@ const QString s_NoColor = QStringLiteral("--no-color");
 
 void Nop(QString&) {}
 
-void ParseYtdlOutput(QString& str, VMPlaylistDownloadData& downloadData)
+void ParseYtdlOutput(QString& str, VMPlaylistDownloadData& downloadData, const QVector<int>& indices, int downloadDuration)
 {
     qDebug("%s\n", qPrintable(str));
     if (s_YTDLProgressRegexp.indexIn(str) != -1) {
@@ -65,16 +69,16 @@ void ParseYtdlOutput(QString& str, VMPlaylistDownloadData& downloadData)
         auto value = capture.toFloat(&ok);
         if (ok) {
 //            qDebug() << str;
-            auto normalized = qMax(0.0f, qMin(value/100, 1.0f));
+            auto normalized = qMax(0.0f, qMin(value*1e-2f, 1.0f));
             downloadData.files[downloadData.currentFileIndex].data().progress = normalized;
-            if (downloadData.playlist.duration() > 0) {
+            if (downloadDuration > 0) {
                 // compute total progress
                 float totalProgress = 0;
                 for (int i = 0; i < downloadData.currentFileIndex; ++i) {
                     totalProgress += downloadData.playlist._vods()[i].duration();
                 }
                 totalProgress += normalized * downloadData.playlist._vods()[downloadData.currentFileIndex].duration();
-                totalProgress /= downloadData.playlist.duration();
+                totalProgress /= downloadDuration;
                 downloadData.progress = totalProgress;
             } else {
                 downloadData.progress = normalized;
@@ -97,8 +101,10 @@ void ParseYtdlOutput(QString& str, VMPlaylistDownloadData& downloadData)
                 }
                 downloadData.fileSize += vodFileData.fileSize;
 
-                downloadData.files.append(VMFileDownload());
-                downloadData.currentFileIndex = qMin(fileIndex, downloadData.playlist.vods());
+                downloadData.currentFileIndex = qMin(fileIndex, downloadData.playlist.vods() - 1);
+                VMFileDownload fileDownload;
+                fileDownload.data().playlistIndex = indices[downloadData.currentFileIndex];
+                downloadData.files.append(fileDownload);
             }
         }
     } else if (s_YTDLDestinationRegexp.indexIn(str) != -1) {
@@ -210,6 +216,7 @@ VMYTDL::startFetchMetaData(qint64 token, const QString& _url, const QVariant& us
     result[s_Download] = QVariant::fromValue(download);
     result[s_Token] = token;
 
+
     QStringList arguments;
     if (m_YtdlVerbose) {
         arguments << QStringLiteral("--verbose");
@@ -279,7 +286,8 @@ VMYTDL::startFetchPlaylist(qint64 token, const VMPlaylistDownloadRequest& req, V
     result[s_Download] = QVariant::fromValue(*_download);
     result[s_Token] = token;
 
-    qDebug() << "Trying to obtain" << data.playlist.vods() << "video file(s) for:" << data.playlist.webPageUrl() << "format:" << req.format << "file path:" << req.filePath;
+
+    qDebug() << "Trying to obtain" << (req.indices.isEmpty() ? data.playlist.vods() : req.indices.size()) << "video file(s) for:" << data.playlist.webPageUrl() << "format:" << req.format << "file path:" << req.filePath;
 
     QStringList arguments;
     if (m_YtdlVerbose) {
@@ -300,8 +308,44 @@ VMYTDL::startFetchPlaylist(qint64 token, const VMPlaylistDownloadRequest& req, V
               << s_NoColor
               << QStringLiteral("-f") << req.format
               << QStringLiteral("-o") << req.filePath
-              << m_CustomOptions
-              << data.playlist.webPageUrl();
+              << m_CustomOptions;
+
+    if (req.indices.isEmpty()) {
+        QVector<int> indices;
+        indices.resize(req.playlist.vods());
+        for (int i = 0; i < indices.size(); ++i) {
+            indices[i] = req.playlist._vods()[i].playlistIndex();
+        }
+        result[s_Indices] = QVariant::fromValue(indices);
+        result[s_Duration] = req.playlist.duration();
+        data.files[0].data().playlistIndex = indices[0];
+    } else {
+        int duration = 0;
+        for (auto index : req.indices) {
+            for (const auto& file : req.playlist._vods()) {
+                if (index == file.playlistIndex()) {
+                    duration += file.duration();
+                    break;
+                }
+            }
+        }
+
+        result[s_Indices] = QVariant::fromValue(req.indices);
+        result[s_Duration] = duration;
+        data.files[0].data().playlistIndex = req.indices[0];
+
+        QString items;
+        for (auto index : req.indices) {
+            if (!items.isEmpty()) {
+                items += QStringLiteral(",");
+            }
+            items += QString::number(index);
+        }
+
+        arguments << QStringLiteral("--playlist-items") << items;
+    }
+
+    arguments << data.playlist.webPageUrl();
 
     qDebug() << "youtube-dl subprocess:" << m_YoutubeDl_Path << arguments;
 
@@ -754,6 +798,9 @@ VMYTDL::onYoutubeDlVodFileDownloadProcessReadReady()
     qint64 id = qvariant_cast<qint64>(result[s_Token]);
     auto download = qvariant_cast<VMPlaylistDownload>(result[s_Download]);
     auto& downloadData = download.data();
+    auto indices = qvariant_cast<IndexList>(result[s_Indices]);
+    auto duration = result[s_Duration].toInt();
+
 
     QByteArray data = process->readAll();
     int start = 0, end = 0;
@@ -761,7 +808,7 @@ VMYTDL::onYoutubeDlVodFileDownloadProcessReadReady()
         if (data[end] == '\r' || data[end] == '\n') {
             if (start < end) {
                 QString str = QString::fromUtf8(data.data() + start, end - start);
-                ParseYtdlOutput(str, downloadData);
+                ParseYtdlOutput(str, downloadData, indices, duration);
             }
 
             start = ++end;
@@ -772,10 +819,13 @@ VMYTDL::onYoutubeDlVodFileDownloadProcessReadReady()
 
     if (start < end) {
         QString str = QString::fromUtf8(data.data() + start, end - start);
-        ParseYtdlOutput(str, downloadData);
+        ParseYtdlOutput(str, downloadData, indices, duration);
     }
 
-    qDebug() << "process pid" << process->pid() << "current file index" << downloadData.currentFileIndex << "progress" << downloadData.progress;
+    qDebug() << "process pid" << process->pid()
+             << "current file index" << downloadData.currentFileIndex
+             << "playlist index" << downloadData.files[downloadData.currentFileIndex].playlistIndex()
+             << "progress" << downloadData.progress;
 
     // update file size
     auto& vodFileData = downloadData.files[downloadData.currentFileIndex].data();

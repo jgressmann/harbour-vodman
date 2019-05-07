@@ -43,6 +43,14 @@ VMVodEnums::VMVodEnums(QObject* parent)
 
 /////////////////////////////////////////////////////////////////////////////
 
+VMVideoFormatData::VMVideoFormatData()
+{
+    width = 0;
+    height = 0;
+    format = VMVodEnums::VM_Unknown;
+    tbr = 0;
+}
+
 VMVideoFormat::VMVideoFormat()
     : d(new VMVideoFormatData())
 {
@@ -56,6 +64,11 @@ bool VMVideoFormat::isValid() const
 
 /////////////////////////////////////////////////////////////////////////////
 
+VMAudioFormatData::VMAudioFormatData()
+{
+    abr = 0;
+}
+
 VMAudioFormat::VMAudioFormat()
     : d(new VMAudioFormatData())
 {
@@ -68,6 +81,12 @@ bool VMAudioFormat::isValid() const
 }
 
 ////////////////////////////////////////////////////////////////////
+
+VMVodData::VMVodData()
+{
+    durationS = 0;
+    playlistIndex = 0;
+}
 
 VMVod::VMVod()
     : d(new VMVodData())
@@ -109,6 +128,11 @@ QVariant VMVod::avFormat(int index) const
 
 
 ////////////////////////////////////////////////////////////////////////////////
+
+VMPlaylistData::VMPlaylistData()
+{
+
+}
 
 VMPlaylist::VMPlaylist()
     : d(new VMPlaylistData())

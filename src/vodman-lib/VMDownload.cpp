@@ -27,6 +27,10 @@
 #include <QDebug>
 #include <QDebugStateSaver>
 
+VMMetaDataDownloadData::VMMetaDataDownloadData()
+{
+    error = 0;
+}
 
 VMMetaDataDownload::VMMetaDataDownload()
     : d(new VMMetaDataDownloadData())
@@ -40,6 +44,13 @@ bool VMPlaylistDownloadRequest::isValid() const
             playlist.isValid();
 }
 
+VMFileDownloadData::VMFileDownloadData()
+{
+    fileSize = 0;
+    progress = 0;
+    playlistIndex = 0;
+}
+
 VMFileDownload::VMFileDownload()
     : d(new VMFileDownloadData())
 {}
@@ -48,8 +59,15 @@ VMFileDownload::VMFileDownload()
 bool VMFileDownload::isValid() const
 {
     return !filePath().isEmpty() &&
-//           !url().isEmpty() &&
             progress() >= 0;
+}
+
+VMPlaylistDownloadData::VMPlaylistDownloadData()
+{
+    fileSize = 0;
+    progress = 0;
+    error = 0;
+    currentFileIndex = 0;
 }
 
 VMPlaylistDownload::VMPlaylistDownload()
@@ -74,28 +92,6 @@ QVariant VMPlaylistDownload::file(int index) const
     return QVariant();
 }
 
-//QVariant VMPlaylistDownload::currentVod() const
-//{
-//    const auto& vods = d->playlist._vods();
-//    auto index = d->currentFileIndex;
-//    if (index >= 0 && index < vods.size()) {
-//        return QVariant::fromValue(vods[index]);
-//    }
-
-//    return QVariant::fromValue(VMVod());
-//}
-
-//QVariant VMPlaylistDownload::currentFile() const
-//{
-//    const auto& files = d->files;
-//    auto index = d->currentFileIndex;
-//    if (index >= 0 && index < files.size()) {
-//        return QVariant::fromValue(files[index]);
-//    }
-
-//    return QVariant::fromValue(VMFileDownload());
-//}
-
 QDebug operator<<(QDebug debug, const VMMetaDataDownload& value) {
     const VMMetaDataDownloadData& data = value.data();
     QDebugStateSaver saver(debug);
@@ -117,6 +113,7 @@ QDebug operator<<(QDebug debug, const VMFileDownload& value)
                     << "progress=" << data.progress
                     << ", filePath=" << data.filePath
                     << ", fileSize=" << data.fileSize
+                    << ", playlistIndex=" << data.playlistIndex
                     << ")";
     return debug;
 }
