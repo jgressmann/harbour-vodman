@@ -730,7 +730,7 @@ VMYTDL::onProcessError(QProcess::ProcessError error)
     QProcess* process = qobject_cast<QProcess*>(QObject::sender());
     Q_ASSERT(process);
 
-    qDebug() << "process pid " << process->pid() << "error" << error;
+    qDebug() << "process pid" << process->pid() << "error" << error;
 
     cleanupProcess(process);
 

@@ -33,7 +33,7 @@ struct VMMetaDataDownloadData : public QSharedData
     QString errorMessage;
     QString url;
     QVariant userData;
-    int error;
+    VMVodEnums::Error error;
 
     VMMetaDataDownloadData();
 };
@@ -55,12 +55,13 @@ public:
     VMMetaDataDownload(const VMMetaDataDownload& /*other*/) = default;
     VMMetaDataDownload& operator=(const VMMetaDataDownload& /*other*/) = default;
 
+    // true implies error == 0
+    bool isValid() const;
     inline VMPlaylist playlist() const { return d->playlist; }
     inline VMVodEnums::Error error() const { return (VMVodEnums::Error)d->error; }
     inline QString errorMessage() const { return d->errorMessage; }
     inline QString url() const { return d->url; }
     inline QVariant userData() const { return d->userData; }
-    inline bool isValid() const { return d->playlist.isValid(); }
 
 public:
     inline VMMetaDataDownloadData& data() { return *d; }
@@ -135,7 +136,7 @@ struct VMPlaylistDownloadData : public QSharedData
     QVariant userData;
     quint64 fileSize;
     float progress;
-    int error;
+    VMVodEnums::Error error;
     int currentFileIndex;
 
     VMPlaylistDownloadData();
@@ -162,9 +163,10 @@ public:
     VMPlaylistDownload(const VMPlaylistDownload& /*other*/) = default;
     VMPlaylistDownload& operator=(const VMPlaylistDownload& /*other*/) = default;
 
+    // true implies error == 0
     bool isValid() const;
     inline float progress() const { return d->progress; }
-    inline VMVodEnums::Error error() const { return (VMVodEnums::Error)d->error; }
+    inline VMVodEnums::Error error() const { return d->error; }
     inline QString errorMessage() const { return d->errorMessage; }
     inline QDateTime timeStarted() const { return d->timeStarted; }
     inline QDateTime timeChanged() const { return d->timeChanged; }

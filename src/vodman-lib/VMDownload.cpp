@@ -29,13 +29,18 @@
 
 VMMetaDataDownloadData::VMMetaDataDownloadData()
 {
-    error = 0;
+    error = VMVodEnums::VM_ErrorNone;
 }
 
 VMMetaDataDownload::VMMetaDataDownload()
     : d(new VMMetaDataDownloadData())
 {}
 
+bool VMMetaDataDownload::isValid() const
+{
+    return  error() == VMVodEnums::VM_ErrorNone &&
+            playlist().isValid();
+}
 
 bool VMPlaylistDownloadRequest::isValid() const
 {
@@ -66,7 +71,7 @@ VMPlaylistDownloadData::VMPlaylistDownloadData()
 {
     fileSize = 0;
     progress = 0;
-    error = 0;
+    error = VMVodEnums::VM_ErrorNone;
     currentFileIndex = 0;
 }
 
@@ -77,7 +82,8 @@ VMPlaylistDownload::VMPlaylistDownload()
 
 bool VMPlaylistDownload::isValid() const
 {
-    return playlist().isValid() &&
+    return  error() == VMVodEnums::VM_ErrorNone &&
+            playlist().isValid() &&
             files() > 0 &&
             currentFileIndex() >= 0 &&
             currentFileIndex() < files();
