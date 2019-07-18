@@ -430,8 +430,11 @@ VMYTDL::onMetaDataProcessFinished(int code, QProcess::ExitStatus status)
             } else if (line.indexOf(QStringLiteral("This video is unavailable."), 0, Qt::CaseInsensitive) >= 0) {
                 downLoadData.error = VMVodEnums::VM_ErrorContentGone;
             } else if (line.indexOf(QStringLiteral("Time-out"), 0, Qt::CaseInsensitive) >= 0) {
-                // RROR: Failed to download m3u8 information: HTTP Error 504: Gateway Time-out (caused by HTTPError());
+                // ERROR: Failed to download m3u8 information: HTTP Error 504: Gateway Time-out (caused by HTTPError());
                 downLoadData.error = VMVodEnums::VM_ErrorTimedOut;
+            } else if (line.indexOf(QStringLiteral("HTTP Error 404"), 0, Qt::CaseInsensitive) >= 0) {
+                // ERROR: Unable to download webpage: HTTP Error 404: Not Found (caused by <HTTPError 404: 'Not Found'>);
+                downLoadData.error = VMVodEnums::VM_ErrorInvalidUrl;
             } else {
                 downLoadData.error = VMVodEnums::VM_ErrorUnknown;
             }

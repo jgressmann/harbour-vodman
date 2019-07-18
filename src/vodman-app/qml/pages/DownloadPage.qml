@@ -561,9 +561,14 @@ Page {
                 text: "Download mp4"
                 visible: debugApp.value
                 enabled: page.canStartDownload
-                //onClicked: _download("http://techslides.com/demos/samples/sample.mp4")
-                onClicked: _download("https://rodlzdf-a.akamaihd.net/none/zdf/19/03/190329_sendung_hsh/3/190329_sendung_hsh_3328k_p36v14.mp4")
+                onClicked: _download("http://techslides.com/demos/samples/sample.mp4")
+            }
 
+            MenuItem {
+                text: "HTTP 404"
+                visible: debugApp.value
+                enabled: page.canStartDownload
+                onClicked: _download("https://rodlzdf-a.akamaihd.net/none/zdf/19/03/190329_sendung_hsh/3/190329_sendung_hsh_3328k_p36v14.mp4")
             }
 
             MenuItem {
