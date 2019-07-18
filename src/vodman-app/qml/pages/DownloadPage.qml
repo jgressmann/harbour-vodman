@@ -342,6 +342,10 @@ Page {
             //% "Video '%1' is no longer available."
             errorNotification.body = qsTrId("error-content-gone-body").arg(url)
             break
+        case VM.VM_ErrorSignatureExtractionFailed:
+            //% "youtube-dl failed to locate video signature. Update youtube-dl and try again."
+            errorNotification.previewBody = errorNotification.body = qsTrId("error-signature-extraction-failed-body")
+            break
         default:
             errorNotification.body = errorNotification.previewBody =
                     //% "Yikes! An unknown error has occured :/"

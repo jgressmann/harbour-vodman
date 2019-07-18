@@ -435,6 +435,9 @@ VMYTDL::onMetaDataProcessFinished(int code, QProcess::ExitStatus status)
             } else if (line.indexOf(QStringLiteral("HTTP Error 404"), 0, Qt::CaseInsensitive) >= 0) {
                 // ERROR: Unable to download webpage: HTTP Error 404: Not Found (caused by <HTTPError 404: 'Not Found'>);
                 downLoadData.error = VMVodEnums::VM_ErrorInvalidUrl;
+            } else if (line.indexOf(QStringLiteral("Signature extraction failed"), 0, Qt::CaseInsensitive) >= 0) {
+                // ERROR: Signature extraction failed
+                downLoadData.error = VMVodEnums::VM_ErrorSignatureExtractionFailed;
             } else {
                 downLoadData.error = VMVodEnums::VM_ErrorUnknown;
             }
