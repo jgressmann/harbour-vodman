@@ -25,6 +25,7 @@
 #include <QQuickView>
 #include <QGuiApplication>
 #include <QQmlEngine>
+#include <QSettings>
 
 #include <sailfishapp.h>
 
@@ -32,6 +33,7 @@
 #include "VMApp.h"
 #include "VMQuickYTDLDownloader.h"
 #include "VMYTDL.h"
+#include "VMQuickConfigValue.h"
 
 static QObject *vmAppProvider(QQmlEngine *, QJSEngine *)
 {
@@ -55,7 +57,11 @@ int main(int argc, char *argv[])
 
     qInfo("%s version %s\n", qPrintable(app->applicationName()), qPrintable(app->applicationVersion()));
 
+    QSettings settings;
+    VMQuickConfigValue::SetSettings(&settings);
+
     qmlRegisterType<VMQuickVodPlaylistDownloadModel>(VODMAN_NAMESPACE, 1, 0, "DownloadModel");
+    qmlRegisterType<VMQuickConfigValue>(VODMAN_NAMESPACE, 1, 0, "ConfigValue");
     qmlRegisterUncreatableType<VMVodEnums>(VODMAN_LIB_NAMESPACE, VODMAN_LIB_VERSION_MAJOR, VODMAN_LIB_VERSION_MINOR, "VM", QStringLiteral("wrapper around C++ enums"));
     qmlRegisterSingletonType<VMApp>(VODMAN_NAMESPACE, 1, 0, "App", vmAppProvider);
     qmlRegisterSingletonType<VMQuickYTDLDownloader>(VODMAN_LIB_NAMESPACE, VODMAN_LIB_VERSION_MAJOR, VODMAN_LIB_VERSION_MINOR, "YTDLDownloader", vmQuickYTDLDownloadProvider);

@@ -6,7 +6,7 @@
     <message id="format-label">
         <location filename="../qml/FormatComboBox.qml" line="35"/>
         <location filename="../qml/pages/SelectFormatDialog.qml" line="89"/>
-        <location filename="../qml/pages/SettingsPage.qml" line="168"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="164"/>
         <source>Format</source>
         <translation>Format</translation>
     </message>
@@ -177,7 +177,7 @@
     </message>
     <message id="play">
         <location filename="../qml/pages/DownloadPage.qml" line="378"/>
-        <location filename="../qml/pages/DownloadPage.qml" line="884"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="882"/>
         <source>Play</source>
         <translation>Play</translation>
     </message>
@@ -266,68 +266,68 @@
         <translation>Settings</translation>
     </message>
     <message id="menu-item-clear-clipboard">
-        <location filename="../qml/pages/DownloadPage.qml" line="629"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="627"/>
         <source>Clear clipboard</source>
         <translation>Clear clipboard</translation>
     </message>
     <message id="menu-item-cancel-all-downloads">
-        <location filename="../qml/pages/DownloadPage.qml" line="638"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="636"/>
         <source>Cancel all downloads</source>
         <translation>Cancel all downloads</translation>
     </message>
     <message id="remorse-cancel-all-downloads">
-        <location filename="../qml/pages/DownloadPage.qml" line="643"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="641"/>
         <source>Stopping all downloads</source>
         <translation>Stopping all downloads</translation>
     </message>
     <message id="menu-item-cancel-all-downloads-delete">
-        <location filename="../qml/pages/DownloadPage.qml" line="650"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="648"/>
         <source>Cancel all downloads and delete files</source>
         <translation>Cancel all downloads and delete files</translation>
     </message>
     <message id="remorse-cancel-all-downloads-delete">
-        <location filename="../qml/pages/DownloadPage.qml" line="655"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="653"/>
         <source>Purging all downloads</source>
         <translation>Purging all downloads</translation>
     </message>
     <message id="cancel">
-        <location filename="../qml/pages/DownloadPage.qml" line="878"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="876"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
     <message id="menu-item-download-from-clipboard">
-        <location filename="../qml/pages/DownloadPage.qml" line="662"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="660"/>
         <source>Download from clipboard</source>
         <translation>Download from clipboard</translation>
     </message>
     <message id="download-page-header">
-        <location filename="../qml/pages/DownloadPage.qml" line="680"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="678"/>
         <source>Downloads</source>
         <translation>Downloads</translation>
     </message>
     <message id="download-item-remorse-cancel">
-        <location filename="../qml/pages/DownloadPage.qml" line="700"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="698"/>
         <source>Stopping %1</source>
         <translation>Stopping %1</translation>
     </message>
     <message id="unit-gb">
-        <location filename="../qml/pages/DownloadPage.qml" line="807"/>
-        <location filename="../qml/pages/DownloadPage.qml" line="812"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="805"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="810"/>
         <source>%1 GB</source>
         <translation>%1 GB</translation>
     </message>
     <message id="unit-mb">
-        <location filename="../qml/pages/DownloadPage.qml" line="816"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="814"/>
         <source>%1 MB</source>
         <translation>%1 MB</translation>
     </message>
     <message id="download-item-vod-file">
-        <location filename="../qml/pages/DownloadPage.qml" line="832"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="830"/>
         <source>file %1</source>
         <translation>file %1</translation>
     </message>
     <message id="download-item-cancel-and-delete" numerus="yes">
-        <location filename="../qml/pages/DownloadPage.qml" line="872"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="870"/>
         <source>Cancel and delete file</source>
         <translation>
             <numerusform>Cancel and delete file</numerusform>
@@ -335,178 +335,178 @@
         </translation>
     </message>
     <message id="download-item-open-webpage">
-        <location filename="../qml/pages/DownloadPage.qml" line="891"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="889"/>
         <source>Open webpage</source>
         <translation>Open webpage</translation>
     </message>
     <message id="download-item-copy-file-path-to-clipboard">
-        <location filename="../qml/pages/DownloadPage.qml" line="901"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="899"/>
         <source></source>
         <oldsource>Copy file path to clipboard</oldsource>
         <translation>Copy file path to clipboard</translation>
     </message>
     <message id="download-placeholder-text-waiting-for-download-to-start">
-        <location filename="../qml/pages/DownloadPage.qml" line="918"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="916"/>
         <source>Download will start momentarily</source>
         <translation>Download will start momentarily</translation>
     </message>
     <message id="download-placeholder-text-no-downloads">
-        <location filename="../qml/pages/DownloadPage.qml" line="922"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="920"/>
         <source>No downloads at present</source>
         <translation>No downloads at present</translation>
     </message>
     <message id="download-placeholder-text-metadata-download">
-        <location filename="../qml/pages/DownloadPage.qml" line="913"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="911"/>
         <source>Downloading VOD metadata</source>
         <translation>Downloading VOD metadata</translation>
     </message>
     <message id="download-placeholder-hint-pull-down-to-start-download-from-clipboard">
-        <location filename="../qml/pages/DownloadPage.qml" line="932"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="930"/>
         <source>Pull down to start download using the URL in the clipboard</source>
         <translation>Pull down to start download using the URL in the clipboard</translation>
     </message>
     <message id="download-placeholder-hint-copy-url-to-clipboard">
-        <location filename="../qml/pages/DownloadPage.qml" line="936"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="934"/>
         <source>Copy a URL to the clipboard then pull down to start the download</source>
         <translation>Copy a URL to the clipboard then pull down to start the download</translation>
     </message>
     <message id="settings-network-header">
-        <location filename="../qml/pages/SettingsPage.qml" line="135"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="131"/>
         <source>Network</source>
         <translation>Network</translation>
     </message>
     <message id="settings-network-connection-type">
-        <location filename="../qml/pages/SettingsPage.qml" line="142"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="138"/>
         <source>Network connection type</source>
         <translation>Connection type</translation>
     </message>
     <message id="settings-network-connection-autodetect">
-        <location filename="../qml/pages/SettingsPage.qml" line="146"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="142"/>
         <source>Autodetect</source>
         <translation>Autodetect</translation>
     </message>
     <message id="settings-network-connection-broadband">
-        <location filename="../qml/pages/SettingsPage.qml" line="150"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="146"/>
         <source>Broadband</source>
         <translation>Broadband</translation>
     </message>
     <message id="settings-network-connection-mobile">
-        <location filename="../qml/pages/SettingsPage.qml" line="154"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="150"/>
         <source>Mobile</source>
         <translation>Mobile</translation>
     </message>
     <message id="settings-network-broadband-label">
-        <location filename="../qml/pages/SettingsPage.qml" line="173"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="169"/>
         <source>Broadband</source>
         <translation>Broadband</translation>
     </message>
     <message id="settings-network-mobile-label">
-        <location filename="../qml/pages/SettingsPage.qml" line="184"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="180"/>
         <source>Mobile</source>
         <translation>Mobile</translation>
     </message>
     <message id="settings-save-location-header">
-        <location filename="../qml/pages/SettingsPage.qml" line="195"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="191"/>
         <source>Location</source>
         <translation>Save location</translation>
     </message>
     <message id="settings-save-location-directory-label">
-        <location filename="../qml/pages/SettingsPage.qml" line="206"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="202"/>
         <source>Directory</source>
         <translation>Directory</translation>
     </message>
     <message id="settings-save-location-directory-downloads">
-        <location filename="../qml/pages/SettingsPage.qml" line="210"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="206"/>
         <source>Downloads</source>
         <translation>Downloads</translation>
     </message>
     <message id="settings-save-location-directory-videos">
-        <location filename="../qml/pages/SettingsPage.qml" line="214"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="210"/>
         <source>Videos</source>
         <translation>Videos</translation>
     </message>
     <message id="settings-save-location-directory-custom">
-        <location filename="../qml/pages/SettingsPage.qml" line="218"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="214"/>
         <source>Custom</source>
         <translation>Custom</translation>
     </message>
     <message id="settings-save-location-directory-field-label">
-        <location filename="../qml/pages/SettingsPage.qml" line="228"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="224"/>
         <source>VODs are saved here</source>
         <translation>VODs are saved here</translation>
     </message>
     <message id="settings-save-location-directory-field-placeholder">
-        <location filename="../qml/pages/SettingsPage.qml" line="230"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="226"/>
         <source>Default directory to save VODs</source>
         <translation>Default directory to save VODs</translation>
     </message>
     <message id="settings-save-location-pick-directory">
-        <location filename="../qml/pages/SettingsPage.qml" line="243"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="239"/>
         <source>Pick a directory</source>
         <translation>Pick directory</translation>
     </message>
     <message id="settings-save-location-file-name-combobox-label">
-        <location filename="../qml/pages/SettingsPage.qml" line="272"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="268"/>
         <source>File name</source>
         <translation>File name</translation>
     </message>
     <message id="settings-save-location-file-name-combobox-item-title">
-        <location filename="../qml/pages/SettingsPage.qml" line="276"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="272"/>
         <source>Title</source>
         <translation>Title</translation>
     </message>
     <message id="settings-save-location-file-name-combobox-item-video-id">
-        <location filename="../qml/pages/SettingsPage.qml" line="280"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="276"/>
         <source>Video id</source>
         <translation>Video id</translation>
     </message>
     <message id="settings-save-location-file-name-combobox-item-custom">
-        <location filename="../qml/pages/SettingsPage.qml" line="284"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="280"/>
         <source>Custom</source>
         <translation>Custom</translation>
     </message>
     <message id="settings-save-location-file-name-textfield-label">
-        <location filename="../qml/pages/SettingsPage.qml" line="310"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="306"/>
         <source>File name template for VODs</source>
         <translation>File name template for VODs</translation>
     </message>
     <message id="settings-save-location-file-name-textfield-placeholder">
-        <location filename="../qml/pages/SettingsPage.qml" line="312"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="308"/>
         <source>File name template for VODs</source>
         <translation>File name template for VODs</translation>
     </message>
     <message id="settings-save-location-file-name-description">
-        <location filename="../qml/pages/SettingsPage.qml" line="322"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="318"/>
         <source>Tags {title} {id} {formatid} will be substituded from the VOD&apos;s meta data.</source>
         <translation>Tags {title} {id} {formatid} will be substituded from the VOD&apos;s meta data.</translation>
     </message>
     <message id="settings-ytdl-downloading">
-        <location filename="../qml/pages/SettingsPage.qml" line="351"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="347"/>
         <source>youtube-dl is being downloaded</source>
         <translation>youtube-dl is being downloaded</translation>
     </message>
     <message id="settings-ytdl-unavailable">
-        <location filename="../qml/pages/SettingsPage.qml" line="355"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="351"/>
         <source>youtube-dl is not available</source>
         <translation>youtube-dl is unavailable</translation>
     </message>
     <message id="settings-ytdl-version">
-        <location filename="../qml/pages/SettingsPage.qml" line="358"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="354"/>
         <source>youtube-dl version %1</source>
         <translation>youtube-dl version %1</translation>
     </message>
     <message id="settings-ytdl-update-available">
-        <location filename="../qml/pages/SettingsPage.qml" line="370"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="366"/>
         <source>Version %1 is available for update</source>
         <translation>Version %1 is available for update</translation>
     </message>
     <message id="settings-ytdl-update">
-        <location filename="../qml/pages/SettingsPage.qml" line="381"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="377"/>
         <source>Update youtube-dl</source>
         <translation>Update youtube-dl</translation>
     </message>
     <message id="settings-page-header">
-        <location filename="../qml/pages/SettingsPage.qml" line="421"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="417"/>
         <source>Settings</source>
         <translation>Settings</translation>
     </message>
@@ -609,17 +609,17 @@
         <translation>Click the button below to try again</translation>
     </message>
     <message id="nofification-download-ytdl-update-available-summary">
-        <location filename="../qml/harbour-vodman.qml" line="130"/>
+        <location filename="../qml/harbour-vodman.qml" line="125"/>
         <source>youtube-dl update available</source>
         <translation>youtube-dl update available</translation>
     </message>
     <message id="nofification-ytdl-update-available-body">
-        <location filename="../qml/harbour-vodman.qml" line="133"/>
+        <location filename="../qml/harbour-vodman.qml" line="128"/>
         <source>youtube-dl version %1 available</source>
         <translation>youtube-dl version %1 available</translation>
     </message>
     <message id="nofification-ytdl-update-available-action">
-        <location filename="../qml/harbour-vodman.qml" line="138"/>
+        <location filename="../qml/harbour-vodman.qml" line="133"/>
         <source>Update youtube-dl</source>
         <translation>Update youtube-dl</translation>
     </message>

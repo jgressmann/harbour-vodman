@@ -40,10 +40,6 @@ Page {
         _propageFileName()
     }
 
-    Component.onDestruction: {
-        settings.sync()
-    }
-
     function _propageFileName() {
 //        console.debug("_propageFileName")
         if ("{title}" === settingDefaultFileName.value) {

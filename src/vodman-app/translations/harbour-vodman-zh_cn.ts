@@ -6,7 +6,7 @@
     <message id="format-label">
         <location filename="../qml/FormatComboBox.qml" line="35"/>
         <location filename="../qml/pages/SelectFormatDialog.qml" line="89"/>
-        <location filename="../qml/pages/SettingsPage.qml" line="168"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="164"/>
         <source>Format</source>
         <translation>格式</translation>
     </message>
@@ -177,7 +177,7 @@
     </message>
     <message id="play">
         <location filename="../qml/pages/DownloadPage.qml" line="378"/>
-        <location filename="../qml/pages/DownloadPage.qml" line="884"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="882"/>
         <source>Play</source>
         <translation>播放</translation>
     </message>
@@ -264,247 +264,247 @@
         <translation>设置</translation>
     </message>
     <message id="menu-item-clear-clipboard">
-        <location filename="../qml/pages/DownloadPage.qml" line="629"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="627"/>
         <source>Clear clipboard</source>
         <translation>清空剪贴板</translation>
     </message>
     <message id="menu-item-cancel-all-downloads">
-        <location filename="../qml/pages/DownloadPage.qml" line="638"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="636"/>
         <source>Cancel all downloads</source>
         <translation>取消所有的下载</translation>
     </message>
     <message id="remorse-cancel-all-downloads">
-        <location filename="../qml/pages/DownloadPage.qml" line="643"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="641"/>
         <source>Stopping all downloads</source>
         <translation>停止所有的下载</translation>
     </message>
     <message id="menu-item-cancel-all-downloads-delete">
-        <location filename="../qml/pages/DownloadPage.qml" line="650"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="648"/>
         <source>Cancel all downloads and delete files</source>
         <translation>取消所有的下载并删除文件</translation>
     </message>
     <message id="remorse-cancel-all-downloads-delete">
-        <location filename="../qml/pages/DownloadPage.qml" line="655"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="653"/>
         <source>Purging all downloads</source>
         <translation>清除所有的下载</translation>
     </message>
     <message id="cancel">
-        <location filename="../qml/pages/DownloadPage.qml" line="878"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="876"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message id="menu-item-download-from-clipboard">
-        <location filename="../qml/pages/DownloadPage.qml" line="662"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="660"/>
         <source>Download from clipboard</source>
         <translation>下载剪贴板的网址</translation>
     </message>
     <message id="download-page-header">
-        <location filename="../qml/pages/DownloadPage.qml" line="680"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="678"/>
         <source>Downloads</source>
         <translation>下载</translation>
     </message>
     <message id="download-item-remorse-cancel">
-        <location filename="../qml/pages/DownloadPage.qml" line="700"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="698"/>
         <source>Stopping %1</source>
         <translation>停止 %1</translation>
     </message>
     <message id="unit-gb">
-        <location filename="../qml/pages/DownloadPage.qml" line="807"/>
-        <location filename="../qml/pages/DownloadPage.qml" line="812"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="805"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="810"/>
         <source>%1 GB</source>
         <translation>%1 GB</translation>
     </message>
     <message id="unit-mb">
-        <location filename="../qml/pages/DownloadPage.qml" line="816"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="814"/>
         <source>%1 MB</source>
         <translation>%1 MB</translation>
     </message>
     <message id="download-item-vod-file">
-        <location filename="../qml/pages/DownloadPage.qml" line="832"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="830"/>
         <source>file %1</source>
         <translation>%1 文件</translation>
     </message>
     <message id="download-item-cancel-and-delete" numerus="yes">
-        <location filename="../qml/pages/DownloadPage.qml" line="872"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="870"/>
         <source>Cancel and delete file</source>
         <translation>
             <numerusform>取消并删除文件</numerusform>
         </translation>
     </message>
     <message id="download-item-open-webpage">
-        <location filename="../qml/pages/DownloadPage.qml" line="891"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="889"/>
         <source>Open webpage</source>
         <translation>打开网页</translation>
     </message>
     <message id="download-item-copy-file-path-to-clipboard">
-        <location filename="../qml/pages/DownloadPage.qml" line="901"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="899"/>
         <source></source>
         <oldsource>Copy file path to clipboard</oldsource>
         <translation>复制文件路径到剪贴板</translation>
     </message>
     <message id="download-placeholder-text-waiting-for-download-to-start">
-        <location filename="../qml/pages/DownloadPage.qml" line="918"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="916"/>
         <source>Download will start momentarily</source>
         <translation>下载将会立即开始</translation>
     </message>
     <message id="download-placeholder-text-no-downloads">
-        <location filename="../qml/pages/DownloadPage.qml" line="922"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="920"/>
         <source>No downloads at present</source>
         <translation>暂无下载</translation>
     </message>
     <message id="download-placeholder-text-metadata-download">
-        <location filename="../qml/pages/DownloadPage.qml" line="913"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="911"/>
         <source>Downloading VOD metadata</source>
         <translation>正在下载视频元数据</translation>
     </message>
     <message id="download-placeholder-hint-pull-down-to-start-download-from-clipboard">
-        <location filename="../qml/pages/DownloadPage.qml" line="932"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="930"/>
         <source>Pull down to start download using the URL in the clipboard</source>
         <translation>下拉以开始下载剪贴板中的网址</translation>
     </message>
     <message id="download-placeholder-hint-copy-url-to-clipboard">
-        <location filename="../qml/pages/DownloadPage.qml" line="936"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="934"/>
         <source>Copy a URL to the clipboard then pull down to start the download</source>
         <translation>复制一个网址到剪贴板然后下拉以开始下载</translation>
     </message>
     <message id="settings-network-header">
-        <location filename="../qml/pages/SettingsPage.qml" line="135"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="131"/>
         <source>Network</source>
         <translation>网络</translation>
     </message>
     <message id="settings-network-connection-type">
-        <location filename="../qml/pages/SettingsPage.qml" line="142"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="138"/>
         <source>Network connection type</source>
         <translation>网络连接类型</translation>
     </message>
     <message id="settings-network-connection-autodetect">
-        <location filename="../qml/pages/SettingsPage.qml" line="146"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="142"/>
         <source>Autodetect</source>
         <translation>自动检测</translation>
     </message>
     <message id="settings-network-connection-broadband">
-        <location filename="../qml/pages/SettingsPage.qml" line="150"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="146"/>
         <source>Broadband</source>
         <translation>宽带</translation>
     </message>
     <message id="settings-network-connection-mobile">
-        <location filename="../qml/pages/SettingsPage.qml" line="154"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="150"/>
         <source>Mobile</source>
         <translation>移动</translation>
     </message>
     <message id="settings-network-broadband-label">
-        <location filename="../qml/pages/SettingsPage.qml" line="173"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="169"/>
         <source>Broadband</source>
         <translation>宽度</translation>
     </message>
     <message id="settings-network-mobile-label">
-        <location filename="../qml/pages/SettingsPage.qml" line="184"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="180"/>
         <source>Mobile</source>
         <translation>移动</translation>
     </message>
     <message id="settings-save-location-header">
-        <location filename="../qml/pages/SettingsPage.qml" line="195"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="191"/>
         <source>Location</source>
         <translation>位置</translation>
     </message>
     <message id="settings-save-location-directory-label">
-        <location filename="../qml/pages/SettingsPage.qml" line="206"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="202"/>
         <source>Directory</source>
         <translation>目录</translation>
     </message>
     <message id="settings-save-location-directory-downloads">
-        <location filename="../qml/pages/SettingsPage.qml" line="210"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="206"/>
         <source>Downloads</source>
         <translation>下载</translation>
     </message>
     <message id="settings-save-location-directory-videos">
-        <location filename="../qml/pages/SettingsPage.qml" line="214"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="210"/>
         <source>Videos</source>
         <translation>视频</translation>
     </message>
     <message id="settings-save-location-directory-custom">
-        <location filename="../qml/pages/SettingsPage.qml" line="218"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="214"/>
         <source>Custom</source>
         <translation>自定义</translation>
     </message>
     <message id="settings-save-location-directory-field-label">
-        <location filename="../qml/pages/SettingsPage.qml" line="228"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="224"/>
         <source>VODs are saved here</source>
         <translation>视频保存在此</translation>
     </message>
     <message id="settings-save-location-directory-field-placeholder">
-        <location filename="../qml/pages/SettingsPage.qml" line="230"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="226"/>
         <source>Default directory to save VODs</source>
         <translation>默认储存视频的目录</translation>
     </message>
     <message id="settings-save-location-pick-directory">
-        <location filename="../qml/pages/SettingsPage.qml" line="243"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="239"/>
         <source>Pick a directory</source>
         <translation>选择一个目录</translation>
     </message>
     <message id="settings-save-location-file-name-combobox-label">
-        <location filename="../qml/pages/SettingsPage.qml" line="272"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="268"/>
         <source>File name</source>
         <translation>文件名</translation>
     </message>
     <message id="settings-save-location-file-name-combobox-item-title">
-        <location filename="../qml/pages/SettingsPage.qml" line="276"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="272"/>
         <source>Title</source>
         <translation>标题</translation>
     </message>
     <message id="settings-save-location-file-name-combobox-item-video-id">
-        <location filename="../qml/pages/SettingsPage.qml" line="280"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="276"/>
         <source>Video id</source>
         <translation>视频 ID</translation>
     </message>
     <message id="settings-save-location-file-name-combobox-item-custom">
-        <location filename="../qml/pages/SettingsPage.qml" line="284"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="280"/>
         <source>Custom</source>
         <translation>自定义</translation>
     </message>
     <message id="settings-save-location-file-name-textfield-label">
-        <location filename="../qml/pages/SettingsPage.qml" line="310"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="306"/>
         <source>File name template for VODs</source>
         <translation>视频文件名模板</translation>
     </message>
     <message id="settings-save-location-file-name-textfield-placeholder">
-        <location filename="../qml/pages/SettingsPage.qml" line="312"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="308"/>
         <source>File name template for VODs</source>
         <translation>视频文件名称模板</translation>
     </message>
     <message id="settings-save-location-file-name-description">
-        <location filename="../qml/pages/SettingsPage.qml" line="322"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="318"/>
         <source>Tags {title} {id} {formatid} will be substituded from the VOD&apos;s meta data.</source>
         <translation>标签 {title} {id} {formatid} 会被从视频或媒体数据替换</translation>
     </message>
     <message id="settings-ytdl-downloading">
-        <location filename="../qml/pages/SettingsPage.qml" line="351"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="347"/>
         <source>youtube-dl is being downloaded</source>
         <translation>youtube-dl 已下载</translation>
     </message>
     <message id="settings-ytdl-unavailable">
-        <location filename="../qml/pages/SettingsPage.qml" line="355"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="351"/>
         <source>youtube-dl is not available</source>
         <translation>youtube-dl 不可用</translation>
     </message>
     <message id="settings-ytdl-version">
-        <location filename="../qml/pages/SettingsPage.qml" line="358"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="354"/>
         <source>youtube-dl version %1</source>
         <translation>youtube-dl 版本 %1</translation>
     </message>
     <message id="settings-ytdl-update-available">
-        <location filename="../qml/pages/SettingsPage.qml" line="370"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="366"/>
         <source>Version %1 is available for update</source>
         <oldsource>Version %1 available for update</oldsource>
         <translation>版本 %1 可供更新</translation>
     </message>
     <message id="settings-ytdl-update">
-        <location filename="../qml/pages/SettingsPage.qml" line="381"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="377"/>
         <source>Update youtube-dl</source>
         <translation>更新 youtube-dl</translation>
     </message>
     <message id="settings-page-header">
-        <location filename="../qml/pages/SettingsPage.qml" line="421"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="417"/>
         <source>Settings</source>
         <translation>设置</translation>
     </message>
@@ -608,17 +608,17 @@
         <translation>点击下方按钮再试一次</translation>
     </message>
     <message id="nofification-download-ytdl-update-available-summary">
-        <location filename="../qml/harbour-vodman.qml" line="130"/>
+        <location filename="../qml/harbour-vodman.qml" line="125"/>
         <source>youtube-dl update available</source>
         <translation>youtube-dl 可供更新</translation>
     </message>
     <message id="nofification-ytdl-update-available-body">
-        <location filename="../qml/harbour-vodman.qml" line="133"/>
+        <location filename="../qml/harbour-vodman.qml" line="128"/>
         <source>youtube-dl version %1 available</source>
         <translation>youtube-dl 版本 %1 可用</translation>
     </message>
     <message id="nofification-ytdl-update-available-action">
-        <location filename="../qml/harbour-vodman.qml" line="138"/>
+        <location filename="../qml/harbour-vodman.qml" line="133"/>
         <source>Update youtube-dl</source>
         <translation>更新 youtube-dl</translation>
     </message>

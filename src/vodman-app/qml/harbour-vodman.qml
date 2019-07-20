@@ -23,7 +23,6 @@
 
 import QtQuick 2.0
 import Sailfish.Silica 1.0
-import Nemo.Configuration 1.0
 import Nemo.Notifications 1.0
 import org.duckdns.jgressmann 1.0
 import Vodman 2.1
@@ -46,48 +45,44 @@ ApplicationWindow {
         ytdl: YTDL
     }
 
-    ConfigurationGroup {
-        id: settings
+    ConfigValue {
+        id: settingBroadbandDefaultFormat
+        defaultValue: VM.VM_Largest
+        key: "/default/format/broadband"
+    }
 
-        ConfigurationValue {
-            id: settingBroadbandDefaultFormat
-            defaultValue: VM.VM_Largest
-            key: "/default/format/broadband"
-        }
+    ConfigValue {
+        id: settingMobileDefaultFormat
+        defaultValue: VM.VM_Smallest
+        key: "/default/format/mobile"
+    }
 
-        ConfigurationValue {
-            id: settingMobileDefaultFormat
-            defaultValue: VM.VM_Smallest
-            key: "/default/format/mobile"
-        }
+    ConfigValue {
+        id: settingBearerMode
+        defaultValue: Global.bearerModeAutoDetect
+        key: "/bearer/mode"
+    }
 
-        ConfigurationValue {
-            id: settingBearerMode
-            defaultValue: Global.bearerModeAutoDetect
-            key: "/bearer/mode"
-        }
+    ConfigValue {
+        id: settingDefaultDirectory
+        key: "/default/directory"
+        defaultValue: StandardPaths.videos
+    }
 
-        ConfigurationValue {
-            id: settingDefaultDirectory
-            key: "/default/directory"
-            defaultValue: StandardPaths.videos
-        }
+    ConfigValue {
+        id: settingDefaultFileName
+        key: "/default/fileName"
+        defaultValue: "{title}"
+    }
 
-        ConfigurationValue {
-            id: settingDefaultFileName
-            key: "/default/fileName"
-            defaultValue: "{title}"
-        }
+    ConfigValue {
+        id: debugApp
+        key: "/debug"
+        defaultValue: false
 
-        ConfigurationValue {
-            id: debugApp
-            key: "/debug"
-            defaultValue: false
-
-            onValueChanged: {
-                YTDL.ytdlVerbose = value
-                _setMode()
-            }
+        onValueChanged: {
+            YTDL.ytdlVerbose = value
+            _setMode()
         }
     }
 
