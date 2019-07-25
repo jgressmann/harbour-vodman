@@ -5,7 +5,7 @@
 
 Name:       harbour-vodman
 Summary:    Video On Demand (VOD) download tool for SailfishOS
-Version:    1.2.1
+Version:    1.2.2
 Release:    1
 Group:      Applications/Multimedia
 License:    MIT
@@ -30,6 +30,7 @@ Requires:   nemo-qml-plugin-dbus-qt5
 %description
 %{summary}
 
+Vodman uses youtube-dl for meta data extraction and video download.
 
 %files
 %defattr(-,root,root,-)
