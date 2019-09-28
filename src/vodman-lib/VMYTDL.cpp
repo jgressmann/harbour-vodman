@@ -557,6 +557,7 @@ VMYTDL::appendVideoFormat(VMVodData& data, const QJsonObject& format) const
     videoFormatData.height = format.value(QStringLiteral("height")).toInt();
     videoFormatData.id = format.value(QStringLiteral("format_id")).toString();
     videoFormatData.streamUrl = format.value(QStringLiteral("url")).toString();
+    videoFormatData.manifestUrl = format.value(QStringLiteral("manifest_url")).toString();
     videoFormatData.displayName = format.value(QStringLiteral("format")).toString();
     videoFormatData.extension = format.value(QStringLiteral("ext")).toString();
     videoFormatData.tbr = static_cast<float>(format.value(QStringLiteral("tbr")).toDouble());
@@ -576,6 +577,7 @@ VMYTDL::appendAudioFormat(VMVodData& data, const QJsonObject& format) const
 
     audioFormatData.id = format.value(QStringLiteral("format_id")).toString();
     audioFormatData.streamUrl = format.value(QStringLiteral("url")).toString();
+    audioFormatData.manifestUrl = format.value(QStringLiteral("manifest_url")).toString();
     audioFormatData.displayName = format.value(QStringLiteral("format")).toString();
     audioFormatData.extension = format.value(QStringLiteral("ext")).toString();
     audioFormatData.abr = static_cast<float>(format.value(QStringLiteral("abr")).toDouble());
@@ -596,6 +598,7 @@ VMYTDL::appendAvFormat(VMVodData& data, const QJsonObject& format) const
     avFormatData.height = format.value(QStringLiteral("height")).toInt();
     avFormatData.id = format.value(QStringLiteral("format_id")).toString();
     avFormatData.streamUrl = format.value(QStringLiteral("url")).toString();
+    avFormatData.manifestUrl = format.value(QStringLiteral("manifest_url")).toString();
     avFormatData.displayName = format.value(QStringLiteral("format")).toString();
     avFormatData.extension = format.value(QStringLiteral("ext")).toString();
     avFormatData.tbr = static_cast<float>(format.value(QStringLiteral("tbr")).toDouble());

@@ -91,6 +91,7 @@ struct VMVideoFormatData : public QSharedData
     QString displayName;
     QString extension;
     QString streamUrl;
+    QString manifestUrl;
     QString codec;
     int width;
     int height;
@@ -108,6 +109,7 @@ class VMVideoFormat
     Q_PROPERTY(QString id READ id CONSTANT)
     Q_PROPERTY(QString displayName READ displayName CONSTANT)
     Q_PROPERTY(QString streamUrl READ streamUrl CONSTANT)
+    Q_PROPERTY(QString manifestUrl READ manifestUrl CONSTANT)
     Q_PROPERTY(QString extension READ extension CONSTANT)
     Q_PROPERTY(VMVodEnums::Format format READ format CONSTANT)
     Q_PROPERTY(float tbr READ tbr CONSTANT)
@@ -124,6 +126,7 @@ public:
     inline QString displayName() const { return d->displayName; }
     inline QString extension() const { return d->extension; }
     inline QString streamUrl() const { return d->streamUrl; }
+    inline QString manifestUrl() const { return d->manifestUrl; }
     inline VMVodEnums::Format format() const { return (VMVodEnums::Format)d->format; }
     inline float tbr() const { return d->tbr; }
     bool isValid() const;
@@ -143,6 +146,7 @@ struct VMAudioFormatData : public QSharedData
     QString displayName;
     QString extension;
     QString streamUrl;
+    QString manifestUrl;
     QString codec;
     float abr;
 
@@ -155,6 +159,7 @@ class VMAudioFormat
     Q_PROPERTY(QString id READ id CONSTANT)
     Q_PROPERTY(QString displayName READ displayName CONSTANT)
     Q_PROPERTY(QString streamUrl READ streamUrl CONSTANT)
+    Q_PROPERTY(QString manifestUrl READ manifestUrl CONSTANT)
     Q_PROPERTY(QString extension READ extension CONSTANT)
     Q_PROPERTY(QString codec READ codec CONSTANT)
     Q_PROPERTY(float abr READ abr CONSTANT)
@@ -168,6 +173,7 @@ public:
     inline QString id() const { return d->id; }
     inline QString displayName() const { return d->displayName; }
     inline QString streamUrl() const { return d->streamUrl; }
+    inline QString manifestUrl() const { return d->manifestUrl; }
     inline QString extension() const { return d->extension; }
     inline QString codec() const { return d->codec; }
     inline float abr() const { return d->abr; }

@@ -29,7 +29,7 @@
 
 namespace
 {
-const quint8 Version = 2;
+const quint8 Version = 3;
 }
 
 VMVodEnums::~VMVodEnums()
@@ -176,6 +176,7 @@ QDataStream &operator<<(QDataStream &stream, const VMVideoFormatData &value)
     stream << value.extension;
     stream << value.format;
     stream << value.streamUrl;
+    stream << value.manifestUrl;
     stream << value.codec;
     stream << value.tbr;
     return stream;
@@ -194,6 +195,19 @@ QDataStream &operator>>(QDataStream &stream, VMVideoFormatData &value)
         stream >> value.extension;
         stream >> value.format;
         stream >> value.streamUrl;
+        stream >> value.manifestUrl;
+        stream >> value.codec;
+        stream >> value.tbr;
+        break;
+    case 2:
+        stream >> value.width;
+        stream >> value.height;
+        stream >> value.id;
+        stream >> value.displayName;
+        stream >> value.extension;
+        stream >> value.format;
+        stream >> value.streamUrl;
+        value.manifestUrl.clear();
         stream >> value.codec;
         stream >> value.tbr;
         break;
@@ -219,6 +233,7 @@ QDataStream &operator<<(QDataStream &stream, const VMAudioFormatData &value)
     stream << value.displayName;
     stream << value.extension;
     stream << value.streamUrl;
+    stream << value.manifestUrl;
     stream << value.codec;
     stream << value.abr;
     return stream;
@@ -234,6 +249,16 @@ QDataStream &operator>>(QDataStream &stream, VMAudioFormatData &value)
         stream >> value.displayName;
         stream >> value.extension;
         stream >> value.streamUrl;
+        stream >> value.manifestUrl;
+        stream >> value.codec;
+        stream >> value.abr;
+        break;
+    case 2:
+        stream >> value.id;
+        stream >> value.displayName;
+        stream >> value.extension;
+        stream >> value.streamUrl;
+        value.manifestUrl.clear();
         stream >> value.codec;
         stream >> value.abr;
         break;
@@ -275,6 +300,7 @@ QDataStream &operator>>(QDataStream &stream, VMVodData &value)
     stream >> version;
     switch (version) {
     case Version:
+    case 2:
         stream >> value.thumbnailUrl;
         stream >> value.webPageUrl;
         stream >> value.title;
@@ -317,6 +343,7 @@ QDataStream &operator>>(QDataStream &stream, VMPlaylistData &value)
     stream >> version;
     switch (version) {
     case Version:
+    case 2:
         stream >> value.id;
         stream >> value.title;
         stream >> value.webPageUrl;
@@ -382,6 +409,7 @@ QDebug operator<<(QDebug debug, const VMVideoFormat& value)
                     << ", codec=" << data.codec
                     << ", ext=" << data.extension
                     << ", streamUrl=" << data.streamUrl
+                    << ", manifestUrl=" << data.manifestUrl
                     << ")";
     return debug;
 }
@@ -397,6 +425,7 @@ QDebug operator<<(QDebug debug, const VMAudioFormat& value)
                     << ", codec=" << data.codec
                     << ", ext=" << data.extension
                     << ", streamUrl=" << data.streamUrl
+                    << ", manifestUrl=" << data.manifestUrl
                     << ")";
     return debug;
 }
