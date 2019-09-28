@@ -78,20 +78,18 @@ VMQuickVodPlaylistDownloadModel::onPlaylistDownloadCompleted(qint64 token, const
     }
 
     if (download.isValid()) {
-        if (download.error() == VMVodEnums::VM_ErrorNone) {
-            emit downloadSucceeded(QVariant::fromValue(download));
-        } else {
-            const auto& downloadData = download.data();
-            QString filePath;
-            if (downloadData.currentFileIndex >= 0 && downloadData.currentFileIndex < downloadData.files.size()) {
-                filePath = downloadData.files[downloadData.currentFileIndex].filePath();
-            }
-
-            emit downloadFailed(
-                        downloadData.playlist.webPageUrl(),
-                        downloadData.error,
-                        filePath);
+        Q_ASSERT(VMVodEnums::VM_ErrorNone == download.error());
+        emit downloadSucceeded(QVariant::fromValue(download));
+    } else {
+        const auto& downloadData = download.data();
+        QString filePath;
+        if (downloadData.currentFileIndex >= 0 && downloadData.currentFileIndex < downloadData.files.size()) {
+            filePath = downloadData.files[downloadData.currentFileIndex].filePath();
         }
+
+        VMVodEnums::Error error = VMVodEnums::VM_ErrorNone == downloadData.error ? VMVodEnums::VM_ErrorUnknown : downloadData.error;
+
+        emit downloadFailed(downloadData.playlist.webPageUrl(), error, filePath);
     }
 }
 
@@ -119,11 +117,8 @@ VMQuickVodPlaylistDownloadModel::onMetaDataDownloadCompleted(qint64 token, const
     emit busyChanged();
 
     if (download.isValid()) {
-        if (download.error() == VMVodEnums::VM_ErrorNone) {
-            emit metaDataDownloadSucceeded(token, download.playlist());
-        } else {
-            emit downloadFailed(download.url(), download.error(), QString());
-        }
+        Q_ASSERT(VMVodEnums::VM_ErrorNone == download.error());
+        emit metaDataDownloadSucceeded(token, download.playlist());
     } else {
         if (download.error() != VMVodEnums::VM_ErrorNone) {
             emit downloadFailed(download.url(), download.error(), QString());
