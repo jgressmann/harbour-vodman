@@ -5,7 +5,7 @@
 
 Name:       harbour-vodman
 Summary:    Video On Demand (VOD) download tool for SailfishOS
-Version:    1.2.2
+Version:    1.2.3
 Release:    1
 Group:      Applications/Multimedia
 License:    MIT
