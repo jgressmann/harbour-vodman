@@ -718,6 +718,8 @@ VMYTDL::onPlaylistProcessFinished(int code, QProcess::ExitStatus status)
             } else if (line.indexOf(QStringLiteral("giving up after"), 0, Qt::CaseInsensitive) >= 0) {
                 // stderr "ERROR: giving up after 10 retries"
                 downLoadData.error = VMVodEnums::VM_ErrorTimedOut;
+            } else if (line.indexOf(QStringLiteral("requested format not available"), 0, Qt::CaseInsensitive) >= 0) {
+                downLoadData.error = VMVodEnums::VM_ErrorFormatNotAvailable;
             } else {
                 downLoadData.error = VMVodEnums::VM_ErrorUnknown;
             }
