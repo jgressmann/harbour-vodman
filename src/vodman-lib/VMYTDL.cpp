@@ -1,6 +1,6 @@
 /* The MIT License (MIT)
  *
- * Copyright (c) 2018, 2019 Jean Gressmann <jean@0x42.de>
+ * Copyright (c) 2018, 2019, 2020 Jean Gressmann <jean@0x42.de>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -47,14 +47,14 @@ const QRegExp s_YTDLVideoNumberRegexp("^\\[download\\]\\s+Downloading video (\\d
 const QRegExp s_YTDLDestinationRegexp("^\\[download\\]\\s+Destination:\\s+(.+)\\s*$");
 const QRegExp s_YTDLAlreadyDownloadedRegexp("^\\[download\\]\\s+(.+)\\s+has already been downloaded\\s*$");
 const QRegExp s_YTDLProgressRegexp("^\\[download\\]\\s+(\\d+(?:\\.\\d+)?)%\\s+");
-const QString s_Token = QStringLiteral("token");
-const QString s_Type = QStringLiteral("type");
-const QString s_MetaData = QStringLiteral("metadata");
-const QString s_Download = QStringLiteral("download");
-const QString s_Indices = QStringLiteral("indices");
-const QString s_Duration = QStringLiteral("duration");
-const QString s_NoCallHome = QStringLiteral("--no-call-home");
-const QString s_NoColor = QStringLiteral("--no-color");
+const QString s_Token = QLatin1String("token");
+const QString s_Type = QLatin1String("type");
+const QString s_MetaData = QLatin1String("metadata");
+const QString s_Download = QLatin1String("download");
+const QString s_Indices = QLatin1String("indices");
+const QString s_Duration = QLatin1String("duration");
+const QString s_NoCallHome = QLatin1String("--no-call-home");
+const QString s_NoColor = QLatin1String("--no-color");
 
 
 
