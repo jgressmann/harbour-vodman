@@ -35,10 +35,12 @@ DISTFILES += qml/harbour-vodman.qml \
     qml/ProgressOverlay.qml \
     qml/Global.qml \
     qml/qmldir \
+    .tx/config \
     translations/harbour-vodman.ts \
     translations/harbour-vodman-de.ts \
     translations/harbour-vodman-sv.ts \
     translations/harbour-vodman-zh_cn.ts \
+
 
 
 SAILFISHAPP_ICONS = 86x86 108x108 128x128 172x172 256x256
