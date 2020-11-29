@@ -54,8 +54,9 @@
     </message>
     <message id="about-licensing-text">
         <location filename="../qml/pages/AboutPage.qml" line="133"/>
-        <source>Copyright © 2018, 2019 Jean Gressmann.&lt;br/&gt;&lt;br/&gt;%1 is available under the &lt;a href=&apos;https://opensource.org/licenses/MIT&apos;&gt;MIT&lt;/a&gt; license.&lt;br/&gt;%1 uses youtube-dl which is in the &lt;a href=&apos;http://unlicense.org/&apos;&gt;public domain&lt;/a&gt;.</source>
-        <translation>Copyright © 2018, 2019 Jean Gressmann.
+        <source>Copyright © 2018-2020 Jean Gressmann.&lt;br/&gt;&lt;br/&gt;%1 is available under the &lt;a href=&apos;https://opensource.org/licenses/MIT&apos;&gt;MIT&lt;/a&gt; license.&lt;br/&gt;%1 uses youtube-dl which is in the &lt;a href=&apos;http://unlicense.org/&apos;&gt;public domain&lt;/a&gt;.</source>
+        <oldsource>Copyright © 2018, 2019 Jean Gressmann.&lt;br/&gt;&lt;br/&gt;%1 is available under the &lt;a href=&apos;https://opensource.org/licenses/MIT&apos;&gt;MIT&lt;/a&gt; license.&lt;br/&gt;%1 uses youtube-dl which is in the &lt;a href=&apos;http://unlicense.org/&apos;&gt;public domain&lt;/a&gt;.</oldsource>
+        <translation>Copyright © 2018-2020 Jean Gressmann.
 
 %1 ist unter der &lt;a href=&quot;https://opensource.org/licenses/MIT&quot;&gt;MIT&lt;/a&gt; Lizenz verfügbar.
 %1 verwendet youtube-dl, das sich in der &lt;a href=&quot;http://unlicense.org/&quot;&gt;Public Domain&lt;/a&gt; befindet.</translation>
