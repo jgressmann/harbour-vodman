@@ -239,12 +239,12 @@
     <message id="error-signature-extraction-failed-body">
         <location filename="../qml/pages/DownloadPage.qml" line="347"/>
         <source>youtube-dl failed to locate video signature. Update youtube-dl and try again.</source>
-        <translation type="unfinished"></translation>
+        <translation>youtube-dl kunde inte hitta videosignaturen. Uppdatera youtube-dl och försök igen.</translation>
     </message>
     <message id="error-temporary-name-resolution-failure-body">
         <location filename="../qml/pages/DownloadPage.qml" line="351"/>
         <source>Temporary name resolution failure. Try again later.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tillfälligt fel i namnmatchningen. Försök igen senare.</translation>
     </message>
     <message id="retry">
         <location filename="../qml/pages/DownloadPage.qml" line="363"/>
@@ -350,7 +350,7 @@
     <message id="download-item-copy-file-path-to-clipboard">
         <location filename="../qml/pages/DownloadPage.qml" line="903"/>
         <source>Copy file path to clipboard</source>
-        <translation type="unfinished">Kopiera filväg till urklipp</translation>
+        <translation>Kopiera filsökväg till urklipp</translation>
     </message>
     <message id="download-placeholder-text-waiting-for-download-to-start">
         <location filename="../qml/pages/DownloadPage.qml" line="920"/>
@@ -573,7 +573,7 @@
     <message id="ytdl-error-config-malformed">
         <location filename="../qml/pages/YTDLPage.qml" line="146"/>
         <source>Malformed configuration file. Try to download again.</source>
-        <translation>Felformaterad configurationsfil. Försök ladda ner igen.</translation>
+        <translation>Felformaterad konfigurationsfil. Försök ladda ner igen.</translation>
     </message>
     <message id="ytdl-error-no-space">
         <location filename="../qml/pages/YTDLPage.qml" line="149"/>
