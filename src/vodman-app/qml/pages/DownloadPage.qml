@@ -346,6 +346,10 @@ Page {
             //% "youtube-dl failed to locate video signature. Update youtube-dl and try again."
             errorNotification.previewBody = errorNotification.body = qsTrId("error-signature-extraction-failed-body")
             break
+        case VM.VM_ErrorTemporaryFailureNameResolution:
+            //% "Temporary name resolution failure. Try again later."
+            errorNotification.previewBody = errorNotification.body = qsTrId("error-temporary-name-resolution-failure-body")
+            break
         default:
             errorNotification.body = errorNotification.previewBody =
                     //% "Yikes! An unknown error has occured :/"
@@ -894,8 +898,8 @@ Page {
                         }
 
                         MenuItem {
-                            //% "Copy file path to clipboard"
                             visible: !!download.data.file(0).filePath
+                            //% "Copy file path to clipboard"
                             text: qsTrId("download-item-copy-file-path-to-clipboard")
                             onClicked: Clipboard.text = download.data.file(0).filePath
                         }

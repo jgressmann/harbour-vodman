@@ -63,6 +63,7 @@ public:
 
     enum Error
     {
+        ErrorUnknown = -1,
         ErrorNone,
         ErrorPython,
         ErrorMalformedConfigurationFile,
@@ -72,7 +73,7 @@ public:
         ErrorDownloadFailed,
         ErrorOffline,
         ErrorBusy,
-        ErrorUnknown,
+        ErrorTemporaryFailureNameResolution,
     };
     Q_ENUMS(Error)
 

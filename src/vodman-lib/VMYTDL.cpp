@@ -424,6 +424,9 @@ VMYTDL::onMetaDataProcessFinished(int code, QProcess::ExitStatus status)
             } else if (line.indexOf(QStringLiteral("[Errno -2]"), 0, Qt::CaseInsensitive) >= 0) {
                 //ERROR: Unable to download webpage: <urlopen error [Errno -2] Name or service not known> (caused by URLError(gaierror(-2, 'Name or service not known'),))
                 downLoadData.error = VMVodEnums::VM_ErrorNetworkDown;
+            } else if (line.indexOf(QStringLiteral("[Errno -3]"), 0, Qt::CaseInsensitive) >= 0) {
+                // "ERROR: Failed to download m3u8 information: <urlopen error [Errno -3] Temporary failure in name resolution> (caused by URLError(gaierror(-3, 'Temporary failure in name resolution')))"
+                downLoadData.error = VMVodEnums::VM_ErrorTemporaryFailureNameResolution;
             } else if (line.indexOf(QStringLiteral("is not a valid URL"), 0, Qt::CaseInsensitive) >= 0) {
                 //ERROR: '' is not a valid URL. Set --default-search \"ytsearch\" (or run  youtube-dl \"ytsearch:\" ) to search YouTube
                 downLoadData.error = VMVodEnums::VM_ErrorInvalidUrl;
@@ -709,6 +712,9 @@ VMYTDL::onPlaylistProcessFinished(int code, QProcess::ExitStatus status)
             if (line.indexOf(QStringLiteral("[Errno -2]"), 0, Qt::CaseInsensitive) >= 0) {
                 // ERROR: unable to download video data: <urlopen error [Errno -2] Name or service not known>
                 downLoadData.error = VMVodEnums::VM_ErrorNetworkDown;
+            } else if (line.indexOf(QStringLiteral("[Errno -3]"), 0, Qt::CaseInsensitive) >= 0) {
+                // "ERROR: Failed to download m3u8 information: <urlopen error [Errno -3] Temporary failure in name resolution> (caused by URLError(gaierror(-3, 'Temporary failure in name resolution')))"
+                downLoadData.error = VMVodEnums::VM_ErrorTemporaryFailureNameResolution;
             } else if (line.indexOf(QStringLiteral("[Errno 28]"), 0, Qt::CaseInsensitive) >= 0) {
                 // ERROR: unable to write data: [Errno 28] No space left on device
                 download.data().error = VMVodEnums::VM_ErrorNoSpaceLeftOnDevice;

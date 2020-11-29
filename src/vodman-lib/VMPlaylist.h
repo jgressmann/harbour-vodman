@@ -76,7 +76,8 @@ public:
         VM_ErrorAccess,
         VM_ErrorContentGone,
         VM_ErrorInvalidRequest,
-        VM_ErrorSignatureExtractionFailed
+        VM_ErrorSignatureExtractionFailed,
+        VM_ErrorTemporaryFailureNameResolution
     };
     Q_ENUM(Error)
 
