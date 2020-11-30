@@ -113,7 +113,7 @@
     <message id="about-translations-zh-cn-label">
         <location filename="../qml/pages/AboutPage.qml" line="189"/>
         <source>Chinese (People&apos;s Republic of China)</source>
-        <translation>中文</translation>
+        <translation>汉语</translation>
     </message>
     <message id="about-translations-zh-cn-value">
         <location filename="../qml/pages/AboutPage.qml" line="191"/>
@@ -236,12 +236,12 @@
     <message id="error-signature-extraction-failed-body">
         <location filename="../qml/pages/DownloadPage.qml" line="347"/>
         <source>youtube-dl failed to locate video signature. Update youtube-dl and try again.</source>
-        <translation type="unfinished"></translation>
+        <translation>youtube-dl 定位视频签名失败。请更新 youtube-dl 然后重试。</translation>
     </message>
     <message id="error-temporary-name-resolution-failure-body">
         <location filename="../qml/pages/DownloadPage.qml" line="351"/>
         <source>Temporary name resolution failure. Try again later.</source>
-        <translation type="unfinished"></translation>
+        <translation>临时名称解析失败，请稍候重试。</translation>
     </message>
     <message id="retry">
         <location filename="../qml/pages/DownloadPage.qml" line="363"/>
@@ -272,7 +272,7 @@
     <message id="menu-item-clear-clipboard">
         <location filename="../qml/pages/DownloadPage.qml" line="631"/>
         <source>Clear clipboard</source>
-        <translation>清空剪贴板</translation>
+        <translation>清空剪切板</translation>
     </message>
     <message id="menu-item-cancel-all-downloads">
         <location filename="../qml/pages/DownloadPage.qml" line="640"/>
@@ -302,7 +302,7 @@
     <message id="menu-item-download-from-clipboard">
         <location filename="../qml/pages/DownloadPage.qml" line="664"/>
         <source>Download from clipboard</source>
-        <translation>下载剪贴板的网址</translation>
+        <translation>下载剪切板的网址</translation>
     </message>
     <message id="download-page-header">
         <location filename="../qml/pages/DownloadPage.qml" line="682"/>
@@ -345,7 +345,7 @@
     <message id="download-item-copy-file-path-to-clipboard">
         <location filename="../qml/pages/DownloadPage.qml" line="903"/>
         <source>Copy file path to clipboard</source>
-        <translation type="unfinished">复制文件路径到剪贴板</translation>
+        <translation>复制文件路径到剪切板</translation>
     </message>
     <message id="download-placeholder-text-waiting-for-download-to-start">
         <location filename="../qml/pages/DownloadPage.qml" line="920"/>
@@ -360,17 +360,17 @@
     <message id="download-placeholder-text-metadata-download">
         <location filename="../qml/pages/DownloadPage.qml" line="915"/>
         <source>Downloading VOD metadata</source>
-        <translation>正在下载视频元数据</translation>
+        <translation>正在下载 VOD 元数据</translation>
     </message>
     <message id="download-placeholder-hint-pull-down-to-start-download-from-clipboard">
         <location filename="../qml/pages/DownloadPage.qml" line="934"/>
         <source>Pull down to start download using the URL in the clipboard</source>
-        <translation>下拉以开始下载剪贴板中的网址</translation>
+        <translation>下拉以开始下载剪切板中的网址</translation>
     </message>
     <message id="download-placeholder-hint-copy-url-to-clipboard">
         <location filename="../qml/pages/DownloadPage.qml" line="938"/>
         <source>Copy a URL to the clipboard then pull down to start the download</source>
-        <translation>复制一个网址到剪贴板然后下拉以开始下载</translation>
+        <translation>复制一个网址到剪切板然后下拉以开始下载</translation>
     </message>
     <message id="settings-network-header">
         <location filename="../qml/pages/SettingsPage.qml" line="131"/>
