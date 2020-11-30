@@ -2,9 +2,10 @@
 host = https://www.transifex.com
 
 [harbour-vodman.translations]
-type = QT
 source_file = translations/harbour-vodman.ts
 source_lang = en
 trans.de = translations/harbour-vodman-de.ts
 trans.sv = translations/harbour-vodman-sv.ts
 trans.zh_CN = translations/harbour-vodman-zh_cn.ts
+type = QT
+
