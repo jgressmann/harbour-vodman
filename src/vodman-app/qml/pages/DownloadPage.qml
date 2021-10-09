@@ -1,6 +1,6 @@
 /* The MIT License (MIT)
  *
- * Copyright (c) 2018-2020 Jean Gressmann <jean@0x42.de>
+ * Copyright (c) 2018-2021 Jean Gressmann <jean@0x42.de>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -350,6 +350,14 @@ Page {
             //% "Temporary name resolution failure. Try again later."
             errorNotification.previewBody = errorNotification.body = qsTrId("error-temporary-name-resolution-failure-body")
             break
+        case VM.VM_ErrorAccess:
+            //% "Access denied"
+            errorNotification.previewBody = errorNotification.body = qsTrId("error-access")
+            break
+        case VM.VM_ErrorTooManyRequests:
+            //% "Too many requests. Try again later or update youtube-dl."
+            errorNotification.previewBody = errorNotification.body = qsTrId("error-too-many-requests")
+            break
         default:
             errorNotification.body = errorNotification.previewBody =
                     //% "Yikes! An unknown error has occured :/"
@@ -523,10 +531,10 @@ Page {
                 onClicked: pageStack.push(Qt.resolvedUrl("SettingsPage.qml"))
             }
             MenuItem {
-                text: "Download small video"
+                text: "Download m3u8"
                 visible: debugApp.value
                 enabled: page.canStartDownload
-                onClicked: _download("https://www.youtube.com/watch?v=7t-l0q_v4D8")
+                onClicked: _download("https://multiplatform-f.akamaihd.net/i/multi/will/bunny/big_buck_bunny_,640x360_400,640x360_700,640x360_1000,950x540_1500,.f4v.csmil/master.m3u8")
             }
 
             MenuItem {

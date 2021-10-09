@@ -1,6 +1,6 @@
 /* The MIT License (MIT)
  *
- * Copyright (c) 2018-2020 Jean Gressmann <jean@0x42.de>
+ * Copyright (c) 2018-2021 Jean Gressmann <jean@0x42.de>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -306,6 +306,7 @@ VMYTDL::startFetchPlaylist(qint64 token, const VMPlaylistDownloadRequest& req, V
               << QStringLiteral("--fixup") << QStringLiteral("never")
               << s_NoCallHome
               << s_NoColor
+              << QStringLiteral("--hls-prefer-native") // ffmpeg seems to be on device (SFOS 4.2.0) but was built w/o TLS
               << QStringLiteral("-f") << req.format
               << QStringLiteral("-o") << req.filePath
               << m_CustomOptions;
@@ -441,6 +442,12 @@ VMYTDL::onMetaDataProcessFinished(int code, QProcess::ExitStatus status)
             } else if (line.indexOf(QStringLiteral("Signature extraction failed"), 0, Qt::CaseInsensitive) >= 0) {
                 // ERROR: Signature extraction failed
                 downLoadData.error = VMVodEnums::VM_ErrorSignatureExtractionFailed;
+            } else if (line.indexOf(QStringLiteral("Forbidden"), 0, Qt::CaseInsensitive) >= 0) {
+                // ERROR: unable to download video data: HTTP Error 403: Forbidden"
+                downLoadData.error = VMVodEnums::VM_ErrorAccess;
+            } else if (line.indexOf(QStringLiteral("Too Many Requests"), 0, Qt::CaseInsensitive) >= 0) {
+                // ERROR: Unable to download webpage: HTTP Error 429: Too Many Requests (caused by <HTTPError 429: 'Too Many Requests'>); please report this issue on https://yt-dl.org/bug . Make sure you are using the latest version; type  youtube-dl -U  to update. Be sure to call youtube-dl with the --verbose flag and include its complete output."
+                downLoadData.error = VMVodEnums::VM_ErrorTooManyRequests;
             } else {
                 downLoadData.error = VMVodEnums::VM_ErrorUnknown;
             }
@@ -726,6 +733,9 @@ VMYTDL::onPlaylistProcessFinished(int code, QProcess::ExitStatus status)
                 downLoadData.error = VMVodEnums::VM_ErrorTimedOut;
             } else if (line.indexOf(QStringLiteral("requested format not available"), 0, Qt::CaseInsensitive) >= 0) {
                 downLoadData.error = VMVodEnums::VM_ErrorFormatNotAvailable;
+            } else if (line.indexOf(QStringLiteral("Forbidden"), 0, Qt::CaseInsensitive) >= 0) {
+                // ERROR: unable to download video data: HTTP Error 403: Forbidden"
+                downLoadData.error = VMVodEnums::VM_ErrorAccess;
             } else {
                 downLoadData.error = VMVodEnums::VM_ErrorUnknown;
             }

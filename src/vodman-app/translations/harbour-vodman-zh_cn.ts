@@ -172,28 +172,28 @@
         <translation>已下载 %1</translation>
     </message>
     <message id="error-unknown">
-        <location filename="../qml/pages/DownloadPage.qml" line="356"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="364"/>
         <source>Yikes! An unknown error has occured :/</source>
         <translation>呀! 出现未知错误 :/</translation>
     </message>
     <message id="play">
-        <location filename="../qml/pages/DownloadPage.qml" line="382"/>
-        <location filename="../qml/pages/DownloadPage.qml" line="886"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="390"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="894"/>
         <source>Play</source>
         <translation>播放</translation>
     </message>
     <message id="nofification-download-failed-summary">
-        <location filename="../qml/pages/DownloadPage.qml" line="475"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="483"/>
         <source>Download failed</source>
         <translation>下载失败</translation>
     </message>
     <message id="nofification-download-finished-summary">
-        <location filename="../qml/pages/DownloadPage.qml" line="494"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="502"/>
         <source>Download finished</source>
         <translation>下载完毕</translation>
     </message>
     <message id="nofification-download-started-summary">
-        <location filename="../qml/pages/DownloadPage.qml" line="440"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="448"/>
         <source>Started download of &apos;%1&apos;</source>
         <oldsource>Download started</oldsource>
         <translation>下载开始</translation>
@@ -243,132 +243,142 @@
         <source>Temporary name resolution failure. Try again later.</source>
         <translation>临时名称解析失败，请稍候重试。</translation>
     </message>
+    <message id="error-access">
+        <location filename="../qml/pages/DownloadPage.qml" line="355"/>
+        <source>Access denied</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="error-too-many-requests">
+        <location filename="../qml/pages/DownloadPage.qml" line="359"/>
+        <source>Too many requests. Try again later or update youtube-dl.</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message id="retry">
-        <location filename="../qml/pages/DownloadPage.qml" line="363"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="371"/>
         <source>Retry</source>
         <translation>重试</translation>
     </message>
     <message id="notification-busy">
-        <location filename="../qml/pages/DownloadPage.qml" line="450"/>
-        <location filename="../qml/pages/DownloadPage.qml" line="461"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="458"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="469"/>
         <source>%1 is busy. Try again later.</source>
         <translation>%1 忙碌，请稍后再试</translation>
     </message>
     <message id="nofification-download-started-preview-summary">
-        <location filename="../qml/pages/DownloadPage.qml" line="504"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="512"/>
         <source>Download started</source>
         <translation>下载开始</translation>
     </message>
     <message id="menu-item-about-vodman">
-        <location filename="../qml/pages/DownloadPage.qml" line="516"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="524"/>
         <source>About %1</source>
         <translation>关于 %1</translation>
     </message>
     <message id="menu-item-settings">
-        <location filename="../qml/pages/DownloadPage.qml" line="522"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="530"/>
         <source>Settings</source>
         <translation>设置</translation>
     </message>
     <message id="menu-item-clear-clipboard">
-        <location filename="../qml/pages/DownloadPage.qml" line="631"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="639"/>
         <source>Clear clipboard</source>
         <translation>清空剪切板</translation>
     </message>
     <message id="menu-item-cancel-all-downloads">
-        <location filename="../qml/pages/DownloadPage.qml" line="640"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="648"/>
         <source>Cancel all downloads</source>
         <translation>取消所有的下载</translation>
     </message>
     <message id="remorse-cancel-all-downloads">
-        <location filename="../qml/pages/DownloadPage.qml" line="645"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="653"/>
         <source>Stopping all downloads</source>
         <translation>停止所有的下载</translation>
     </message>
     <message id="menu-item-cancel-all-downloads-delete">
-        <location filename="../qml/pages/DownloadPage.qml" line="652"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="660"/>
         <source>Cancel all downloads and delete files</source>
         <translation>取消所有的下载并删除文件</translation>
     </message>
     <message id="remorse-cancel-all-downloads-delete">
-        <location filename="../qml/pages/DownloadPage.qml" line="657"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="665"/>
         <source>Purging all downloads</source>
         <translation>清除所有的下载</translation>
     </message>
     <message id="cancel">
-        <location filename="../qml/pages/DownloadPage.qml" line="880"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="888"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message id="menu-item-download-from-clipboard">
-        <location filename="../qml/pages/DownloadPage.qml" line="664"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="672"/>
         <source>Download from clipboard</source>
         <translation>下载剪切板的网址</translation>
     </message>
     <message id="download-page-header">
-        <location filename="../qml/pages/DownloadPage.qml" line="682"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="690"/>
         <source>Downloads</source>
         <translation>下载</translation>
     </message>
     <message id="download-item-remorse-cancel">
-        <location filename="../qml/pages/DownloadPage.qml" line="702"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="710"/>
         <source>Stopping %1</source>
         <translation>停止 %1</translation>
     </message>
     <message id="unit-gb">
-        <location filename="../qml/pages/DownloadPage.qml" line="809"/>
-        <location filename="../qml/pages/DownloadPage.qml" line="814"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="817"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="822"/>
         <source>%1 GB</source>
         <translation>%1 GB</translation>
     </message>
     <message id="unit-mb">
-        <location filename="../qml/pages/DownloadPage.qml" line="818"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="826"/>
         <source>%1 MB</source>
         <translation>%1 MB</translation>
     </message>
     <message id="download-item-vod-file">
-        <location filename="../qml/pages/DownloadPage.qml" line="834"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="842"/>
         <source>file %1</source>
         <translation>%1 文件</translation>
     </message>
     <message id="download-item-cancel-and-delete" numerus="yes">
-        <location filename="../qml/pages/DownloadPage.qml" line="874"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="882"/>
         <source>Cancel and delete file</source>
         <translation>
             <numerusform>取消并删除文件</numerusform>
         </translation>
     </message>
     <message id="download-item-open-webpage">
-        <location filename="../qml/pages/DownloadPage.qml" line="893"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="901"/>
         <source>Open webpage</source>
         <translation>打开网页</translation>
     </message>
     <message id="download-item-copy-file-path-to-clipboard">
-        <location filename="../qml/pages/DownloadPage.qml" line="903"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="911"/>
         <source>Copy file path to clipboard</source>
         <translation>复制文件路径到剪切板</translation>
     </message>
     <message id="download-placeholder-text-waiting-for-download-to-start">
-        <location filename="../qml/pages/DownloadPage.qml" line="920"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="928"/>
         <source>Download will start momentarily</source>
         <translation>下载将会立即开始</translation>
     </message>
     <message id="download-placeholder-text-no-downloads">
-        <location filename="../qml/pages/DownloadPage.qml" line="924"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="932"/>
         <source>No downloads at present</source>
         <translation>暂无下载</translation>
     </message>
     <message id="download-placeholder-text-metadata-download">
-        <location filename="../qml/pages/DownloadPage.qml" line="915"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="923"/>
         <source>Downloading VOD metadata</source>
         <translation>正在下载 VOD 元数据</translation>
     </message>
     <message id="download-placeholder-hint-pull-down-to-start-download-from-clipboard">
-        <location filename="../qml/pages/DownloadPage.qml" line="934"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="942"/>
         <source>Pull down to start download using the URL in the clipboard</source>
         <translation>下拉以开始下载剪切板中的网址</translation>
     </message>
     <message id="download-placeholder-hint-copy-url-to-clipboard">
-        <location filename="../qml/pages/DownloadPage.qml" line="938"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="946"/>
         <source>Copy a URL to the clipboard then pull down to start the download</source>
         <translation>复制一个网址到剪切板然后下拉以开始下载</translation>
     </message>
