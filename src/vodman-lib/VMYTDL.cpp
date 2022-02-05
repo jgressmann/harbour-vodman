@@ -1,6 +1,6 @@
 /* The MIT License (MIT)
  *
- * Copyright (c) 2018-2021 Jean Gressmann <jean@0x42.de>
+ * Copyright (c) 2018-2022 Jean Gressmann <jean@0x42.de>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -287,7 +287,9 @@ VMYTDL::startFetchPlaylist(qint64 token, const VMPlaylistDownloadRequest& req, V
     result[s_Token] = token;
 
 
-    qDebug() << "Trying to obtain" << (req.indices.isEmpty() ? data.playlist.vods() : req.indices.size()) << "video file(s) for:" << data.playlist.webPageUrl() << "format:" << req.format << "file path:" << req.filePath;
+    qDebug() << "Trying to obtain" << (req.indices.isEmpty() ? data.playlist.vods() : req.indices.size())
+             << "video file(s) for:" << data.playlist.webPageUrl() << "format:"
+             << req.format << "file path:" << req.filePath;
 
     QStringList arguments;
     if (m_YtdlVerbose) {
@@ -457,12 +459,12 @@ VMYTDL::onMetaDataProcessFinished(int code, QProcess::ExitStatus status)
     }
 
     QByteArray output = process->readAllStandardOutput();
-//    qDebug("%s\n", output.data());
     QVector<int> starts, ends;
+
     if (!parseJson(output, &starts, &ends)) {
         downLoadData.error = VMVodEnums::VM_ErrorInvalidResponse;
         downLoadData.errorMessage = QStringLiteral("Failed to determine location of JSON objects in output");
-        qDebug("%s\n", output.data());
+        qDebug("%s\n", qPrintable(output));
         emit metaDataDownloadCompleted(id, download);
         return;
     }
@@ -736,9 +738,13 @@ VMYTDL::onPlaylistProcessFinished(int code, QProcess::ExitStatus status)
             } else if (line.indexOf(QStringLiteral("Forbidden"), 0, Qt::CaseInsensitive) >= 0) {
                 // ERROR: unable to download video data: HTTP Error 403: Forbidden"
                 downLoadData.error = VMVodEnums::VM_ErrorAccess;
+            } else if (line.indexOf(QStringLiteral("Requested format is not available"), 0, Qt::CaseInsensitive) >= 0) {
+                //  ERROR: [generic] www.reddit: Requested format is not available
+                downLoadData.error = VMVodEnums::VM_ErrorFormatNotAvailable;
             } else {
                 downLoadData.error = VMVodEnums::VM_ErrorUnknown;
             }
+
             downLoadData.errorMessage = line.toString();
             emit playlistDownloadCompleted(id, download);
             return;
