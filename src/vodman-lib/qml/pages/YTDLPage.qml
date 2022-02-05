@@ -1,6 +1,6 @@
 /* The MIT License (MIT)
  *
- * Copyright (c) 2019 Jean Gressmann <jean@0x42.de>
+ * Copyright (c) 2019-2022 Jean Gressmann <jean@0x42.de>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,6 +28,8 @@ import Vodman 2.1
 
 Page {
     readonly property bool isYTDLPage: true
+    property string _downloadName
+
 
     SilicaFlickable {
         anchors.fill: parent
@@ -50,14 +52,14 @@ Page {
                     text: {
                         switch (YTDLDownloader.downloadStatus) {
                         case YTDLDownloader.StatusUnavailable:
-                            //% "You seem to be missing a working youtube-dl"
-                            return qsTrId("ytdl-unvailable")
+                            //% "You seem to be missing a working %1"
+                            return qsTrId("ytdl-unvailable").arg(YTDLDownloader.ytdlDefaultName)
                         case YTDLDownloader.StatusError:
-                            //% "There was an error downloading youtube-dl"
-                            return qsTrId("ytdl-error")
+                            //% "There was an error downloading %1"
+                            return qsTrId("ytdl-error").arg(_downloadName)
                         case YTDLDownloader.StatusDownloading:
-                            //% "youtube-dl is being downloaded"
-                            return qsTrId("ytdl-downloading")
+                            //% "%1 is being downloaded"
+                            return qsTrId("ytdl-downloading").arg(_downloadName)
                         case YTDLDownloader.StatusReady:
                             return ""
                         default:
@@ -113,7 +115,7 @@ Page {
                 visible: !(YTDLDownloader.downloadStatus === YTDLDownloader.StatusDownloading || YTDLDownloader.downloadStatus === YTDLDownloader.StatusReady)
                 enabled: YTDLDownloader.isOnline
                 anchors.horizontalCenter: parent.horizontalCenter
-                //% "Download youtube-dl"
+                //% "Download"
                 text: qsTrId("ytdl-download-button")
                 onClicked: YTDLDownloader.download()
             }
@@ -174,6 +176,10 @@ Page {
                 color: Theme.secondaryHighlightColor
             }
         }
+    }
+
+    Component.onCompleted: {
+        _downloadName = YTDLDownloader.isUpdateAvailable ? YTDLDownloader.updateName : YTDLDownloader.ytdlDefaultName
     }
 }
 

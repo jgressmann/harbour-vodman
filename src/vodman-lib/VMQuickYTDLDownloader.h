@@ -1,6 +1,6 @@
 /* The MIT License (MIT)
  *
- * Copyright (c) 2019-2020 Jean Gressmann <jean@0x42.de>
+ * Copyright (c) 2019-2022 Jean Gressmann <jean@0x42.de>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -36,6 +36,9 @@ class VMQuickYTDLDownloader : public QObject
 public:
     Q_PROPERTY(QString ytdlVersion READ ytdlVersion NOTIFY ytdlVersionChanged)
     Q_PROPERTY(QString ytdlPath READ ytdlPath NOTIFY ytdlPathChanged)
+    Q_PROPERTY(QString ytdlName READ ytdlName NOTIFY ytdlNameChanged)
+    Q_PROPERTY(QString ytdlNameOrDefault READ ytdlNameOrDefault NOTIFY ytdlNameOrDefaultChanged)
+    Q_PROPERTY(QString ytdlDefaultName READ ytdlDefaultName CONSTANT)
     Q_PROPERTY(Status downloadStatus READ downloadStatus NOTIFY downloadStatusChanged)
     Q_PROPERTY(Status updateStatus READ updateStatus NOTIFY updateStatusChanged)
     Q_PROPERTY(Error error READ error NOTIFY errorChanged)
@@ -44,6 +47,7 @@ public:
     Q_PROPERTY(bool isOnline READ isOnline NOTIFY isOnlineChanged)
     Q_PROPERTY(bool isUpdateAvailable READ isUpdateAvailable NOTIFY isUpdateAvailableChanged)
     Q_PROPERTY(QString updateVersion READ updateVersion NOTIFY updateVersionChanged)
+    Q_PROPERTY(QString updateName READ updateName NOTIFY updateNameChanged)
 
 public:
     enum Status
@@ -83,6 +87,9 @@ public:
 public:
     QString ytdlVersion() const { return m_ytdlVersion; }
     QString ytdlPath() const { return m_ytdlPath; }
+    QString ytdlName() const { return m_ytdlName; }
+    QString ytdlNameOrDefault() const;
+    QString ytdlDefaultName() const { return QStringLiteral("yt-dlp"); }
     Status downloadStatus() const { return m_DownloadStatus; }
     Status updateStatus() const { return m_UpdateStatus; }
     Error error() const { return m_error; }
@@ -91,6 +98,7 @@ public:
     bool busy() const;
     bool isOnline() const { return m_networkConfigurationManager.isOnline(); }
     QString updateVersion() const { return m_UpdateVersion; }
+    QString updateName() const { return m_UpdateName; }
     bool isUpdateAvailable() const;
     Q_INVOKABLE void download();
     Q_INVOKABLE void remove();
@@ -99,6 +107,8 @@ public:
 signals:
     void ytdlPathChanged();
     void ytdlVersionChanged();
+    void ytdlNameChanged();
+    void ytdlNameOrDefaultChanged();
     void downloadStatusChanged();
     void errorChanged();
     void modeChanged();
@@ -106,6 +116,7 @@ signals:
     void isOnlineChanged();
     void isUpdateAvailableChanged();
     void updateVersionChanged();
+    void updateNameChanged();
     void updateStatusChanged();
 
 private slots:
@@ -135,8 +146,10 @@ private:
     QNetworkAccessManager m_networkAccessManager;
     QString m_ytdlVersion;
     QString m_ytdlPath;
+    QString m_ytdlName;
     QString m_configFilePath;
     QString m_UpdateVersion;
+    QString m_UpdateName;
     Status m_DownloadStatus;
     Status m_UpdateStatus;
     Error m_error;

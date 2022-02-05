@@ -55,12 +55,12 @@
     </message>
     <message id="about-licensing-text">
         <location filename="../qml/pages/AboutPage.qml" line="133"/>
-        <source>Copyright © 2018-2021 Jean Gressmann.&lt;br/&gt;&lt;br/&gt;%1 is available under the &lt;a href=&apos;https://opensource.org/licenses/MIT&apos;&gt;MIT&lt;/a&gt; license.&lt;br/&gt;%1 uses youtube-dl which is in the &lt;a href=&apos;http://unlicense.org/&apos;&gt;public domain&lt;/a&gt;.</source>
-        <oldsource>Copyright © 2018-2020 Jean Gressmann.&lt;br/&gt;&lt;br/&gt;%1 is available under the &lt;a href=&apos;https://opensource.org/licenses/MIT&apos;&gt;MIT&lt;/a&gt; license.&lt;br/&gt;%1 uses youtube-dl which is in the &lt;a href=&apos;http://unlicense.org/&apos;&gt;public domain&lt;/a&gt;.</oldsource>
-        <translation>Copyright (c) 2018-2021 Jean Gressmann.&lt;br/&gt;
+        <source>Copyright © 2018-2022 Jean Gressmann.&lt;br/&gt;&lt;br/&gt;%1 is available under the &lt;a href=&apos;https://opensource.org/licenses/MIT&apos;&gt;MIT&lt;/a&gt; license.&lt;br/&gt;%1 uses %2 which is in the &lt;a href=&apos;http://unlicense.org/&apos;&gt;public domain&lt;/a&gt;.</source>
+        <oldsource>Copyright © 2018-2022 Jean Gressmann.&lt;br/&gt;&lt;br/&gt;%1 is available under the &lt;a href=&apos;https://opensource.org/licenses/MIT&apos;&gt;MIT&lt;/a&gt; license.&lt;br/&gt;%1 uses %1 which is in the &lt;a href=&apos;http://unlicense.org/&apos;&gt;public domain&lt;/a&gt;.</oldsource>
+        <translation>Copyright (c) 2018-2022 Jean Gressmann.&lt;br/&gt;
 &lt;br/&gt;
 %1 finns tillgänglig under &lt;a href=&quot;https://opensource.org/licenses/MIT&quot;&gt;MIT&lt;/a&gt;-licensen.&lt;br/&gt;
-%1 använder youtube-dl som finns i &lt;a href=&quot;http://unlicense.org/&quot;&gt;&quot;public domain&quot;&lt;/a&gt;.</translation>
+%1 använder %2 som finns i &lt;a href=&quot;http://unlicense.org/&quot;&gt;&quot;public domain&quot;&lt;/a&gt;.</translation>
     </message>
     <message id="about-sources-header">
         <location filename="../qml/pages/AboutPage.qml" line="142"/>
@@ -125,81 +125,125 @@
         <oldsource>names of translators</oldsource>
         <translation>dashinfantry, Zichen Wang</translation>
     </message>
-    <message id="error-youtube-dl-not-working">
-        <location filename="../qml/pages/DownloadPage.qml" line="285"/>
-        <source>youtube-dl not working</source>
-        <translation>youtube-dl fungerar inte</translation>
+    <message id="cover-no-downloads">
+        <location filename="../qml/cover/CoverPage.qml" line="56"/>
+        <source>No downloads at present</source>
+        <translation>Inga nerladdningar just nu</translation>
     </message>
-    <message id="error-youtube-dl-process-crashed">
-        <location filename="../qml/pages/DownloadPage.qml" line="290"/>
-        <source>youtube-dl process crashed</source>
-        <translation>youtube-dl-processen kraschade</translation>
+    <message id="ytdl-unvailable">
+        <location filename="../qml/pages/YTDLPage.qml" line="56"/>
+        <source>You seem to be missing a working %1</source>
+        <oldsource>You seem to be missing a working youtube-dl</oldsource>
+        <translation>Du verkar sakna en fungerande %1</translation>
     </message>
-    <message id="error-download-timed-out">
-        <location filename="../qml/pages/DownloadPage.qml" line="295"/>
-        <source>Download timed out</source>
-        <translation>Tidsgränsen för nerladdning överskreds</translation>
+    <message id="ytdl-error">
+        <location filename="../qml/pages/YTDLPage.qml" line="59"/>
+        <source>There was an error downloading %1</source>
+        <oldsource>There was an error downloading youtube-dl</oldsource>
+        <translation>Ett fel inträffade vid nerladdning av %1</translation>
     </message>
-    <message id="error-invalid-response">
-        <location filename="../qml/pages/DownloadPage.qml" line="300"/>
-        <source>Host delivered an invalid response to VOD format request</source>
-        <translation>Värddatorn returnerade ett ogiltigt svar på VOD-formatbegäran</translation>
+    <message id="ytdl-downloading">
+        <location filename="../qml/pages/YTDLPage.qml" line="62"/>
+        <source>%1 is being downloaded</source>
+        <oldsource>youtube-dl is being downloaded</oldsource>
+        <translation>%1 laddas ner</translation>
     </message>
-    <message id="error-unsupported-url">
-        <location filename="../qml/pages/DownloadPage.qml" line="305"/>
-        <source>youtube-dl doesn&apos;t know how to handle that URL</source>
-        <translation>youtube-dl kan inte hantera denna URL</translation>
+    <message id="ytdl-unvailable-hint-offline">
+        <location filename="../qml/pages/YTDLPage.qml" line="90"/>
+        <source>Go online, then click the button below to start the download</source>
+        <translation>Anslut till nätet och tryck sedan på nedanstående knapp för att starta nerladdningen</translation>
     </message>
-    <message id="error-no-video">
-        <location filename="../qml/pages/DownloadPage.qml" line="310"/>
-        <source>No video content for URL</source>
-        <translation>Inget videoinnehåll på denna URL</translation>
+    <message id="ytdl-downloading-hint">
+        <location filename="../qml/pages/YTDLPage.qml" line="96"/>
+        <source>Please be patient</source>
+        <oldsource>youtube-dl is being downloaded</oldsource>
+        <translation>Ha tålamod</translation>
     </message>
-    <message id="error-format-not-available">
-        <location filename="../qml/pages/DownloadPage.qml" line="315"/>
-        <source>The format you selected is not available. Try again or choose another format.</source>
-        <translation>Det valda formatet finns inte tillgängligt. Försök igen eller välj ett annat format.</translation>
+    <message id="ytdl-download-button">
+        <location filename="../qml/pages/YTDLPage.qml" line="119"/>
+        <source>Download</source>
+        <oldsource>Download %1</oldsource>
+        <translation>Ladda ner</translation>
     </message>
-    <message id="error-network-down">
-        <location filename="../qml/pages/DownloadPage.qml" line="320"/>
-        <source>Network down.</source>
-        <translation>Nätverk nere.</translation>
+    <message id="ytdl-error-busy">
+        <location filename="../qml/pages/YTDLPage.qml" line="139"/>
+        <source>Try again later</source>
+        <translation>Försök igen senare</translation>
     </message>
-    <message id="error-no-space">
-        <location filename="../qml/pages/DownloadPage.qml" line="331"/>
-        <source>No space left on device.</source>
-        <translation>Inget ledigt utrymme på enheten.</translation>
-    </message>
-    <message id="error-already-downloading">
-        <location filename="../qml/pages/DownloadPage.qml" line="335"/>
-        <source>Already downloading %1</source>
-        <translation>%1 laddas redan ner</translation>
-    </message>
-    <message id="error-unknown">
-        <location filename="../qml/pages/DownloadPage.qml" line="364"/>
-        <source>Yikes! An unknown error has occured :/</source>
-        <translation>Ett okänt fel har inträffat :/</translation>
-    </message>
-    <message id="play">
-        <location filename="../qml/pages/DownloadPage.qml" line="390"/>
-        <location filename="../qml/pages/DownloadPage.qml" line="894"/>
-        <source>Play</source>
-        <translation>Spela</translation>
-    </message>
-    <message id="nofification-download-failed-summary">
-        <location filename="../qml/pages/DownloadPage.qml" line="483"/>
+    <message id="ytdl-error-download-failed">
+        <location filename="../qml/pages/YTDLPage.qml" line="142"/>
         <source>Download failed</source>
         <translation>Nerladdning mysslyckades</translation>
     </message>
-    <message id="nofification-download-finished-summary">
-        <location filename="../qml/pages/DownloadPage.qml" line="502"/>
-        <source>Download finished</source>
-        <translation>Nerladdning slutförd</translation>
+    <message id="ytdl-error-file-dir-creation">
+        <location filename="../qml/pages/YTDLPage.qml" line="145"/>
+        <source>Failed to create file/directory</source>
+        <translation>Kunde inte skapa fil/mapp</translation>
     </message>
-    <message id="nofification-download-started-summary">
-        <location filename="../qml/pages/DownloadPage.qml" line="448"/>
-        <source>Started download of &apos;%1&apos;</source>
-        <translation>Nerladdning av &apos;%1&apos; påbörjad</translation>
+    <message id="ytdl-error-config-malformed">
+        <location filename="../qml/pages/YTDLPage.qml" line="148"/>
+        <source>Malformed configuration file. Try to download again.</source>
+        <translation>Felformaterad konfigurationsfil. Försök ladda ner igen.</translation>
+    </message>
+    <message id="ytdl-error-no-space">
+        <location filename="../qml/pages/YTDLPage.qml" line="151"/>
+        <source>No space left on device</source>
+        <translation>Det finns inget utrymme kvar på enheten</translation>
+    </message>
+    <message id="ytdl-error-python">
+        <location filename="../qml/pages/YTDLPage.qml" line="154"/>
+        <source>Python executable not found</source>
+        <translation>Körbar Python kan inte hittas</translation>
+    </message>
+    <message id="ytdl-error-unknown">
+        <location filename="../qml/pages/YTDLPage.qml" line="157"/>
+        <source>An unknown error has occurred</source>
+        <oldsource>Something bad has happened</oldsource>
+        <translation>Ett okänt fel har inträffat</translation>
+    </message>
+    <message id="ytdl-error-unsupported-config-file-format">
+        <location filename="../qml/pages/YTDLPage.qml" line="160"/>
+        <source>Unsupported configuration file format. Try to update the application.</source>
+        <translation>Konfigurationsfilens format stöds inte. Försök uppdatera appen.</translation>
+    </message>
+    <message id="ytdl-error-none">
+        <location filename="../qml/pages/YTDLPage.qml" line="163"/>
+        <source>All is well</source>
+        <translation>Allt är bra</translation>
+    </message>
+    <message id="ytdl-error-offline">
+        <location filename="../qml/pages/YTDLPage.qml" line="166"/>
+        <source>Your device is offline</source>
+        <oldsource>The device is offline</oldsource>
+        <translation>Din enhet är offline</translation>
+    </message>
+    <message id="ytdl-unvailable-hint">
+        <location filename="../qml/pages/YTDLPage.qml" line="86"/>
+        <source>Click the button below to start the download</source>
+        <translation>Tryck på knappen nedan för att starta nerladdningen</translation>
+    </message>
+    <message id="ytdl-error-hint">
+        <location filename="../qml/pages/YTDLPage.qml" line="93"/>
+        <source>Click the button below to try again</source>
+        <translation>Tryck på knappen nedan för att försöka igen</translation>
+    </message>
+    <message id="nofification-download-ytdl-update-available-summary">
+        <location filename="../qml/harbour-vodman.qml" line="125"/>
+        <source>Update available</source>
+        <oldsource>%1 update available</oldsource>
+        <translation type="unfinished">%1 uppdatering tillgänglig</translation>
+    </message>
+    <message id="nofification-ytdl-update-available-body">
+        <location filename="../qml/harbour-vodman.qml" line="128"/>
+        <source>%1 version %2 available</source>
+        <oldsource>youtube-dl version %1 available</oldsource>
+        <translation>%1-version %2 tillgänglig</translation>
+    </message>
+    <message id="nofification-ytdl-update-available-action">
+        <location filename="../qml/harbour-vodman.qml" line="133"/>
+        <source>Update</source>
+        <oldsource>Update youtube-dl</oldsource>
+        <translation>Uppdatera</translation>
     </message>
     <message id="select-video-format-dialog-title">
         <location filename="../qml/pages/DownloadPage.qml" line="85"/>
@@ -216,15 +260,66 @@
         <source>Select a format</source>
         <translation>Välj ett format</translation>
     </message>
+    <message id="error-youtube-dl-not-working">
+        <location filename="../qml/pages/DownloadPage.qml" line="285"/>
+        <source>%1 not working</source>
+        <translation>%1 fungerar inte</translation>
+    </message>
+    <message id="error-youtube-dl-process-crashed">
+        <location filename="../qml/pages/DownloadPage.qml" line="290"/>
+        <source>%1 process crashed</source>
+        <oldsource>^ process crashed</oldsource>
+        <translation>%1-processen kraschade</translation>
+    </message>
+    <message id="error-download-timed-out">
+        <location filename="../qml/pages/DownloadPage.qml" line="295"/>
+        <source>Download timed out</source>
+        <translation>Tidsgränsen för nerladdning överskreds</translation>
+    </message>
+    <message id="error-invalid-response">
+        <location filename="../qml/pages/DownloadPage.qml" line="300"/>
+        <source>Host delivered an invalid response to VOD format request</source>
+        <translation>Värddatorn returnerade ett ogiltigt svar på VOD-formatbegäran</translation>
+    </message>
+    <message id="error-unsupported-url">
+        <location filename="../qml/pages/DownloadPage.qml" line="305"/>
+        <source>%1 doesn&apos;t know how to handle that URL</source>
+        <translation>%1 kan inte hantera denna URL</translation>
+    </message>
+    <message id="error-no-video">
+        <location filename="../qml/pages/DownloadPage.qml" line="310"/>
+        <source>No video content for URL</source>
+        <translation>Inget videoinnehåll på denna URL</translation>
+    </message>
+    <message id="error-format-not-available">
+        <location filename="../qml/pages/DownloadPage.qml" line="315"/>
+        <source>The format you selected is not available. Try again or choose another format.</source>
+        <translation>Det valda formatet finns inte tillgängligt. Försök igen eller välj ett annat format.</translation>
+    </message>
+    <message id="error-network-down">
+        <location filename="../qml/pages/DownloadPage.qml" line="320"/>
+        <source>Network down.</source>
+        <translation>Nätverk nere.</translation>
+    </message>
     <message id="error-invalid-url-preview-body">
         <location filename="../qml/pages/DownloadPage.qml" line="324"/>
         <source>Invalid URL</source>
-        <translation>Ogiltig URL</translation>
+        <translation>Nätverk nere.</translation>
     </message>
     <message id="error-invalid-url-body">
         <location filename="../qml/pages/DownloadPage.qml" line="326"/>
         <source>Invalid URL &apos;%1&apos;</source>
         <translation>Ogiltig URL &apos;%1&apos;</translation>
+    </message>
+    <message id="error-no-space">
+        <location filename="../qml/pages/DownloadPage.qml" line="331"/>
+        <source>No space left on device.</source>
+        <translation>Inget ledigt utrymme på enheten.</translation>
+    </message>
+    <message id="error-already-downloading">
+        <location filename="../qml/pages/DownloadPage.qml" line="335"/>
+        <source>Already downloading %1</source>
+        <translation>%1 laddas redan ner</translation>
     </message>
     <message id="error-content-gone-preview-body">
         <location filename="../qml/pages/DownloadPage.qml" line="341"/>
@@ -238,8 +333,8 @@
     </message>
     <message id="error-signature-extraction-failed-body">
         <location filename="../qml/pages/DownloadPage.qml" line="347"/>
-        <source>youtube-dl failed to locate video signature. Update youtube-dl and try again.</source>
-        <translation>youtube-dl kunde inte hitta videosignaturen. Uppdatera youtube-dl och försök igen.</translation>
+        <source>Failed to locate video signature. Update %1 and try again.</source>
+        <translation>%1 kunde inte hitta videosignaturen. Uppdatera %1 och försök igen.</translation>
     </message>
     <message id="error-temporary-name-resolution-failure-body">
         <location filename="../qml/pages/DownloadPage.qml" line="351"/>
@@ -253,20 +348,45 @@
     </message>
     <message id="error-too-many-requests">
         <location filename="../qml/pages/DownloadPage.qml" line="359"/>
-        <source>Too many requests. Try again later or update youtube-dl.</source>
+        <source>Too many requests. Try again later or update %1.</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message id="error-unknown">
+        <location filename="../qml/pages/DownloadPage.qml" line="364"/>
+        <source>Yikes! An unknown error has occured :/</source>
+        <translation>Ett okänt fel har inträffat :/</translation>
     </message>
     <message id="retry">
         <location filename="../qml/pages/DownloadPage.qml" line="371"/>
         <source>Retry</source>
         <translation>Försök igen</translation>
     </message>
+    <message id="play">
+        <location filename="../qml/pages/DownloadPage.qml" line="390"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="894"/>
+        <source>Play</source>
+        <translation>Spela</translation>
+    </message>
+    <message id="nofification-download-started-summary">
+        <location filename="../qml/pages/DownloadPage.qml" line="448"/>
+        <source>Started download of &apos;%1&apos;</source>
+        <translation>Nerladdning av &apos;%1&apos; påbörjad</translation>
+    </message>
     <message id="notification-busy">
         <location filename="../qml/pages/DownloadPage.qml" line="458"/>
         <location filename="../qml/pages/DownloadPage.qml" line="469"/>
         <source>%1 is busy. Try again later.</source>
-        <oldsource>Vodman is busy. Try again later.</oldsource>
         <translation>%1 iär upptagen. Försök igen, senare.</translation>
+    </message>
+    <message id="nofification-download-failed-summary">
+        <location filename="../qml/pages/DownloadPage.qml" line="483"/>
+        <source>Download failed</source>
+        <translation>Nerladdning mysslyckades</translation>
+    </message>
+    <message id="nofification-download-finished-summary">
+        <location filename="../qml/pages/DownloadPage.qml" line="502"/>
+        <source>Download finished</source>
+        <translation>Nerladdning slutförd</translation>
     </message>
     <message id="nofification-download-started-preview-summary">
         <location filename="../qml/pages/DownloadPage.qml" line="512"/>
@@ -308,11 +428,6 @@
         <source>Purging all downloads</source>
         <translation>Tar bort alla nerladdningar</translation>
     </message>
-    <message id="cancel">
-        <location filename="../qml/pages/DownloadPage.qml" line="888"/>
-        <source>Cancel</source>
-        <translation>Avbryt</translation>
-    </message>
     <message id="menu-item-download-from-clipboard">
         <location filename="../qml/pages/DownloadPage.qml" line="672"/>
         <source>Download from clipboard</source>
@@ -352,6 +467,11 @@
             <numerusform>Avbryt och ta bort filerna</numerusform>
         </translation>
     </message>
+    <message id="cancel">
+        <location filename="../qml/pages/DownloadPage.qml" line="888"/>
+        <source>Cancel</source>
+        <translation>Avbryt</translation>
+    </message>
     <message id="download-item-open-webpage">
         <location filename="../qml/pages/DownloadPage.qml" line="901"/>
         <source>Open webpage</source>
@@ -360,7 +480,12 @@
     <message id="download-item-copy-file-path-to-clipboard">
         <location filename="../qml/pages/DownloadPage.qml" line="911"/>
         <source>Copy file path to clipboard</source>
-        <translation>Kopiera filsökväg till urklipp</translation>
+        <translation>&gt;Kopiera filsökväg till urklipp</translation>
+    </message>
+    <message id="download-placeholder-text-metadata-download">
+        <location filename="../qml/pages/DownloadPage.qml" line="923"/>
+        <source>Downloading VOD metadata</source>
+        <translation>Laddar ner VOD metadata</translation>
     </message>
     <message id="download-placeholder-text-waiting-for-download-to-start">
         <location filename="../qml/pages/DownloadPage.qml" line="928"/>
@@ -371,11 +496,6 @@
         <location filename="../qml/pages/DownloadPage.qml" line="932"/>
         <source>No downloads at present</source>
         <translation>Inga nerladdningar just nu</translation>
-    </message>
-    <message id="download-placeholder-text-metadata-download">
-        <location filename="../qml/pages/DownloadPage.qml" line="923"/>
-        <source>Downloading VOD metadata</source>
-        <translation>Laddar ner VOD metadata</translation>
     </message>
     <message id="download-placeholder-hint-pull-down-to-start-download-from-clipboard">
         <location filename="../qml/pages/DownloadPage.qml" line="942"/>
@@ -474,8 +594,9 @@
     </message>
     <message id="settings-save-location-file-name-combobox-item-video-id">
         <location filename="../qml/pages/SettingsPage.qml" line="276"/>
-        <source>Video id</source>
-        <translation>Video-ID</translation>
+        <source>Video ID</source>
+        <oldsource>Video id</oldsource>
+        <translation>Video ID</translation>
     </message>
     <message id="settings-save-location-file-name-combobox-item-custom">
         <location filename="../qml/pages/SettingsPage.qml" line="280"/>
@@ -499,148 +620,36 @@
     </message>
     <message id="settings-ytdl-downloading">
         <location filename="../qml/pages/SettingsPage.qml" line="347"/>
-        <source>youtube-dl is being downloaded</source>
-        <translation>youtube-dl laddas ner</translation>
+        <source>Update is being downloaded</source>
+        <oldsource>%1 is being downloaded</oldsource>
+        <translation type="unfinished">youtube-dl laddas ner</translation>
     </message>
     <message id="settings-ytdl-unavailable">
         <location filename="../qml/pages/SettingsPage.qml" line="351"/>
-        <source>youtube-dl is not available</source>
-        <translation>youtube-dl är inte tillgänglig</translation>
+        <source>Update is not available</source>
+        <oldsource>%1 is not available</oldsource>
+        <translation type="unfinished">%1 är inte tillgänglig</translation>
     </message>
     <message id="settings-ytdl-version">
         <location filename="../qml/pages/SettingsPage.qml" line="354"/>
-        <source>youtube-dl version %1</source>
-        <translation></translation>
+        <source>%1 version %2</source>
+        <translation>%1 version %2</translation>
     </message>
     <message id="settings-ytdl-update-available">
         <location filename="../qml/pages/SettingsPage.qml" line="366"/>
-        <source>Version %1 is available for update</source>
-        <oldsource>Version %1 available for update</oldsource>
-        <translation>Version %1 finns tillgänglig för uppdatering</translation>
+        <source>%1 version %2 is available for update</source>
+        <oldsource>%1 version %1 is available for update</oldsource>
+        <translation>%1 version %2 finns tillgänglig för uppdatering</translation>
     </message>
     <message id="settings-ytdl-update">
         <location filename="../qml/pages/SettingsPage.qml" line="377"/>
-        <source>Update youtube-dl</source>
-        <translation>Uppdatera youtube-dl</translation>
+        <source>Update</source>
+        <translation>Uppdatera</translation>
     </message>
     <message id="settings-page-header">
         <location filename="../qml/pages/SettingsPage.qml" line="417"/>
         <source>Settings</source>
         <translation>Inställningar</translation>
-    </message>
-    <message id="cover-no-downloads">
-        <location filename="../qml/cover/CoverPage.qml" line="56"/>
-        <source>No downloads at present</source>
-        <translation>Inga nerladdningar just nu</translation>
-    </message>
-    <message id="ytdl-unvailable">
-        <location filename="../qml/pages/YTDLPage.qml" line="54"/>
-        <source>You seem to be missing a working youtube-dl</source>
-        <oldsource>youtube-dl is unavailable</oldsource>
-        <translation>Du verkar sakna en fungerande youtube-dl</translation>
-    </message>
-    <message id="ytdl-error">
-        <location filename="../qml/pages/YTDLPage.qml" line="57"/>
-        <source>There was an error downloading youtube-dl</source>
-        <translation>Ett fel inträffade vid nerladdning av youtube-dl</translation>
-    </message>
-    <message id="ytdl-downloading">
-        <location filename="../qml/pages/YTDLPage.qml" line="60"/>
-        <source>youtube-dl is being downloaded</source>
-        <translation>youtube-dl laddas ner</translation>
-    </message>
-    <message id="ytdl-unvailable-hint-offline">
-        <location filename="../qml/pages/YTDLPage.qml" line="88"/>
-        <source>Go online, then click the button below to start the download</source>
-        <translation>Anslut till nätet och tryck sedan på nedanstående knapp för att starta nerladdningen</translation>
-    </message>
-    <message id="ytdl-downloading-hint">
-        <location filename="../qml/pages/YTDLPage.qml" line="94"/>
-        <source>Please be patient</source>
-        <oldsource>youtube-dl is being downloaded</oldsource>
-        <translation>Ha tålamod</translation>
-    </message>
-    <message id="ytdl-download-button">
-        <location filename="../qml/pages/YTDLPage.qml" line="117"/>
-        <source>Download youtube-dl</source>
-        <translation>Ladda ner youtube-dl</translation>
-    </message>
-    <message id="ytdl-error-busy">
-        <location filename="../qml/pages/YTDLPage.qml" line="137"/>
-        <source>Try again later</source>
-        <translation>Försök igen senare</translation>
-    </message>
-    <message id="ytdl-error-download-failed">
-        <location filename="../qml/pages/YTDLPage.qml" line="140"/>
-        <source>Download failed</source>
-        <translation>Nerladdning mysslyckades</translation>
-    </message>
-    <message id="ytdl-error-file-dir-creation">
-        <location filename="../qml/pages/YTDLPage.qml" line="143"/>
-        <source>Failed to create file/directory</source>
-        <translation>Kunde inte skapa fil/mapp</translation>
-    </message>
-    <message id="ytdl-error-config-malformed">
-        <location filename="../qml/pages/YTDLPage.qml" line="146"/>
-        <source>Malformed configuration file. Try to download again.</source>
-        <translation>Felformaterad konfigurationsfil. Försök ladda ner igen.</translation>
-    </message>
-    <message id="ytdl-error-no-space">
-        <location filename="../qml/pages/YTDLPage.qml" line="149"/>
-        <source>No space left on device</source>
-        <translation>Det finns inget utrymme kvar på enheten</translation>
-    </message>
-    <message id="ytdl-error-python">
-        <location filename="../qml/pages/YTDLPage.qml" line="152"/>
-        <source>Python executable not found</source>
-        <translation>Körbar Python kan inte hittas</translation>
-    </message>
-    <message id="ytdl-error-unknown">
-        <location filename="../qml/pages/YTDLPage.qml" line="155"/>
-        <source>An unknown error has occurred</source>
-        <oldsource>Something bad has happened</oldsource>
-        <translation>Ett okänt fel har inträffat</translation>
-    </message>
-    <message id="ytdl-error-unsupported-config-file-format">
-        <location filename="../qml/pages/YTDLPage.qml" line="158"/>
-        <source>Unsupported configuration file format. Try to update the application.</source>
-        <translation>Konfigurationsfilens format stöds inte. Försök uppdatera appen.</translation>
-    </message>
-    <message id="ytdl-error-none">
-        <location filename="../qml/pages/YTDLPage.qml" line="161"/>
-        <source>All is well</source>
-        <translation>Allt är bra</translation>
-    </message>
-    <message id="ytdl-error-offline">
-        <location filename="../qml/pages/YTDLPage.qml" line="164"/>
-        <source>Your device is offline</source>
-        <oldsource>The device is offline</oldsource>
-        <translation>Din enhet är offline</translation>
-    </message>
-    <message id="ytdl-unvailable-hint">
-        <location filename="../qml/pages/YTDLPage.qml" line="84"/>
-        <source>Click the button below to start the download</source>
-        <translation>Tryck på knappen nedan för att starta nerladdningen</translation>
-    </message>
-    <message id="ytdl-error-hint">
-        <location filename="../qml/pages/YTDLPage.qml" line="91"/>
-        <source>Click the button below to try again</source>
-        <translation>Tryck på knappen nedan för att försöka igen</translation>
-    </message>
-    <message id="nofification-download-ytdl-update-available-summary">
-        <location filename="../qml/harbour-vodman.qml" line="125"/>
-        <source>youtube-dl update available</source>
-        <translation>youtube-dl-uppdatering tillgänglig</translation>
-    </message>
-    <message id="nofification-ytdl-update-available-body">
-        <location filename="../qml/harbour-vodman.qml" line="128"/>
-        <source>youtube-dl version %1 available</source>
-        <translation>youtube-dl-version %1 tillgänglig</translation>
-    </message>
-    <message id="nofification-ytdl-update-available-action">
-        <location filename="../qml/harbour-vodman.qml" line="133"/>
-        <source>Update youtube-dl</source>
-        <translation>Uppdatera youtube-dl</translation>
     </message>
 </context>
 </TS>

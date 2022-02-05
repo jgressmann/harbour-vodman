@@ -1,6 +1,6 @@
 /* The MIT License (MIT)
  *
- * Copyright (c) 2018-2021 Jean Gressmann <jean@0x42.de>
+ * Copyright (c) 2018-2022 Jean Gressmann <jean@0x42.de>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -281,13 +281,13 @@ Page {
             return;
         case VM.VM_ErrorNoYoutubeDl:
             errorNotification.body = errorNotification.previewBody =
-                    //% "youtube-dl not working"
-                    qsTrId("error-youtube-dl-not-working")
+                    //% "%1 not working"
+                    qsTrId("error-youtube-dl-not-working").arg(YTDLDownloader.ytdlName)
             break
         case VM.VM_ErrorCrashed:
             errorNotification.body = errorNotification.previewBody =
-                    //% "youtube-dl process crashed"
-                    qsTrId("error-youtube-dl-process-crashed")
+                    //% "%1 process crashed"
+                    qsTrId("error-youtube-dl-process-crashed").arg(YTDLDownloader.ytdlName)
             break
         case VM.VM_ErrorTimedOut:
             errorNotification.body = errorNotification.previewBody =
@@ -301,8 +301,8 @@ Page {
             break
         case VM.VM_ErrorUnsupportedUrl:
             errorNotification.body = errorNotification.previewBody =
-                    //% "youtube-dl doesn't know how to handle that URL"
-                    qsTrId("error-unsupported-url")
+                    //% "%1 doesn't know how to handle that URL"
+                    qsTrId("error-unsupported-url").arg(YTDLDownloader.ytdlName)
             break
         case VM.VM_ErrorNoVideo:
             errorNotification.body = errorNotification.previewBody =
@@ -343,8 +343,8 @@ Page {
             errorNotification.body = qsTrId("error-content-gone-body").arg(url)
             break
         case VM.VM_ErrorSignatureExtractionFailed:
-            //% "youtube-dl failed to locate video signature. Update youtube-dl and try again."
-            errorNotification.previewBody = errorNotification.body = qsTrId("error-signature-extraction-failed-body")
+            //% "Failed to locate video signature. Update %1 and try again."
+            errorNotification.previewBody = errorNotification.body = qsTrId("error-signature-extraction-failed-body").arg(YTDLDownloader.ytdlName)
             break
         case VM.VM_ErrorTemporaryFailureNameResolution:
             //% "Temporary name resolution failure. Try again later."
@@ -355,8 +355,8 @@ Page {
             errorNotification.previewBody = errorNotification.body = qsTrId("error-access")
             break
         case VM.VM_ErrorTooManyRequests:
-            //% "Too many requests. Try again later or update youtube-dl."
-            errorNotification.previewBody = errorNotification.body = qsTrId("error-too-many-requests")
+            //% "Too many requests. Try again later or update %1."
+            errorNotification.previewBody = errorNotification.body = qsTrId("error-too-many-requests").arg(YTDLDownloader.ytdlName)
             break
         default:
             errorNotification.body = errorNotification.previewBody =

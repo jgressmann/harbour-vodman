@@ -54,12 +54,8 @@
     </message>
     <message id="about-licensing-text">
         <location filename="../qml/pages/AboutPage.qml" line="133"/>
-        <source>Copyright © 2018-2021 Jean Gressmann.&lt;br/&gt;&lt;br/&gt;%1 is available under the &lt;a href=&apos;https://opensource.org/licenses/MIT&apos;&gt;MIT&lt;/a&gt; license.&lt;br/&gt;%1 uses youtube-dl which is in the &lt;a href=&apos;http://unlicense.org/&apos;&gt;public domain&lt;/a&gt;.</source>
-        <oldsource>Copyright © 2018-2020 Jean Gressmann.&lt;br/&gt;&lt;br/&gt;%1 is available under the &lt;a href=&apos;https://opensource.org/licenses/MIT&apos;&gt;MIT&lt;/a&gt; license.&lt;br/&gt;%1 uses youtube-dl which is in the &lt;a href=&apos;http://unlicense.org/&apos;&gt;public domain&lt;/a&gt;.</oldsource>
-        <translation>Copyright © 2018-2021 Jean Gressmann.
-
-%1 ist unter der &lt;a href=&quot;https://opensource.org/licenses/MIT&quot;&gt;MIT&lt;/a&gt; Lizenz verfügbar.
-%1 verwendet youtube-dl, das sich in der &lt;a href=&quot;http://unlicense.org/&quot;&gt;Public Domain&lt;/a&gt; befindet.</translation>
+        <source>Copyright © 2018-2022 Jean Gressmann.&lt;br/&gt;&lt;br/&gt;%1 is available under the &lt;a href=&apos;https://opensource.org/licenses/MIT&apos;&gt;MIT&lt;/a&gt; license.&lt;br/&gt;%1 uses %2 which is in the &lt;a href=&apos;http://unlicense.org/&apos;&gt;public domain&lt;/a&gt;.</source>
+        <translation>Copyright © 2018-2022 Jean Gressmann.&lt;br/&gt;&lt;br/&gt;%1 ist unter der &lt;a href=&quot;https://opensource.org/licenses/MIT&quot;&gt;MIT&lt;/a&gt; Lizenz verfügbar.&lt;br/&gt;%1 verwendet %2, das sich in der &lt;a href=&quot;http://unlicense.org/&quot;&gt;Public Domain&lt;/a&gt; befindet.</translation>
     </message>
     <message id="about-sources-header">
         <location filename="../qml/pages/AboutPage.qml" line="142"/>
@@ -126,13 +122,14 @@
     </message>
     <message id="error-youtube-dl-not-working">
         <location filename="../qml/pages/DownloadPage.qml" line="285"/>
-        <source>youtube-dl not working</source>
-        <translation>youtube-dl funktioniert nicht</translation>
+        <source>%1 not working</source>
+        <translation>%1 funktioniert nicht</translation>
     </message>
     <message id="error-youtube-dl-process-crashed">
         <location filename="../qml/pages/DownloadPage.qml" line="290"/>
-        <source>youtube-dl process crashed</source>
-        <translation>youtube-dl ist abgestürzt</translation>
+        <source>%1 process crashed</source>
+        <oldsource>^ process crashed</oldsource>
+        <translation>%1 ist abgestürzt</translation>
     </message>
     <message id="error-download-timed-out">
         <location filename="../qml/pages/DownloadPage.qml" line="295"/>
@@ -146,8 +143,8 @@
     </message>
     <message id="error-unsupported-url">
         <location filename="../qml/pages/DownloadPage.qml" line="305"/>
-        <source>youtube-dl doesn&apos;t know how to handle that URL</source>
-        <translation>Diese URL wird von youtube-dl nicht unterstützt.</translation>
+        <source>%1 doesn&apos;t know how to handle that URL</source>
+        <translation>Diese URL wird von %1 nicht unterstützt.</translation>
     </message>
     <message id="error-no-video">
         <location filename="../qml/pages/DownloadPage.qml" line="310"/>
@@ -164,58 +161,6 @@
         <source>Network down.</source>
         <translation>Keine Internetverbindung</translation>
     </message>
-    <message id="error-no-space">
-        <location filename="../qml/pages/DownloadPage.qml" line="331"/>
-        <source>No space left on device.</source>
-        <translation>Kein Speicherplatz mehr auf dem Gerät verfügbar.</translation>
-    </message>
-    <message id="error-already-downloading">
-        <location filename="../qml/pages/DownloadPage.qml" line="335"/>
-        <source>Already downloading %1</source>
-        <translation>%1 wird bereits heruntergeladen.</translation>
-    </message>
-    <message id="error-unknown">
-        <location filename="../qml/pages/DownloadPage.qml" line="364"/>
-        <source>Yikes! An unknown error has occured :/</source>
-        <translation>O_o! Ein ungekannter Fehler ist aufgetreten :/</translation>
-    </message>
-    <message id="play">
-        <location filename="../qml/pages/DownloadPage.qml" line="390"/>
-        <location filename="../qml/pages/DownloadPage.qml" line="894"/>
-        <source>Play</source>
-        <translation>Abspielen</translation>
-    </message>
-    <message id="nofification-download-failed-summary">
-        <location filename="../qml/pages/DownloadPage.qml" line="483"/>
-        <source>Download failed</source>
-        <translation>Download fehlgeschlagen</translation>
-    </message>
-    <message id="nofification-download-finished-summary">
-        <location filename="../qml/pages/DownloadPage.qml" line="502"/>
-        <source>Download finished</source>
-        <translation>Download fertig</translation>
-    </message>
-    <message id="nofification-download-started-summary">
-        <location filename="../qml/pages/DownloadPage.qml" line="448"/>
-        <source>Started download of &apos;%1&apos;</source>
-        <oldsource>Download started</oldsource>
-        <translation>Starte Download von &apos;%1&apos;</translation>
-    </message>
-    <message id="select-video-format-dialog-title">
-        <location filename="../qml/pages/DownloadPage.qml" line="85"/>
-        <source>Select video format</source>
-        <translation>Wähle ein Videoformat</translation>
-    </message>
-    <message id="select-audio-format-dialog-title">
-        <location filename="../qml/pages/DownloadPage.qml" line="110"/>
-        <source>Select audio format</source>
-        <translation>Wähle ein Audioformat</translation>
-    </message>
-    <message id="select-av-format-dialog-title">
-        <location filename="../qml/pages/DownloadPage.qml" line="135"/>
-        <source>Select a format</source>
-        <translation>Wähle ein Format</translation>
-    </message>
     <message id="error-invalid-url-preview-body">
         <location filename="../qml/pages/DownloadPage.qml" line="324"/>
         <source>Invalid URL</source>
@@ -225,6 +170,16 @@
         <location filename="../qml/pages/DownloadPage.qml" line="326"/>
         <source>Invalid URL &apos;%1&apos;</source>
         <translation>Ungültige URL &apos;%1&apos;</translation>
+    </message>
+    <message id="error-no-space">
+        <location filename="../qml/pages/DownloadPage.qml" line="331"/>
+        <source>No space left on device.</source>
+        <translation>Kein Speicherplatz mehr auf dem Gerät verfügbar.</translation>
+    </message>
+    <message id="error-already-downloading">
+        <location filename="../qml/pages/DownloadPage.qml" line="335"/>
+        <source>Already downloading %1</source>
+        <translation>%1 wird bereits heruntergeladen.</translation>
     </message>
     <message id="error-content-gone-preview-body">
         <location filename="../qml/pages/DownloadPage.qml" line="341"/>
@@ -238,13 +193,13 @@
     </message>
     <message id="error-signature-extraction-failed-body">
         <location filename="../qml/pages/DownloadPage.qml" line="347"/>
-        <source>youtube-dl failed to locate video signature. Update youtube-dl and try again.</source>
-        <translation>youtube-dl konnte die Videosignatur nicht finden. Aktualisiere youtube-dl und versuche es erneut.</translation>
+        <source>Failed to locate video signature. Update %1 and try again.</source>
+        <translation>Videosignatur nicht gefunden. Aktualisiere %1 und versuche es erneut.</translation>
     </message>
     <message id="error-temporary-name-resolution-failure-body">
         <location filename="../qml/pages/DownloadPage.qml" line="351"/>
         <source>Temporary name resolution failure. Try again later.</source>
-        <translation>Zeitweilige Unterbrechung des Namenauflösungsdiensts (DNS).Versuche es später noch einmal.</translation>
+        <translation>Zeitweilige Unterbrechung des Namenauflösungsdiensts (DNS). Versuche es später noch einmal.</translation>
     </message>
     <message id="error-access">
         <location filename="../qml/pages/DownloadPage.qml" line="355"/>
@@ -253,19 +208,45 @@
     </message>
     <message id="error-too-many-requests">
         <location filename="../qml/pages/DownloadPage.qml" line="359"/>
-        <source>Too many requests. Try again later or update youtube-dl.</source>
-        <translation>Zu viele Anfragen. Versuche es später noch einmal oder aktualisiere youtube-dl.</translation>
+        <source>Too many requests. Try again later or update %1.</source>
+        <translation>Zu viele Anfragen. Versuche es später noch einmal oder aktualisiere %1.</translation>
+    </message>
+    <message id="error-unknown">
+        <location filename="../qml/pages/DownloadPage.qml" line="364"/>
+        <source>Yikes! An unknown error has occured :/</source>
+        <translation>O_o! Ein ungekannter Fehler ist aufgetreten :/</translation>
     </message>
     <message id="retry">
         <location filename="../qml/pages/DownloadPage.qml" line="371"/>
         <source>Retry</source>
         <translation>Erneut versuchen</translation>
     </message>
+    <message id="play">
+        <location filename="../qml/pages/DownloadPage.qml" line="390"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="894"/>
+        <source>Play</source>
+        <translation>Abspielen</translation>
+    </message>
+    <message id="nofification-download-started-summary">
+        <location filename="../qml/pages/DownloadPage.qml" line="448"/>
+        <source>Started download of &apos;%1&apos;</source>
+        <translation>Starte Download von &apos;%1&apos;</translation>
+    </message>
     <message id="notification-busy">
         <location filename="../qml/pages/DownloadPage.qml" line="458"/>
         <location filename="../qml/pages/DownloadPage.qml" line="469"/>
         <source>%1 is busy. Try again later.</source>
         <translation>%1 ist beschäftigt. Versuche es später noch einmal.</translation>
+    </message>
+    <message id="nofification-download-failed-summary">
+        <location filename="../qml/pages/DownloadPage.qml" line="483"/>
+        <source>Download failed</source>
+        <translation>Download fehlgeschlagen</translation>
+    </message>
+    <message id="nofification-download-finished-summary">
+        <location filename="../qml/pages/DownloadPage.qml" line="502"/>
+        <source>Download finished</source>
+        <translation>Download fertig</translation>
     </message>
     <message id="nofification-download-started-preview-summary">
         <location filename="../qml/pages/DownloadPage.qml" line="512"/>
@@ -275,7 +256,6 @@
     <message id="menu-item-about-vodman">
         <location filename="../qml/pages/DownloadPage.qml" line="524"/>
         <source>About %1</source>
-        <oldsource>About Vodman</oldsource>
         <translation>Über %1</translation>
     </message>
     <message id="menu-item-settings">
@@ -307,11 +287,6 @@
         <location filename="../qml/pages/DownloadPage.qml" line="665"/>
         <source>Purging all downloads</source>
         <translation>Beende alle Downloads</translation>
-    </message>
-    <message id="cancel">
-        <location filename="../qml/pages/DownloadPage.qml" line="888"/>
-        <source>Cancel</source>
-        <translation>Abbrechen</translation>
     </message>
     <message id="menu-item-download-from-clipboard">
         <location filename="../qml/pages/DownloadPage.qml" line="672"/>
@@ -352,6 +327,11 @@
             <numerusform>Abbrechen und Dateien löschen</numerusform>
         </translation>
     </message>
+    <message id="cancel">
+        <location filename="../qml/pages/DownloadPage.qml" line="888"/>
+        <source>Cancel</source>
+        <translation>Abbrechen</translation>
+    </message>
     <message id="download-item-open-webpage">
         <location filename="../qml/pages/DownloadPage.qml" line="901"/>
         <source>Open webpage</source>
@@ -362,6 +342,11 @@
         <source>Copy file path to clipboard</source>
         <translation>Dateipfad in die Zwischenablage kopieren</translation>
     </message>
+    <message id="download-placeholder-text-metadata-download">
+        <location filename="../qml/pages/DownloadPage.qml" line="923"/>
+        <source>Downloading VOD metadata</source>
+        <translation>Lade VOD Metadaten herunter</translation>
+    </message>
     <message id="download-placeholder-text-waiting-for-download-to-start">
         <location filename="../qml/pages/DownloadPage.qml" line="928"/>
         <source>Download will start momentarily</source>
@@ -371,11 +356,6 @@
         <location filename="../qml/pages/DownloadPage.qml" line="932"/>
         <source>No downloads at present</source>
         <translation>Keine Downloads aktiv</translation>
-    </message>
-    <message id="download-placeholder-text-metadata-download">
-        <location filename="../qml/pages/DownloadPage.qml" line="923"/>
-        <source>Downloading VOD metadata</source>
-        <translation>Lade VOD Metadaten herunter</translation>
     </message>
     <message id="download-placeholder-hint-pull-down-to-start-download-from-clipboard">
         <location filename="../qml/pages/DownloadPage.qml" line="942"/>
@@ -474,7 +454,8 @@
     </message>
     <message id="settings-save-location-file-name-combobox-item-video-id">
         <location filename="../qml/pages/SettingsPage.qml" line="276"/>
-        <source>Video id</source>
+        <source>Video ID</source>
+        <oldsource>Video id</oldsource>
         <translation>Video ID</translation>
     </message>
     <message id="settings-save-location-file-name-combobox-item-custom">
@@ -499,28 +480,31 @@
     </message>
     <message id="settings-ytdl-downloading">
         <location filename="../qml/pages/SettingsPage.qml" line="347"/>
-        <source>youtube-dl is being downloaded</source>
-        <translation>youtube-dl wird heruntergeladen</translation>
+        <source>Update is being downloaded</source>
+        <oldsource>%1 is being downloaded</oldsource>
+        <translation>Update wird heruntergeladen</translation>
     </message>
     <message id="settings-ytdl-unavailable">
         <location filename="../qml/pages/SettingsPage.qml" line="351"/>
-        <source>youtube-dl is not available</source>
-        <translation>youtube-dl nicht vorhanden</translation>
+        <source>Update is not available</source>
+        <oldsource>%1 is not available</oldsource>
+        <translation>Kein Update vorhanden</translation>
     </message>
     <message id="settings-ytdl-version">
         <location filename="../qml/pages/SettingsPage.qml" line="354"/>
-        <source>youtube-dl version %1</source>
-        <translation>youtube-dl Version %1</translation>
+        <source>%1 version %2</source>
+        <translation>%1 Version %2</translation>
     </message>
     <message id="settings-ytdl-update-available">
         <location filename="../qml/pages/SettingsPage.qml" line="366"/>
-        <source>Version %1 is available for update</source>
-        <translation>Version %1 verfügbar</translation>
+        <source>%1 version %2 is available for update</source>
+        <oldsource>%1 version %1 is available for update</oldsource>
+        <translation>%1 Version %2 verfügbar</translation>
     </message>
     <message id="settings-ytdl-update">
         <location filename="../qml/pages/SettingsPage.qml" line="377"/>
-        <source>Update youtube-dl</source>
-        <translation>youtube-dl aktualisieren</translation>
+        <source>Update</source>
+        <translation>Aktualisieren</translation>
     </message>
     <message id="settings-page-header">
         <location filename="../qml/pages/SettingsPage.qml" line="417"/>
@@ -533,113 +517,134 @@
         <translation>Keine Downloads aktiv</translation>
     </message>
     <message id="ytdl-unvailable">
-        <location filename="../qml/pages/YTDLPage.qml" line="54"/>
-        <source>You seem to be missing a working youtube-dl</source>
-        <oldsource>youtube-dl is unavailable</oldsource>
-        <translation>Keine funktionierende youtube-dl Anwendung gefunden</translation>
+        <location filename="../qml/pages/YTDLPage.qml" line="56"/>
+        <source>You seem to be missing a working %1</source>
+        <oldsource>You seem to be missing a working youtube-dl</oldsource>
+        <translation>Keine funktionierende %1 Anwendung gefunden</translation>
     </message>
     <message id="ytdl-error">
-        <location filename="../qml/pages/YTDLPage.qml" line="57"/>
-        <source>There was an error downloading youtube-dl</source>
-        <translation>Beim Herunterladen von youtube-dl ist ein Fehler aufgetreten</translation>
+        <location filename="../qml/pages/YTDLPage.qml" line="59"/>
+        <source>There was an error downloading %1</source>
+        <oldsource>There was an error downloading youtube-dl</oldsource>
+        <translation>Beim Herunterladen von %1 ist ein Fehler aufgetreten</translation>
     </message>
     <message id="ytdl-downloading">
-        <location filename="../qml/pages/YTDLPage.qml" line="60"/>
-        <source>youtube-dl is being downloaded</source>
-        <translation>youtube-dl wird heruntergeladen</translation>
+        <location filename="../qml/pages/YTDLPage.qml" line="62"/>
+        <source>%1 is being downloaded</source>
+        <oldsource>youtube-dl is being downloaded</oldsource>
+        <translation>%1 wird heruntergeladen</translation>
     </message>
     <message id="ytdl-unvailable-hint-offline">
-        <location filename="../qml/pages/YTDLPage.qml" line="88"/>
+        <location filename="../qml/pages/YTDLPage.qml" line="90"/>
         <source>Go online, then click the button below to start the download</source>
         <translation>Gehe online und dann drücke den Knopf um den Download zu starten</translation>
     </message>
     <message id="ytdl-downloading-hint">
-        <location filename="../qml/pages/YTDLPage.qml" line="94"/>
+        <location filename="../qml/pages/YTDLPage.qml" line="96"/>
         <source>Please be patient</source>
         <oldsource>youtube-dl is being downloaded</oldsource>
         <translation>Bitte warten</translation>
     </message>
     <message id="ytdl-download-button">
-        <location filename="../qml/pages/YTDLPage.qml" line="117"/>
-        <source>Download youtube-dl</source>
-        <translation>youtube-dl herunterladen</translation>
+        <location filename="../qml/pages/YTDLPage.qml" line="119"/>
+        <source>Download</source>
+        <oldsource>Download %1</oldsource>
+        <translation>Herunterladen</translation>
     </message>
     <message id="ytdl-error-busy">
-        <location filename="../qml/pages/YTDLPage.qml" line="137"/>
+        <location filename="../qml/pages/YTDLPage.qml" line="139"/>
         <source>Try again later</source>
         <translation>Versuche es später noch einmal</translation>
     </message>
     <message id="ytdl-error-download-failed">
-        <location filename="../qml/pages/YTDLPage.qml" line="140"/>
+        <location filename="../qml/pages/YTDLPage.qml" line="142"/>
         <source>Download failed</source>
-        <translation>Download fehlgeschlagen</translation>
+        <translation>Herunterladen fehlgeschlagen</translation>
     </message>
     <message id="ytdl-error-file-dir-creation">
-        <location filename="../qml/pages/YTDLPage.qml" line="143"/>
+        <location filename="../qml/pages/YTDLPage.qml" line="145"/>
         <source>Failed to create file/directory</source>
         <translation>Datei/Verzeichnis konnte nicht erstellt werden</translation>
     </message>
     <message id="ytdl-error-config-malformed">
-        <location filename="../qml/pages/YTDLPage.qml" line="146"/>
+        <location filename="../qml/pages/YTDLPage.qml" line="148"/>
         <source>Malformed configuration file. Try to download again.</source>
         <translation>Fehlerhafte Konfigurationsdatei. Versuche den Download erneut zu starten.</translation>
     </message>
     <message id="ytdl-error-no-space">
-        <location filename="../qml/pages/YTDLPage.qml" line="149"/>
+        <location filename="../qml/pages/YTDLPage.qml" line="151"/>
         <source>No space left on device</source>
         <translation>Unzureichender Speicherplatz</translation>
     </message>
     <message id="ytdl-error-python">
-        <location filename="../qml/pages/YTDLPage.qml" line="152"/>
+        <location filename="../qml/pages/YTDLPage.qml" line="154"/>
         <source>Python executable not found</source>
         <translation>Python nicht gefunden</translation>
     </message>
     <message id="ytdl-error-unknown">
-        <location filename="../qml/pages/YTDLPage.qml" line="155"/>
+        <location filename="../qml/pages/YTDLPage.qml" line="157"/>
         <source>An unknown error has occurred</source>
         <oldsource>Something bad has happened</oldsource>
         <translation>Unbekannter Fehler</translation>
     </message>
     <message id="ytdl-error-unsupported-config-file-format">
-        <location filename="../qml/pages/YTDLPage.qml" line="158"/>
+        <location filename="../qml/pages/YTDLPage.qml" line="160"/>
         <source>Unsupported configuration file format. Try to update the application.</source>
         <translation>Das Format der Konfigurationsdatei wird nicht unterstützt. Versuche die Anwendung zu aktualisieren.</translation>
     </message>
     <message id="ytdl-error-none">
-        <location filename="../qml/pages/YTDLPage.qml" line="161"/>
+        <location filename="../qml/pages/YTDLPage.qml" line="163"/>
         <source>All is well</source>
         <translation>Alles ist gut</translation>
     </message>
     <message id="ytdl-error-offline">
-        <location filename="../qml/pages/YTDLPage.qml" line="164"/>
+        <location filename="../qml/pages/YTDLPage.qml" line="166"/>
         <source>Your device is offline</source>
         <oldsource>The device is offline</oldsource>
         <translation>Dein Gerät ist offline</translation>
     </message>
     <message id="ytdl-unvailable-hint">
-        <location filename="../qml/pages/YTDLPage.qml" line="84"/>
+        <location filename="../qml/pages/YTDLPage.qml" line="86"/>
         <source>Click the button below to start the download</source>
         <translation>Drücke auf den Knopf um den Download zu starten</translation>
     </message>
     <message id="ytdl-error-hint">
-        <location filename="../qml/pages/YTDLPage.qml" line="91"/>
+        <location filename="../qml/pages/YTDLPage.qml" line="93"/>
         <source>Click the button below to try again</source>
         <translation>Drücke auf den Knopf um es erneut zu versuchen</translation>
     </message>
     <message id="nofification-download-ytdl-update-available-summary">
         <location filename="../qml/harbour-vodman.qml" line="125"/>
-        <source>youtube-dl update available</source>
-        <translation>youtube-dl Update verfügbar</translation>
+        <source>Update available</source>
+        <oldsource>%1 update available</oldsource>
+        <translation>Update verfügbar</translation>
     </message>
     <message id="nofification-ytdl-update-available-body">
         <location filename="../qml/harbour-vodman.qml" line="128"/>
-        <source>youtube-dl version %1 available</source>
-        <translation>youtube-dl Version %1 verfügbar</translation>
+        <source>%1 version %2 available</source>
+        <oldsource>youtube-dl version %1 available</oldsource>
+        <translation>%1 Version %2 verfügbar</translation>
     </message>
     <message id="nofification-ytdl-update-available-action">
         <location filename="../qml/harbour-vodman.qml" line="133"/>
-        <source>Update youtube-dl</source>
-        <translation>youtube-dl aktualisieren</translation>
+        <source>Update</source>
+        <oldsource>Update youtube-dl</oldsource>
+        <translation>Aktualisieren</translation>
+    </message>
+    <message id="select-video-format-dialog-title">
+        <location filename="../qml/pages/DownloadPage.qml" line="85"/>
+        <source>Select video format</source>
+        <translation>Wähle ein Videoformat</translation>
+    </message>
+    <message id="select-audio-format-dialog-title">
+        <location filename="../qml/pages/DownloadPage.qml" line="110"/>
+        <source>Select audio format</source>
+        <translation>Wähle ein Audioformat</translation>
+    </message>
+    <message id="select-av-format-dialog-title">
+        <location filename="../qml/pages/DownloadPage.qml" line="135"/>
+        <source>Select a format</source>
+        <translation>Wähle ein Format</translation>
     </message>
 </context>
 </TS>

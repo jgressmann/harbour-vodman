@@ -24,6 +24,7 @@
 #include "VMYTDL.h"
 #include "VMPlaylist.h"
 #include "VMDownload.h"
+#include "VMApp.h"
 
 #include <QJsonDocument>
 #include <QJsonObject>
@@ -188,7 +189,7 @@ VMYTDL::startFetchMetaData(qint64 token, const QString& _url, const QVariant& us
     data.userData = userData;
     data.url = url;
     if (!available()) {
-        data.errorMessage = QStringLiteral("path to youtube-dl no set");
+        data.errorMessage = QStringLiteral("path to " VM_GEN_YOUTUBE_DL_NAME " no set");
         data.error = VMVodEnums::VM_ErrorNoYoutubeDl;
         qDebug() << data.errorMessage;
         emit metaDataDownloadCompleted(token, download);
@@ -235,7 +236,7 @@ VMYTDL::startFetchMetaData(qint64 token, const QString& _url, const QVariant& us
               << m_CustomOptions
               << url;
 
-    qDebug() << "youtube-dl subprocess:" << m_YoutubeDl_Path << arguments;
+    qDebug() << VM_GEN_YOUTUBE_DL_NAME " subprocess:" << m_YoutubeDl_Path << arguments;
 
     auto process = createProcess();
     connect(process, SIGNAL(finished(int, QProcess::ExitStatus)),
@@ -274,7 +275,7 @@ VMYTDL::startFetchPlaylist(qint64 token, const VMPlaylistDownloadRequest& req, V
     }
 
     if (!available()) {
-        data.errorMessage = QStringLiteral("path to youtube-dl no set");
+        data.errorMessage = QStringLiteral("path to " VM_GEN_YOUTUBE_DL_NAME " no set");
         data.error = VMVodEnums::VM_ErrorNoYoutubeDl;
         qDebug() << data.errorMessage;
         emit playlistDownloadCompleted(token, *_download);
@@ -350,7 +351,7 @@ VMYTDL::startFetchPlaylist(qint64 token, const VMPlaylistDownloadRequest& req, V
 
     arguments << data.playlist.webPageUrl();
 
-    qDebug() << "youtube-dl subprocess:" << m_YoutubeDl_Path << arguments;
+    qDebug() << VM_GEN_YOUTUBE_DL_NAME " subprocess:" << m_YoutubeDl_Path << arguments;
 
     QProcess* process = createProcess();
     connect(process, SIGNAL(finished(int, QProcess::ExitStatus)),
@@ -401,7 +402,7 @@ VMYTDL::onMetaDataProcessFinished(int code, QProcess::ExitStatus status)
 
     cleanupProcess(process);
 
-    qDebug() << "youtube-dl meta data process pid" << process->processId()
+    qDebug() << VM_GEN_YOUTUBE_DL_NAME " meta data process pid" << process->processId()
              << "finished, status:" << status
              << ", exit code:" << code;
 
@@ -701,7 +702,7 @@ VMYTDL::onPlaylistProcessFinished(int code, QProcess::ExitStatus status)
 
     cleanupProcess(process);
 
-    qDebug() << "youtube-dl vod file process pid" << process->pid()
+    qDebug() << VM_GEN_YOUTUBE_DL_NAME " vod file process pid" << process->pid()
              << "finished, status:" << status
              << ", exit code:" << code;
 

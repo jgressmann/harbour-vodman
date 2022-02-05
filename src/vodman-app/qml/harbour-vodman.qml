@@ -121,15 +121,15 @@ ApplicationWindow {
         appName: App.displayName
         appIcon: "/usr/share/icons/hicolor/86x86/apps/harbour-vodman.png"
         icon: appIcon
-        //% "youtube-dl update available"
+        //% "Update available"
         summary: qsTrId("nofification-download-ytdl-update-available-summary")
         previewSummary: summary
-        //% "youtube-dl version %1 available"
-        body: qsTrId("nofification-ytdl-update-available-body").arg(YTDLDownloader.updateVersion)
+        //% "%1 version %2 available"
+        body: qsTrId("nofification-ytdl-update-available-body").arg(YTDLDownloader.updateName).arg(YTDLDownloader.updateVersion)
         previewBody: body
         remoteActions: [ {
              "name": "default",
-             //% "Update youtube-dl"
+             //% "Update"
              "displayName": qsTrId("nofification-ytdl-update-available-action"),
              "service": "org.duckdns.jgressmann.vodman.app",
              "path": "/instance",

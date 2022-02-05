@@ -1,6 +1,6 @@
 /* The MIT License (MIT)
  *
- * Copyright (c) 2018, 2019 Jean Gressmann <jean@0x42.de>
+ * Copyright (c) 2018-2022 Jean Gressmann <jean@0x42.de>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -272,7 +272,7 @@ Page {
                         text: qsTrId("settings-save-location-file-name-combobox-item-title")
                     }
                     MenuItem {
-                        //% "Video id"
+                        //% "Video ID"
                         text: qsTrId("settings-save-location-file-name-combobox-item-video-id")
                     }
                     MenuItem {
@@ -323,7 +323,7 @@ Page {
         }
 
         SectionHeader {
-            text: "youtube-dl"
+            text: YTDLDownloader.ytdlName
         }
 
         Column {
@@ -343,15 +343,15 @@ Page {
                 text: {
                     switch (YTDLDownloader.downloadStatus) {
                     case YTDLDownloader.StatusDownloading:
-                        //% "youtube-dl is being downloaded"
+                        //% "Update is being downloaded"
                         return qsTrId("settings-ytdl-downloading")
                     case YTDLDownloader.StatusError:
                     case YTDLDownloader.StatusUnavailable:
-                        //% "youtube-dl is not available"
+                        //% "Update is not available"
                         return qsTrId("settings-ytdl-unavailable")
                     default:
-                        //% "youtube-dl version %1"
-                        return qsTrId("settings-ytdl-version").arg(YTDLDownloader.ytdlVersion)
+                        //% "%1 version %2"
+                        return qsTrId("settings-ytdl-version").arg(YTDLDownloader.ytdlName).arg(YTDLDownloader.ytdlVersion)
                     }
                 }
             }
@@ -362,8 +362,8 @@ Page {
                 visible: YTDLDownloader.isUpdateAvailable
                 font.pixelSize: Theme.fontSizeExtraSmall
                 color: Theme.highlightColor
-                //% "Version %1 is available for update"
-                text: qsTrId("settings-ytdl-update-available").arg(YTDLDownloader.updateVersion)
+                //% "%1 version %2 is available for update"
+                text: qsTrId("settings-ytdl-update-available").arg(YTDLDownloader.updateName).arg(YTDLDownloader.updateVersion)
             }
 
             ButtonLayout {
@@ -373,7 +373,7 @@ Page {
                     enabled: YTDLDownloader.isOnline &&
                              YTDLDownloader.downloadStatus !== YTDLDownloader.StatusDownloading &&
                              !vodDownloadModel.busy
-                    //% "Update youtube-dl"
+                    //% "Update"
                     text: qsTrId("settings-ytdl-update")
                     onClicked: YTDLDownloader.download()
                 }

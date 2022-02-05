@@ -22,6 +22,7 @@
  */
 
 #include "VMQuickYTDLDownloader.h"
+#include "VMApp.h"
 
 #include <QStandardPaths>
 #include <QDir>
@@ -48,7 +49,13 @@ QNetworkRequest makeRequest(const QUrl& url)
     return request;
 }
 
-bool parseConfigFile(const QByteArray& buffer, const QString& mode, int* configFileVersion, QString* ytdlUrl, QString* ytdlVersion)
+bool parseConfigFile(
+        const QByteArray& buffer,
+        const QString& mode,
+        int* configFileVersion,
+        QString* ytdlUrl,
+        QString* ytdlVersion,
+        QString* ytdlName)
 {
     Q_ASSERT(configFileVersion);
     Q_ASSERT(ytdlUrl);
@@ -106,10 +113,24 @@ bool parseConfigFile(const QByteArray& buffer, const QString& mode, int* configF
         return false;
     }
 
+    *ytdlName = modeObject.value(QStringLiteral("name")).toString();
+    if (ytdlName->isEmpty()) {
+        // Allow backward compatible extension to include the binary name.
+        // This allows to replace youtube-dl with yt-dlp or other without
+        // interrupting the user experience.
+        *ytdlName = QStringLiteral("youtube-dl");
+    }
+
     return true;
 }
 
-bool parseConfigFile(const QString& path, const QString& mode, int* configFileVersion, QString* ytdlUrl, QString* ytdlVersion)
+bool parseConfigFile(
+        const QString& path,
+        const QString& mode,
+        int* configFileVersion,
+        QString* ytdlUrl,
+        QString* ytdlVersion,
+        QString* ytdlName)
 {
     Q_ASSERT(configFileVersion);
     Q_ASSERT(ytdlUrl);
@@ -120,7 +141,7 @@ bool parseConfigFile(const QString& path, const QString& mode, int* configFileVe
     QFile f(path);
     if (f.open(QIODevice::ReadOnly)) {
         auto bytes = f.readAll();
-        return parseConfigFile(bytes, mode, configFileVersion, ytdlUrl, ytdlVersion);
+        return parseConfigFile(bytes, mode, configFileVersion, ytdlUrl, ytdlVersion, ytdlName);
     } else {
         qCritical("Failed to open %s for reading: %s (%d)\n",
                   qPrintable(path), qPrintable(f.errorString()), f.error());
@@ -187,6 +208,9 @@ void VMQuickYTDLDownloader::findBinary()
     emit ytdlPathChanged();
     m_ytdlVersion.clear();
     emit ytdlVersionChanged();
+    m_ytdlName.clear();
+    emit ytdlNameChanged();
+    emit ytdlNameOrDefaultChanged();
     m_configFilePath = baseDirectory + QStringLiteral("/config.json");
     if (QDir().mkpath(baseDirectory)) {
         QFileInfo fi(m_configFilePath);
@@ -197,11 +221,13 @@ void VMQuickYTDLDownloader::findBinary()
                 qInfo("youtube-dl binary %s exists.\n", qPrintable(m_ytdlPath));
                 int configFileVersion = 0;
                 QString url;
-                if (parseConfigFile(m_configFilePath, mode, &configFileVersion, &url, &m_ytdlVersion)) {
-                    qInfo("youtube-dl version %s, mode %s\n", qPrintable(m_ytdlVersion), qPrintable(mode));
+                if (parseConfigFile(m_configFilePath, mode, &configFileVersion, &url, &m_ytdlVersion, &m_ytdlName)) {
+                    qInfo("%s version %s, mode %s\n", qPrintable(m_ytdlName), qPrintable(m_ytdlVersion), qPrintable(mode));
                     setError(ErrorNone);
                     setDownloadStatus(StatusReady);
                     emit ytdlVersionChanged();
+                    emit ytdlNameChanged();
+                    emit ytdlNameOrDefaultChanged();
                 } else {
                     setDownloadStatus(StatusUnavailable);
                     if (configFileVersion == -1) {
@@ -400,9 +426,11 @@ VMQuickYTDLDownloader::requestFinished(QNetworkReply *reply)
                             int configFileVersion = 0;
                             QString url;
                             auto mode = modeName(m_mode);
-                            if (parseConfigFile(m_configFilePath, mode, &configFileVersion, &url, &m_ytdlVersion)) {
-                                qInfo("youtube-dl version %s, mode %s\n", qPrintable(m_ytdlVersion), qPrintable(mode));
+                            if (parseConfigFile(m_configFilePath, mode, &configFileVersion, &url, &m_ytdlVersion, &m_ytdlName)) {
+                                qInfo("%s version %s, mode %s\n", qPrintable(m_ytdlName), qPrintable(m_ytdlVersion), qPrintable(mode));
                                 emit ytdlVersionChanged();
+                                emit ytdlNameChanged();
+                                emit ytdlNameOrDefaultChanged();
                                 m_UpdateVersion = m_ytdlVersion;
                                 emit updateVersionChanged();
                                 emit isUpdateAvailableChanged();
@@ -433,9 +461,10 @@ VMQuickYTDLDownloader::requestFinished(QNetworkReply *reply)
                     auto mode = modeName(m_mode);
                     int configFileVersion = 0;
                     QString url;
-                    if (parseConfigFile(bytes, mode, &configFileVersion, &url, &m_UpdateVersion)) {
-                        qInfo("mode %s youtube-dl version %s available\n", qPrintable(mode), qPrintable(m_UpdateVersion));
+                    if (parseConfigFile(bytes, mode, &configFileVersion, &url, &m_UpdateVersion, &m_UpdateName)) {
+                        qInfo("mode %s %s version %s available\n", qPrintable(m_UpdateName), qPrintable(mode), qPrintable(m_UpdateVersion));
                         emit updateVersionChanged();
+                        emit updateNameChanged();
                         emit isUpdateAvailableChanged();
                         setUpdateStatus(StatusReady);
                     } else if (-1 == configFileVersion) {
@@ -463,7 +492,7 @@ VMQuickYTDLDownloader::requestFinished(QNetworkReply *reply)
                     if (f.open(QIODevice::Truncate | QIODevice::WriteOnly)) {
                         auto w = f.write(bytes);
                         if (w == bytes.size() && f.flush()) {
-                            qInfo("Stored youtube-dl at %s\n", qPrintable(m_ytdlPath));
+                            qInfo("Stored %s at %s\n", qPrintable(m_UpdateName), qPrintable(m_ytdlPath));
                             if (f.setPermissions(QFile::ReadOwner | QFile::WriteOwner | QFile::ExeOwner | QFile::ReadGroup | QFile::ExeGroup | QFile::ReadOther | QFile::ExeOther)) {
                                 qInfo("Changed permissions of %s to 0755\n", qPrintable(m_ytdlPath));
                                 setDownloadStatus(StatusReady);
@@ -476,14 +505,14 @@ VMQuickYTDLDownloader::requestFinished(QNetworkReply *reply)
                         } else {
                             setDownloadStatus(StatusUnavailable);
                             setError(ErrorNoSpaceLeftOnDevice);
-                            qCritical("Failed to save youtube-dl to %s: %s (%d)\n",
-                                      qPrintable(m_ytdlPath), qPrintable(f.errorString()), f.error());
+                            qCritical("Failed to save %s to %s: %s (%d)\n",
+                                      qPrintable(m_UpdateName), qPrintable(m_ytdlPath), qPrintable(f.errorString()), f.error());
                         }
                     } else {
                         setDownloadStatus(StatusUnavailable);
                         setError(ErrorFileOrDirCreationFailed);
-                        qCritical("Failed to create/truncate youtube-dl file %s: %s (%d)\n",
-                                  qPrintable(m_ytdlPath), qPrintable(f.errorString()), f.error());
+                        qCritical("Failed to create/truncate %s file %s: %s (%d)\n",
+                                  qPrintable(m_UpdateName), qPrintable(m_ytdlPath), qPrintable(f.errorString()), f.error());
                     }
                 } else {
                     setDownloadStatus(StatusUnavailable);
@@ -565,4 +594,14 @@ VMQuickYTDLDownloader::isUpdateAvailable() const
     return !m_UpdateVersion.isEmpty() &&
             !m_ytdlVersion.isEmpty() &&
             m_UpdateVersion.compare(m_ytdlVersion) > 0;
+}
+
+QString
+VMQuickYTDLDownloader::ytdlNameOrDefault() const
+{
+    if (m_ytdlName.isEmpty()) {
+        return ytdlDefaultName();
+    }
+
+    return m_ytdlName;
 }
