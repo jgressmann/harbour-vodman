@@ -1,6 +1,6 @@
 /* The MIT License (MIT)
  *
- * Copyright (c) 2019 Jean Gressmann <jean@0x42.de>
+ * Copyright (c) 2019-2022 Jean Gressmann <jean@0x42.de>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -445,8 +445,17 @@ VMQuickYTDLDownloader::requestFinished(QNetworkReply *reply)
                 }
             } break;
             case Binary: {
-                if (3 == m_pythonVersion) { // update binary to start python3
-                    bytes.insert(0x15, '3');
+                // First line should be either
+                // #!/usr/bin/env python
+                // or
+                // #!/usr/bin/env python3
+                const auto END_OF_PYTHON = 0x15;
+                quint8 byte = bytes[END_OF_PYTHON];
+                auto is_python = byte == ' ' || byte == '\r' || byte == '\n';
+                qDebug("byte at binary off %u %02x (%c)\n", END_OF_PYTHON, byte, byte);
+
+                if (3 == m_pythonVersion && is_python) { // update binary to start python3
+                    bytes.insert(END_OF_PYTHON, '3');
                 }
 
                 if (QDir().mkpath(modeDir(m_mode))) {
