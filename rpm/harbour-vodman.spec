@@ -30,7 +30,7 @@ Requires:   nemo-qml-plugin-dbus-qt5
 %description
 %{summary}
 
-Vodman uses youtube-dl or clones for meta data extraction and video download.
+Vodman uses youtube-dl or compatible programs for meta data extraction and video download.
 
 %files
 %defattr(-,root,root,-)
