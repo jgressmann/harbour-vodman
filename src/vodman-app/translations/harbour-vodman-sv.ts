@@ -34,7 +34,6 @@
     <message id="about-version-text">
         <location filename="../qml/pages/AboutPage.qml" line="86"/>
         <source>%1 %2</source>
-        <oldsource>V%1 %2</oldsource>
         <translation>%1 %2</translation>
     </message>
     <message id="about-description-header">
@@ -89,6 +88,16 @@
         <source>English translator names</source>
         <oldsource>names of translators</oldsource>
         <translation>Jean Gressmann</translation>
+    </message>
+    <message id="about-translations-french-label">
+        <location filename="../qml/pages/AboutPage.qml" line="196"/>
+        <source>French</source>
+        <translation>Franska</translation>
+    </message>
+    <message id="about-translations-french-value">
+        <location filename="../qml/pages/AboutPage.qml" line="198"/>
+        <source>French translator names</source>
+        <translation>Bérenger Arnaud</translation>
     </message>
     <message id="about-translations-german-label">
         <location filename="../qml/pages/AboutPage.qml" line="175"/>
@@ -156,7 +165,6 @@
     <message id="ytdl-downloading-hint">
         <location filename="../qml/pages/YTDLPage.qml" line="96"/>
         <source>Please be patient</source>
-        <oldsource>youtube-dl is being downloaded</oldsource>
         <translation>Ha tålamod</translation>
     </message>
     <message id="ytdl-download-button">
@@ -231,7 +239,7 @@
         <location filename="../qml/harbour-vodman.qml" line="125"/>
         <source>Update available</source>
         <oldsource>%1 update available</oldsource>
-        <translation type="unfinished">%1 uppdatering tillgänglig</translation>
+        <translation>Uppdatering tillgänglig</translation>
     </message>
     <message id="nofification-ytdl-update-available-body">
         <location filename="../qml/harbour-vodman.qml" line="128"/>
@@ -344,12 +352,12 @@
     <message id="error-access">
         <location filename="../qml/pages/DownloadPage.qml" line="355"/>
         <source>Access denied</source>
-        <translation type="unfinished"></translation>
+        <translation>Åtkomst nekad</translation>
     </message>
     <message id="error-too-many-requests">
         <location filename="../qml/pages/DownloadPage.qml" line="359"/>
         <source>Too many requests. Try again later or update %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>För många förfrågningar. Försök senare eller uppdatera %1.</translation>
     </message>
     <message id="error-unknown">
         <location filename="../qml/pages/DownloadPage.qml" line="364"/>
@@ -622,13 +630,13 @@
         <location filename="../qml/pages/SettingsPage.qml" line="347"/>
         <source>Update is being downloaded</source>
         <oldsource>%1 is being downloaded</oldsource>
-        <translation type="unfinished">youtube-dl laddas ner</translation>
+        <translation>Uppdatering laddas ner</translation>
     </message>
     <message id="settings-ytdl-unavailable">
         <location filename="../qml/pages/SettingsPage.qml" line="351"/>
         <source>Update is not available</source>
         <oldsource>%1 is not available</oldsource>
-        <translation type="unfinished">%1 är inte tillgänglig</translation>
+        <translation>Ingen tillgänglig uppdatering</translation>
     </message>
     <message id="settings-ytdl-version">
         <location filename="../qml/pages/SettingsPage.qml" line="354"/>

@@ -190,6 +190,13 @@ Page {
                     //% "Chinese translator names"
                     value: qsTrId("about-translations-zh-cn-value")
                 }
+
+                DetailItem {
+                    //% "French"
+                    label: qsTrId("about-translations-french-label")
+                    //% "French translator names"
+                    value: qsTrId("about-translations-french-value")
+                }
             }
 
             Item {

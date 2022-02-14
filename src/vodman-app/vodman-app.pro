@@ -40,6 +40,7 @@ DISTFILES += qml/harbour-vodman.qml \
     translations/harbour-vodman-de.ts \
     translations/harbour-vodman-sv.ts \
     translations/harbour-vodman-zh_cn.ts \
+    translations/harbour-vodman-fr.ts
 
 
 
@@ -59,6 +60,7 @@ TRANSLATIONS += translations/harbour-vodman.ts
 TRANSLATIONS += translations/harbour-vodman-de.ts
 TRANSLATIONS += translations/harbour-vodman-sv.ts
 TRANSLATIONS += translations/harbour-vodman-zh_cn.ts
+TRANSLATIONS += translations/harbour-vodman-fr.ts
 
 
 

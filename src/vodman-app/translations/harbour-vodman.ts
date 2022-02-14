@@ -86,6 +86,16 @@
         <oldsource>names of translators</oldsource>
         <translation>Jean Gressmann</translation>
     </message>
+    <message id="about-translations-french-label">
+        <location filename="../qml/pages/AboutPage.qml" line="196"/>
+        <source>French</source>
+        <translation>French</translation>
+    </message>
+    <message id="about-translations-french-value">
+        <location filename="../qml/pages/AboutPage.qml" line="198"/>
+        <source>French translator names</source>
+        <translation>Bérenger Arnaud</translation>
+    </message>
     <message id="about-translations-german-label">
         <location filename="../qml/pages/AboutPage.qml" line="175"/>
         <source>German</source>

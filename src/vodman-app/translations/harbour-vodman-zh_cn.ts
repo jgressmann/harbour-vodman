@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="zh_cn">
+<TS version="2.1" language="zh_CN">
 <context>
     <name></name>
     <message id="format-label">
@@ -34,7 +34,6 @@
     <message id="about-version-text">
         <location filename="../qml/pages/AboutPage.qml" line="86"/>
         <source>%1 %2</source>
-        <oldsource>V%1 %2</oldsource>
         <translation>%1 %2</translation>
     </message>
     <message id="about-description-header">
@@ -45,6 +44,7 @@
     <message id="about-description-text">
         <location filename="../qml/pages/AboutPage.qml" line="117"/>
         <source>%1 is a versatile tool for downloading videos on demand (VODs) to your device from popular sites such as &lt;a href=&apos;https://www.youtube.com/&apos;&gt;Youtube&lt;/a&gt; or &lt;a href=&apos;https://www.twitch.tv/&apos;&gt;Twitch&lt;/a&gt;.</source>
+        <oldsource>%1 is a versatile tool...</oldsource>
         <translation>%1 是一个用以从受欢迎的网站例如 &lt;a href=&quot;https://www.youtube.com/&quot;&gt;Youtube&lt;/a&gt; or &lt;a href=&quot;https://www.twitch.tv/&quot;&gt;Twitch&lt;/a&gt;.下载你想要的视频的多用途工具 (VODs)</translation>
     </message>
     <message id="about-licensing-header">
@@ -85,6 +85,16 @@
         <source>English translator names</source>
         <oldsource>names of translators</oldsource>
         <translation>Jean Gressmann</translation>
+    </message>
+    <message id="about-translations-french-label">
+        <location filename="../qml/pages/AboutPage.qml" line="196"/>
+        <source>French</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="about-translations-french-value">
+        <location filename="../qml/pages/AboutPage.qml" line="198"/>
+        <source>French translator names</source>
+        <translation>Bérenger Arnaud</translation>
     </message>
     <message id="about-translations-german-label">
         <location filename="../qml/pages/AboutPage.qml" line="175"/>
@@ -152,7 +162,6 @@
     <message id="ytdl-downloading-hint">
         <location filename="../qml/pages/YTDLPage.qml" line="96"/>
         <source>Please be patient</source>
-        <oldsource>youtube-dl is being downloaded</oldsource>
         <translation>当心</translation>
     </message>
     <message id="ytdl-download-button">
@@ -227,7 +236,7 @@
         <location filename="../qml/harbour-vodman.qml" line="125"/>
         <source>Update available</source>
         <oldsource>%1 update available</oldsource>
-        <translation type="unfinished">youtube-dl 可供更新</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message id="nofification-ytdl-update-available-body">
         <location filename="../qml/harbour-vodman.qml" line="128"/>
@@ -345,7 +354,7 @@
     <message id="error-too-many-requests">
         <location filename="../qml/pages/DownloadPage.qml" line="359"/>
         <source>Too many requests. Try again later or update %1.</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message id="error-unknown">
         <location filename="../qml/pages/DownloadPage.qml" line="364"/>
@@ -617,13 +626,13 @@
         <location filename="../qml/pages/SettingsPage.qml" line="347"/>
         <source>Update is being downloaded</source>
         <oldsource>%1 is being downloaded</oldsource>
-        <translation type="unfinished">%1 已下载</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message id="settings-ytdl-unavailable">
         <location filename="../qml/pages/SettingsPage.qml" line="351"/>
         <source>Update is not available</source>
         <oldsource>%1 is not available</oldsource>
-        <translation type="unfinished">%1 不可用</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message id="settings-ytdl-version">
         <location filename="../qml/pages/SettingsPage.qml" line="354"/>
