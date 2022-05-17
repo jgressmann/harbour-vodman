@@ -4,10 +4,17 @@ X-Nemo-Application-Type=silica-qt5
 Icon=harbour-vodman
 Exec=harbour-vodman
 Name=Vodman
-Categories=Video;AudioVideo;
 # translation example:
 # your app name in German locale (de)
 #
 # Remember to comment out the following line, if you do not want to use
 # a different app name in German locale (de).
 #Name[de]=harbour-vodman
+
+#https://github.com/sailfishos/sailjail-permissions
+#https://blog.jolla.com/whats-up-with-sandboxing/
+[X-Sailjail]
+OrganizationName=harbour-vodman
+ApplicationName=harbour-vodman
+Permissions=Internet;UserDirs;PublicDir;RemovableMedia;Compatibility
+Sandboxing=Disabled
