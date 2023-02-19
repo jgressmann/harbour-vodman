@@ -161,6 +161,11 @@ QString modeName(VMQuickYTDLDownloader::Mode value)
 
 } // anon
 
+/* paths:
+ * CacheLocation: /home/nemo/.cache/ if statically initialized
+ */
+//QString VMQuickYTDLDownloader::ms_BaseDir = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
+
 VMQuickYTDLDownloader::VMQuickYTDLDownloader(QObject* parent)
     : QObject(parent)
 {
@@ -171,6 +176,8 @@ VMQuickYTDLDownloader::VMQuickYTDLDownloader(QObject* parent)
     m_dead = false;
     m_stage = None;
     m_mode = ModeRelease;
+    /* /home/nemo/.cache/harbour-vodman/harbour-vodman */
+    m_BaseDir = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
 
     connect(&m_networkAccessManager, &QNetworkAccessManager::finished, this, &VMQuickYTDLDownloader::requestFinished);
     connect(&m_networkConfigurationManager, &QNetworkConfigurationManager::onlineStateChanged, this, &VMQuickYTDLDownloader::onlineStateChanged);
@@ -192,7 +199,7 @@ VMQuickYTDLDownloader::VMQuickYTDLDownloader(QObject* parent)
 
 QString VMQuickYTDLDownloader::baseDir() const
 {
-    return QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + QStringLiteral("/youtube-dl");
+    return m_BaseDir + QStringLiteral("/youtube-dl");
 }
 
 QString VMQuickYTDLDownloader::modeDir(Mode value) const
@@ -462,7 +469,7 @@ VMQuickYTDLDownloader::requestFinished(QNetworkReply *reply)
                     int configFileVersion = 0;
                     QString url;
                     if (parseConfigFile(bytes, mode, &configFileVersion, &url, &m_UpdateVersion, &m_UpdateName)) {
-                        qInfo("mode %s %s version %s available\n", qPrintable(m_UpdateName), qPrintable(mode), qPrintable(m_UpdateVersion));
+                        qInfo("mode %s %s version %s available\n", qPrintable(mode), qPrintable(m_UpdateName), qPrintable(m_UpdateVersion));
                         emit updateVersionChanged();
                         emit updateNameChanged();
                         emit isUpdateAvailableChanged();

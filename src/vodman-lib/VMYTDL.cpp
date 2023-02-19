@@ -1,6 +1,6 @@
 /* The MIT License (MIT)
  *
- * Copyright (c) 2018-2022 Jean Gressmann <jean@0x42.de>
+ * Copyright (c) 2018-2023 Jean Gressmann <jean@0x42.de>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -44,7 +44,7 @@ namespace {
 //[download] Destination: youtube-dl tutorial for windows-fKe9rV-gl1c.f251.webm
 //[download] METAL ALLEGIANCE - Anaheim Show 2019 (OFFICIAL TRAILER)-dmhgRlaReho.mp4 has already been downloaded
 
-const QRegExp s_YTDLVideoNumberRegexp("^\\[download\\]\\s+Downloading video (\\d+) of \\d+\\s*");
+const QRegExp s_YTDLVideoNumberRegexp("^\\[download\\]\\s+Downloading (?:video|item) (\\d+) of \\d+\\s*");
 const QRegExp s_YTDLDestinationRegexp("^\\[download\\]\\s+Destination:\\s+(.+)\\s*$");
 const QRegExp s_YTDLAlreadyDownloadedRegexp("^\\[download\\]\\s+(.+)\\s+has already been downloaded\\s*$");
 const QRegExp s_YTDLProgressRegexp("^\\[download\\]\\s+(\\d+(?:\\.\\d+)?)%\\s+");

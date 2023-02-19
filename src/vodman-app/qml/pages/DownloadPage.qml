@@ -534,7 +534,10 @@ Page {
                 text: "Download m3u8"
                 visible: debugApp.value
                 enabled: page.canStartDownload
-                onClicked: _download("https://multiplatform-f.akamaihd.net/i/multi/will/bunny/big_buck_bunny_,640x360_400,640x360_700,640x360_1000,950x540_1500,.f4v.csmil/master.m3u8")
+                onClicked: _download(
+//                               "https://multiplatform-f.akamaihd.net/i/multi/will/bunny/big_buck_bunny_,640x360_400,640x360_700,640x360_1000,950x540_1500,.f4v.csmil/master.m3u8"
+                               "https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8"
+                               )
             }
 
             MenuItem {
