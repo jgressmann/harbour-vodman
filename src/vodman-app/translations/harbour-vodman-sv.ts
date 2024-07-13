@@ -54,9 +54,9 @@
     </message>
     <message id="about-licensing-text">
         <location filename="../qml/pages/AboutPage.qml" line="133"/>
-        <source>Copyright © 2018-2022 Jean Gressmann.&lt;br/&gt;&lt;br/&gt;%1 is available under the &lt;a href=&apos;https://opensource.org/licenses/MIT&apos;&gt;MIT&lt;/a&gt; license.&lt;br/&gt;%1 uses %2 which is in the &lt;a href=&apos;http://unlicense.org/&apos;&gt;public domain&lt;/a&gt;.</source>
-        <oldsource>Copyright © 2018-2022 Jean Gressmann.&lt;br/&gt;&lt;br/&gt;%1 is available under the &lt;a href=&apos;https://opensource.org/licenses/MIT&apos;&gt;MIT&lt;/a&gt; license.&lt;br/&gt;%1 uses %1 which is in the &lt;a href=&apos;http://unlicense.org/&apos;&gt;public domain&lt;/a&gt;.</oldsource>
-        <translation>Copyright (c) 2018-2022 Jean Gressmann.&lt;br/&gt;
+        <source>Copyright © 2018-2024 Jean Gressmann.&lt;br/&gt;&lt;br/&gt;%1 is available under the &lt;a href=&apos;https://opensource.org/licenses/MIT&apos;&gt;MIT&lt;/a&gt; license.&lt;br/&gt;%1 uses %2 which is in the &lt;a href=&apos;http://unlicense.org/&apos;&gt;public domain&lt;/a&gt;.</source>
+        <oldsource>Copyright © 2018-2022 Jean Gressmann.&lt;br/&gt;&lt;br/&gt;%1 is available under the &lt;a href=&apos;https://opensource.org/licenses/MIT&apos;&gt;MIT&lt;/a&gt; license.&lt;br/&gt;%1 uses %2 which is in the &lt;a href=&apos;http://unlicense.org/&apos;&gt;public domain&lt;/a&gt;.</oldsource>
+        <translation>Copyright (c) 2018-2024 Jean Gressmann.&lt;br/&gt;
 &lt;br/&gt;
 %1 finns tillgänglig under &lt;a href=&quot;https://opensource.org/licenses/MIT&quot;&gt;MIT&lt;/a&gt;-licensen.&lt;br/&gt;
 %1 använder %2 som finns i &lt;a href=&quot;http://unlicense.org/&quot;&gt;&quot;public domain&quot;&lt;/a&gt;.</translation>
@@ -236,19 +236,19 @@
         <translation>Tryck på knappen nedan för att försöka igen</translation>
     </message>
     <message id="nofification-download-ytdl-update-available-summary">
-        <location filename="../qml/harbour-vodman.qml" line="125"/>
+        <location filename="../qml/harbour-vodman.qml" line="135"/>
         <source>Update available</source>
         <oldsource>%1 update available</oldsource>
         <translation>Uppdatering tillgänglig</translation>
     </message>
     <message id="nofification-ytdl-update-available-body">
-        <location filename="../qml/harbour-vodman.qml" line="128"/>
+        <location filename="../qml/harbour-vodman.qml" line="138"/>
         <source>%1 version %2 available</source>
         <oldsource>youtube-dl version %1 available</oldsource>
         <translation>%1-version %2 tillgänglig</translation>
     </message>
     <message id="nofification-ytdl-update-available-action">
-        <location filename="../qml/harbour-vodman.qml" line="133"/>
+        <location filename="../qml/harbour-vodman.qml" line="143"/>
         <source>Update</source>
         <oldsource>Update youtube-dl</oldsource>
         <translation>Uppdatera</translation>
@@ -654,8 +654,19 @@
         <source>Update</source>
         <translation>Uppdatera</translation>
     </message>
+    <message id="settings-ytdl-use-part-files-text">
+        <location filename="../qml/pages/SettingsPage.qml" line="389"/>
+        <source>Use .part files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message id="settings-ytdl-use-part-files-desc">
+        <location filename="../qml/pages/SettingsPage.qml" line="391"/>
+        <source>Partial download files are used by default to keep track of download progress. With the setting off, video data is written directly to the target file. Some downloads will only succeed with this setting turned off.</source>
+        <oldsource>Partial download files are used by default to keep track of download progress. With the setting off, output is written directly to the target file. Some downloads will only succeed with this setting turned off.</oldsource>
+        <translation type="unfinished"></translation>
+    </message>
     <message id="settings-page-header">
-        <location filename="../qml/pages/SettingsPage.qml" line="417"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="427"/>
         <source>Settings</source>
         <translation>Inställningar</translation>
     </message>

@@ -1,6 +1,6 @@
 /* The MIT License (MIT)
  *
- * Copyright (c) 2018, 2019 Jean Gressmann <jean@0x42.de>
+ * Copyright (c) 2018-2024 Jean Gressmann <jean@0x42.de>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -48,6 +48,7 @@ class VMYTDL : public QObject
     Q_PROPERTY(QStringList customYtdlOptions READ customYtdlOptions WRITE setCustomYtdlOptions NOTIFY customYtdlOptionsChanged)
     Q_PROPERTY(QString cacheDirectory READ cacheDirectory WRITE setCacheDirectory NOTIFY cacheDirectoryChanged)
     Q_PROPERTY(bool ytdlVerbose READ ytdlVerbose WRITE setYtdlVerbose NOTIFY ytdlVerboseChanged)
+    Q_PROPERTY(bool usePartFiles READ usePartFiles WRITE setUsePartFiles NOTIFY usePartFilesChanged)
 public:
     using Normalizer = std::function<void(QString&)>;
 
@@ -68,6 +69,8 @@ public:
     void setYtdlVerbose(bool value);
     QString cacheDirectory() const { return m_CacheDirectory; }
     void setCacheDirectory(const QString& value);
+    bool usePartFiles() const { return m_UsePartFiles; }
+    void setUsePartFiles(bool value);
 
 public slots:
     void startFetchMetaData(qint64 token, const QString& url, const QVariant& userData = QVariant());
@@ -86,6 +89,7 @@ signals:
     void customYtdlOptionsChanged();
     void ytdlVerboseChanged();
     void cacheDirectoryChanged();
+    void usePartFilesChanged();
 
 private slots:
     void onMetaDataProcessFinished(int, QProcess::ExitStatus);
@@ -123,6 +127,7 @@ private:
     QString m_CacheDirectory;
     int m_MetaDataSecondsValid;
     bool m_YtdlVerbose;
+    bool m_UsePartFiles;
 };
 
 

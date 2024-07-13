@@ -1,6 +1,6 @@
 /* The MIT License (MIT)
  *
- * Copyright (c) 2018-2022 Jean Gressmann <jean@0x42.de>
+ * Copyright (c) 2018-2024 Jean Gressmann <jean@0x42.de>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -384,6 +384,16 @@ Page {
                 }
             }
 
+            TextSwitch {
+                //% "Use .part files"
+                text: qsTrId("settings-ytdl-use-part-files-text")
+                //% "Partial download files are used by default to keep track of download progress. With the setting off, video data is written directly to the target file. Some downloads will only succeed with this setting turned off."
+                description: qsTrId("settings-ytdl-use-part-files-desc")
+                checked: settingYtdlUsePartFiles.value
+                onClicked: {
+                    settingYtdlUsePartFiles.value = !settingYtdlUsePartFiles.value
+                }
+            }
 
             TextSwitch {
                 visible: debugApp.value

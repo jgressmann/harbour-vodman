@@ -1,7 +1,7 @@
 # known to qmake
 VER_MAJ = 1
 VER_MIN = 2
-VER_PAT = 8
+VER_PAT = 9
 
 VERSION = $${VER_MAJ}.$${VER_MIN}.$${VER_PAT}
 

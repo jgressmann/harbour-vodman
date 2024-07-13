@@ -129,7 +129,7 @@ Page {
             LinkedLabel {
                 x: Theme.horizontalPageMargin
                 width: parent.width - 2*x
-                //% "Copyright © 2018-2022 Jean Gressmann.<br/><br/>%1 is available under the <a href='https://opensource.org/licenses/MIT'>MIT</a> license.<br/>%1 uses %2 which is in the <a href='http://unlicense.org/'>public domain</a>."
+                //% "Copyright © 2018-2024 Jean Gressmann.<br/><br/>%1 is available under the <a href='https://opensource.org/licenses/MIT'>MIT</a> license.<br/>%1 uses %2 which is in the <a href='http://unlicense.org/'>public domain</a>."
                 text: qsTrId("about-licensing-text").arg(App.displayName).arg(YTDLDownloader.ytdlName)
                 wrapMode: Text.WordWrap
                 font.pixelSize: Theme.fontSizeSmall

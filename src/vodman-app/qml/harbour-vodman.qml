@@ -1,6 +1,6 @@
 /* The MIT License (MIT)
  *
- * Copyright (c) 2018, 2019 Jean Gressmann <jean@0x42.de>
+ * Copyright (c) 2018-2024 Jean Gressmann <jean@0x42.de>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -83,6 +83,16 @@ ApplicationWindow {
         onValueChanged: {
             YTDL.ytdlVerbose = value
             _setMode()
+        }
+    }
+
+    ConfigValue {
+        id: settingYtdlUsePartFiles
+        key: "/ytdl/use-part-files"
+        defaultValue: true
+
+        onValueChanged: {
+            YTDL.usePartFiles = value
         }
     }
 

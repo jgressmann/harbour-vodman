@@ -1,6 +1,6 @@
 /* The MIT License (MIT)
  *
- * Copyright (c) 2018-2023 Jean Gressmann <jean@0x42.de>
+ * Copyright (c) 2018-2024 Jean Gressmann <jean@0x42.de>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -131,6 +131,7 @@ VMYTDL::VMYTDL(QObject* parent)
     , m_Normalizer(&Nop)
     , m_MetaDataSecondsValid(3600) // one hour timeout, typically vod file urls go stale
     , m_YtdlVerbose(false)
+    , m_UsePartFiles(true)
 {
 }
 
@@ -297,6 +298,10 @@ VMYTDL::startFetchPlaylist(qint64 token, const VMPlaylistDownloadRequest& req, V
         arguments << QStringLiteral("--verbose");
     }
 
+    if (!m_UsePartFiles) {
+        arguments << QStringLiteral("--no-part");
+    }
+
     if (m_CacheDirectory.isEmpty()) {
         arguments << QStringLiteral("--no-cache-dir");
     } else {
@@ -305,7 +310,6 @@ VMYTDL::startFetchPlaylist(qint64 token, const VMPlaylistDownloadRequest& req, V
 
     arguments //<< QStringLiteral("-c")
               << QStringLiteral("--newline")
-              << QStringLiteral("--no-part")
               << QStringLiteral("--fixup") << QStringLiteral("never")
               << s_NoCallHome
               << s_NoColor
@@ -472,6 +476,9 @@ VMYTDL::onMetaDataProcessFinished(int code, QProcess::ExitStatus status)
 
     qDebug("JSON object 0 at [%d-%d)\n", starts[0], ends[0]);
     QByteArray first = output.mid(starts[0], ends[0] - starts[0]);
+    qDebug("JSON\n");
+    qDebug("%s\n", qPrintable(first));
+    qDebug("JSON\n");
     QJsonParseError error;
     QJsonDocument doc = QJsonDocument::fromJson(first, &error);
     if (error.error != QJsonParseError::NoError) {
@@ -1109,4 +1116,14 @@ VMYTDL::setCacheDirectory(const QString& value)
         emit ytdlVerboseChanged();
     }
 }
+
+void
+VMYTDL::setUsePartFiles(bool value)
+{
+    if (value != m_UsePartFiles) {
+        m_UsePartFiles = value;
+        emit usePartFilesChanged();
+    }
+}
+
 
