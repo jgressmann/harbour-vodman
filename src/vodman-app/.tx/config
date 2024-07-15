@@ -1,12 +1,14 @@
 [main]
 host = https://www.transifex.com
 
-[harbour-vodman.translations]
-source_file = translations/harbour-vodman.ts
-source_lang = en
-trans.de = translations/harbour-vodman-de.ts
-trans.sv = translations/harbour-vodman-sv.ts
-trans.zh_CN = translations/harbour-vodman-zh_cn.ts
-trans.fr = translations/harbour-vodman-fr.ts
-type = QT
+[o:jgressmann:p:harbour-vodman:r:translations]
+source_file            = translations/harbour-vodman.ts
+source_lang            = en
+type                   = QT
+trans.de               = translations/harbour-vodman-de.ts
+trans.sv               = translations/harbour-vodman-sv.ts
+trans.zh_CN            = translations/harbour-vodman-zh_cn.ts
+trans.fr               = translations/harbour-vodman-fr.ts
+replace_edited_strings = false
+keep_translations      = false
 
