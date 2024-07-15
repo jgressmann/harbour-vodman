@@ -657,13 +657,13 @@
     <message id="settings-ytdl-use-part-files-text">
         <location filename="../qml/pages/SettingsPage.qml" line="389"/>
         <source>Use .part files</source>
-        <translation type="unfinished"></translation>
+        <translation>Använd .part-filer</translation>
     </message>
     <message id="settings-ytdl-use-part-files-desc">
         <location filename="../qml/pages/SettingsPage.qml" line="391"/>
         <source>Partial download files are used by default to keep track of download progress. With the setting off, video data is written directly to the target file. Some downloads will only succeed with this setting turned off.</source>
         <oldsource>Partial download files are used by default to keep track of download progress. With the setting off, output is written directly to the target file. Some downloads will only succeed with this setting turned off.</oldsource>
-        <translation type="unfinished"></translation>
+        <translation>Partiellt nerladdade filer används som standard för att hålla reda på nerladdningsförloppet. När inställningen är avstängd skrivs videodata direkt till målfilen. Vissa nerladdningar lyckas bara när den här inställningen är avstängd.</translation>
     </message>
     <message id="settings-page-header">
         <location filename="../qml/pages/SettingsPage.qml" line="427"/>
