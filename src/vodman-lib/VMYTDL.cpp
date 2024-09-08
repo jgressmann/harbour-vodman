@@ -48,6 +48,7 @@ const QRegExp s_YTDLVideoNumberRegexp("^\\[download\\]\\s+Downloading (?:video|i
 const QRegExp s_YTDLDestinationRegexp("^\\[download\\]\\s+Destination:\\s+(.+)\\s*$");
 const QRegExp s_YTDLAlreadyDownloadedRegexp("^\\[download\\]\\s+(.+)\\s+has already been downloaded\\s*$");
 const QRegExp s_YTDLProgressRegexp("^\\[download\\]\\s+(\\d+(?:\\.\\d+)?)%\\s+");
+const QRegExp s_YTDLFileMergerRegexp("^\\[Merger\\] Merging formats into\\s+\"\([^\"]+)\"\\s*$");
 const QString s_Token = QLatin1String("token");
 const QString s_Type = QLatin1String("type");
 const QString s_MetaData = QLatin1String("metadata");
@@ -109,9 +110,20 @@ void ParseYtdlOutput(QString& str, VMPlaylistDownloadData& downloadData, const Q
             }
         }
     } else if (s_YTDLDestinationRegexp.indexIn(str) != -1) {
-        downloadData.files[downloadData.currentFileIndex].data().filePath = s_YTDLDestinationRegexp.cap(1);
+        auto capture = s_YTDLDestinationRegexp.cap(1);
+        auto& fileDownload = downloadData.files[downloadData.currentFileIndex].data();
+        fileDownload.filePath = capture;
+        fileDownload.fileArtifacts.insert(capture);
     } else if (s_YTDLAlreadyDownloadedRegexp.indexIn(str) != -1) {
-        downloadData.files[downloadData.currentFileIndex].data().filePath = s_YTDLAlreadyDownloadedRegexp.cap(1);
+        auto capture = s_YTDLAlreadyDownloadedRegexp.cap(1);
+        auto& fileDownload = downloadData.files[downloadData.currentFileIndex].data();
+        fileDownload.filePath = capture;
+        fileDownload.fileArtifacts.insert(capture);
+    } else if (s_YTDLFileMergerRegexp.indexIn(str) != -1) {
+        auto capture = s_YTDLFileMergerRegexp.cap(1);
+        auto& fileDownload = downloadData.files[downloadData.currentFileIndex].data();
+        fileDownload.filePath = capture;
+        fileDownload.fileArtifacts.insert(capture);
     }
 }
 
@@ -388,10 +400,12 @@ VMYTDL::cancelFetchPlaylist(qint64 token, bool deleteFile) {
 
         if (deleteFile) {
             for (auto i = 0; i < data.files.size(); ++i) {
-                auto filePath = data.files[i].filePath();
-                if (!filePath.isEmpty()) {
-                    qDebug() << "removing" << filePath;
-                    QFile::remove(filePath);
+                auto const& fileDownloadData = data.files[i].data();
+                for (auto const& filePath : fileDownloadData.fileArtifacts) {
+                    if (!filePath.isEmpty()) {
+                        qDebug() << "removing" << filePath;
+                        QFile::remove(filePath);
+                    }
                 }
             }
         }
