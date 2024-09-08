@@ -72,7 +72,7 @@ Page {
                             "values": values,
                         })
             dialog.accepted.connect(function() {
-                more(dialog.formatIndex)
+                more(values[dialog.formatIndex])
             })
         } else {
             more(0)
@@ -83,6 +83,7 @@ Page {
         if (vod.audioFormats > 1) {
             var labels = []
             var values = []
+
             for (var i = 0; i < vod.audioFormats; ++i) {
                 var f = vod.audioFormat(i)
                 labels.push(f.displayName + " / " + f.abr.toFixed(0) + " [abr] " + f.extension)
@@ -108,10 +109,18 @@ Page {
         if (vod.avFormats > 1) {
             var labels = []
             var values = []
+            var formats = {}
+
             for (var i = 0; i < vod.avFormats; ++i) {
                 var f = vod.avFormat(i)
-                labels.push(f.displayName + " / " + f.tbr.toFixed(0) + " [tbr] " + f.extension)
-                values.push(f.id)
+                var key = f.displayName  + " [" + f.extension + "]";
+                formats[key] = i;
+            }
+
+            for (var key in formats) {
+                var format_index = formats[key];
+                labels.push(key);
+                values.push(format_index);
             }
 
             var dialog = pageStack.push(
@@ -122,27 +131,11 @@ Page {
                             "values": values
                         })
             dialog.accepted.connect(function() {
-                more(dialog.formatIndex)
+                more(values[dialog.formatIndex])
             })
         } else {
             more(0)
         }
-    }
-
-    function _makeDisplayString(format) {
-        var str = ""
-        if (format.width > 0 || format.height > 0) {
-            str += format.width + "x" + format.height
-        }
-
-        if (format.tbr > 0) {
-            if (str.length > 0) {
-                str += ", "
-            }
-            str += format.tbr.toFixed(0) + " [tbr]"
-        }
-
-        return str
     }
 
     function metaDataDownloadSucceeded(token, playlist) {
@@ -181,6 +174,14 @@ Page {
                 _selectVideoFormat(vod, function (formatIndex) {
                     var f = vod.videoFormat(formatIndex)
                     _metaDataDownloadSucceededEx(token, playlist, "height:" + f.height + ",width:" + f.width, f.width + "x" + f.height)
+                })
+                return
+            }
+
+            if (vod.avFormats > 0) {
+                _selectAvFormat(vod, function (formatIndex) {
+                    var f = vod.avFormat(formatIndex)
+                    _metaDataDownloadSucceededEx(token, playlist, "height:" + f.height + ",width:" + f.width + ",ext:" + f.extension, f.width + "x" + f.height)
                 })
                 return
             }

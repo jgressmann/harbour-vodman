@@ -256,226 +256,226 @@
         <translation>Select video format</translation>
     </message>
     <message id="select-audio-format-dialog-title">
-        <location filename="../qml/pages/DownloadPage.qml" line="95"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="96"/>
         <source>Select audio format</source>
         <translation>Select audio format</translation>
     </message>
     <message id="select-av-format-dialog-title">
-        <location filename="../qml/pages/DownloadPage.qml" line="120"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="129"/>
         <source>Select a format</source>
         <translation>Select a format</translation>
     </message>
     <message id="error-youtube-dl-not-working">
-        <location filename="../qml/pages/DownloadPage.qml" line="259"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="260"/>
         <source>%1 not working</source>
         <translation>%1 not working</translation>
     </message>
     <message id="error-youtube-dl-process-crashed">
-        <location filename="../qml/pages/DownloadPage.qml" line="264"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="265"/>
         <source>%1 process crashed</source>
         <oldsource>^ process crashed</oldsource>
         <translation>%1 process crashed</translation>
     </message>
     <message id="error-download-timed-out">
-        <location filename="../qml/pages/DownloadPage.qml" line="269"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="270"/>
         <source>Download timed out</source>
         <translation>Download timed out</translation>
     </message>
     <message id="error-invalid-response">
-        <location filename="../qml/pages/DownloadPage.qml" line="274"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="275"/>
         <source>Host delivered an invalid response to VOD format request</source>
         <translation>Host delivered an invalid response to VOD format request</translation>
     </message>
     <message id="error-unsupported-url">
-        <location filename="../qml/pages/DownloadPage.qml" line="279"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="280"/>
         <source>%1 doesn&apos;t know how to handle that URL</source>
         <translation>%1 doesn&apos;t know how to handle that URL</translation>
     </message>
     <message id="error-no-video">
-        <location filename="../qml/pages/DownloadPage.qml" line="284"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="285"/>
         <source>No video content for URL</source>
         <translation>No video content for URL</translation>
     </message>
     <message id="error-format-not-available">
-        <location filename="../qml/pages/DownloadPage.qml" line="289"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="290"/>
         <source>The format you selected is not available. Try again or choose another format.</source>
         <translation>The format you selected is not available. Try again or choose another format.</translation>
     </message>
     <message id="error-network-down">
-        <location filename="../qml/pages/DownloadPage.qml" line="294"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="295"/>
         <source>Network down.</source>
         <translation>Network down.</translation>
     </message>
     <message id="error-invalid-url-preview-body">
-        <location filename="../qml/pages/DownloadPage.qml" line="298"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="299"/>
         <source>Invalid URL</source>
         <translation>Invalid URL</translation>
     </message>
     <message id="error-invalid-url-body">
-        <location filename="../qml/pages/DownloadPage.qml" line="300"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="301"/>
         <source>Invalid URL &apos;%1&apos;</source>
         <translation>Invalid URL &apos;%1&apos;</translation>
     </message>
     <message id="error-no-space">
-        <location filename="../qml/pages/DownloadPage.qml" line="305"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="306"/>
         <source>No space left on device.</source>
         <translation>No space left on device.</translation>
     </message>
     <message id="error-already-downloading">
-        <location filename="../qml/pages/DownloadPage.qml" line="309"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="310"/>
         <source>Already downloading %1</source>
         <translation>Already downloading %1</translation>
     </message>
     <message id="error-content-gone-preview-body">
-        <location filename="../qml/pages/DownloadPage.qml" line="315"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="316"/>
         <source>Video gone</source>
         <translation>Video gone</translation>
     </message>
     <message id="error-content-gone-body">
-        <location filename="../qml/pages/DownloadPage.qml" line="317"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="318"/>
         <source>Video &apos;%1&apos; is no longer available.</source>
         <translation>Video &apos;%1&apos; is no longer available.</translation>
     </message>
     <message id="error-signature-extraction-failed-body">
-        <location filename="../qml/pages/DownloadPage.qml" line="321"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="322"/>
         <source>Failed to locate video signature. Update %1 and try again.</source>
         <translation>Failed to locate video signature. Update %1 and try again.</translation>
     </message>
     <message id="error-temporary-name-resolution-failure-body">
-        <location filename="../qml/pages/DownloadPage.qml" line="325"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="326"/>
         <source>Temporary name resolution failure. Try again later.</source>
         <translation>Temporary name resolution failure. Try again later.</translation>
     </message>
     <message id="error-access">
-        <location filename="../qml/pages/DownloadPage.qml" line="329"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="330"/>
         <source>Access denied</source>
         <translation>Access denied</translation>
     </message>
     <message id="error-too-many-requests">
-        <location filename="../qml/pages/DownloadPage.qml" line="333"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="334"/>
         <source>Too many requests. Try again later or update %1.</source>
         <translation>Too many requests. Try again later or update %1.</translation>
     </message>
     <message id="error-ssl-cert-verify">
-        <location filename="../qml/pages/DownloadPage.qml" line="337"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="338"/>
         <source>SSL certificate verfication failed.</source>
         <translation>SSL certificate verfication failed.</translation>
     </message>
     <message id="error-different-streams-codecs">
-        <location filename="../qml/pages/DownloadPage.qml" line="341"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="342"/>
         <source>Different streams/codecs detected. Files may be incomplete and/or not play.</source>
         <translation type="unfinished"></translation>
     </message>
     <message id="error-unknown">
-        <location filename="../qml/pages/DownloadPage.qml" line="346"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="347"/>
         <source>Yikes! An unknown error has occured :/</source>
         <translation>Yikes! An unknown error has occured :/</translation>
     </message>
     <message id="retry">
-        <location filename="../qml/pages/DownloadPage.qml" line="353"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="354"/>
         <source>Retry</source>
         <translation>Retry</translation>
     </message>
     <message id="play">
-        <location filename="../qml/pages/DownloadPage.qml" line="372"/>
-        <location filename="../qml/pages/DownloadPage.qml" line="879"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="373"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="880"/>
         <source>Play</source>
         <translation>Play</translation>
     </message>
     <message id="nofification-download-started-summary">
-        <location filename="../qml/pages/DownloadPage.qml" line="430"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="431"/>
         <source>Started download of &apos;%1&apos;</source>
         <translation>Started download of &apos;%1&apos;</translation>
     </message>
     <message id="notification-busy">
-        <location filename="../qml/pages/DownloadPage.qml" line="440"/>
-        <location filename="../qml/pages/DownloadPage.qml" line="451"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="441"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="452"/>
         <source>%1 is busy. Try again later.</source>
         <translation>%1 is busy. Try again later.</translation>
     </message>
     <message id="nofification-download-failed-summary">
-        <location filename="../qml/pages/DownloadPage.qml" line="465"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="466"/>
         <source>Download failed</source>
         <translation>Download failed</translation>
     </message>
     <message id="nofification-download-finished-summary">
-        <location filename="../qml/pages/DownloadPage.qml" line="484"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="485"/>
         <source>Download finished</source>
         <translation>Download finished</translation>
     </message>
     <message id="nofification-download-started-preview-summary">
-        <location filename="../qml/pages/DownloadPage.qml" line="494"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="495"/>
         <source>Download started</source>
         <translation>Download started</translation>
     </message>
     <message id="menu-item-about-vodman">
-        <location filename="../qml/pages/DownloadPage.qml" line="506"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="507"/>
         <source>About %1</source>
         <translation>About %1</translation>
     </message>
     <message id="menu-item-settings">
-        <location filename="../qml/pages/DownloadPage.qml" line="512"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="513"/>
         <source>Settings</source>
         <translation>Settings</translation>
     </message>
     <message id="menu-item-clear-clipboard">
-        <location filename="../qml/pages/DownloadPage.qml" line="624"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="625"/>
         <source>Clear clipboard</source>
         <translation>Clear clipboard</translation>
     </message>
     <message id="menu-item-cancel-all-downloads">
-        <location filename="../qml/pages/DownloadPage.qml" line="633"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="634"/>
         <source>Cancel all downloads</source>
         <translation>Cancel all downloads</translation>
     </message>
     <message id="remorse-cancel-all-downloads">
-        <location filename="../qml/pages/DownloadPage.qml" line="638"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="639"/>
         <source>Stopping all downloads</source>
         <translation>Stopping all downloads</translation>
     </message>
     <message id="menu-item-cancel-all-downloads-delete">
-        <location filename="../qml/pages/DownloadPage.qml" line="645"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="646"/>
         <source>Cancel all downloads and delete files</source>
         <translation>Cancel all downloads and delete files</translation>
     </message>
     <message id="remorse-cancel-all-downloads-delete">
-        <location filename="../qml/pages/DownloadPage.qml" line="650"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="651"/>
         <source>Purging all downloads</source>
         <translation>Purging all downloads</translation>
     </message>
     <message id="menu-item-download-from-clipboard">
-        <location filename="../qml/pages/DownloadPage.qml" line="657"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="658"/>
         <source>Download from clipboard</source>
         <translation>Download from clipboard</translation>
     </message>
     <message id="download-page-header">
-        <location filename="../qml/pages/DownloadPage.qml" line="675"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="676"/>
         <source>Downloads</source>
         <translation>Downloads</translation>
     </message>
     <message id="download-item-remorse-cancel">
-        <location filename="../qml/pages/DownloadPage.qml" line="695"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="696"/>
         <source>Stopping %1</source>
         <translation>Stopping %1</translation>
     </message>
     <message id="unit-gb">
-        <location filename="../qml/pages/DownloadPage.qml" line="802"/>
-        <location filename="../qml/pages/DownloadPage.qml" line="807"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="803"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="808"/>
         <source>%1 GB</source>
         <translation>%1 GB</translation>
     </message>
     <message id="unit-mb">
-        <location filename="../qml/pages/DownloadPage.qml" line="811"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="812"/>
         <source>%1 MB</source>
         <translation>%1 MB</translation>
     </message>
     <message id="download-item-vod-file">
-        <location filename="../qml/pages/DownloadPage.qml" line="827"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="828"/>
         <source>file %1</source>
         <translation>file %1</translation>
     </message>
     <message id="download-item-cancel-and-delete" numerus="yes">
-        <location filename="../qml/pages/DownloadPage.qml" line="867"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="868"/>
         <source>Cancel and delete file</source>
         <translation>
             <numerusform>Cancel and delete file</numerusform>
@@ -483,42 +483,42 @@
         </translation>
     </message>
     <message id="cancel">
-        <location filename="../qml/pages/DownloadPage.qml" line="873"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="874"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
     <message id="download-item-open-webpage">
-        <location filename="../qml/pages/DownloadPage.qml" line="886"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="887"/>
         <source>Open webpage</source>
         <translation>Open webpage</translation>
     </message>
     <message id="download-item-copy-file-path-to-clipboard">
-        <location filename="../qml/pages/DownloadPage.qml" line="896"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="897"/>
         <source>Copy file path to clipboard</source>
         <translation>Copy file path to clipboard</translation>
     </message>
     <message id="download-placeholder-text-metadata-download">
-        <location filename="../qml/pages/DownloadPage.qml" line="908"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="909"/>
         <source>Downloading VOD metadata</source>
         <translation>Downloading VOD metadata</translation>
     </message>
     <message id="download-placeholder-text-waiting-for-download-to-start">
-        <location filename="../qml/pages/DownloadPage.qml" line="913"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="914"/>
         <source>Download will start momentarily</source>
         <translation>Download will start momentarily</translation>
     </message>
     <message id="download-placeholder-text-no-downloads">
-        <location filename="../qml/pages/DownloadPage.qml" line="917"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="918"/>
         <source>No downloads at present</source>
         <translation>No downloads at present</translation>
     </message>
     <message id="download-placeholder-hint-pull-down-to-start-download-from-clipboard">
-        <location filename="../qml/pages/DownloadPage.qml" line="927"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="928"/>
         <source>Pull down to start download using the URL in the clipboard</source>
         <translation>Pull down to start download using the URL in the clipboard</translation>
     </message>
     <message id="download-placeholder-hint-copy-url-to-clipboard">
-        <location filename="../qml/pages/DownloadPage.qml" line="931"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="932"/>
         <source>Copy a URL to the clipboard then pull down to start the download</source>
         <translation>Copy a URL to the clipboard then pull down to start the download</translation>
     </message>
