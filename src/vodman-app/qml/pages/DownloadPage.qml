@@ -46,37 +46,22 @@ Page {
         vodDownloadModel.startDownloadMetaData(vodDownloadModel.newToken(), url)
     }
 
-    function _selectMergedFormat(playlist, more) {
-        if (playlist.videoFormats === 1) {
-            if (playlist.audioFormats === 1) {
-                more(0, 0)
-            } else {
-                var videoFormatId = playlist.videoFormat(0).id
-                _selectAudioFormat(playlist, function (audioFormatIndex) {
-                    more(0, audioFormatIndex)
-                })
-            }
-        } else {
-            if (playlist.audioFormats === 1) {
-                var audioFormatId = playlist.audioFormat(0).id
-                _selectVideoFormat(playlist, function (videoFormatIndex) {
-                    more(videoFormatIndex, 0)
-                })
-            } else {
-                // FIX ME
-            }
-        }
-    }
-
-    function _selectVideoFormat(playlist, more) {
-        if (playlist.videoFormats > 1) {
+    function _selectVideoFormat(vod, more) {
+        if (vod.videoFormats > 1) {
             var labels = []
             var values = []
+            var formats = {}
 
-            for (var i = 0; i < playlist.videoFormats; ++i) {
-                var f = playlist.videoFormat(i)
-                labels.push(f.displayName + " / " + f.tbr.toFixed(0) + " [tbr] " + f.extension)
-                values.push(f.id)
+            for (var i = 0; i < vod.videoFormats; ++i) {
+                var f = vod.videoFormat(i)
+                var res = f.width + "x" + f.height;
+                formats[res] = i;
+            }
+
+            for (res in formats) {
+                var format_index = formats[res];
+                labels.push(res);
+                values.push(format_index);
             }
 
             var dialog = pageStack.push(
@@ -94,12 +79,12 @@ Page {
         }
     }
 
-    function _selectAudioFormat(playlist, more) {
-        if (playlist.audioFormats > 1) {
+    function _selectAudioFormat(vod, more) {
+        if (vod.audioFormats > 1) {
             var labels = []
             var values = []
-            for (var i = 0; i < playlist.audioFormats; ++i) {
-                var f = playlist.audioFormat(i)
+            for (var i = 0; i < vod.audioFormats; ++i) {
+                var f = vod.audioFormat(i)
                 labels.push(f.displayName + " / " + f.abr.toFixed(0) + " [abr] " + f.extension)
                 values.push(f.id)
             }
@@ -190,31 +175,21 @@ Page {
 
         console.debug("format=" + formatId)
         if (VM.VM_Any === formatId) {
-            // FIX ME add support for ffmpeg
-            if (false && playlist.audioFormats > 0 && playlist.videoFormats > 0) { // prefer more choice
-                _selectMergedFormat(playlist, function (videoFormatIndex, audioFormatIndex) {
-                    var videoFormat = playlist.videoFormat(videoFormatIndex)
-                    var audioFormat = playlist.audioFormat(audioFormatIndex)
-                    _metaDataDownloadSucceededEx(token, playlist, videoFormat.id + "+" + audioFormat.id, _makeDisplayString(videoFormat))
-                })
-                return
-            }
-
             var vod = playlist.vod(0)
 
-            if (vod.avFormats > 0) {
-                _selectAvFormat(vod, function (formatIndex) {
-                    var f = vod.avFormat(formatIndex)
-                    _metaDataDownloadSucceededEx(token, playlist, f.id, f.displayName)
+            if (vod.videoFormats > 0) {
+                _selectVideoFormat(vod, function (formatIndex) {
+                    var f = vod.videoFormat(formatIndex)
+                    _metaDataDownloadSucceededEx(token, playlist, "height:" + f.height + ",width:" + f.width, f.width + "x" + f.height)
                 })
                 return
             }
         }
 
         var res = _findBestFormat(playlist, formatId)
-        var format = res[0]
+        var search = res[0]
         var displayFormat = res[1]
-        _metaDataDownloadSucceededEx(token, playlist, format, displayFormat)
+        _metaDataDownloadSucceededEx(token, playlist, search, displayFormat)
     }
 
     function _findBestFormat(playlist, formatId) {
@@ -252,8 +227,7 @@ Page {
         return ["height:" + height, "~" + width + "x" + height]
     }
 
-    function _metaDataDownloadSucceededEx(token, playlist, format, displayFormat) {
-        console.debug("format=" + format)
+    function _metaDataDownloadSucceededEx(token, playlist, search, displayFormat) {
         var path = settingDefaultDirectory.value
         if (!path) {
             path = StandardPaths.download
@@ -262,15 +236,15 @@ Page {
         var fileName = settingDefaultFileName.value
         fileName = fileName.replace("{title}", "%(title)s")
         fileName = fileName.replace("{id}", "%(id)s")
-        fileName = fileName.replace("{formatid}", format.id)
+//        fileName = fileName.replace("{formatid}", format.id)
 //        if (playlist.vods > 1) { // youtube-dl meta var
 //            fileName += "_%(playlist_index)s"
 //        }
         path = path + "/" + fileName + ".%(ext)s"
 
-        console.debug("format=" + format)
+        console.debug("search=" + search)
         console.debug("path=" + path)
-        vodDownloadModel.startDownloadPlaylist(token, playlist, format, path, displayFormat)
+        vodDownloadModel.startDownloadPlaylist(token, playlist, search, path, displayFormat)
     }
 
     function downloadFailed(url, error, filePath) {
