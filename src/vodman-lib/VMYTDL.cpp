@@ -290,7 +290,7 @@ VMYTDL::startFetchPlaylist(qint64 token, const VMPlaylistDownloadRequest& req, V
 
 
     qDebug() << "Trying to obtain" << (req.indices.isEmpty() ? data.playlist.vods() : req.indices.size())
-             << "video file(s) for:" << data.playlist.webPageUrl() << "format:"
+             << "video file(s) for:" << data.playlist.webPageUrl() << "search pattern:"
              << req.format << "file path:" << req.filePath;
 
     QStringList arguments;
@@ -314,7 +314,7 @@ VMYTDL::startFetchPlaylist(qint64 token, const VMPlaylistDownloadRequest& req, V
               << s_NoCallHome
               << s_NoColor
               << QStringLiteral("--hls-prefer-native") // ffmpeg seems to be on device (SFOS 4.2.0) but was built w/o TLS
-              << QStringLiteral("-f") << req.format
+              << QStringLiteral("-S") << req.format
               << QStringLiteral("-o") << req.filePath
               << m_CustomOptions;
 
@@ -455,6 +455,12 @@ VMYTDL::onMetaDataProcessFinished(int code, QProcess::ExitStatus status)
             } else if (line.indexOf(QStringLiteral("Too Many Requests"), 0, Qt::CaseInsensitive) >= 0) {
                 // ERROR: Unable to download webpage: HTTP Error 429: Too Many Requests (caused by <HTTPError 429: 'Too Many Requests'>); please report this issue on https://yt-dl.org/bug . Make sure you are using the latest version; type  youtube-dl -U  to update. Be sure to call youtube-dl with the --verbose flag and include its complete output."
                 downLoadData.error = VMVodEnums::VM_ErrorTooManyRequests;
+            } else if (line.indexOf(QStringLiteral("SSL: CERTIFICATE_VERIFY_FAILED"), 0, Qt::CaseInsensitive) >= 0) {
+                // ERROR: [generic] Unable to download webpage: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1131) (caused by CertificateVerifyError('[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1131)')); please report this issue on  https://github.com/yt-dlp/yt-dlp/issues?q= , filling out the appropriate issue template. Confirm you are on the latest version using  yt-dlp -U"
+                downLoadData.error = VMVodEnums::VM_ErrorSslCertVerifyFailed;
+            } else if (line.indexOf(QStringLiteral("The files have different streams/codecs"), 0, Qt::CaseInsensitive) >= 0) {
+                // ERROR: The files have different streams/codecs and cannot be concatenated. Either select different formats or --recode-video them to a common format
+                downLoadData.error = VMVodEnums::VM_ErrorDifferentFormats;
             } else {
                 downLoadData.error = VMVodEnums::VM_ErrorUnknown;
             }

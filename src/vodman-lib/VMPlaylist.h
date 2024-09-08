@@ -79,6 +79,8 @@ public:
         VM_ErrorSignatureExtractionFailed,
         VM_ErrorTemporaryFailureNameResolution,
         VM_ErrorTooManyRequests,
+        VM_ErrorSslCertVerifyFailed,
+        VM_ErrorDifferentFormats,
     };
     Q_ENUM(Error)
 

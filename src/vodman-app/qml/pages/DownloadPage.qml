@@ -1,6 +1,6 @@
 /* The MIT License (MIT)
  *
- * Copyright (c) 2018-2022 Jean Gressmann <jean@0x42.de>
+ * Copyright (c) 2018-2024 Jean Gressmann <jean@0x42.de>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -220,12 +220,12 @@ Page {
     function _findBestFormat(playlist, formatId) {
         if (VM.VM_Smallest === formatId) {
             //% "worst"
-            return ["worst", qsTrId("format-worst")]
+            return ["+res", qsTrId("format-worst")]
         }
 
         if (VM.VM_Largest === formatId) {
             //% "best"
-            return ["best", qsTrId("format-best")]
+            return ["res", qsTrId("format-best")]
         }
 
         var height
@@ -249,7 +249,7 @@ Page {
             break
         }
 
-        return ["best[height=" + height + "]/best[height<=" + height + "]/best", "~" + width + "x" + height]
+        return ["height:" + height, "~" + width + "x" + height]
     }
 
     function _metaDataDownloadSucceededEx(token, playlist, format, displayFormat) {
@@ -357,6 +357,14 @@ Page {
         case VM.VM_ErrorTooManyRequests:
             //% "Too many requests. Try again later or update %1."
             errorNotification.previewBody = errorNotification.body = qsTrId("error-too-many-requests").arg(YTDLDownloader.ytdlName)
+            break
+        case VM.VM_ErrorSslCertVerifyFailed:
+            //% "SSL certificate verfication failed."
+            errorNotification.previewBody = errorNotification.body = qsTrId("error-ssl-cert-verify").arg(YTDLDownloader.ytdlName)
+            break
+        case VM.VM_ErrorDifferentFormats:
+            //% "Different streams/codecs detected. Files may be incomplete and/or not play."
+            errorNotification.previewBody = errorNotification.body = qsTrId("error-different-streams-codecs").arg(YTDLDownloader.ytdlName)
             break
         default:
             errorNotification.body = errorNotification.previewBody =
