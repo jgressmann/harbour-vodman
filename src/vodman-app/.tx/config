@@ -2,6 +2,7 @@
 host = https://www.transifex.com
 
 [o:jgressmann:p:harbour-vodman:r:translations]
+file_filter            = .ts
 source_file            = translations/harbour-vodman.ts
 source_lang            = en
 type                   = QT
