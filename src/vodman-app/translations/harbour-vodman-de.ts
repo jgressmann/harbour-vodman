@@ -1,8 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="de">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="de">
 <context>
-    <name></name>
+    <name/>
     <message id="format-label">
         <location filename="../qml/FormatComboBox.qml" line="35"/>
         <location filename="../qml/pages/SelectFormatDialog.qml" line="89"/>
@@ -55,7 +53,7 @@
     <message id="about-licensing-text">
         <location filename="../qml/pages/AboutPage.qml" line="133"/>
         <source>Copyright © 2018-2024 Jean Gressmann.&lt;br/&gt;&lt;br/&gt;%1 is available under the &lt;a href=&apos;https://opensource.org/licenses/MIT&apos;&gt;MIT&lt;/a&gt; license.&lt;br/&gt;%1 uses %2 which is in the &lt;a href=&apos;http://unlicense.org/&apos;&gt;public domain&lt;/a&gt;.</source>
-        <oldsource>Copyright © 2018-2022 Jean Gressmann.&lt;br/&gt;&lt;br/&gt;%1 is available under the &lt;a href=&apos;https://opensource.org/licenses/MIT&apos;&gt;MIT&lt;/a&gt; license.&lt;br/&gt;%1 uses %2 which is in the &lt;a href=&apos;http://unlicense.org/&apos;&gt;public domain&lt;/a&gt;.</oldsource>
+        <oldsource>Copyright © 2018-2022 Jean Gressmann.&lt;br/&gt;&lt;br/&gt;%1 is available under the &lt;a href='https://opensource.org/licenses/MIT'&gt;MIT&lt;/a&gt; license.&lt;br/&gt;%1 uses %2 which is in the &lt;a href='http://unlicense.org/'&gt;public domain&lt;/a&gt;.</oldsource>
         <translation>Copyright © 2018-2024 Jean Gressmann.&lt;br/&gt;&lt;br/&gt;%1 ist unter der &lt;a href=&quot;https://opensource.org/licenses/MIT&quot;&gt;MIT&lt;/a&gt; Lizenz verfügbar.&lt;br/&gt;%1 verwendet %2, das sich in der &lt;a href=&quot;http://unlicense.org/&quot;&gt;Public Domain&lt;/a&gt; befindet.</translation>
     </message>
     <message id="about-sources-header">
@@ -251,269 +249,271 @@
         <translation>Aktualisieren</translation>
     </message>
     <message id="select-video-format-dialog-title">
-        <location filename="../qml/pages/DownloadPage.qml" line="85"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="70"/>
         <source>Select video format</source>
         <translation>Wähle ein Videoformat</translation>
     </message>
     <message id="select-audio-format-dialog-title">
-        <location filename="../qml/pages/DownloadPage.qml" line="110"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="96"/>
         <source>Select audio format</source>
         <translation>Wähle ein Audioformat</translation>
     </message>
     <message id="select-av-format-dialog-title">
-        <location filename="../qml/pages/DownloadPage.qml" line="135"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="129"/>
         <source>Select a format</source>
         <translation>Wähle ein Format</translation>
     </message>
     <message id="error-youtube-dl-not-working">
-        <location filename="../qml/pages/DownloadPage.qml" line="285"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="260"/>
         <source>%1 not working</source>
         <translation>%1 funktioniert nicht</translation>
     </message>
     <message id="error-youtube-dl-process-crashed">
-        <location filename="../qml/pages/DownloadPage.qml" line="290"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="265"/>
         <source>%1 process crashed</source>
         <oldsource>^ process crashed</oldsource>
         <translation>%1 ist abgestürzt</translation>
     </message>
     <message id="error-download-timed-out">
-        <location filename="../qml/pages/DownloadPage.qml" line="295"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="270"/>
         <source>Download timed out</source>
         <translation>Zeitüberschreitung bei Download</translation>
     </message>
     <message id="error-invalid-response">
-        <location filename="../qml/pages/DownloadPage.qml" line="300"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="275"/>
         <source>Host delivered an invalid response to VOD format request</source>
         <translation>Ungültige Antwort vom Server</translation>
     </message>
     <message id="error-unsupported-url">
-        <location filename="../qml/pages/DownloadPage.qml" line="305"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="280"/>
         <source>%1 doesn&apos;t know how to handle that URL</source>
         <translation>Diese URL wird von %1 nicht unterstützt.</translation>
     </message>
     <message id="error-no-video">
-        <location filename="../qml/pages/DownloadPage.qml" line="310"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="285"/>
         <source>No video content for URL</source>
         <translation>Kein Video unter dieser URL auffindbar</translation>
     </message>
     <message id="error-format-not-available">
-        <location filename="../qml/pages/DownloadPage.qml" line="315"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="290"/>
         <source>The format you selected is not available. Try again or choose another format.</source>
         <translation>Das gewählte Format ist nicht verfügbar. Versuch es erneut oder wähle ein anderes Format aus.</translation>
     </message>
     <message id="error-network-down">
-        <location filename="../qml/pages/DownloadPage.qml" line="320"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="295"/>
         <source>Network down.</source>
         <translation>Keine Internetverbindung</translation>
     </message>
     <message id="error-invalid-url-preview-body">
-        <location filename="../qml/pages/DownloadPage.qml" line="324"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="299"/>
         <source>Invalid URL</source>
         <translation>Ungültige URL</translation>
     </message>
     <message id="error-invalid-url-body">
-        <location filename="../qml/pages/DownloadPage.qml" line="326"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="301"/>
         <source>Invalid URL &apos;%1&apos;</source>
         <translation>Ungültige URL &apos;%1&apos;</translation>
     </message>
     <message id="error-no-space">
-        <location filename="../qml/pages/DownloadPage.qml" line="331"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="306"/>
         <source>No space left on device.</source>
         <translation>Kein Speicherplatz mehr auf dem Gerät verfügbar.</translation>
     </message>
     <message id="error-already-downloading">
-        <location filename="../qml/pages/DownloadPage.qml" line="335"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="310"/>
         <source>Already downloading %1</source>
         <translation>%1 wird bereits heruntergeladen.</translation>
     </message>
     <message id="error-content-gone-preview-body">
-        <location filename="../qml/pages/DownloadPage.qml" line="341"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="316"/>
         <source>Video gone</source>
         <translation>Video nicht verfügbar</translation>
     </message>
     <message id="error-content-gone-body">
-        <location filename="../qml/pages/DownloadPage.qml" line="343"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="318"/>
         <source>Video &apos;%1&apos; is no longer available.</source>
         <translation>Das Video &apos;%1&apos; ist nicht mehr verfügbar.</translation>
     </message>
     <message id="error-signature-extraction-failed-body">
-        <location filename="../qml/pages/DownloadPage.qml" line="347"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="322"/>
         <source>Failed to locate video signature. Update %1 and try again.</source>
         <translation>Videosignatur nicht gefunden. Aktualisiere %1 und versuche es erneut.</translation>
     </message>
     <message id="error-temporary-name-resolution-failure-body">
-        <location filename="../qml/pages/DownloadPage.qml" line="351"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="326"/>
         <source>Temporary name resolution failure. Try again later.</source>
         <translation>Zeitweilige Unterbrechung des Namenauflösungsdiensts (DNS). Versuche es später noch einmal.</translation>
     </message>
     <message id="error-access">
-        <location filename="../qml/pages/DownloadPage.qml" line="355"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="330"/>
         <source>Access denied</source>
         <translation>Zugriff verweigert</translation>
     </message>
     <message id="error-too-many-requests">
-        <location filename="../qml/pages/DownloadPage.qml" line="359"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="334"/>
         <source>Too many requests. Try again later or update %1.</source>
         <translation>Zu viele Anfragen. Versuche es später noch einmal oder aktualisiere %1.</translation>
     </message>
     <message id="error-ssl-cert-verify">
-        <location filename="../qml/pages/DownloadPage.qml" line="363"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="338"/>
         <source>SSL certificate verfication failed.</source>
-        <translatio>SSL-Zertifikat Prüfung fehlgeschlagen.</translation>
+        <translation>SSLZertifikat Überprüfung fehlgeschlagen</translation>
+    </message>
+    <message id="error-different-streams-codecs">
+        <location filename="../qml/pages/DownloadPage.qml" line="342"/>
+        <source>Different streams/codecs detected. Files may be incomplete and/or not play.</source>
+        <translation>Unterschiedliche Streams/Codecs erkannt. Datei unvollständig und/oder nicht abspielbar.</translation>
     </message>
     <message id="error-unknown">
-        <location filename="../qml/pages/DownloadPage.qml" line="368"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="347"/>
         <source>Yikes! An unknown error has occured :/</source>
         <translation>O_o! Ein ungekannter Fehler ist aufgetreten :/</translation>
     </message>
     <message id="retry">
-        <location filename="../qml/pages/DownloadPage.qml" line="375"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="354"/>
         <source>Retry</source>
         <translation>Erneut versuchen</translation>
     </message>
     <message id="play">
-        <location filename="../qml/pages/DownloadPage.qml" line="394"/>
-        <location filename="../qml/pages/DownloadPage.qml" line="901"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="373"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="880"/>
         <source>Play</source>
         <translation>Abspielen</translation>
     </message>
     <message id="nofification-download-started-summary">
-        <location filename="../qml/pages/DownloadPage.qml" line="452"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="431"/>
         <source>Started download of &apos;%1&apos;</source>
         <translation>Starte Download von &apos;%1&apos;</translation>
     </message>
     <message id="notification-busy">
-        <location filename="../qml/pages/DownloadPage.qml" line="462"/>
-        <location filename="../qml/pages/DownloadPage.qml" line="473"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="441"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="452"/>
         <source>%1 is busy. Try again later.</source>
         <translation>%1 ist beschäftigt. Versuche es später noch einmal.</translation>
     </message>
     <message id="nofification-download-failed-summary">
-        <location filename="../qml/pages/DownloadPage.qml" line="487"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="466"/>
         <source>Download failed</source>
         <translation>Download fehlgeschlagen</translation>
     </message>
     <message id="nofification-download-finished-summary">
-        <location filename="../qml/pages/DownloadPage.qml" line="506"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="485"/>
         <source>Download finished</source>
         <translation>Download fertig</translation>
     </message>
     <message id="nofification-download-started-preview-summary">
-        <location filename="../qml/pages/DownloadPage.qml" line="516"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="495"/>
         <source>Download started</source>
         <translation>Download gestartet</translation>
     </message>
     <message id="menu-item-about-vodman">
-        <location filename="../qml/pages/DownloadPage.qml" line="528"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="507"/>
         <source>About %1</source>
         <translation>Über %1</translation>
     </message>
     <message id="menu-item-settings">
-        <location filename="../qml/pages/DownloadPage.qml" line="534"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="513"/>
         <source>Settings</source>
         <translation>Einstellungen</translation>
     </message>
     <message id="menu-item-clear-clipboard">
-        <location filename="../qml/pages/DownloadPage.qml" line="646"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="625"/>
         <source>Clear clipboard</source>
         <translation>Zwischenablage löschen</translation>
     </message>
     <message id="menu-item-cancel-all-downloads">
-        <location filename="../qml/pages/DownloadPage.qml" line="655"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="634"/>
         <source>Cancel all downloads</source>
         <translation>Alle Downloads abbrechen</translation>
     </message>
     <message id="remorse-cancel-all-downloads">
-        <location filename="../qml/pages/DownloadPage.qml" line="660"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="639"/>
         <source>Stopping all downloads</source>
         <translation>Beende alle Downloads</translation>
     </message>
     <message id="menu-item-cancel-all-downloads-delete">
-        <location filename="../qml/pages/DownloadPage.qml" line="667"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="646"/>
         <source>Cancel all downloads and delete files</source>
         <translation>Alle Downloads abbrechen und Dateien löschen</translation>
     </message>
     <message id="remorse-cancel-all-downloads-delete">
-        <location filename="../qml/pages/DownloadPage.qml" line="672"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="651"/>
         <source>Purging all downloads</source>
         <translation>Beende alle Downloads</translation>
     </message>
     <message id="menu-item-download-from-clipboard">
-        <location filename="../qml/pages/DownloadPage.qml" line="679"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="658"/>
         <source>Download from clipboard</source>
         <translation>URL in Zwischenablage herunterladen</translation>
     </message>
     <message id="download-page-header">
-        <location filename="../qml/pages/DownloadPage.qml" line="697"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="676"/>
         <source>Downloads</source>
         <translation>Downloads</translation>
     </message>
     <message id="download-item-remorse-cancel">
-        <location filename="../qml/pages/DownloadPage.qml" line="717"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="696"/>
         <source>Stopping %1</source>
         <translation>Beende %1</translation>
     </message>
     <message id="unit-gb">
-        <location filename="../qml/pages/DownloadPage.qml" line="824"/>
-        <location filename="../qml/pages/DownloadPage.qml" line="829"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="803"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="808"/>
         <source>%1 GB</source>
         <translation>%1 GB</translation>
     </message>
     <message id="unit-mb">
-        <location filename="../qml/pages/DownloadPage.qml" line="833"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="812"/>
         <source>%1 MB</source>
         <translation>%1 MB</translation>
     </message>
     <message id="download-item-vod-file">
-        <location filename="../qml/pages/DownloadPage.qml" line="849"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="828"/>
         <source>file %1</source>
         <translation>Datei %1</translation>
     </message>
     <message id="download-item-cancel-and-delete" numerus="yes">
-        <location filename="../qml/pages/DownloadPage.qml" line="889"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="868"/>
         <source>Cancel and delete file</source>
-        <translation>
-            <numerusform>Abbrechen und Datei löschen</numerusform>
-            <numerusform>Abbrechen und Dateien löschen</numerusform>
-        </translation>
+        <translation><numerusform>Abbrechen und Datei löschen</numerusform><numerusform>Abbrechen und Dateien löschen</numerusform></translation>
     </message>
     <message id="cancel">
-        <location filename="../qml/pages/DownloadPage.qml" line="895"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="874"/>
         <source>Cancel</source>
         <translation>Abbrechen</translation>
     </message>
     <message id="download-item-open-webpage">
-        <location filename="../qml/pages/DownloadPage.qml" line="908"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="887"/>
         <source>Open webpage</source>
         <translation>Webseite öffnen</translation>
     </message>
     <message id="download-item-copy-file-path-to-clipboard">
-        <location filename="../qml/pages/DownloadPage.qml" line="918"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="897"/>
         <source>Copy file path to clipboard</source>
         <translation>Dateipfad in die Zwischenablage kopieren</translation>
     </message>
     <message id="download-placeholder-text-metadata-download">
-        <location filename="../qml/pages/DownloadPage.qml" line="930"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="909"/>
         <source>Downloading VOD metadata</source>
         <translation>Lade VOD Metadaten herunter</translation>
     </message>
     <message id="download-placeholder-text-waiting-for-download-to-start">
-        <location filename="../qml/pages/DownloadPage.qml" line="935"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="914"/>
         <source>Download will start momentarily</source>
         <translation>Der Download started in einigen Sekunden</translation>
     </message>
     <message id="download-placeholder-text-no-downloads">
-        <location filename="../qml/pages/DownloadPage.qml" line="939"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="918"/>
         <source>No downloads at present</source>
         <translation>Keine Downloads aktiv</translation>
     </message>
     <message id="download-placeholder-hint-pull-down-to-start-download-from-clipboard">
-        <location filename="../qml/pages/DownloadPage.qml" line="949"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="928"/>
         <source>Pull down to start download using the URL in the clipboard</source>
         <translation>Zieh nach unten, um die URL in der Zwischenablage herunterzuladen.</translation>
     </message>
     <message id="download-placeholder-hint-copy-url-to-clipboard">
-        <location filename="../qml/pages/DownloadPage.qml" line="953"/>
+        <location filename="../qml/pages/DownloadPage.qml" line="932"/>
         <source>Copy a URL to the clipboard then pull down to start the download</source>
         <translation>Kopiere eine Video URL in die Zwischenablage und zieh dann nach unten um den Download zu starten.</translation>
     </message>
@@ -659,13 +659,13 @@
     <message id="settings-ytdl-use-part-files-text">
         <location filename="../qml/pages/SettingsPage.qml" line="389"/>
         <source>Use .part files</source>
-        <translation>Zum Download .part-Dateien verwenden</translation>
+        <translation>Download mit .part-Dateien</translation>
     </message>
     <message id="settings-ytdl-use-part-files-desc">
         <location filename="../qml/pages/SettingsPage.qml" line="391"/>
         <source>Partial download files are used by default to keep track of download progress. With the setting off, video data is written directly to the target file. Some downloads will only succeed with this setting turned off.</source>
         <oldsource>Partial download files are used by default to keep track of download progress. With the setting off, output is written directly to the target file. Some downloads will only succeed with this setting turned off.</oldsource>
-        <translation>Partielle Download-Dateien (.part) werden per default zur Verwaltung des Fortschritts verwendet. Wenn diese Einstellung deaktiviert wird, wird die Videodaten direkt in die Zieldatei geschrieben. Manche Downloads funktionieren nur, wenn diese Einstellung deaktiviert ist.</translation>
+        <translation>Die .part-Dateien werden genutzt, um den Fortschritt eines Downloads festzuhalten. Wenn diese Einstellung deaktiviert ist, werden die VOD-Daten direkt in die Zieldatei geschrieben. Mache Downloads gelingen nur, wenn diese Einstellung deaktiviert ist.</translation>
     </message>
     <message id="settings-page-header">
         <location filename="../qml/pages/SettingsPage.qml" line="427"/>
