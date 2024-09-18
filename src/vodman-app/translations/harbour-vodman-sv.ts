@@ -362,12 +362,12 @@
     <message id="error-ssl-cert-verify">
         <location filename="../qml/pages/DownloadPage.qml" line="338"/>
         <source>SSL certificate verfication failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Verifiering av SSL-certifikatet misslyckades.</translation>
     </message>
     <message id="error-different-streams-codecs">
         <location filename="../qml/pages/DownloadPage.qml" line="342"/>
         <source>Different streams/codecs detected. Files may be incomplete and/or not play.</source>
-        <translation type="unfinished"></translation>
+        <translation>Olika strömmar/kodekar identifierade. Filer kan vara ofullständiga eller inte gå att spela upp.</translation>
     </message>
     <message id="error-unknown">
         <location filename="../qml/pages/DownloadPage.qml" line="347"/>

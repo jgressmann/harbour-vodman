@@ -1,6 +1,8 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="de">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="de">
 <context>
-    <name/>
+    <name></name>
     <message id="format-label">
         <location filename="../qml/FormatComboBox.qml" line="35"/>
         <location filename="../qml/pages/SelectFormatDialog.qml" line="89"/>
@@ -53,7 +55,7 @@
     <message id="about-licensing-text">
         <location filename="../qml/pages/AboutPage.qml" line="133"/>
         <source>Copyright © 2018-2024 Jean Gressmann.&lt;br/&gt;&lt;br/&gt;%1 is available under the &lt;a href=&apos;https://opensource.org/licenses/MIT&apos;&gt;MIT&lt;/a&gt; license.&lt;br/&gt;%1 uses %2 which is in the &lt;a href=&apos;http://unlicense.org/&apos;&gt;public domain&lt;/a&gt;.</source>
-        <oldsource>Copyright © 2018-2022 Jean Gressmann.&lt;br/&gt;&lt;br/&gt;%1 is available under the &lt;a href='https://opensource.org/licenses/MIT'&gt;MIT&lt;/a&gt; license.&lt;br/&gt;%1 uses %2 which is in the &lt;a href='http://unlicense.org/'&gt;public domain&lt;/a&gt;.</oldsource>
+        <oldsource>Copyright © 2018-2022 Jean Gressmann.&lt;br/&gt;&lt;br/&gt;%1 is available under the &lt;a href=&apos;https://opensource.org/licenses/MIT&apos;&gt;MIT&lt;/a&gt; license.&lt;br/&gt;%1 uses %2 which is in the &lt;a href=&apos;http://unlicense.org/&apos;&gt;public domain&lt;/a&gt;.</oldsource>
         <translation>Copyright © 2018-2024 Jean Gressmann.&lt;br/&gt;&lt;br/&gt;%1 ist unter der &lt;a href=&quot;https://opensource.org/licenses/MIT&quot;&gt;MIT&lt;/a&gt; Lizenz verfügbar.&lt;br/&gt;%1 verwendet %2, das sich in der &lt;a href=&quot;http://unlicense.org/&quot;&gt;Public Domain&lt;/a&gt; befindet.</translation>
     </message>
     <message id="about-sources-header">
@@ -475,7 +477,10 @@
     <message id="download-item-cancel-and-delete" numerus="yes">
         <location filename="../qml/pages/DownloadPage.qml" line="868"/>
         <source>Cancel and delete file</source>
-        <translation><numerusform>Abbrechen und Datei löschen</numerusform><numerusform>Abbrechen und Dateien löschen</numerusform></translation>
+        <translation>
+            <numerusform>Abbrechen und Datei löschen</numerusform>
+            <numerusform>Abbrechen und Dateien löschen</numerusform>
+        </translation>
     </message>
     <message id="cancel">
         <location filename="../qml/pages/DownloadPage.qml" line="874"/>
